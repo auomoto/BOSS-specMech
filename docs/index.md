@@ -1,5 +1,5 @@
 # References
-1. [BOSS Spectrograph Communications Guide](https://docs.google.com/document/d/16dir_fut0HBtZR5ReOcYNGfNxy1jjHzGRPkaTaeYjt8/edit?usp=sharing)
+1. [specMech Communications Guide](https://docs.google.com/document/d/16dir_fut0HBtZR5ReOcYNGfNxy1jjHzGRPkaTaeYjt8/edit?usp=sharing)
 2. [BOSS Spectrograph Technical Manual](https://docs.google.com/document/d/11UHDSXXC8-JnVtt-BcFyOa2BDeodfezanSv0PJa2Pw8/edit?usp=sharing)
 
 # Software
