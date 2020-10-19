@@ -4,31 +4,11 @@
 
 # Software
 Source code for the BOSS spectrograph motion controls and sensors is kept here. The target processor is an Atmel ATMega4809 implemented on a Microchip [dm320115 Curiosity Nano](https://www.microchip.com/DevelopmentTools/ProductDetails/dm320115#additional-summary) board.
+![Image](https://drive.google.com/file/d/1KG84_lifc2fxB2G1NmJTxBuCDDN4mmzK/view?usp=sharing)
 
-## Welcome to GitHub Pages
+Communications to the outside world is through a telnet port on your local EtherNET.
 
-You can use the [editor on GitHub](https://github.com/auomoto/specMech/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
 
 [Link](url) and ![Image](src)
 ```
