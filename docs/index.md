@@ -3,7 +3,7 @@
 2. [BOSS Spectrograph Communications Guide](https://docs.google.com/document/d/16dir_fut0HBtZR5ReOcYNGfNxy1jjHzGRPkaTaeYjt8/edit?usp=sharing)
 
 # Software
-Source code for the BOSS spectrograph motion controls and sensors is kept here. The target processor is an Atmel ATMega4809 implemented on a [Microchip dm320115 Curiosity Nano](https://www.microchip.com/DevelopmentTools/ProductDetails/dm320115#additional-summary) board.
+Source code for the BOSS spectrograph motion controls and sensors is kept here. The target processor is an Atmel ATMega4809 implemented on a Microchip [dm320115 Curiosity Nano](https://www.microchip.com/DevelopmentTools/ProductDetails/dm320115#additional-summary) board.
 
 ## Welcome to GitHub Pages
 
