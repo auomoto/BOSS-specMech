@@ -3,9 +3,9 @@
 2. [BOSS Spectrograph Technical Manual](https://docs.google.com/document/d/11UHDSXXC8-JnVtt-BcFyOa2BDeodfezanSv0PJa2Pw8/edit?usp=sharing)
 
 ## Software Overview
-specMech source code is kept here. specMech handles the motion controls and sensors on the BOSS spectrographs. The CCD readouts are handled by a different system, the Archon controller.
+specMech handles the motion controls and sensors on the BOSS spectrographs. The CCD readouts are handled by a different system, the Archon controller.
 
-The specMech target processor is an Atmel ATMega4809 as implemented on a Microchip [dm320115 Curiosity Nano](https://www.microchip.com/DevelopmentTools/ProductDetails/dm320115#additional-summary) board. The programming IDE we use is Atmel Studio 7.0 although one suspects that Microchip's MPLAB X should work with few, if any, code modifications.
+The specMech target processor is an Atmel ATMega4809 as implemented on a Microchip [dm320115 Curiosity Nano](https://www.microchip.com/DevelopmentTools/ProductDetails/dm320115#additional-summary) board. The programming IDE we use is Atmel Studio 7.0 although one suspects that Microchip's MPLAB X should work with few, if any, code modifications. The Curiosity Nano board was chosen because it does not need an external hardware programming tool to download sofware. Your need only the IDE software and a USB cable.
 
 ## Hardware Overview
 
