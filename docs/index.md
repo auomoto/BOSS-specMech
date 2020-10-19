@@ -4,7 +4,7 @@
 
 # Software
 Source code for the BOSS spectrograph motion controls and sensors is kept here. The target processor is an Atmel ATMega4809 implemented on a Microchip [dm320115 Curiosity Nano](https://www.microchip.com/DevelopmentTools/ProductDetails/dm320115#additional-summary) board.
-![](ATmega4809-CNANO_Front_Transparent.png)
+![Curiosity Nano](https://drive.google.com/file/d/1KG84_lifc2fxB2G1NmJTxBuCDDN4mmzK/view?usp=sharing)
 
 Communications to the outside world is through a telnet port on your local EtherNET.
 
