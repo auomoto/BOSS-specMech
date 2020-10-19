@@ -1,5 +1,7 @@
 ## BOSS Spectrograph Mechanical Controls
 
+[BOSS Spectrograph Technical Manual](https://docs.google.com/document/d/11UHDSXXC8-JnVtt-BcFyOa2BDeodfezanSv0PJa2Pw8/edit?usp=sharing)
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/auomoto/specMech/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
