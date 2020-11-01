@@ -12677,8 +12677,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="GND12" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="R10" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/2"/>
 <part name="P+8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
-<part name="J2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5" value="Molex 0022232081"/>
-<part name="J7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5" value="Molex 0022232081"/>
 <part name="R11" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="4609X-101-103LF" device="" package3d_urn="urn:adsk.eagle:package:15461702/6"/>
 <part name="R14" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="4609X-101-103LF" device="" package3d_urn="urn:adsk.eagle:package:15461702/6" value="10K"/>
 <part name="P+17" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
@@ -13099,14 +13097,6 @@ with A0=A1=A2-&gt;GND</text>
 </instance>
 <instance part="P+8" gate="1" x="99.06" y="114.3" smashed="yes">
 <attribute name="VALUE" x="97.79" y="115.57" size="1.27" layer="96"/>
-</instance>
-<instance part="J2" gate="G$1" x="99.06" y="149.86" smashed="yes" rot="MR180">
-<attribute name="NAME" x="95.25" y="160.655" size="1.27" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="92.71" y="134.62" size="1.27" layer="96" rot="MR180"/>
-</instance>
-<instance part="J7" gate="G$1" x="119.38" y="149.86" smashed="yes" rot="MR180">
-<attribute name="NAME" x="115.57" y="160.655" size="1.27" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="113.03" y="134.62" size="1.27" layer="96" rot="MR180"/>
 </instance>
 <instance part="FRAME4" gate="G$1" x="0" y="0" smashed="yes"/>
 <instance part="FRAME4" gate="G$2" x="172.72" y="0" smashed="yes">
