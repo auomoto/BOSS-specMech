@@ -8360,16 +8360,16 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <text x="-10.16" y="38.1" size="1.778" layer="95">&gt;NAME</text>
 <text x="-12.7" y="-43.18" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
-<symbol name="OKI-78SR-5/1.5-W36-C" urn="urn:adsk.eagle:symbol:24308286/3" library_version="192">
+<symbol name="OKI-78SR-5/1.5-W36-C" urn="urn:adsk.eagle:symbol:24308286/4" locally_modified="yes" library_version="201" library_locally_modified="yes">
 <wire x1="-7.62" y1="5.08" x2="-7.62" y2="-2.54" width="0.1524" layer="94"/>
 <wire x1="-7.62" y1="-2.54" x2="7.62" y2="-2.54" width="0.1524" layer="94"/>
 <wire x1="7.62" y1="-2.54" x2="7.62" y2="5.08" width="0.1524" layer="94"/>
 <wire x1="7.62" y1="5.08" x2="-7.62" y2="5.08" width="0.1524" layer="94"/>
 <text x="-7.62" y="6.35" size="1.778" layer="95">&gt;NAME</text>
 <text x="-7.62" y="-6.35" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="IN" x="-10.16" y="2.54" length="short" direction="in"/>
+<pin name="VIN" x="-10.16" y="2.54" length="short" direction="in"/>
 <pin name="GND" x="10.16" y="0" length="short" direction="pwr" rot="R180"/>
-<pin name="OUT" x="10.16" y="2.54" length="short" direction="out" rot="R180"/>
+<pin name="VOUT" x="10.16" y="2.54" length="short" direction="sup" rot="R180"/>
 </symbol>
 <symbol name="PINH2X3" urn="urn:adsk.eagle:symbol:9166031/1" library_version="195">
 <wire x1="-6.35" y1="-5.08" x2="8.89" y2="-5.08" width="0.4064" layer="94"/>
@@ -8447,9 +8447,9 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="5" x="-2.54" y="-2.54" visible="pad" length="short" direction="pas" function="dot"/>
 <pin name="6" x="-2.54" y="-5.08" visible="pad" length="short" direction="pas" function="dot"/>
 </symbol>
-<symbol name="XPORT" urn="urn:adsk.eagle:symbol:15461508/2" library_version="180">
+<symbol name="XPORT" urn="urn:adsk.eagle:symbol:15461508/2" locally_modified="yes" library_version="201" library_locally_modified="yes">
 <pin name="GND" x="10.16" y="10.16" visible="pin" length="short" direction="pwr" rot="R180"/>
-<pin name="3.3V" x="10.16" y="7.62" visible="pin" length="short" direction="pwr" rot="R180"/>
+<pin name="+3.3V" x="10.16" y="7.62" visible="pin" length="short" direction="pwr" rot="R180"/>
 <pin name="/RST" x="10.16" y="5.08" visible="pin" length="short" direction="in" rot="R180"/>
 <pin name="TX" x="10.16" y="2.54" visible="pin" length="short" direction="out" rot="R180"/>
 <pin name="RX" x="10.16" y="0" visible="pin" length="short" direction="in" rot="R180"/>
@@ -11781,7 +11781,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="OKI-78SR-5/1.5-W36-C" urn="urn:adsk.eagle:component:24308289/4" prefix="PS" library_version="192">
+<deviceset name="OKI-78SR-5/1.5-W36-C" urn="urn:adsk.eagle:component:24308289/5" prefix="PS" library_version="201" library_locally_modified="yes">
 <description>OKI Series 8 W Single Output 5 V Non Isolated Through Hole DC/DC Converter </description>
 <gates>
 <gate name="G$1" symbol="OKI-78SR-5/1.5-W36-C" x="0" y="0"/>
@@ -11790,8 +11790,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <device name="" package="CONV_OKI-78SR-5/1.5-W36-C">
 <connects>
 <connect gate="G$1" pin="GND" pad="2"/>
-<connect gate="G$1" pin="IN" pad="1"/>
-<connect gate="G$1" pin="OUT" pad="3"/>
+<connect gate="G$1" pin="VIN" pad="1"/>
+<connect gate="G$1" pin="VOUT" pad="3"/>
 </connects>
 <package3dinstances>
 <package3dinstance package3d_urn="urn:adsk.eagle:package:24308288/2"/>
@@ -12105,15 +12105,15 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="XPORT" urn="urn:adsk.eagle:component:15461904/9" prefix="J" uservalue="yes" library_version="200">
+<deviceset name="XPORT" urn="urn:adsk.eagle:component:15461904/9" prefix="J" uservalue="yes" library_version="201" library_locally_modified="yes">
 <gates>
 <gate name="G$1" symbol="XPORT" x="-2.54" y="-2.54"/>
 </gates>
 <devices>
 <device name="" package="XPORT">
 <connects>
+<connect gate="G$1" pin="+3.3V" pad="3.3V"/>
 <connect gate="G$1" pin="/RST" pad="/RST"/>
-<connect gate="G$1" pin="3.3V" pad="3.3V"/>
 <connect gate="G$1" pin="CP1" pad="CP1"/>
 <connect gate="G$1" pin="CP2" pad="CP2"/>
 <connect gate="G$1" pin="CP3" pad="CP3"/>
@@ -12132,8 +12132,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 <device name="XPORT-2" package="XPORT-2">
 <connects>
+<connect gate="G$1" pin="+3.3V" pad="3.3V"/>
 <connect gate="G$1" pin="/RST" pad="/RST"/>
-<connect gate="G$1" pin="3.3V" pad="3.3V"/>
 <connect gate="G$1" pin="CP1" pad="CP1"/>
 <connect gate="G$1" pin="CP2" pad="CP2"/>
 <connect gate="G$1" pin="CP3" pad="CP3"/>
@@ -12816,9 +12816,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="R12" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/2" value="10K"/>
 <part name="P+11" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="GND15" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
-<part name="JP7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:21589412/1"/>
-<part name="GND-ISO4" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
-<part name="GND43" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -13021,7 +13018,7 @@ Lantronix EtherNET port.</text>
 <pinref part="P+5" gate="1" pin="+5V"/>
 <wire x1="104.14" y1="129.54" x2="104.14" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="124.46" x2="101.6" y2="124.46" width="0.1524" layer="91"/>
-<pinref part="PS1" gate="G$1" pin="OUT"/>
+<pinref part="PS1" gate="G$1" pin="VOUT"/>
 </segment>
 <segment>
 <pinref part="P+6" gate="1" pin="+5V"/>
@@ -13035,7 +13032,7 @@ Lantronix EtherNET port.</text>
 <pinref part="SUPPLY4" gate="G$1" pin="+12V"/>
 <wire x1="78.74" y1="129.54" x2="78.74" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="78.74" y1="124.46" x2="81.28" y2="124.46" width="0.1524" layer="91"/>
-<pinref part="PS1" gate="G$1" pin="IN"/>
+<pinref part="PS1" gate="G$1" pin="VIN"/>
 </segment>
 <segment>
 <pinref part="J6" gate="G$1" pin="8"/>
@@ -14314,15 +14311,15 @@ Pin 8 at 5.61, 0.83 in</text>
 <attribute name="NAME" x="120.396" y="158.115" size="1.778" layer="95"/>
 <attribute name="VALUE" x="120.396" y="153.289" size="1.27" layer="96"/>
 </instance>
-<instance part="L3" gate="G$1" x="96.52" y="132.08" smashed="yes">
-<attribute name="NAME" x="99.076140625" y="129.54" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="104.15261875" y="137.166309375" size="1.016" layer="96" rot="R180"/>
+<instance part="L3" gate="G$1" x="99.06" y="195.58" smashed="yes">
+<attribute name="NAME" x="101.616140625" y="193.04" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="106.69261875" y="200.666309375" size="1.016" layer="96" rot="R180"/>
 </instance>
-<instance part="GND4" gate="1" x="88.9" y="127" smashed="yes">
-<attribute name="VALUE" x="86.36" y="124.46" size="1.778" layer="96"/>
+<instance part="GND4" gate="1" x="91.44" y="190.5" smashed="yes">
+<attribute name="VALUE" x="88.9" y="187.96" size="1.778" layer="96"/>
 </instance>
-<instance part="GND-ISO3" gate="G$1" x="104.14" y="127" smashed="yes">
-<attribute name="VALUE" x="104.14" y="125.222" size="1.778" layer="96" align="top-center"/>
+<instance part="GND-ISO3" gate="G$1" x="106.68" y="190.5" smashed="yes">
+<attribute name="VALUE" x="106.68" y="188.722" size="1.778" layer="96" align="top-center"/>
 </instance>
 <instance part="J1" gate="G$1" x="162.56" y="172.72" smashed="yes" rot="R180">
 <attribute name="NAME" x="168.91" y="159.385" size="1.778" layer="95" rot="R180"/>
@@ -14336,16 +14333,6 @@ Pin 8 at 5.61, 0.83 in</text>
 <attribute name="LAST_DATE_TIME" x="185.42" y="1.27" size="2.54" layer="94"/>
 <attribute name="SHEET" x="259.08" y="1.27" size="2.54" layer="94"/>
 <attribute name="DRAWING_NAME" x="190.5" y="19.05" size="2.54" layer="94"/>
-</instance>
-<instance part="JP7" gate="A" x="121.92" y="132.08" smashed="yes" rot="MR0">
-<attribute name="NAME" x="128.27" y="137.795" size="1.778" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="128.27" y="124.46" size="1.778" layer="96" rot="MR0"/>
-</instance>
-<instance part="GND-ISO4" gate="G$1" x="144.78" y="127" smashed="yes">
-<attribute name="VALUE" x="144.78" y="125.222" size="1.778" layer="96" align="top-center"/>
-</instance>
-<instance part="GND43" gate="1" x="134.62" y="127" smashed="yes">
-<attribute name="VALUE" x="132.08" y="124.46" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -14400,9 +14387,9 @@ Pin 8 at 5.61, 0.83 in</text>
 </segment>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
-<wire x1="88.9" y1="129.54" x2="88.9" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="193.04" x2="91.44" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="L3" gate="G$1" pin="1"/>
-<wire x1="88.9" y1="132.08" x2="91.44" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="195.58" x2="93.98" y2="195.58" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="J1" gate="G$1" pin="7"/>
@@ -14421,12 +14408,6 @@ Pin 8 at 5.61, 0.83 in</text>
 <pinref part="J1" gate="G$1" pin="1"/>
 <wire x1="165.1" y1="162.56" x2="172.72" y2="162.56" width="0.1524" layer="91"/>
 <junction x="172.72" y="162.56"/>
-</segment>
-<segment>
-<pinref part="JP7" gate="A" pin="2"/>
-<wire x1="124.46" y1="132.08" x2="134.62" y2="132.08" width="0.1524" layer="91"/>
-<wire x1="134.62" y1="132.08" x2="134.62" y2="129.54" width="0.1524" layer="91"/>
-<pinref part="GND43" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -14720,15 +14701,9 @@ Pin 8 at 5.61, 0.83 in</text>
 </segment>
 <segment>
 <pinref part="L3" gate="G$1" pin="2"/>
-<wire x1="101.6" y1="132.08" x2="104.14" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="195.58" x2="106.68" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="GND-ISO3" gate="G$1" pin="GND-ISO"/>
-<wire x1="104.14" y1="132.08" x2="104.14" y2="129.54" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="JP7" gate="A" pin="1"/>
-<wire x1="124.46" y1="134.62" x2="144.78" y2="134.62" width="0.1524" layer="91"/>
-<wire x1="144.78" y1="134.62" x2="144.78" y2="129.54" width="0.1524" layer="91"/>
-<pinref part="GND-ISO4" gate="G$1" pin="GND-ISO"/>
+<wire x1="106.68" y1="195.58" x2="106.68" y2="193.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$7" class="0">
@@ -15588,18 +15563,16 @@ CUI P7805-Q24-S3-S DC-DC Converter</text>
 <segment>
 <wire x1="116.84" y1="104.14" x2="127" y2="104.14" width="0.1524" layer="91"/>
 <label x="127" y="104.14" size="1.016" layer="95" xref="yes"/>
-<pinref part="J5" gate="G$1" pin="3.3V"/>
+<pinref part="J5" gate="G$1" pin="+3.3V"/>
 </segment>
-</net>
-<net name="3.3V" class="0">
 <segment>
-<pinref part="VR2" gate="G$1" pin="VOUT"/>
-<wire x1="228.6" y1="71.12" x2="236.22" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="C7" gate="G$1" pin="1"/>
-<wire x1="236.22" y1="71.12" x2="236.22" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="236.22" y1="71.12" x2="236.22" y2="76.2" width="0.1524" layer="91"/>
-<junction x="236.22" y="71.12"/>
 <pinref part="SUPPLY5" gate="G$1" pin="+3.3V"/>
+<wire x1="236.22" y1="68.58" x2="236.22" y2="71.12" width="0.1524" layer="91"/>
+<pinref part="VR2" gate="G$1" pin="VOUT"/>
+<wire x1="236.22" y1="71.12" x2="236.22" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="71.12" x2="236.22" y2="71.12" width="0.1524" layer="91"/>
+<junction x="236.22" y="71.12"/>
 </segment>
 </net>
 <net name="BEEP" class="0">
