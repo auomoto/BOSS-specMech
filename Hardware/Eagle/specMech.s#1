@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -5898,7 +5898,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <vertex x="6.385" y="-7.62"/>
 </polygon>
 </package>
-<package name="XPORT-2" urn="urn:adsk.eagle:footprint:18328250/3" library_version="180">
+<package name="XPORT-2" urn="urn:adsk.eagle:footprint:18328250/4" library_version="200">
 <pad name="GND" x="2.54" y="-4.445" drill="0.9" shape="square"/>
 <pad name="3.3V" x="0" y="-3.175" drill="0.9"/>
 <pad name="/RST" x="2.54" y="-1.905" drill="0.9"/>
@@ -5911,8 +5911,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pad name="P$2" x="5.5" y="-8.025" drill="1.6"/>
 <hole x="-6.35" y="6.15" drill="3.25"/>
 <hole x="-6.35" y="-6.15" drill="3.25"/>
-<hole x="5.55" y="8.025" drill="1.6"/>
-<hole x="5.55" y="-8.025" drill="1.6"/>
 <wire x1="-17.1958" y1="8.025" x2="-17.1958" y2="-8.025" width="0.1524" layer="21"/>
 <wire x1="-17.1958" y1="8.025" x2="17.1958" y2="8.025" width="0.1524" layer="21"/>
 <wire x1="17.1958" y1="8.025" x2="17.1958" y2="-8.025" width="0.1524" layer="21"/>
@@ -7835,7 +7833,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <packageinstance name="XPORT"/>
 </packageinstances>
 </package3d>
-<package3d name="XPORT-2" urn="urn:adsk.eagle:package:18328251/4" type="model" library_version="180">
+<package3d name="XPORT-2" urn="urn:adsk.eagle:package:18328251/5" type="model" library_version="200">
 <packageinstances>
 <packageinstance name="XPORT-2"/>
 </packageinstances>
@@ -12107,7 +12105,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="XPORT" urn="urn:adsk.eagle:component:15461904/8" prefix="J" uservalue="yes" library_version="180">
+<deviceset name="XPORT" urn="urn:adsk.eagle:component:15461904/9" prefix="J" uservalue="yes" library_version="200">
 <gates>
 <gate name="G$1" symbol="XPORT" x="-2.54" y="-2.54"/>
 </gates>
@@ -12146,7 +12144,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="TX" pad="TX"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:18328251/4"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:18328251/5"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -12784,7 +12782,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="C5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/2" value="0.01uF"/>
 <part name="GND21" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-1" device=""/>
 <part name="GND22" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-1" device=""/>
-<part name="J5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="XPORT" device="XPORT-2" package3d_urn="urn:adsk.eagle:package:18328251/4" value="XPORT"/>
+<part name="J5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="XPORT" device="XPORT-2" package3d_urn="urn:adsk.eagle:package:18328251/5" value="XPORT"/>
 <part name="SUPPLY2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+3.3V" device=""/>
 <part name="SUPPLY6" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+3.3V" device=""/>
 <part name="SUPPLY7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+3.3V" device=""/>

@@ -15029,7 +15029,7 @@ CUI P7805-Q24-S3-S DC-DC Converter</text>
 <attribute name="VALUE" x="218.1606" y="174.2186" size="2.0828" layer="96" rot="SR0"/>
 </instance>
 <instance part="JP2" gate="A" x="205.74" y="180.34" smashed="yes" rot="MR0">
-<attribute name="NAME" x="212.09" y="191.135" size="1.778" layer="95" rot="MR0"/>
+<attribute name="NAME" x="209.55" y="191.135" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="212.09" y="170.18" size="1.778" layer="96" rot="MR0"/>
 </instance>
 <instance part="C24" gate="G$1" x="198.12" y="185.42" smashed="yes">
@@ -15044,7 +15044,7 @@ CUI P7805-Q24-S3-S DC-DC Converter</text>
 <attribute name="VALUE" x="241.3" y="167.64" size="1.778" layer="96"/>
 </instance>
 <instance part="P+22" gate="1" x="254" y="195.58" smashed="yes">
-<attribute name="VALUE" x="251.46" y="196.85" size="1.27" layer="96"/>
+<attribute name="VALUE" x="251.46" y="196.85" size="1.778" layer="96"/>
 </instance>
 <instance part="R5" gate="G$1" x="119.38" y="81.28" smashed="yes" rot="R90">
 <attribute name="NAME" x="118.11" y="82.3214" size="1.27" layer="95" rot="R180"/>

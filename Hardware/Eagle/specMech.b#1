@@ -2152,8 +2152,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="80.645" y1="115.25" x2="71.6788" y2="107.95" width="0" layer="19" extent="1-1"/>
 <wire x1="60.9975" y1="10.795" x2="71.12" y2="5.08" width="0" layer="19" extent="1-1"/>
 <wire x1="64.135" y1="16.825" x2="60.9975" y2="10.795" width="0" layer="19" extent="1-1"/>
-<wire x1="100.0854" y1="30.845" x2="88.9" y2="42.225" width="0" layer="19" extent="1-1"/>
-<wire x1="107.315" y1="32.065" x2="100.0854" y2="30.845" width="0" layer="19" extent="1-1"/>
 <wire x1="76.7588" y1="37.465" x2="88.9" y2="42.225" width="0" layer="19" extent="1-1"/>
 <wire x1="76.7588" y1="36.195" x2="76.7588" y2="37.465" width="0" layer="19" extent="1-1"/>
 <wire x1="76.7588" y1="34.925" x2="76.7588" y2="36.195" width="0" layer="19" extent="1-1"/>
@@ -2162,6 +2160,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="64.47" y1="38.1" x2="76.7588" y2="37.465" width="0" layer="19" extent="1-1"/>
 <wire x1="62.53" y1="38.1" x2="64.47" y2="38.1" width="0" layer="19" extent="1-1"/>
 <wire x1="59.69" y1="40.955" x2="62.53" y2="38.1" width="0" layer="19" extent="1-1"/>
+<wire x1="100.0854" y1="30.845" x2="88.9" y2="42.225" width="0" layer="19" extent="1-1"/>
+<wire x1="107.315" y1="32.065" x2="100.0854" y2="30.845" width="0" layer="19" extent="1-1"/>
 <wire x1="93.25" y1="18.415" x2="100.0854" y2="30.845" width="0" layer="19" extent="1-1"/>
 <wire x1="107.315" y1="13.65" x2="93.25" y2="18.415" width="0" layer="19" extent="1-1"/>
 <wire x1="5.715" y1="27.94" x2="24.085" y2="36.195" width="0" layer="19" extent="1-1"/>
