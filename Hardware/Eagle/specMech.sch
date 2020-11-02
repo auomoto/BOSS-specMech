@@ -12693,13 +12693,10 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="P+21" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="SUPPLY11" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+12V" device=""/>
 <part name="P+18" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
-<part name="GND26" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="C12" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/2" value="0.1uF"/>
 <part name="R16" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/2" value="*1K*"/>
-<part name="GND30" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="C13" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/2" value="0.1uF"/>
 <part name="U9" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="ADS1115IDGSR" device="VSSOP-10" package3d_urn="urn:adsk.eagle:package:21309903/1" value="ADS1115"/>
-<part name="GND34" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="C14" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/2" value="0.01uF"/>
 <part name="C15" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/2" value="0.01uF"/>
 <part name="C16" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/2" value="0.01uF"/>
@@ -12817,6 +12814,9 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="GND43" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="GND-ISO5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
 <part name="GND-ISO6" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
+<part name="GND-ISO7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
+<part name="GND-ISO8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
+<part name="GND-ISO9" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -14207,9 +14207,6 @@ Pin 8 at 5.61, 0.83 in</text>
 <instance part="P+18" gate="1" x="35.56" y="198.12" smashed="yes">
 <attribute name="VALUE" x="38.1" y="200.66" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND26" gate="1" x="25.4" y="165.1" smashed="yes">
-<attribute name="VALUE" x="22.86" y="162.56" size="1.778" layer="96"/>
-</instance>
 <instance part="C12" gate="G$1" x="25.4" y="175.26" smashed="yes" rot="MR0">
 <attribute name="NAME" x="24.384" y="176.53" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="24.384" y="170.18" size="1.27" layer="96" rot="MR0"/>
@@ -14218,9 +14215,6 @@ Pin 8 at 5.61, 0.83 in</text>
 <attribute name="NAME" x="141.605" y="157.48" size="1.778" layer="95"/>
 <attribute name="VALUE" x="140.97" y="154.178" size="1.27" layer="96"/>
 </instance>
-<instance part="GND30" gate="1" x="25.4" y="96.52" smashed="yes">
-<attribute name="VALUE" x="22.86" y="93.98" size="1.778" layer="96"/>
-</instance>
 <instance part="C13" gate="G$1" x="25.4" y="106.68" smashed="yes" rot="MR0">
 <attribute name="NAME" x="24.384" y="107.95" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="24.384" y="101.6" size="1.27" layer="96" rot="MR0"/>
@@ -14228,9 +14222,6 @@ Pin 8 at 5.61, 0.83 in</text>
 <instance part="U9" gate="A" x="63.5" y="172.72" smashed="yes">
 <attribute name="NAME" x="56.2356" y="184.3786" size="2.0828" layer="95" ratio="6" rot="SR0"/>
 <attribute name="VALUE" x="55.6006" y="158.9786" size="2.0828" layer="96" ratio="6" rot="SR0"/>
-</instance>
-<instance part="GND34" gate="1" x="48.26" y="160.02" smashed="yes">
-<attribute name="VALUE" x="45.72" y="157.48" size="1.778" layer="96"/>
 </instance>
 <instance part="C14" gate="G$1" x="109.22" y="157.48" smashed="yes">
 <attribute name="NAME" x="110.236" y="158.115" size="1.778" layer="95"/>
@@ -14337,6 +14328,15 @@ Pin 8 at 5.61, 0.83 in</text>
 <instance part="GND-ISO6" gate="G$1" x="172.72" y="86.36" smashed="yes">
 <attribute name="VALUE" x="172.72" y="84.582" size="1.778" layer="96" align="top-center"/>
 </instance>
+<instance part="GND-ISO7" gate="G$1" x="25.4" y="96.52" smashed="yes">
+<attribute name="VALUE" x="25.4" y="94.742" size="1.778" layer="96" align="top-center"/>
+</instance>
+<instance part="GND-ISO8" gate="G$1" x="25.4" y="165.1" smashed="yes">
+<attribute name="VALUE" x="25.4" y="163.322" size="1.778" layer="96" align="top-center"/>
+</instance>
+<instance part="GND-ISO9" gate="G$1" x="48.26" y="160.02" smashed="yes">
+<attribute name="VALUE" x="48.26" y="158.242" size="1.778" layer="96" align="top-center"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -14354,22 +14354,6 @@ Pin 8 at 5.61, 0.83 in</text>
 </segment>
 </net>
 <net name="GND" class="0">
-<segment>
-<pinref part="C12" gate="G$1" pin="2"/>
-<pinref part="GND26" gate="1" pin="GND"/>
-<wire x1="25.4" y1="170.18" x2="25.4" y2="167.64" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="C13" gate="G$1" pin="2"/>
-<pinref part="GND30" gate="1" pin="GND"/>
-<wire x1="25.4" y1="101.6" x2="25.4" y2="99.06" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="GND34" gate="1" pin="GND"/>
-<pinref part="U9" gate="A" pin="ADDR"/>
-<wire x1="48.26" y1="167.64" x2="50.8" y2="167.64" width="0.1524" layer="91"/>
-<wire x1="48.26" y1="162.56" x2="48.26" y2="167.64" width="0.1524" layer="91"/>
-</segment>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
 <wire x1="114.3" y1="58.42" x2="114.3" y2="60.96" width="0.1524" layer="91"/>
@@ -14719,6 +14703,22 @@ Pin 8 at 5.61, 0.83 in</text>
 <wire x1="165.1" y1="93.98" x2="172.72" y2="93.98" width="0.1524" layer="91"/>
 <junction x="172.72" y="93.98"/>
 <pinref part="GND-ISO6" gate="G$1" pin="GND-ISO"/>
+</segment>
+<segment>
+<pinref part="C13" gate="G$1" pin="2"/>
+<wire x1="25.4" y1="101.6" x2="25.4" y2="99.06" width="0.1524" layer="91"/>
+<pinref part="GND-ISO7" gate="G$1" pin="GND-ISO"/>
+</segment>
+<segment>
+<pinref part="C12" gate="G$1" pin="2"/>
+<wire x1="25.4" y1="170.18" x2="25.4" y2="167.64" width="0.1524" layer="91"/>
+<pinref part="GND-ISO8" gate="G$1" pin="GND-ISO"/>
+</segment>
+<segment>
+<pinref part="U9" gate="A" pin="ADDR"/>
+<wire x1="48.26" y1="167.64" x2="50.8" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="162.56" x2="48.26" y2="167.64" width="0.1524" layer="91"/>
+<pinref part="GND-ISO9" gate="G$1" pin="GND-ISO"/>
 </segment>
 </net>
 <net name="N$7" class="0">
