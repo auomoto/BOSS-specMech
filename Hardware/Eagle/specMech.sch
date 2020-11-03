@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -13035,14 +13035,14 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <label x="86.36" y="96.52" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="XP-RX" class="0">
+<net name="TX" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PA0"/>
 <wire x1="88.9" y1="132.08" x2="86.36" y2="132.08" width="0.1524" layer="91"/>
 <label x="86.36" y="132.08" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="XP-TX" class="0">
+<net name="RX" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PA1"/>
 <wire x1="88.9" y1="129.54" x2="86.36" y2="129.54" width="0.1524" layer="91"/>
@@ -13051,9 +13051,9 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </net>
 <net name="BEEP" class="0">
 <segment>
-<pinref part="CNANO1" gate="G$1" pin="PA7"/>
-<wire x1="88.9" y1="114.3" x2="86.36" y2="114.3" width="0.1524" layer="91"/>
-<label x="86.36" y="114.3" size="1.016" layer="95" ratio="10" rot="R180" xref="yes"/>
+<pinref part="CNANO1" gate="G$1" pin="PB2"/>
+<wire x1="88.9" y1="93.98" x2="86.36" y2="93.98" width="0.1524" layer="91"/>
+<label x="86.36" y="93.98" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>
@@ -13203,6 +13203,8 @@ with A0=A1=A2-&gt;GND</text>
 <wire x1="40.64" y1="121.92" x2="40.64" y2="81.28" width="0.1524" layer="250"/>
 <text x="43.18" y="116.84" size="1.778" layer="250">MMA8451 Acclerometer
 Adafruit Breakout Board</text>
+<text x="243.84" y="157.48" size="2.54" layer="250">Clock</text>
+<text x="129.54" y="116.84" size="2.54" layer="250">Digital Thermometer</text>
 </plain>
 <instances>
 <instance part="U4" gate="A" x="132.08" y="99.06" smashed="yes">
