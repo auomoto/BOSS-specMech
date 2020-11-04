@@ -13199,11 +13199,11 @@ with A0=A1=A2-&gt;GND</text>
 <wire x1="154.94" y1="17.78" x2="154.94" y2="71.12" width="0.254" layer="250"/>
 <wire x1="154.94" y1="71.12" x2="78.74" y2="71.12" width="0.254" layer="250"/>
 <wire x1="78.74" y1="71.12" x2="78.74" y2="17.78" width="0.254" layer="250"/>
-<wire x1="40.64" y1="81.28" x2="78.74" y2="81.28" width="0.1524" layer="250"/>
-<wire x1="78.74" y1="81.28" x2="78.74" y2="121.92" width="0.1524" layer="250"/>
-<wire x1="78.74" y1="121.92" x2="40.64" y2="121.92" width="0.1524" layer="250"/>
+<wire x1="40.64" y1="81.28" x2="71.12" y2="81.28" width="0.1524" layer="250"/>
+<wire x1="71.12" y1="81.28" x2="71.12" y2="121.92" width="0.1524" layer="250"/>
+<wire x1="71.12" y1="121.92" x2="40.64" y2="121.92" width="0.1524" layer="250"/>
 <wire x1="40.64" y1="121.92" x2="40.64" y2="81.28" width="0.1524" layer="250"/>
-<text x="50.8" y="116.84" size="1.778" layer="250">MMA8451 Acclerometer
+<text x="43.18" y="116.84" size="1.778" layer="250">MMA8451 Acclerometer
 Adafruit Breakout Board</text>
 </plain>
 <instances>
