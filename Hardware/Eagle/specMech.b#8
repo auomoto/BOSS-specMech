@@ -2485,7 +2485,12 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="64.455" y1="42.86" x2="64.135" y2="42.86" width="0.1524" layer="1"/>
 <wire x1="66.69" y1="40.625" x2="64.77" y2="42.545" width="0.1524" layer="1"/>
 <wire x1="64.77" y1="42.545" x2="64.77" y2="42.86" width="0.1524" layer="1"/>
-<wire x1="69.85" y1="46.67" x2="67.61" y2="41.925" width="0" layer="19" extent="1-1"/>
+<wire x1="52.705" y1="27.62" x2="52.705" y2="36.83" width="0.508" layer="1"/>
+<via x="52.705" y="36.83" extent="1-16" drill="0.35"/>
+<wire x1="52.705" y1="36.83" x2="52.705" y2="38.735" width="0.508" layer="16"/>
+<via x="52.705" y="38.735" extent="1-16" drill="0.35"/>
+<wire x1="52.705" y1="38.735" x2="56.83" y2="42.86" width="0.508" layer="1"/>
+<wire x1="56.83" y1="42.86" x2="64.135" y2="42.86" width="0.508" layer="1"/>
 </signal>
 <signal name="XP-TX">
 <contactref element="U3" pad="5"/>
