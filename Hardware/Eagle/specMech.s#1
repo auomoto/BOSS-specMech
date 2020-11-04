@@ -13063,6 +13063,13 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <label x="121.92" y="134.62" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
+<net name="INT-PNEU" class="0">
+<segment>
+<pinref part="CNANO1" gate="G$1" pin="PD7"/>
+<wire x1="119.38" y1="132.08" x2="121.92" y2="132.08" width="0.1524" layer="91"/>
+<label x="121.92" y="132.08" size="1.016" layer="95" xref="yes"/>
+</segment>
+</net>
 </nets>
 </sheet>
 <sheet>
