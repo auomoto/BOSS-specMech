@@ -15150,6 +15150,8 @@ CUI P7805-Q24-S3-S DC-DC Converter</text>
 <wire x1="76.2" y1="45.72" x2="12.7" y2="45.72" width="0.254" layer="250"/>
 <wire x1="12.7" y1="45.72" x2="12.7" y2="68.58" width="0.254" layer="250"/>
 <text x="60.96" y="63.5" size="2.54" layer="250" ratio="10">Beeper</text>
+<text x="200.66" y="119.38" size="1.778" layer="250">A side is +3.3V
+B side is +5V</text>
 </plain>
 <instances>
 <instance part="FRAME11" gate="G$1" x="0" y="0" smashed="yes"/>
