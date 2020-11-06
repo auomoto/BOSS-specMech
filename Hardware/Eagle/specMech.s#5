@@ -8015,7 +8015,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <packageinstance name="CURIOSITYNANO4809CASTELLATED"/>
 </packageinstances>
 </package3d>
-<package3d name="1X08" urn="urn:adsk.eagle:package:24524265/3" type="model" library_version="215">
+<package3d name="1X08" urn="urn:adsk.eagle:package:24524265/4" type="model" library_version="216">
 <description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
 <packageinstances>
 <packageinstance name="1X08"/>
@@ -8380,7 +8380,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="1" x="-5.08" y="0" visible="pad" length="short" direction="pas" swaplevel="1"/>
 <pin name="2" x="5.08" y="0" visible="pad" length="short" direction="pas" swaplevel="1" rot="R180"/>
 </symbol>
-<symbol name="CURIOSITYNANO4809" urn="urn:adsk.eagle:symbol:15461486/1" library_version="171">
+<symbol name="CURIOSITYNANO4809" urn="urn:adsk.eagle:symbol:15461486/2" library_version="217">
 <description>&lt;b&gt;Curiosity Nano ATMega4809&lt;/b&gt;</description>
 <pin name="NC" x="-15.24" y="33.02" visible="pin" length="short"/>
 <pin name="ID" x="-15.24" y="30.48" visible="pin" length="short"/>
@@ -8396,7 +8396,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="PA5" x="-15.24" y="5.08" visible="pin" length="short"/>
 <pin name="PA6" x="-15.24" y="2.54" visible="pin" length="short"/>
 <pin name="PA7" x="-15.24" y="0" visible="pin" length="short"/>
-<pin name="GND-15" x="-15.24" y="-2.54" visible="pin" length="short"/>
+<pin name="GND@15" x="-15.24" y="-2.54" visible="pin" length="short"/>
 <pin name="PC0" x="-15.24" y="-5.08" visible="pin" length="short"/>
 <pin name="PC1" x="-15.24" y="-7.62" visible="pin" length="short"/>
 <pin name="PC2" x="-15.24" y="-10.16" visible="pin" length="short"/>
@@ -8405,7 +8405,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="PB1" x="-15.24" y="-17.78" visible="pin" length="short"/>
 <pin name="PB2" x="-15.24" y="-20.32" visible="pin" length="short"/>
 <pin name="PB3" x="-15.24" y="-22.86" visible="pin" length="short"/>
-<pin name="GND-24" x="-15.24" y="-25.4" visible="pin" length="short"/>
+<pin name="GND@24" x="-15.24" y="-25.4" visible="pin" length="short"/>
 <pin name="PE0" x="-15.24" y="-27.94" visible="pin" length="short"/>
 <pin name="PE1" x="-15.24" y="-30.48" visible="pin" length="short"/>
 <pin name="PE2" x="-15.24" y="-33.02" visible="pin" length="short"/>
@@ -8414,7 +8414,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="PF3" x="15.24" y="-33.02" visible="pin" length="short" rot="R180"/>
 <pin name="PF4" x="15.24" y="-30.48" visible="pin" length="short" rot="R180"/>
 <pin name="PF5" x="15.24" y="-27.94" visible="pin" length="short" rot="R180"/>
-<pin name="GND-33" x="15.24" y="-25.4" visible="pin" length="short" rot="R180"/>
+<pin name="GND@33" x="15.24" y="-25.4" visible="pin" length="short" rot="R180"/>
 <pin name="PB4" x="15.24" y="-22.86" visible="pin" length="short" rot="R180"/>
 <pin name="PB5" x="15.24" y="-20.32" visible="pin" length="short" rot="R180"/>
 <pin name="PF0" x="15.24" y="-17.78" visible="pin" length="short" rot="R180"/>
@@ -8423,7 +8423,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="PC5" x="15.24" y="-10.16" visible="pin" length="short" rot="R180"/>
 <pin name="PC6" x="15.24" y="-7.62" visible="pin" length="short" rot="R180"/>
 <pin name="PC7" x="15.24" y="-5.08" visible="pin" length="short" rot="R180"/>
-<pin name="GND-42" x="15.24" y="-2.54" visible="pin" length="short" rot="R180"/>
+<pin name="GND@42" x="15.24" y="-2.54" visible="pin" length="short" rot="R180"/>
 <pin name="PD0" x="15.24" y="0" visible="pin" length="short" rot="R180"/>
 <pin name="PD1" x="15.24" y="2.54" visible="pin" length="short" rot="R180"/>
 <pin name="PD2" x="15.24" y="5.08" visible="pin" length="short" rot="R180"/>
@@ -8433,7 +8433,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="PD6" x="15.24" y="15.24" visible="pin" length="short" rot="R180"/>
 <pin name="PD7" x="15.24" y="17.78" visible="pin" length="short" rot="R180"/>
 <pin name="VTG" x="15.24" y="20.32" visible="pin" length="short" rot="R180"/>
-<pin name="GND-52" x="15.24" y="22.86" visible="pin" length="short" rot="R180"/>
+<pin name="GND@52" x="15.24" y="22.86" visible="pin" length="short" rot="R180"/>
 <pin name="DBG0" x="15.24" y="25.4" visible="pin" length="short" rot="R180"/>
 <pin name="DBG3" x="15.24" y="27.94" visible="pin" length="short" rot="R180"/>
 <pin name="VOFF" x="15.24" y="30.48" visible="pin" length="short" rot="R180"/>
@@ -11746,7 +11746,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="CURIOSITYNANO4809" urn="urn:adsk.eagle:component:15461882/8" prefix="CNANO" library_version="198">
+<deviceset name="CURIOSITYNANO4809" urn="urn:adsk.eagle:component:15461882/9" prefix="CNANO" library_version="217">
 <gates>
 <gate name="G$1" symbol="CURIOSITYNANO4809" x="0" y="0"/>
 </gates>
@@ -11759,11 +11759,11 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="DBG1" pad="PF3-5"/>
 <connect gate="G$1" pin="DBG2" pad="PF2-6"/>
 <connect gate="G$1" pin="DBG3" pad="PF6-SW0"/>
-<connect gate="G$1" pin="GND-15" pad="GND15"/>
-<connect gate="G$1" pin="GND-24" pad="GND24"/>
-<connect gate="G$1" pin="GND-33" pad="GND33"/>
-<connect gate="G$1" pin="GND-42" pad="GND42"/>
-<connect gate="G$1" pin="GND-52" pad="GND52"/>
+<connect gate="G$1" pin="GND@15" pad="GND15"/>
+<connect gate="G$1" pin="GND@24" pad="GND24"/>
+<connect gate="G$1" pin="GND@33" pad="GND33"/>
+<connect gate="G$1" pin="GND@42" pad="GND42"/>
+<connect gate="G$1" pin="GND@52" pad="GND52"/>
 <connect gate="G$1" pin="ID" pad="ID"/>
 <connect gate="G$1" pin="NC" pad="NC"/>
 <connect gate="G$1" pin="PA0" pad="PA0-TX"/>
@@ -11825,11 +11825,11 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="DBG1" pad="PF3-5"/>
 <connect gate="G$1" pin="DBG2" pad="PF2-6"/>
 <connect gate="G$1" pin="DBG3" pad="PF6-SW0"/>
-<connect gate="G$1" pin="GND-15" pad="GND15"/>
-<connect gate="G$1" pin="GND-24" pad="GND24"/>
-<connect gate="G$1" pin="GND-33" pad="GND33"/>
-<connect gate="G$1" pin="GND-42" pad="GND42"/>
-<connect gate="G$1" pin="GND-52" pad="GND52"/>
+<connect gate="G$1" pin="GND@15" pad="GND15"/>
+<connect gate="G$1" pin="GND@24" pad="GND24"/>
+<connect gate="G$1" pin="GND@33" pad="GND33"/>
+<connect gate="G$1" pin="GND@42" pad="GND42"/>
+<connect gate="G$1" pin="GND@52" pad="GND52"/>
 <connect gate="G$1" pin="ID" pad="ID"/>
 <connect gate="G$1" pin="NC" pad="NC"/>
 <connect gate="G$1" pin="PA0" pad="PA0-TX"/>
@@ -12678,7 +12678,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="MMA8451BREAKOUT" urn="urn:adsk.eagle:component:24523848/3" prefix="BO" library_version="215">
+<deviceset name="MMA8451BREAKOUT" urn="urn:adsk.eagle:component:24523848/4" prefix="BO" library_version="216">
 <gates>
 <gate name="G$1" symbol="MMA8415BREAKOUT" x="0" y="0"/>
 </gates>
@@ -12695,7 +12695,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="SDA" pad="2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:24524265/3"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:24524265/4"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -12944,7 +12944,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="GND-ISO7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
 <part name="GND-ISO8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
 <part name="GND-ISO9" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
-<part name="BO1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MMA8451BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:24524265/3"/>
+<part name="BO1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MMA8451BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:24524265/4"/>
 </parts>
 <sheets>
 <sheet>
@@ -12982,27 +12982,27 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </net>
 <net name="GND" class="0">
 <segment>
-<pinref part="CNANO1" gate="G$1" pin="GND-15"/>
+<pinref part="CNANO1" gate="G$1" pin="GND@15"/>
 <wire x1="88.9" y1="111.76" x2="86.36" y2="111.76" width="0.1524" layer="91"/>
 <label x="86.36" y="111.76" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="CNANO1" gate="G$1" pin="GND-42"/>
+<pinref part="CNANO1" gate="G$1" pin="GND@42"/>
 <wire x1="119.38" y1="111.76" x2="121.92" y2="111.76" width="0.1524" layer="91"/>
 <label x="121.92" y="111.76" size="1.016" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="CNANO1" gate="G$1" pin="GND-24"/>
+<pinref part="CNANO1" gate="G$1" pin="GND@24"/>
 <wire x1="88.9" y1="88.9" x2="86.36" y2="88.9" width="0.1524" layer="91"/>
 <label x="86.36" y="88.9" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="CNANO1" gate="G$1" pin="GND-33"/>
+<pinref part="CNANO1" gate="G$1" pin="GND@33"/>
 <wire x1="119.38" y1="88.9" x2="121.92" y2="88.9" width="0.1524" layer="91"/>
 <label x="121.92" y="88.9" size="1.016" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="CNANO1" gate="G$1" pin="GND-52"/>
+<pinref part="CNANO1" gate="G$1" pin="GND@52"/>
 <wire x1="119.38" y1="137.16" x2="121.92" y2="137.16" width="0.1524" layer="91"/>
 <label x="121.92" y="137.16" size="1.016" layer="95" xref="yes"/>
 </segment>
@@ -13061,6 +13061,13 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pinref part="CNANO1" gate="G$1" pin="VTG"/>
 <wire x1="119.38" y1="134.62" x2="121.92" y2="134.62" width="0.1524" layer="91"/>
 <label x="121.92" y="134.62" size="1.016" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="INT-PNEU" class="0">
+<segment>
+<pinref part="CNANO1" gate="G$1" pin="PD7"/>
+<wire x1="119.38" y1="132.08" x2="121.92" y2="132.08" width="0.1524" layer="91"/>
+<label x="121.92" y="132.08" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>

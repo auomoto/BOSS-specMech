@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -8015,7 +8015,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <packageinstance name="CURIOSITYNANO4809CASTELLATED"/>
 </packageinstances>
 </package3d>
-<package3d name="1X08" urn="urn:adsk.eagle:package:24524265/3" type="model" library_version="215">
+<package3d name="1X08" urn="urn:adsk.eagle:package:24524265/4" type="model" library_version="216">
 <description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
 <packageinstances>
 <packageinstance name="1X08"/>
@@ -12678,7 +12678,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="MMA8451BREAKOUT" urn="urn:adsk.eagle:component:24523848/3" prefix="BO" library_version="215">
+<deviceset name="MMA8451BREAKOUT" urn="urn:adsk.eagle:component:24523848/4" prefix="BO" library_version="216">
 <gates>
 <gate name="G$1" symbol="MMA8415BREAKOUT" x="0" y="0"/>
 </gates>
@@ -12695,7 +12695,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="SDA" pad="2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:24524265/3"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:24524265/4"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -12944,7 +12944,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="GND-ISO7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
 <part name="GND-ISO8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
 <part name="GND-ISO9" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND-ISO" device=""/>
-<part name="BO1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MMA8451BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:24524265/3"/>
+<part name="BO1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MMA8451BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:24524265/4"/>
 </parts>
 <sheets>
 <sheet>
@@ -13054,6 +13054,13 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pinref part="CNANO1" gate="G$1" pin="PB2"/>
 <wire x1="88.9" y1="93.98" x2="86.36" y2="93.98" width="0.1524" layer="91"/>
 <label x="86.36" y="93.98" size="1.016" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="+5V" class="0">
+<segment>
+<pinref part="CNANO1" gate="G$1" pin="VTG"/>
+<wire x1="119.38" y1="134.62" x2="121.92" y2="134.62" width="0.1524" layer="91"/>
+<label x="121.92" y="134.62" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
@@ -13203,6 +13210,8 @@ with A0=A1=A2-&gt;GND</text>
 <wire x1="40.64" y1="121.92" x2="40.64" y2="81.28" width="0.1524" layer="250"/>
 <text x="43.18" y="116.84" size="1.778" layer="250">MMA8451 Acclerometer
 Adafruit Breakout Board</text>
+<text x="243.84" y="157.48" size="2.54" layer="250">Clock</text>
+<text x="129.54" y="116.84" size="2.54" layer="250">Digital Thermometer</text>
 </plain>
 <instances>
 <instance part="U4" gate="A" x="132.08" y="99.06" smashed="yes">
