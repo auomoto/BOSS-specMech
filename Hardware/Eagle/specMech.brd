@@ -187,7 +187,7 @@ Motors USART</text>
 <text x="61.595" y="37.465" size="1.016" layer="21" font="vector">TWI Driver</text>
 <text x="127.635" y="1.905" size="1.016" layer="21" font="vector">Analog
 Corner</text>
-<text x="6.6675" y="60.0075" size="2.54" layer="21" rot="R90">2020-11-05 BOSS Motion Controller</text>
+<text x="6.6675" y="60.0075" size="2.54" layer="21" rot="R90">2020-11-04 BOSS Motion Controller</text>
 <wire x1="0" y1="49.53" x2="18.415" y2="49.53" width="0.254" layer="21"/>
 <wire x1="18.415" y1="49.53" x2="20.32" y2="47.625" width="0.254" layer="21"/>
 <wire x1="20.32" y1="47.625" x2="20.32" y2="13.97" width="0.254" layer="21"/>
