@@ -178,7 +178,7 @@
 <circle x="20.828" y="116.586" radius="4.318" width="0.1524" layer="21"/>
 <circle x="20.828" y="5.334" radius="4.826" width="0.1524" layer="40"/>
 <circle x="20.828" y="5.334" radius="4.826" width="0.1524" layer="39"/>
-<text x="5.715" y="1.905" size="1.016" layer="21" font="vector">Chassis ground</text>
+<text x="3.81" y="4.445" size="1.016" layer="21" font="vector">Chassis ground</text>
 <text x="38.735" y="77.47" size="1.016" layer="21" font="vector" rot="R180">Clock</text>
 <text x="52.07" y="77.47" size="1.016" layer="21" font="vector" rot="R180">FRAM</text>
 <text x="41.91" y="95.25" size="1.016" layer="21" font="vector">CR2032 Battery</text>
@@ -194,9 +194,17 @@ Motors USART</text>
 <text x="123.825" y="81.915" size="1.016" layer="21" font="vector">+5V Supply</text>
 <text x="30.48" y="34.29" size="1.016" layer="21" font="vector">+3.3V Supply</text>
 <text x="61.595" y="37.465" size="1.016" layer="21" font="vector">TWI Driver</text>
-<text x="123.19" y="19.685" size="1.016" layer="21" font="vector">Analog
+<text x="127.635" y="1.905" size="1.016" layer="21" font="vector">Analog
 Corner</text>
 <text x="6.6675" y="60.0075" size="2.54" layer="21" rot="R90">2020-11-04 BOSS Motion Controller</text>
+<wire x1="107.315" y1="0" x2="107.315" y2="45.085" width="0.254" layer="21"/>
+<wire x1="107.315" y1="45.085" x2="108.585" y2="46.355" width="0.254" layer="21"/>
+<wire x1="108.585" y1="46.355" x2="142.24" y2="46.355" width="0.254" layer="21"/>
+<wire x1="0" y1="49.53" x2="18.415" y2="49.53" width="0.254" layer="21"/>
+<wire x1="18.415" y1="49.53" x2="20.32" y2="47.625" width="0.254" layer="21"/>
+<wire x1="20.32" y1="47.625" x2="20.32" y2="13.97" width="0.254" layer="21"/>
+<wire x1="20.32" y1="13.97" x2="26.67" y2="7.62" width="0.254" layer="21"/>
+<wire x1="26.67" y1="7.62" x2="26.67" y2="0" width="0.254" layer="21"/>
 </plain>
 <libraries>
 <library name="AUmlib" urn="urn:adsk.eagle:library:9166017">
