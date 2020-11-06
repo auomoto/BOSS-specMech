@@ -162,16 +162,8 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.cGVyc29uYWw6dWUyZDgyNjcx" projecturn="a.cGVyc29uYWw6dWUyZDgyNjcxIzIwMTgxMjIwMTY2NDc1MjMx" f3durn="urn:adsk.wipprod:dm.lineage:_sV9k5X2SmWQ17yhuORBVg" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="d116c945-803c-43b5-8813-aee1c4dac64f" lastsyncedrevisionid="d116c945-803c-43b5-8813-aee1c4dac64f" lastboardhashguid="ddd9e6a3-5237-7894-f3cc-3fb518144c3f" lastpushedtime="2020-11-06T00:16:46Z" linktopcb3d="true"/>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyZDgyNjcx" projecturn="a.cGVyc29uYWw6dWUyZDgyNjcxIzIwMTgxMjIwMTY2NDc1MjMx" f3durn="urn:adsk.wipprod:dm.lineage:JfX9Sz9hQ7uElenyZAoR3A" pcbguid="22077d35-0ddd-404a-952c-ecf32b8da59d" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="edd4713a-48d5-424f-a670-f3ae8c65c417" lastsyncedrevisionid="edd4713a-48d5-424f-a670-f3ae8c65c417" lastboardhashguid="fffc4151-e3b3-b3b8-f1e6-e82c56d8d4b8" lastpushedtime="2020-11-06T00:58:21Z" linktopcb3d="true"/>
 <plain>
-<wire x1="0" y1="0" x2="142.24" y2="0" width="0" layer="20"/>
-<wire x1="142.24" y1="0" x2="142.24" y2="121.92" width="0" layer="20"/>
-<wire x1="142.24" y1="121.92" x2="0" y2="121.92" width="0" layer="20"/>
-<wire x1="0" y1="121.92" x2="0" y2="0" width="0" layer="20"/>
-<hole x="122.428" y="5.334" drill="4.826"/>
-<hole x="136.906" y="50.546" drill="4.826"/>
-<hole x="122.428" y="116.586" drill="4.826"/>
-<hole x="20.828" y="116.586" drill="4.826"/>
 <circle x="122.428" y="116.586" radius="4.0894" width="0.1524" layer="21"/>
 <circle x="136.906" y="50.546" radius="4.0894" width="0.1524" layer="21"/>
 <circle x="122.428" y="5.334" radius="4.0894" width="0.1524" layer="21"/>
@@ -196,12 +188,31 @@ Motors USART</text>
 <text x="61.595" y="37.465" size="1.016" layer="21" font="vector">TWI Driver</text>
 <text x="127.635" y="1.905" size="1.016" layer="21" font="vector">Analog
 Corner</text>
-<text x="6.6675" y="60.0075" size="2.54" layer="21" rot="R90">2020-11-05 BOSS Motion Controller</text>
+<text x="6.6675" y="60.0075" size="2.54" layer="21" rot="R90">2020-11-04 BOSS Motion Controller</text>
 <wire x1="0" y1="49.53" x2="18.415" y2="49.53" width="0.254" layer="21"/>
 <wire x1="18.415" y1="49.53" x2="20.32" y2="47.625" width="0.254" layer="21"/>
 <wire x1="20.32" y1="47.625" x2="20.32" y2="13.97" width="0.254" layer="21"/>
 <wire x1="20.32" y1="13.97" x2="26.67" y2="7.62" width="0.254" layer="21"/>
 <wire x1="26.67" y1="7.62" x2="26.67" y2="0" width="0.254" layer="21"/>
+<hole x="122.428" y="5.334" drill="4.826"/>
+<hole x="136.906" y="50.546" drill="4.826"/>
+<hole x="122.428" y="116.586" drill="4.826"/>
+<hole x="20.828" y="116.586" drill="4.826"/>
+<hole x="16.31" y="36.83" drill="3.25"/>
+<hole x="4.01" y="36.83" drill="3.25"/>
+<circle x="122.428" y="5.334" radius="2.413" width="0" layer="20"/>
+<wire x1="31.6393" y1="66.0352" x2="31.75" y2="66.04" width="0" layer="20"/>
+<wire x1="46.9876" y1="65.4603" x2="46.99" y2="65.405" width="0" layer="20"/>
+<wire x1="46.4103" y1="53.3424" x2="46.355" y2="53.34" width="0" layer="20"/>
+<circle x="4.01" y="36.83" radius="1.625" width="0" layer="20"/>
+<circle x="16.31" y="36.83" radius="1.625" width="0" layer="20"/>
+<circle x="20.828" y="116.586" radius="2.413" width="0" layer="20"/>
+<circle x="136.906" y="50.546" radius="2.413" width="0" layer="20"/>
+<circle x="122.428" y="116.586" radius="2.413" width="0" layer="20"/>
+<wire x1="0" y1="121.92" x2="0" y2="0" width="0" layer="20"/>
+<wire x1="0" y1="0" x2="142.24" y2="0" width="0" layer="20"/>
+<wire x1="142.24" y1="0" x2="142.24" y2="121.92" width="0" layer="20"/>
+<wire x1="142.24" y1="121.92" x2="0" y2="121.92" width="0" layer="20"/>
 </plain>
 <libraries>
 <library name="AUmlib" urn="urn:adsk.eagle:library:9166017">
@@ -2529,10 +2540,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="40.005" y1="46.99" x2="40.005" y2="50.8" width="0.508" layer="16"/>
 <via x="40.005" y="50.8" extent="1-16" drill="0.35"/>
 <contactref element="CNANO1" pad="VTG"/>
-<wire x1="66.675" y1="67.31" x2="53.975" y2="54.61" width="0.508" layer="1"/>
-<wire x1="41.275" y1="54.61" x2="40.005" y2="53.34" width="0.508" layer="1"/>
-<wire x1="40.005" y1="53.34" x2="40.005" y2="50.8" width="0.508" layer="1"/>
-<wire x1="53.975" y1="54.61" x2="41.275" y2="54.61" width="0.508" layer="1"/>
 <wire x1="66.675" y1="67.31" x2="66.675" y2="73.025" width="0.508" layer="16"/>
 <via x="66.675" y="73.025" extent="1-16" drill="0.35"/>
 <wire x1="40.005" y1="46.99" x2="69.53" y2="46.99" width="0.1524" layer="1"/>
@@ -2554,6 +2561,12 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="110.56055625" y1="94.68555625" x2="110.49" y2="94.615" width="0.508" layer="1"/>
 <wire x1="110.49" y1="94.615" x2="109.22" y2="95.885" width="0.508" layer="1"/>
 <wire x1="109.22" y1="95.885" x2="109.22" y2="107.95" width="0.508" layer="1"/>
+<wire x1="40.005" y1="50.8" x2="41.275" y2="52.07" width="0.508" layer="1"/>
+<wire x1="41.275" y1="52.07" x2="49.53" y2="52.07" width="0.508" layer="1"/>
+<wire x1="49.53" y1="52.07" x2="57.785" y2="60.325" width="0.508" layer="1"/>
+<wire x1="66.675" y1="67.31" x2="66.675" y2="66.04" width="0.508" layer="1"/>
+<wire x1="66.675" y1="66.04" x2="60.96" y2="60.325" width="0.508" layer="1"/>
+<wire x1="60.96" y1="60.325" x2="57.785" y2="60.325" width="0.508" layer="1"/>
 </signal>
 <signal name="XP-TX">
 <contactref element="U3" pad="5"/>
