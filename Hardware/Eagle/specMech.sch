@@ -12973,6 +12973,11 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <wire x1="119.38" y1="137.16" x2="121.92" y2="137.16" width="0.1524" layer="91"/>
 <label x="121.92" y="137.16" size="1.016" layer="95" xref="yes"/>
 </segment>
+<segment>
+<pinref part="CNANO1" gate="G$1" pin="VOFF"/>
+<wire x1="119.38" y1="144.78" x2="121.92" y2="144.78" width="0.1524" layer="91"/>
+<label x="121.92" y="144.78" size="1.016" layer="95" xref="yes"/>
+</segment>
 </net>
 <net name="RC-TX" class="0">
 <segment>
