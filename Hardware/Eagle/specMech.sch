@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -15075,6 +15075,11 @@ CUI P7805-Q24-S3-S DC-DC Converter</text>
 <text x="60.96" y="63.5" size="2.54" layer="250" ratio="10">Beeper</text>
 <text x="200.66" y="119.38" size="1.778" layer="250">A side is +3.3V
 B side is +5V</text>
+<text x="132.08" y="53.34" size="1.27" layer="250">0.01 uF filter caps. 200 V, low ESR,
+from chassis ground to signal ground
+and from chassis ground to +3.3 V.
+Spikes from chassis ground are shared
+to maintain 3.3 V signaling.</text>
 </plain>
 <instances>
 <instance part="FRAME11" gate="G$1" x="0" y="0" smashed="yes"/>
