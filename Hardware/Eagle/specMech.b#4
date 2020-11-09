@@ -2348,6 +2348,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <via x="94.2975" y="45.085" extent="1-16" drill="0.35"/>
 <wire x1="92.3925" y1="45.085" x2="94.2975" y2="45.085" width="0.508" layer="1"/>
 <wire x1="94.2975" y1="45.085" x2="96.52" y2="45.085" width="0.508" layer="1"/>
+<contactref element="CNANO1" pad="VOFF"/>
 </signal>
 <signal name="+5V">
 <contactref element="J6" pad="P$5"/>
