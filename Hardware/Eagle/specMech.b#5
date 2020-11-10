@@ -3023,9 +3023,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="86.233" y1="98.425" x2="86.36" y2="98.552" width="0.1524" layer="1"/>
 <wire x1="86.36" y1="98.552" x2="90.932" y2="98.552" width="0.1524" layer="1"/>
 </signal>
-<signal name="INT-SLIT">
-<contactref element="U2" pad="8"/>
-</signal>
 <signal name="T-ALERT">
 <contactref element="R10" pad="1"/>
 <contactref element="U4" pad="3"/>

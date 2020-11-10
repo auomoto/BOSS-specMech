@@ -2266,9 +2266,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="39.9288" y1="78.74" x2="40.005" y2="78.6638" width="0.508" layer="1"/>
 <wire x1="40.005" y1="78.6638" x2="40.005" y2="77.47" width="0.508" layer="1"/>
 <via x="40.005" y="77.47" extent="1-16" drill="0.35"/>
-<wire x1="47.7965" y1="78.74" x2="48.3266" y2="77.5366" width="0.508" layer="1"/>
-<wire x1="48.3266" y1="77.5366" x2="48.26" y2="77.47" width="0.508" layer="1"/>
-<via x="48.26" y="77.47" extent="1-16" drill="0.35"/>
+<via x="47.625" y="77.47" extent="1-16" drill="0.35"/>
 <wire x1="92.71" y1="38.415" x2="92.395" y2="38.1" width="0.508" layer="1"/>
 <wire x1="92.395" y1="38.1" x2="90.17" y2="38.1" width="0.508" layer="1"/>
 <via x="90.17" y="38.1" extent="1-16" drill="0.35"/>
@@ -2406,6 +2404,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="94.2975" y1="45.085" x2="96.52" y2="45.085" width="0.508" layer="1"/>
 <contactref element="CNANO1" pad="VOFF"/>
 <contactref element="J2" pad="2"/>
+<wire x1="47.625" y1="77.47" x2="47.625" y2="78.5685" width="0.508" layer="1"/>
+<wire x1="47.625" y1="78.5685" x2="47.7965" y2="78.74" width="0.508" layer="1"/>
 </signal>
 <signal name="+5V">
 <contactref element="J6" pad="P$5"/>

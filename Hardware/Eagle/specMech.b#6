@@ -229,6 +229,8 @@ Sensors</text>
 &amp; Vacuum</text>
 <text x="66.3575" y="3.81" size="1.778" layer="21">*</text>
 <text x="42.2275" y="6.35" size="1.778" layer="21">*</text>
+<text x="103.505" y="94.615" size="1.016" layer="25" font="vector">High Current
+Driver</text>
 </plain>
 <libraries>
 <library name="AUmlib" urn="urn:adsk.eagle:library:9166017">

@@ -13699,8 +13699,8 @@ PIN# (not true; just examples)
 23 - Left Hartmann Close
 25 - Right Hartmann Open
 27 - Right Hartmann Close
-29 - Not used
-31 - Not used</text>
+29 - Air Pressure On
+31 - Not used (was reset)</text>
 <text x="175.26" y="27.94" size="2.54" layer="250">Parallel I/O Port</text>
 <text x="165.1" y="111.76" size="1.6764" layer="250">2-pin header pin 1
 location 3.58, 4.58 in</text>
