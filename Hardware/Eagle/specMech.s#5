@@ -15257,20 +15257,8 @@ Pin 8 at 5.61, 1.73 in</text>
 <segment>
 <pinref part="GND36" gate="1" pin="GND"/>
 <wire x1="127" y1="96.52" x2="127" y2="109.22" width="0.1524" layer="91"/>
-<pinref part="U11" gate="A" pin="A2"/>
-<wire x1="127" y1="109.22" x2="127" y2="119.38" width="0.1524" layer="91"/>
-<wire x1="127" y1="119.38" x2="127" y2="121.92" width="0.1524" layer="91"/>
-<wire x1="127" y1="121.92" x2="127" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="127" y1="124.46" x2="129.54" y2="124.46" width="0.1524" layer="91"/>
-<pinref part="U11" gate="A" pin="A1"/>
-<wire x1="129.54" y1="121.92" x2="127" y2="121.92" width="0.1524" layer="91"/>
-<junction x="127" y="121.92"/>
-<pinref part="U11" gate="A" pin="A0"/>
-<wire x1="129.54" y1="119.38" x2="127" y2="119.38" width="0.1524" layer="91"/>
-<junction x="127" y="119.38"/>
 <pinref part="U11" gate="A" pin="VSS"/>
 <wire x1="129.54" y1="109.22" x2="127" y2="109.22" width="0.1524" layer="91"/>
-<junction x="127" y="109.22"/>
 </segment>
 <segment>
 <pinref part="GND37" gate="1" pin="GND"/>
@@ -15311,14 +15299,6 @@ Pin 8 at 5.61, 1.73 in</text>
 <label x="167.64" y="99.06" size="1.27" layer="95" xref="yes"/>
 <wire x1="160.02" y1="111.76" x2="160.02" y2="99.06" width="0.1524" layer="91"/>
 <junction x="160.02" y="111.76"/>
-</segment>
-</net>
-<net name="N$5" class="0">
-<segment>
-<pinref part="R4" gate="G$1" pin="2"/>
-<wire x1="114.3" y1="127" x2="114.3" y2="116.84" width="0.1524" layer="91"/>
-<pinref part="U11" gate="A" pin="!RESET"/>
-<wire x1="114.3" y1="116.84" x2="129.54" y2="116.84" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$18" class="0">
@@ -15368,6 +15348,27 @@ Pin 8 at 5.61, 1.73 in</text>
 <wire x1="99.06" y1="106.68" x2="99.06" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="114.3" x2="101.6" y2="114.3" width="0.1524" layer="91"/>
 <label x="101.6" y="114.3" size="1.016" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="N$5" class="0">
+<segment>
+<pinref part="U11" gate="A" pin="A2"/>
+<wire x1="127" y1="124.46" x2="129.54" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="127" y1="124.46" x2="127" y2="121.92" width="0.1524" layer="91"/>
+<pinref part="U11" gate="A" pin="A1"/>
+<wire x1="127" y1="121.92" x2="129.54" y2="121.92" width="0.1524" layer="91"/>
+<pinref part="U11" gate="A" pin="A0"/>
+<wire x1="129.54" y1="119.38" x2="127" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="127" y1="121.92" x2="127" y2="119.38" width="0.1524" layer="91"/>
+<junction x="127" y="121.92"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="U11" gate="A" pin="!RESET"/>
+<wire x1="114.3" y1="127" x2="114.3" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="116.84" x2="127" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="127" y1="116.84" x2="129.54" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="127" y1="119.38" x2="127" y2="116.84" width="0.1524" layer="91"/>
+<junction x="127" y="119.38"/>
+<junction x="127" y="116.84"/>
 </segment>
 </net>
 </nets>
@@ -16048,9 +16049,9 @@ to maintain 3.3 V signaling.</text>
 <attribute name="NAME" x="127" y="102.87" size="1.778" layer="95"/>
 <attribute name="VALUE" x="127" y="93.98" size="1.778" layer="96"/>
 </instance>
-<instance part="TP5" gate="G$1" x="129.54" y="185.42" smashed="yes">
-<attribute name="NAME" x="127" y="189.23" size="1.778" layer="95"/>
-<attribute name="VALUE" x="127" y="180.34" size="1.778" layer="96"/>
+<instance part="TP5" gate="G$1" x="129.54" y="187.96" smashed="yes">
+<attribute name="NAME" x="127" y="191.77" size="1.778" layer="95"/>
+<attribute name="VALUE" x="127" y="182.88" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -16064,8 +16065,8 @@ to maintain 3.3 V signaling.</text>
 </segment>
 <segment>
 <pinref part="TP5" gate="G$1" pin="1"/>
-<wire x1="124.46" y1="185.42" x2="121.92" y2="185.42" width="0.1524" layer="91"/>
-<label x="121.92" y="185.42" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="124.46" y1="187.96" x2="121.92" y2="187.96" width="0.1524" layer="91"/>
+<label x="121.92" y="187.96" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="+5V" class="0">
