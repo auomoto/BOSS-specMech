@@ -13886,7 +13886,7 @@ Adafruit Breakout Board</text>
 <label x="99.06" y="96.52" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="VBAT1" class="0">
+<net name="VBAT" class="0">
 <segment>
 <pinref part="U6" gate="A" pin="VBAT"/>
 <wire x1="220.98" y1="137.16" x2="233.68" y2="137.16" width="0.1524" layer="91"/>
@@ -15100,7 +15100,7 @@ Pin 8 at 5.61, 0.83 in</text>
 <label x="246.38" y="167.64" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="FILT5V" class="0">
+<net name="ADCVDD" class="0">
 <segment>
 <pinref part="C12" gate="G$1" pin="1"/>
 <wire x1="96.52" y1="180.34" x2="96.52" y2="177.8" width="0.1524" layer="91"/>
@@ -15344,7 +15344,7 @@ Pin 8 at 5.61, 1.73 in</text>
 <wire x1="154.94" y1="124.46" x2="172.72" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="FILT5V" class="0">
+<net name="ADCVDD" class="0">
 <segment>
 <pinref part="U11" gate="A" pin="VDD"/>
 <wire x1="154.94" y1="129.54" x2="157.48" y2="129.54" width="0.1524" layer="91"/>
@@ -15411,7 +15411,7 @@ for temporary use.</text>
 <wire x1="266.7" y1="134.62" x2="266.7" y2="157.48" width="0.254" layer="250"/>
 <wire x1="266.7" y1="157.48" x2="83.82" y2="157.48" width="0.254" layer="250"/>
 <wire x1="83.82" y1="157.48" x2="83.82" y2="134.62" width="0.254" layer="250"/>
-<text x="246.38" y="129.54" size="2.54" layer="250">Level Shifter</text>
+<text x="243.84" y="129.54" size="2.54" layer="250">Level Shifter</text>
 <text x="144.78" y="137.16" size="2.54" layer="250">EtherNET Interface:
 
 Lantronix XPORT for EtherNET to serial
@@ -15851,7 +15851,7 @@ to maintain 3.3 V signaling.</text>
 <wire x1="208.28" y1="182.88" x2="215.9" y2="182.88" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$27" class="0">
+<net name="GND1" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="4"/>
 <pinref part="U13" gate="G$1" pin="GND1"/>
@@ -15944,8 +15944,8 @@ to maintain 3.3 V signaling.</text>
 <net name="TX" class="0">
 <segment>
 <pinref part="U3" gate="A" pin="B2"/>
-<wire x1="218.44" y1="109.22" x2="226.06" y2="109.22" width="0.1524" layer="91"/>
-<label x="226.06" y="109.22" size="1.016" layer="95" xref="yes"/>
+<wire x1="218.44" y1="109.22" x2="220.98" y2="109.22" width="0.1524" layer="91"/>
+<label x="220.98" y="109.22" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="GND-1" class="0">

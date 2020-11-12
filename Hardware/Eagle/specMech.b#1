@@ -162,7 +162,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.cGVyc29uYWw6dWUyZDgyNjcx" projecturn="a.cGVyc29uYWw6dWUyZDgyNjcxIzIwMTgxMjIwMTY2NDc1MjMx" f3durn="urn:adsk.wipprod:dm.lineage:JfX9Sz9hQ7uElenyZAoR3A" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="b7089f91-521e-400d-aa2b-c8455e88ed13" lastsyncedrevisionid="b7089f91-521e-400d-aa2b-c8455e88ed13" lastboardhashguid="c909b06f-cd60-a296-e4ec-5dabf79a3735" lastpushedtime="2020-11-11T00:53:55Z" linktopcb3d="true"/>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyZDgyNjcx" projecturn="a.cGVyc29uYWw6dWUyZDgyNjcxIzIwMTgxMjIwMTY2NDc1MjMx" f3durn="urn:adsk.wipprod:dm.lineage:JfX9Sz9hQ7uElenyZAoR3A" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="4b13dfa7-90e8-4fe4-af6c-f224b517e33d" lastsyncedrevisionid="4b13dfa7-90e8-4fe4-af6c-f224b517e33d" lastboardhashguid="dd04f27b-063a-a906-bcd0-b8570ef2e97e" lastpushedtime="2020-11-12T15:18:43Z" linktopcb3d="true"/>
 <plain>
 <circle x="122.428" y="116.586" radius="4.0894" width="0.1524" layer="21"/>
 <circle x="136.906" y="50.546" radius="4.0894" width="0.1524" layer="21"/>
@@ -192,7 +192,7 @@ Supply</text>
 <text x="61.595" y="37.465" size="1.016" layer="21" font="vector">I2C Driver</text>
 <text x="127.635" y="1.905" size="1.016" layer="21" font="vector">Analog
 Corner</text>
-<text x="22.225" y="72.7075" size="2.54" layer="21" rot="R90">2020-11-10
+<text x="22.225" y="72.7075" size="2.54" layer="21" rot="R90">2020-11-12
 BOSS Motion Controller</text>
 <wire x1="0" y1="49.53" x2="18.415" y2="49.53" width="0.254" layer="21"/>
 <wire x1="18.415" y1="49.53" x2="20.32" y2="47.625" width="0.254" layer="21"/>
@@ -2899,7 +2899,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="70.805" y1="44.77" x2="69.85" y2="44.77" width="0.1524" layer="1"/>
 <wire x1="74.295" y1="48.26" x2="70.805" y2="44.77" width="0.1524" layer="1"/>
 <contactref element="BO1" pad="2"/>
-<wire x1="38.1" y1="116.84" x2="38.1" y2="117.475" width="0.1524" layer="1"/>
 <wire x1="40.64" y1="81.28" x2="41.91" y2="81.28" width="0.1524" layer="1"/>
 <wire x1="41.91" y1="81.28" x2="43.815" y2="79.375" width="0.1524" layer="1"/>
 <wire x1="43.815" y1="79.375" x2="43.815" y2="76.835" width="0.1524" layer="1"/>
@@ -2946,7 +2945,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="74.295" y1="55.88" x2="74.295" y2="52.07" width="0.1524" layer="1"/>
 <wire x1="104.775" y1="98.425" x2="95.885" y2="89.535" width="0.1524" layer="1"/>
 <wire x1="95.885" y1="64.77" x2="87.63" y2="56.515" width="0.1524" layer="1"/>
-<wire x1="38.1" y1="117.475" x2="38.1" y2="114.935" width="0.1524" layer="1"/>
 <wire x1="38.1" y1="114.935" x2="29.845" y2="106.68" width="0.1524" layer="1"/>
 <wire x1="30.48" y1="76.2" x2="29.845" y2="76.835" width="0.1524" layer="1"/>
 <wire x1="30.48" y1="76.2" x2="41.275" y2="76.2" width="0.1524" layer="1"/>
@@ -2989,6 +2987,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="29.845" y1="102.87" x2="32.385" y2="100.33" width="0.1524" layer="1"/>
 <wire x1="64.135" y1="88.9" x2="38.1" y2="114.935" width="0.1524" layer="1"/>
 <wire x1="67.8688" y1="88.9" x2="64.135" y2="88.9" width="0.1524" layer="1"/>
+<wire x1="38.1" y1="117.475" x2="38.1" y2="114.935" width="0.1524" layer="1"/>
 </signal>
 <signal name="N$1">
 <contactref element="JP3" pad="1"/>
@@ -3489,7 +3488,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="129.54" y1="36.83" x2="125.9588" y2="33.2488" width="0.1524" layer="1"/>
 <wire x1="125.9588" y1="33.2488" x2="122.1486" y2="33.2488" width="0.1524" layer="1"/>
 </signal>
-<signal name="FILT5V">
+<signal name="ADCVDD">
 <contactref element="C12" pad="1"/>
 <contactref element="U9" pad="8"/>
 <contactref element="R22" pad="1"/>
@@ -3710,7 +3709,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="59.69" y1="6.35" x2="59.69" y2="5.08" width="0.1524" layer="1"/>
 <wire x1="57.15" y1="11.43" x2="57.15" y2="8.89" width="0.1524" layer="1"/>
 </signal>
-<signal name="N$27">
+<signal name="GND1">
 <contactref element="JP2" pad="4"/>
 <contactref element="U13" pad="4"/>
 <contactref element="C24" pad="2"/>
@@ -3794,7 +3793,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="6.985" y1="31.115" x2="6.985" y2="26.35" width="0.1524" layer="16"/>
 <wire x1="6.985" y1="26.35" x2="6.67" y2="26.035" width="0.1524" layer="16"/>
 </signal>
-<signal name="VBAT1">
+<signal name="VBAT">
 <contactref element="U6" pad="6"/>
 <contactref element="BT1" pad="S+1"/>
 <contactref element="BT1" pad="S+2"/>
