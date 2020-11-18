@@ -1,0 +1,28 @@
+Renbin,
+
+You might be able to help figure out the correct range of flat shim thicknesses we need to make since you have the empirical data on the collimator position/focus ring position ratio (and more importantly, you know the sign).
+
+Would you evaluate the following:
+
+First, some background:
+
+The original (pre-BOSS) spectrograph was designed so that the shim would be the correct thickness when the focus ring on both cameras was about 1/2 turn away from fully seated. That is, turn the focus ring clockwise until the dewar package is up against the camera and the focus ring won't turn anymore, then back away about 1/2 turn (it might've been 1 turn; I don't remember, but 1/2 sounds safer since the total travel is probably less than 2 turns).
+
+Turning the focus ring clockwise moves the CCD closer to the spectrograph (L6-L7 distance gets smaller).
+
+A thicker shim makes the L6-L7 distance larger.
+
+There was a temperature-dependent focus difference between the red and blue cameras that suggested turning the focus ring on ONE of the cameras to move the CCD about 0.001 inches one way or the other (depending on the camera) would optimize for summer/winter temperature differences. Putting it halfway between and never adjusting would probably be OK in the original spectrograph. That change is about a 10 or 15 degrees turn on the focus ring. The intent was for this to be a daytime operation at the equinoxes.
+
+So for the original spectrograph, turning only one focus ring by more than 15 degrees would be detectable, although maybe not noticed in the science data if you weren't looking for it or tracking performance.
+
+I've seen reports that observers move the focus rings during the night (which camera and how much? Is it temperature dependent?) based on collimator focus scans. This bothers me a bit. Maybe the new BOSS optics are more sensitive (they have a larger FOV) or something is loose?
+
+Kaike reports that we're at the end-of-travel on the focus ring. I don't know in which direction though (Kaike?). If we assume that we want to turn the ring up to +/-1/2 turns, then I'd suggest computing the correct thickness for a focus ring position at 1/2 turn away from fully seated (turn the focus ring clockwise until it stops, then unscrew 1/2 turn).
+
+If Kaike's end-of-travel is fully screwed in (full clockwise turning), then John Wilson's 0.016 inch value is the number to use, making the shim thinner than the existing one by that much (Renbin: correct?). A thinner shim moves the CCD closer to the spectrograph, to be compensated by unscrewing the focus ring, giving us some inward travel margin. Assuming we're pretty much between summer and winter temperature extremes.
+
+If Kaike's end-of-travel is the unscrewed direction, then we probably want to get some data to figure out where that is. Find the collimator position needed to focus at 1/2-turn unscrewed and use the collimator focus difference against the blue camera to compute the change in red camera shim thickness.
+
+A deeper question: Have we done the 2-D focus exploration recently? Collimator position against focus ring to see if there's a minimum? Also, what is the focus metric? We should be equally "out-of-focus" most places in the field but that means sampling Hartmann data over the entire field. Or finding that special spot that's perfectly in focus.
+
