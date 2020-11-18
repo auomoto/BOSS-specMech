@@ -15411,7 +15411,7 @@ for temporary use.</text>
 <wire x1="266.7" y1="134.62" x2="266.7" y2="157.48" width="0.254" layer="250"/>
 <wire x1="266.7" y1="157.48" x2="83.82" y2="157.48" width="0.254" layer="250"/>
 <wire x1="83.82" y1="157.48" x2="83.82" y2="134.62" width="0.254" layer="250"/>
-<text x="246.38" y="129.54" size="2.54" layer="250">Level Shifter</text>
+<text x="243.84" y="129.54" size="2.54" layer="250">Level Shifter</text>
 <text x="144.78" y="137.16" size="2.54" layer="250">EtherNET Interface:
 
 Lantronix XPORT for EtherNET to serial
@@ -15438,6 +15438,7 @@ from chassis ground to signal ground
 and from chassis ground to +3.3 V.
 Spikes from chassis ground are shared
 to maintain 3.3 V signaling.</text>
+<text x="190.5" y="167.64" size="1.778" layer="250">Change to 4-pin Molex 22112042 gold pin</text>
 </plain>
 <instances>
 <instance part="FRAME11" gate="G$1" x="0" y="0" smashed="yes"/>
@@ -15944,8 +15945,8 @@ to maintain 3.3 V signaling.</text>
 <net name="TX" class="0">
 <segment>
 <pinref part="U3" gate="A" pin="B2"/>
-<wire x1="218.44" y1="109.22" x2="226.06" y2="109.22" width="0.1524" layer="91"/>
-<label x="226.06" y="109.22" size="1.016" layer="95" xref="yes"/>
+<wire x1="218.44" y1="109.22" x2="220.98" y2="109.22" width="0.1524" layer="91"/>
+<label x="220.98" y="109.22" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="GND-1" class="0">

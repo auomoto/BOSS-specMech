@@ -15438,6 +15438,13 @@ from chassis ground to signal ground
 and from chassis ground to +3.3 V.
 Spikes from chassis ground are shared
 to maintain 3.3 V signaling.</text>
+<text x="190.5" y="167.64" size="1.778" layer="250">Change to 4-pin Molex 22112042 gold pin</text>
+<text x="50.8" y="48.26" size="1.778" layer="250">Change to 2-pin
+polarized header</text>
+<text x="53.34" y="144.78" size="1.778" layer="250">Use old RS-232
+cabling</text>
+<text x="25.4" y="88.9" size="1.778" layer="250">Consider isoloator depending
+on roboclaw 12v handling</text>
 </plain>
 <instances>
 <instance part="FRAME11" gate="G$1" x="0" y="0" smashed="yes"/>
