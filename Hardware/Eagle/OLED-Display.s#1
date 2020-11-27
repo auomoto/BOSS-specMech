@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -268,7 +268,9 @@
 <rectangle x1="2.159" y1="-5.461" x2="2.921" y2="-4.699" layer="21"/>
 <rectangle x1="2.159" y1="-4.699" x2="2.921" y2="-2.921" layer="51"/>
 </package>
-<package name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:footprint:15775893/2" library_version="361">
+<package name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:footprint:15775893/3" library_version="363">
+<description>Amphenol 75869-131LF
+Digikey 609-2845-ND</description>
 <pad name="1" x="-2.54" y="-1.27" drill="1.016" shape="square"/>
 <pad name="2" x="-2.54" y="1.27" drill="1.016"/>
 <pad name="3" x="0" y="-1.27" drill="1.016"/>
@@ -288,6 +290,8 @@
 <wire x1="-2.1" y1="-4.6" x2="-2.1" y2="-4" width="0.127" layer="21"/>
 <wire x1="-2.1" y1="-4" x2="2.1" y2="-4" width="0.127" layer="21"/>
 <wire x1="2.1" y1="-4" x2="2.1" y2="-4.6" width="0.127" layer="21"/>
+<text x="-5.08" y="5.08" size="1.016" layer="25">&gt;NAME</text>
+<text x="-5.08" y="-6.35" size="1.016" layer="25">&gt;VALUE</text>
 </package>
 <package name="R0402" urn="urn:adsk.eagle:footprint:23043/3" library_version="362">
 <description>&lt;b&gt;Chip RESISTOR 0402 EIA (1005 Metric)&lt;/b&gt;</description>
@@ -1867,7 +1871,9 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <packageinstance name="2X03/90"/>
 </packageinstances>
 </package3d>
-<package3d name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:package:15775894/3" type="model" library_version="361">
+<package3d name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:package:15775894/4" type="model" library_version="363">
+<description>Amphenol 75869-131LF
+Digikey 609-2845-ND</description>
 <packageinstances>
 <packageinstance name="PINHD-2X3-SHROUDED"/>
 </packageinstances>
@@ -2542,7 +2548,7 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="PINHD-2X3" urn="urn:adsk.eagle:component:9166122/5" prefix="JP" uservalue="yes" library_version="361">
+<deviceset name="PINHD-2X3" urn="urn:adsk.eagle:component:9166122/6" prefix="JP" uservalue="yes" library_version="363">
 <description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
 <gates>
 <gate name="A" symbol="PINH2X3" x="0" y="0"/>
@@ -2590,7 +2596,7 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <connect gate="A" pin="6" pad="6"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:15775894/3"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:15775894/4"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -3984,7 +3990,7 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <parts>
 <part name="LCD1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="LCD-NEWHAVEN-16X2" device="" package3d_urn="urn:adsk.eagle:package:16424125/3" value="NHD-0216AW-IB3"/>
 <part name="LCD2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="LCD-NEWHAVEN-16X2" device="" package3d_urn="urn:adsk.eagle:package:16424125/3" value="NHD-0216AW-IB3"/>
-<part name="JP1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-2X3" device="2X03/SHROUDED" package3d_urn="urn:adsk.eagle:package:15775894/3"/>
+<part name="JP1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-2X3" device="2X03/SHROUDED" package3d_urn="urn:adsk.eagle:package:15775894/4" value="Amphenol 75869-131LF"/>
 <part name="GND1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="GND2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="GND3" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
@@ -4008,7 +4014,7 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 </instance>
 <instance part="JP1" gate="A" x="99.06" y="139.7" smashed="yes">
 <attribute name="NAME" x="92.71" y="145.415" size="1.778" layer="95"/>
-<attribute name="VALUE" x="92.71" y="132.08" size="1.778" layer="96"/>
+<attribute name="VALUE" x="97.79" y="129.54" size="1.778" layer="96"/>
 </instance>
 <instance part="GND1" gate="1" x="99.06" y="83.82" smashed="yes">
 <attribute name="VALUE" x="96.52" y="81.28" size="1.778" layer="96"/>

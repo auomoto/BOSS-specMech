@@ -4152,7 +4152,7 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <pinref part="R1" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="N$2" class="0">
+<net name="ADDR1" class="0">
 <segment>
 <pinref part="LCD1" gate="G$1" pin="SA0"/>
 <pinref part="R2" gate="G$1" pin="1"/>
