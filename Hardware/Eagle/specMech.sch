@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
@@ -13404,6 +13404,7 @@ DFRobot has connector kits for cables</text>
 <wire x1="213.36" y1="101.6" x2="154.94" y2="101.6" width="0.254" layer="250"/>
 <wire x1="154.94" y1="101.6" x2="154.94" y2="160.02" width="0.254" layer="250"/>
 <text x="175.26" y="154.94" size="2.54" layer="250">Power for USB isolator</text>
+<text x="63.5" y="137.16" size="1.778" layer="250">Add 10uF input filter</text>
 </plain>
 <instances>
 <instance part="P+5" gate="1" x="104.14" y="132.08" smashed="yes">
