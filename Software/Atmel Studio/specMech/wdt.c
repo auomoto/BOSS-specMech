@@ -6,7 +6,6 @@ Watchdog Timer
 
 #ifndef WDTC
 #define WDTC
-#endif
 
 #include <avr/wdt.h>
 
@@ -20,3 +19,5 @@ void reboot(void)
 	WDT.CTRLA = WDT_PERIOD_8CLK_gc;
 
 }
+
+#endif

@@ -6,7 +6,7 @@
 */
 
 #define F_CPU		3333333UL
-#define VERSION		"2020-10-13"
+#define VERSION		"2020-12-17"
 
 #define	YES			1
 #define	NO			0
@@ -22,8 +22,9 @@
 #include "led.c"
 #include "twi.c"
 #include "mcp23008.c"
+#include "pneu.c"
 #include "usart.c"
-#include "fram.c"
+//#include "fram.c"
 #include "ds3231.c"
 #include "nmea.c"
 #include "oled.c"
@@ -40,7 +41,7 @@ uint8_t report(char*);
 void send_prompt(uint8_t);
 uint8_t set(char*);
 
-extern USARTBuf		// These are declared in uart.c
+extern USARTBuf		// These are declared in usart.c
 	send0_buf, send1_buf, send3_buf,
 	recv0_buf, recv1_buf, recv3_buf;
 
@@ -50,6 +51,7 @@ int main(void)
 	init_PORTS();
 	init_LED();
 	init_TWI();
+	init_PNEU();
 	init_USART();
 	init_OLED(0);
 	init_EEPROM();
@@ -67,30 +69,25 @@ int main(void)
 uint8_t close(char *ptr)
 {
 
-	char strbuf[30];
-
 	ptr++;
 
 	switch (*ptr) {
 
 		case 'b':
-			strcpy(strbuf, "close both Hartmann doors\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
-		break;
-
-		case 's':
-			strcpy(strbuf, "close shutter\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+			set_valves(LEFTBM, LEFTCLOSE);
+			set_valves(RIGHTBM, RIGHTCLOSE);
 			break;
 
 		case 'l':
-			strcpy(strbuf, "close left Hartmann door\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+			set_valves(LEFTBM, LEFTCLOSE);
 			break;
 			
 		case 'r':
-			strcpy(strbuf, "close right Hartmann door\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+			set_valves(RIGHTBM, RIGHTCLOSE);
+			break;
+
+		case 's':										// Close shutter
+			set_valves(SHUTTERBM, SHUTTERCLOSE);
 			break;
 
 		default:
@@ -106,10 +103,10 @@ uint8_t close(char *ptr)
 void commands(void)
 {
 
-	uint8_t i, prompt_flag, framdata[10];
+	uint8_t i, prompt_flag; //, framdata[10];
 	char cmdline[BUFSIZE];
 	char *ptr, strbuf[20];
-	uint16_t memaddress;
+//	uint16_t memaddress;
 	static uint8_t rebootnack = 1;
 
 	// Copy the command to cmdline[]
@@ -155,10 +152,10 @@ void commands(void)
 			break;
 
 		case 'f':
-			memaddress = 0;
-			framdata[0] = 0xAA;
-			write_FRAM(FRAMADDR, memaddress, framdata, 1);
-			read_FRAM(FRAMADDR, memaddress, framdata, 2);
+//			memaddress = 0;
+//			framdata[0] = 0xAA;
+//			write_FRAM(FRAMADDR, memaddress, framdata, 1);
+//			read_FRAM(FRAMADDR, memaddress, framdata, 2);
 			strcpy(strbuf, "read FRAM\r\n");
 			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
 			prompt_flag = 0;
@@ -198,29 +195,24 @@ void commands(void)
 uint8_t open(char *ptr)
 {
 
-	char strbuf[30];
-
 	ptr++;
 	switch (*ptr) {
 
 		case 'b':
-			strcpy(strbuf, "open both Hartmann doors\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
-			break;
-
-		case 's':
-			strcpy(strbuf, "open shutter\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+			set_valves(LEFTBM, LEFTOPEN);
+			set_valves(RIGHTBM, RIGHTOPEN);
 			break;
 
 		case 'l':
-			strcpy(strbuf, "open left Hartmann door\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+			set_valves(LEFTBM, LEFTOPEN);
 			break;
 		
 		case 'r':
-			strcpy(strbuf, "open right Hartmann door\r\n");
-			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+			set_valves(RIGHTBM, RIGHTOPEN);
+			break;
+
+		case 's':
+			set_valves(SHUTTERBM, SHUTTEROPEN);
 			break;
 
 		default:
@@ -329,7 +321,7 @@ uint8_t set(char *ptr)
 	switch(*ptr) {
 		case 't':			// date/time
 			ptr++;
-			put_time(ptr);
+//			put_time(ptr);
 			break;
 
 		default:

@@ -2899,8 +2899,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="70.805" y1="44.77" x2="69.85" y2="44.77" width="0.1524" layer="1"/>
 <wire x1="74.295" y1="48.26" x2="70.805" y2="44.77" width="0.1524" layer="1"/>
 <contactref element="BO1" pad="2"/>
-<wire x1="67.8688" y1="88.9" x2="66.04" y2="88.9" width="0.1524" layer="1"/>
-<wire x1="66.04" y1="88.9" x2="38.1" y2="116.84" width="0.1524" layer="1"/>
 <wire x1="38.1" y1="116.84" x2="38.1" y2="117.475" width="0.1524" layer="1"/>
 <wire x1="40.64" y1="81.28" x2="41.91" y2="81.28" width="0.1524" layer="1"/>
 <wire x1="41.91" y1="81.28" x2="43.815" y2="79.375" width="0.1524" layer="1"/>
@@ -2989,6 +2987,8 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="29.845" y1="97.79" x2="32.385" y2="100.33" width="0.1524" layer="1"/>
 <wire x1="29.845" y1="106.68" x2="29.845" y2="102.87" width="0.1524" layer="1"/>
 <wire x1="29.845" y1="102.87" x2="32.385" y2="100.33" width="0.1524" layer="1"/>
+<wire x1="64.135" y1="88.9" x2="38.1" y2="114.935" width="0.1524" layer="1"/>
+<wire x1="67.8688" y1="88.9" x2="64.135" y2="88.9" width="0.1524" layer="1"/>
 </signal>
 <signal name="N$1">
 <contactref element="JP3" pad="1"/>

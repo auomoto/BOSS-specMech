@@ -19,8 +19,8 @@ main.d main.o: .././main.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././ports.c .././led.c .././twi.c .././mcp23008.c .././usart.c \
- .././fram.c .././ds3231.c .././nmea.c .././oled.c .././eeprom.c \
+ .././ports.c .././led.c .././twi.c .././mcp23008.c .././pneu.c \
+ .././usart.c .././ds3231.c .././nmea.c .././oled.c .././eeprom.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././wdt.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\wdt.h
@@ -73,9 +73,9 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././mcp23008.c:
 
-.././usart.c:
+.././pneu.c:
 
-.././fram.c:
+.././usart.c:
 
 .././ds3231.c:
 

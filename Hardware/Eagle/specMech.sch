@@ -2013,26 +2013,6 @@
 <text x="-8.89" y="43.18" size="1.27" layer="25" font="vector">&gt;NAME</text>
 <text x="-10.16" y="-44.45" size="1.27" layer="27" font="vector">&gt;VALUE</text>
 </package>
-<package name="1X02/90" urn="urn:adsk.eagle:footprint:23372030/1" library_version="178">
-<description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
-<wire x1="-2.54" y1="-1.905" x2="0" y2="-1.905" width="0.1524" layer="21"/>
-<wire x1="0" y1="-1.905" x2="0" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="0" y1="0.635" x2="-2.54" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="-2.54" y1="0.635" x2="-2.54" y2="-1.905" width="0.1524" layer="21"/>
-<wire x1="-1.27" y1="6.985" x2="-1.27" y2="1.27" width="0.762" layer="21"/>
-<wire x1="0" y1="-1.905" x2="2.54" y2="-1.905" width="0.1524" layer="21"/>
-<wire x1="2.54" y1="-1.905" x2="2.54" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="2.54" y1="0.635" x2="0" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="1.27" y1="6.985" x2="1.27" y2="1.27" width="0.762" layer="21"/>
-<pad name="1" x="-1.27" y="-3.81" drill="1.016" shape="square" rot="R90"/>
-<pad name="2" x="1.27" y="-3.81" drill="1.016" rot="R90"/>
-<text x="-3.175" y="-3.81" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
-<text x="4.445" y="-3.81" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
-<rectangle x1="-1.651" y1="0.635" x2="-0.889" y2="1.143" layer="21"/>
-<rectangle x1="0.889" y1="0.635" x2="1.651" y2="1.143" layer="21"/>
-<rectangle x1="-1.651" y1="-2.921" x2="-0.889" y2="-1.905" layer="21"/>
-<rectangle x1="0.889" y1="-2.921" x2="1.651" y2="-1.905" layer="21"/>
-</package>
 <package name="HDRRA2W64P254_1X2_374X254X400B" urn="urn:adsk.eagle:footprint:23372065/1" library_version="178">
 <description>Single-row, 2-pin Pin Header (Male) Right Angle, 2.54 mm (0.10 in) col pitch, 5.84 mm mating length, 3.75 X 2.54 X 4.00 mm body
 &lt;p&gt;Single-row (1X2), 2-pin Pin Header (Male) Right Angle package with 2.54 mm (0.10 in) col pitch, 0.64 mm lead width, 3.00 mm tail length and 5.84 mm mating length with body size 3.75 X 2.54 X 4.00 mm, pin pattern - clockwise from top left&lt;/p&gt;</description>
@@ -2153,27 +2133,6 @@
 <rectangle x1="2.159" y1="-2.921" x2="2.921" y2="-1.905" layer="21"/>
 <rectangle x1="2.159" y1="-5.461" x2="2.921" y2="-4.699" layer="21"/>
 <rectangle x1="2.159" y1="-4.699" x2="2.921" y2="-2.921" layer="51"/>
-</package>
-<package name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:footprint:15775893/1" library_version="195">
-<pad name="1" x="-2.54" y="-1.27" drill="1.016" shape="square"/>
-<pad name="2" x="-2.54" y="1.27" drill="1.016"/>
-<pad name="3" x="0" y="-1.27" drill="1.016"/>
-<pad name="4" x="0" y="1.27" drill="1.016"/>
-<pad name="5" x="2.54" y="-1.27" drill="1.016"/>
-<pad name="6" x="2.54" y="1.27" drill="1.016"/>
-<wire x1="-6.2" y1="-4.6" x2="-6.2" y2="4.6" width="0.127" layer="21"/>
-<wire x1="-6.2" y1="4.6" x2="6.2" y2="4.6" width="0.127" layer="21"/>
-<wire x1="6.2" y1="4.6" x2="6.2" y2="-4.6" width="0.127" layer="21"/>
-<wire x1="6.2" y1="-4.6" x2="2.1" y2="-4.6" width="0.127" layer="21"/>
-<wire x1="2.1" y1="-4.6" x2="-2.1" y2="-4.6" width="0.127" layer="21"/>
-<wire x1="-2.1" y1="-4.6" x2="-6.2" y2="-4.6" width="0.127" layer="21"/>
-<wire x1="-6.2" y1="-4.6" x2="-6.2" y2="4.6" width="0.127" layer="51"/>
-<wire x1="-6.2" y1="4.6" x2="6.2" y2="4.6" width="0.127" layer="51"/>
-<wire x1="6.2" y1="4.6" x2="6.2" y2="-4.6" width="0.127" layer="51"/>
-<wire x1="6.2" y1="-4.6" x2="-6.2" y2="-4.6" width="0.127" layer="51"/>
-<wire x1="-2.1" y1="-4.6" x2="-2.1" y2="-4" width="0.127" layer="21"/>
-<wire x1="-2.1" y1="-4" x2="2.1" y2="-4" width="0.127" layer="21"/>
-<wire x1="2.1" y1="-4" x2="2.1" y2="-4.6" width="0.127" layer="21"/>
 </package>
 <package name="2X05" urn="urn:adsk.eagle:footprint:24435875/1" library_version="186">
 <description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
@@ -6628,9 +6587,156 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <text x="-1.27" y="-2.54" size="1.016" layer="27" font="vector">&gt;VALUE</text>
 <circle x="0" y="0" radius="1.27" width="0.127" layer="21"/>
 </package>
+<package name="SOIC18-MCP23008-E/SO" urn="urn:adsk.eagle:footprint:25371707/1" library_version="381">
+<smd name="1" x="-4.5212" y="5.08" dx="2.5" dy="0.56" layer="1"/>
+<smd name="2" x="-4.5212" y="3.81" dx="2.5" dy="0.56" layer="1"/>
+<smd name="3" x="-4.5212" y="2.54" dx="2.5" dy="0.56" layer="1"/>
+<smd name="4" x="-4.5212" y="1.27" dx="2.5" dy="0.56" layer="1"/>
+<smd name="5" x="-4.5212" y="0" dx="2.5" dy="0.56" layer="1"/>
+<smd name="6" x="-4.5212" y="-1.27" dx="2.5" dy="0.56" layer="1"/>
+<smd name="7" x="-4.5212" y="-2.54" dx="2.5" dy="0.56" layer="1"/>
+<smd name="8" x="-4.5212" y="-3.81" dx="2.5" dy="0.56" layer="1"/>
+<smd name="9" x="-4.5212" y="-5.08" dx="2.5" dy="0.56" layer="1"/>
+<smd name="10" x="4.5212" y="-5.08" dx="2.5" dy="0.56" layer="1"/>
+<smd name="11" x="4.5212" y="-3.81" dx="2.5" dy="0.56" layer="1"/>
+<smd name="12" x="4.5212" y="-2.54" dx="2.5" dy="0.56" layer="1"/>
+<smd name="13" x="4.5212" y="-1.27" dx="2.5" dy="0.56" layer="1"/>
+<smd name="14" x="4.5212" y="0" dx="2.5" dy="0.56" layer="1"/>
+<smd name="15" x="4.5212" y="1.27" dx="2.5" dy="0.56" layer="1"/>
+<smd name="16" x="4.5212" y="2.54" dx="2.5" dy="0.56" layer="1"/>
+<smd name="17" x="4.5212" y="3.81" dx="2.5" dy="0.56" layer="1"/>
+<smd name="18" x="4.5212" y="5.08" dx="2.5" dy="0.56" layer="1"/>
+<wire x1="-3.7592" y1="4.826" x2="-3.7592" y2="5.334" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="5.334" x2="-5.1562" y2="5.334" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="5.334" x2="-5.1562" y2="4.826" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="4.826" x2="-3.7592" y2="4.826" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="3.556" x2="-3.7592" y2="4.064" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="4.064" x2="-5.1562" y2="4.064" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="4.064" x2="-5.1562" y2="3.556" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="3.556" x2="-3.7592" y2="3.556" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="2.286" x2="-3.7592" y2="2.794" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="2.794" x2="-5.1562" y2="2.794" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="2.794" x2="-5.1562" y2="2.286" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="2.286" x2="-3.7592" y2="2.286" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="1.016" x2="-3.7592" y2="1.524" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="1.524" x2="-5.1562" y2="1.524" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="1.524" x2="-5.1562" y2="1.016" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="1.016" x2="-3.7592" y2="1.016" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-0.254" x2="-3.7592" y2="0.254" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="0.254" x2="-5.1562" y2="0.254" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="0.254" x2="-5.1562" y2="-0.254" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-0.254" x2="-3.7592" y2="-0.254" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-1.524" x2="-3.7592" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-1.016" x2="-5.1562" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-1.016" x2="-5.1562" y2="-1.524" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-1.524" x2="-3.7592" y2="-1.524" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-2.794" x2="-3.7592" y2="-2.286" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-2.286" x2="-5.1562" y2="-2.286" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-2.286" x2="-5.1562" y2="-2.794" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-2.794" x2="-3.7592" y2="-2.794" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-4.064" x2="-3.7592" y2="-3.556" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-3.556" x2="-5.1562" y2="-3.556" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-3.556" x2="-5.1562" y2="-4.064" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-4.064" x2="-3.7592" y2="-4.064" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-5.334" x2="-3.7592" y2="-4.826" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-4.826" x2="-5.1562" y2="-4.826" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-4.826" x2="-5.1562" y2="-5.334" width="0.1524" layer="51"/>
+<wire x1="-5.1562" y1="-5.334" x2="-3.7592" y2="-5.334" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-4.826" x2="3.7592" y2="-5.334" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-5.334" x2="5.1562" y2="-5.334" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-5.334" x2="5.1562" y2="-4.826" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-4.826" x2="3.7592" y2="-4.826" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-3.556" x2="3.7592" y2="-4.064" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-4.064" x2="5.1562" y2="-4.064" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-4.064" x2="5.1562" y2="-3.556" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-3.556" x2="3.7592" y2="-3.556" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-2.286" x2="3.7592" y2="-2.794" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-2.794" x2="5.1562" y2="-2.794" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-2.794" x2="5.1562" y2="-2.286" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-2.286" x2="3.7592" y2="-2.286" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-1.016" x2="3.7592" y2="-1.524" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-1.524" x2="5.1562" y2="-1.524" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-1.524" x2="5.1562" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-1.016" x2="3.7592" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="0.254" x2="3.7592" y2="-0.254" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-0.254" x2="5.1562" y2="-0.254" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="-0.254" x2="5.1562" y2="0.254" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="0.254" x2="3.7592" y2="0.254" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="1.524" x2="3.7592" y2="1.016" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="1.016" x2="5.1562" y2="1.016" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="1.016" x2="5.1562" y2="1.524" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="1.524" x2="3.7592" y2="1.524" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="2.794" x2="3.7592" y2="2.286" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="2.286" x2="5.1562" y2="2.286" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="2.286" x2="5.1562" y2="2.794" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="2.794" x2="3.7592" y2="2.794" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="4.064" x2="3.7592" y2="3.556" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="3.556" x2="5.1562" y2="3.556" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="3.556" x2="5.1562" y2="4.064" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="4.064" x2="3.7592" y2="4.064" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="5.334" x2="3.7592" y2="4.826" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="4.826" x2="5.1562" y2="4.826" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="4.826" x2="5.1562" y2="5.334" width="0.1524" layer="51"/>
+<wire x1="5.1562" y1="5.334" x2="3.7592" y2="5.334" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="-5.7912" x2="3.7592" y2="-5.7912" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="-5.7912" x2="3.7592" y2="5.7912" width="0.1524" layer="51"/>
+<wire x1="3.7592" y1="5.7912" x2="0.3048" y2="5.7912" width="0.1524" layer="51"/>
+<wire x1="0.3048" y1="5.7912" x2="-0.3048" y2="5.7912" width="0.1524" layer="51"/>
+<wire x1="-0.3048" y1="5.7912" x2="-3.7592" y2="5.7912" width="0.1524" layer="51"/>
+<wire x1="-3.7592" y1="5.7912" x2="-3.7592" y2="-5.7912" width="0.1524" layer="51"/>
+<wire x1="0.3048" y1="5.7912" x2="-0.3048" y2="5.7912" width="0.1524" layer="51" curve="-180"/>
+<wire x1="-3.8608" y1="-5.8928" x2="3.8608" y2="-5.8928" width="0.1524" layer="21"/>
+<wire x1="3.8608" y1="5.8928" x2="-3.8608" y2="5.8928" width="0.1524" layer="21"/>
+<text x="-3.937" y="4.4196" size="1.27" layer="51" ratio="6" rot="SR0">*</text>
+<text x="-5.8594" y="6.0118" size="1.27" layer="21" ratio="6" rot="SR0">*</text>
+<text x="-4.2672" y="-8.255" size="1.27" layer="21" ratio="6" rot="SR0">&gt;Value</text>
+<text x="-3.2766" y="6.985" size="1.27" layer="25" ratio="6" rot="SR0">&gt;Name</text>
+</package>
+<package name="1X02/90" urn="urn:adsk.eagle:footprint:23372030/4" library_version="381">
+<description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
+<wire x1="-2.54" y1="5.842" x2="-2.54" y2="2.794" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="11.938" x2="-1.27" y2="6.223" width="0.762" layer="21"/>
+<wire x1="-2.54" y1="2.794" x2="2.54" y2="2.794" width="0.1524" layer="21"/>
+<wire x1="2.54" y1="2.794" x2="2.54" y2="5.842" width="0.1524" layer="21"/>
+<wire x1="2.54" y1="5.842" x2="-2.54" y2="5.842" width="0.1524" layer="21"/>
+<wire x1="1.27" y1="11.938" x2="1.27" y2="6.223" width="0.762" layer="21"/>
+<pad name="1" x="-1.27" y="0" drill="1.016" shape="square" rot="R90"/>
+<pad name="2" x="1.27" y="0" drill="1.016" rot="R90"/>
+<text x="-3.175" y="0" size="1.016" layer="25" font="vector" rot="R90">&gt;NAME</text>
+<text x="4.445" y="0" size="1.016" layer="27" font="vector" rot="R90">&gt;VALUE</text>
+<rectangle x1="-1.651" y1="5.842" x2="-0.889" y2="6.35" layer="21"/>
+<rectangle x1="0.889" y1="5.842" x2="1.651" y2="6.35" layer="21"/>
+<rectangle x1="-1.651" y1="0.889" x2="-0.889" y2="2.794" layer="21"/>
+<rectangle x1="0.889" y1="0.889" x2="1.651" y2="2.794" layer="21"/>
+</package>
+<package name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:footprint:15775893/3" library_version="381">
+<description>Amphenol 75869-131LF
+Digikey 609-2845-ND</description>
+<pad name="1" x="-2.54" y="-1.27" drill="1.016" shape="square"/>
+<pad name="2" x="-2.54" y="1.27" drill="1.016"/>
+<pad name="3" x="0" y="-1.27" drill="1.016"/>
+<pad name="4" x="0" y="1.27" drill="1.016"/>
+<pad name="5" x="2.54" y="-1.27" drill="1.016"/>
+<pad name="6" x="2.54" y="1.27" drill="1.016"/>
+<wire x1="-6.425" y1="-4.6" x2="-6.425" y2="4.6" width="0.127" layer="21"/>
+<wire x1="-6.425" y1="4.6" x2="6.425" y2="4.6" width="0.127" layer="21"/>
+<wire x1="6.425" y1="4.6" x2="6.425" y2="-4.6" width="0.127" layer="21"/>
+<wire x1="6.425" y1="-4.6" x2="2.1" y2="-4.6" width="0.127" layer="21"/>
+<wire x1="2.1" y1="-4.6" x2="-2.1" y2="-4.6" width="0.127" layer="21"/>
+<wire x1="-2.1" y1="-4.6" x2="-6.425" y2="-4.6" width="0.127" layer="21"/>
+<wire x1="-6.425" y1="-4.6" x2="-6.425" y2="4.6" width="0.127" layer="51"/>
+<wire x1="-6.425" y1="4.6" x2="6.425" y2="4.6" width="0.127" layer="51"/>
+<wire x1="6.425" y1="4.6" x2="6.425" y2="-4.6" width="0.127" layer="51"/>
+<wire x1="6.425" y1="-4.6" x2="-6.425" y2="-4.6" width="0.127" layer="51"/>
+<wire x1="-2.1" y1="-4.6" x2="-2.1" y2="-4" width="0.127" layer="21"/>
+<wire x1="-2.1" y1="-4" x2="2.1" y2="-4" width="0.127" layer="21"/>
+<wire x1="2.1" y1="-4" x2="2.1" y2="-4.6" width="0.127" layer="21"/>
+<text x="-5.08" y="5.08" size="1.016" layer="25">&gt;NAME</text>
+<text x="-5.08" y="-6.35" size="1.016" layer="25">&gt;VALUE</text>
+</package>
 </packages>
 <packages3d>
-<package3d name="1X08-MOLEX-SHROUD" urn="urn:adsk.eagle:package:18132194/5" type="model" library_version="152">
+<package3d name="1X08-MOLEX-SHROUD" urn="urn:adsk.eagle:package:18132194/6" type="model" library_version="381">
 <packageinstances>
 <packageinstance name="1X08-MOLEX-SHROUD"/>
 </packageinstances>
@@ -6789,12 +6895,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <packageinstance name="CURIOSITYNANO4809"/>
 </packageinstances>
 </package3d>
-<package3d name="1X02/90" urn="urn:adsk.eagle:package:23365269/3" type="model" library_version="178">
-<description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
-<packageinstances>
-<packageinstance name="1X02/90"/>
-</packageinstances>
-</package3d>
 <package3d name="HDRRA2W64P254_1X2_374X254X400B" urn="urn:adsk.eagle:package:23372058/3" type="model" library_version="178">
 <description>Single-row, 2-pin Pin Header (Male) Right Angle, 2.54 mm (0.10 in) col pitch, 5.84 mm mating length, 3.75 X 2.54 X 4.00 mm body
 &lt;p&gt;Single-row (1X2), 2-pin Pin Header (Male) Right Angle package with 2.54 mm (0.10 in) col pitch, 0.64 mm lead width, 3.00 mm tail length and 5.84 mm mating length with body size 3.75 X 2.54 X 4.00 mm, pin pattern - clockwise from top left&lt;/p&gt;</description>
@@ -6817,11 +6917,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <description>PIN HEADER</description>
 <packageinstances>
 <packageinstance name="2X03/90"/>
-</packageinstances>
-</package3d>
-<package3d name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:package:15775894/1" type="box" library_version="195">
-<packageinstances>
-<packageinstance name="PINHD-2X3-SHROUDED"/>
 </packageinstances>
 </package3d>
 <package3d name="2X05" urn="urn:adsk.eagle:package:24435877/1" type="model" library_version="186">
@@ -8132,6 +8227,24 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <packageinstance name="TP5000-TESTPOINT-ORG"/>
 </packageinstances>
 </package3d>
+<package3d name="SOIC18-MCP23008-E/SO" urn="urn:adsk.eagle:package:25371711/2" type="model" library_version="381">
+<packageinstances>
+<packageinstance name="SOIC18-MCP23008-E/SO"/>
+</packageinstances>
+</package3d>
+<package3d name="1X02/90" urn="urn:adsk.eagle:package:23365269/8" type="model" library_version="381">
+<description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
+<packageinstances>
+<packageinstance name="1X02/90"/>
+</packageinstances>
+</package3d>
+<package3d name="PINHD-2X3-SHROUDED" urn="urn:adsk.eagle:package:15775894/4" type="model" library_version="381">
+<description>Amphenol 75869-131LF
+Digikey 609-2845-ND</description>
+<packageinstances>
+<packageinstance name="PINHD-2X3-SHROUDED"/>
+</packageinstances>
+</package3d>
 </packages3d>
 <symbols>
 <symbol name="PINHD8" urn="urn:adsk.eagle:symbol:15461494/3" library_version="89">
@@ -8801,7 +8914,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="PINHD-1X8-MOLEX-SHROUD" urn="urn:adsk.eagle:component:18132195/6" prefix="J" library_version="152">
+<deviceset name="PINHD-1X8-MOLEX-SHROUD" urn="urn:adsk.eagle:component:18132195/7" prefix="J" library_version="381">
 <description>&lt;b&gt;8-pin vertical header&lt;/b&gt;
 &lt;p&gt;Molex 0022232081 tin plated version&lt;/p&gt;
 &lt;p&gt;Digikey WM4206-ND $0.50 each 2020-09-15&lt;/p&gt;</description>
@@ -8821,7 +8934,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="8" pad="P$8"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:18132194/5"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:18132194/6"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -10050,7 +10163,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </pinmapping>
 </spice>
 </deviceset>
-<deviceset name="MCP23008-E/SO" urn="urn:adsk.eagle:component:18133675/3" prefix="U" library_version="133">
+<deviceset name="MCP23008-E/SO" urn="urn:adsk.eagle:component:18133675/5" prefix="U" library_version="381">
 <gates>
 <gate name="A" symbol="MCP23008-E/SO" x="0" y="0"/>
 </gates>
@@ -10149,6 +10262,34 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <attribute name="MANUFACTURER_PART_NUMBER" value="MCP23008-E/SO" constant="no"/>
 <attribute name="VENDOR" value="Microchip" constant="no"/>
 </technology>
+</technologies>
+</device>
+<device name="SOIC18-MCP23008-E/SO" package="SOIC18-MCP23008-E/SO">
+<connects>
+<connect gate="A" pin="!RESET" pad="6"/>
+<connect gate="A" pin="A0" pad="5"/>
+<connect gate="A" pin="A1" pad="4"/>
+<connect gate="A" pin="A2" pad="3"/>
+<connect gate="A" pin="GP0" pad="10"/>
+<connect gate="A" pin="GP1" pad="11"/>
+<connect gate="A" pin="GP2" pad="12"/>
+<connect gate="A" pin="GP3" pad="13"/>
+<connect gate="A" pin="GP4" pad="14"/>
+<connect gate="A" pin="GP5" pad="15"/>
+<connect gate="A" pin="GP6" pad="16"/>
+<connect gate="A" pin="GP7" pad="17"/>
+<connect gate="A" pin="INT" pad="8"/>
+<connect gate="A" pin="NC" pad="7"/>
+<connect gate="A" pin="SCL" pad="1"/>
+<connect gate="A" pin="SDA" pad="2"/>
+<connect gate="A" pin="VDD" pad="18"/>
+<connect gate="A" pin="VSS" pad="9"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:25371711/2"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -11449,7 +11590,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="PINHD-1X2" urn="urn:adsk.eagle:component:9166141/14" prefix="JP" uservalue="yes" library_version="178">
+<deviceset name="PINHD-1X2" urn="urn:adsk.eagle:component:9166141/18" prefix="JP" uservalue="yes" library_version="381">
 <description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
 <gates>
 <gate name="G$1" symbol="PINHD2" x="0" y="0"/>
@@ -11473,7 +11614,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:23365269/3"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:23365269/8"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -11533,7 +11674,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:23365269/3"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:23365269/8"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -12020,7 +12161,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="PINHD-2X3" urn="urn:adsk.eagle:component:9166122/3" prefix="JP" uservalue="yes" library_version="199">
+<deviceset name="PINHD-2X3" urn="urn:adsk.eagle:component:9166122/6" prefix="JP" uservalue="yes" library_version="381">
 <description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
 <gates>
 <gate name="A" symbol="PINH2X3" x="0" y="0"/>
@@ -12068,7 +12209,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connect gate="A" pin="6" pad="6"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:15775894/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:15775894/4"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -13013,11 +13154,11 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 </class>
 </classes>
 <parts>
-<part name="J4" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5"/>
+<part name="J4" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/6"/>
 <part name="P+5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="GND8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="SUPPLY4" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+12V" device=""/>
-<part name="J6" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5" value="Molex 0022232081"/>
+<part name="J6" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/6" value="Molex 0022232081"/>
 <part name="P+6" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="GND10" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="SUPPLY1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+12V" device=""/>
@@ -13060,7 +13201,7 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 <part name="GND13" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="GND24" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="GND25" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
-<part name="J8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5" value="Molex 0022232081"/>
+<part name="J8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/6" value="Molex 0022232081"/>
 <part name="R3" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/4" value="10K"/>
 <part name="P+21" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="SUPPLY11" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+12V" device=""/>
@@ -13083,7 +13224,7 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 <part name="RN2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="EXB-38V103JV" device="" package3d_urn="urn:adsk.eagle:package:24241264/3"/>
 <part name="L1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MMZ2012Y152BT000" device="" package3d_urn="urn:adsk.eagle:package:24287623/2"/>
 <part name="C1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/3" value="0.01uF"/>
-<part name="J1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5"/>
+<part name="J1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/6"/>
 <part name="CNANO1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="CURIOSITYNANO4809" device="" package3d_urn="urn:adsk.eagle:package:15461704/5"/>
 <part name="FRAME1" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
 <part name="FRAME3" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
@@ -13092,7 +13233,7 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 <part name="FRAME6" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
 <part name="FRAME7" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
 <part name="FRAME8" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
-<part name="J3" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5"/>
+<part name="J3" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/6"/>
 <part name="GND27" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="C21" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/3" value="0.1uF"/>
 <part name="U11" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MCP23008-E/SO" device="" package3d_urn="urn:adsk.eagle:package:18133672/2"/>

@@ -14,12 +14,10 @@ usart.c
 	too quickly or the buffer could be overwritten. It's probably a good idea
 	to receive completely the response from the previous command before sending
 	another.
-
 ------------------------------------------------------------------------------*/
 
 #ifndef USARTC
 #define USARTC
-#endif
 
 #define	USART_BAUD_RATE(BAUD_RATE)	((float)(F_CPU * 64 / (16 * (float)BAUD_RATE)) + 0.5)
 #define BUFSIZE 128
@@ -317,3 +315,5 @@ ISR(USART3_DRE_vect)
 	}
 
 }
+
+#endif

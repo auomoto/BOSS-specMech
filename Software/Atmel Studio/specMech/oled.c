@@ -1,5 +1,6 @@
 /*------------------------------------------------------------------------------
-Newhaven NHD-0216AW-1B3 OLED display:
+oled.c
+	Routines for the Newhaven NHD-0216AW-1B3 OLED display:
 	(https://drive.google.com/file/d/1IUcGcaOP8XE-vmXZrItMla3q6HhXh7-s/view)
 	This is a small 2-line 16-character blue OLED display with an I2C (TWI)
 	interface.
@@ -7,12 +8,10 @@ Newhaven NHD-0216AW-1B3 OLED display:
 	Two TWI (I2C) addresses are allowed: (0x3c<<1) and (0x3d<<1). Outside
 	this file (the writestr_OLED routine), these are referred to as displays
 	0 and 1 respectively. There are only two choices for this display.
-
 ------------------------------------------------------------------------------*/
 
 #ifndef OLEDC
 #define OLEDC
-#endif
 
 // OLED display
 #define CLEARDISPLAY	0x01		// Newhaven command (not used)
@@ -20,10 +19,12 @@ Newhaven NHD-0216AW-1B3 OLED display:
 #define DISPLAYOFF		0x08		// Newhaven command (not used)
 #define OLEDADDR0		(0x3c << 1)	// TWI bus address
 #define OLEDADDR1		(0x3d << 1)	// TWI bus address
-#define OLEDCMD			0x00			// Newhaven command was 1
-#define OLEDDATA		0x40			// Newhaven command was 0
+#define OLEDCMD			0x00		// Newhaven command was 1
+#define OLEDDATA		0x40		// Newhaven command was 0
 #define OLEDLINE1		0x80		// Newhaven command
 #define OLEDLINE2		0xC0		// Newhaven command
+
+#include "twi.c"
 
 // Function Prototypes
 void clear_OLED(uint8_t);
@@ -34,7 +35,6 @@ void writestr_OLED(uint8_t, char*, uint8_t);
 /*------------------------------------------------------------------------------
 void clear_OLED(uint8_t displaynumber)
 	Clears the OLED screen by writing blank spaces to both lines.
-
 ------------------------------------------------------------------------------*/
 void clear_OLED(uint8_t displaynumber)
 {
@@ -54,7 +54,6 @@ void init_OLED(uint8_t displaynumber)
 
 	The displaynumber can be either 0 or 1. When the SA0 pin is grounded, you
 	get displaynumber 0. A displaynumber not 0 acts on the other display.
-
 ------------------------------------------------------------------------------*/
 void init_OLED(uint8_t displaynumber)
 {
@@ -125,14 +124,9 @@ void write_OLED(uint8_t twiaddr, uint8_t type, uint8_t byteToSend)
 void write_OLED(uint8_t twiaddr, uint8_t type, uint8_t byteToSend)
 {
 
-	uint8_t buf[2];
-
 	start_TWI(twiaddr, TWIWRITE);
-
-	buf[0] = type;
-	buf[1] = byteToSend;
-	write_TWI(buf, 2);
-
+	write_TWI(type);
+	write_TWI(byteToSend);
 	stop_TWI();
 
 }
@@ -167,7 +161,7 @@ void writestr_OLED(uint8_t displaynumber, char *str, uint8_t lineno)
 		write_OLED(twiaddr, OLEDCMD, OLEDLINE1);
 
 	} else {
-			write_OLED(twiaddr, OLEDCMD, OLEDLINE2);
+		write_OLED(twiaddr, OLEDCMD, OLEDLINE2);
 	}
 
 	for (i = 0; i < 16; i++) {
@@ -175,3 +169,5 @@ void writestr_OLED(uint8_t displaynumber, char *str, uint8_t lineno)
 	}
 
 }
+
+#endif

@@ -13085,13 +13085,13 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 <part name="C1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/3" value="0.01uF"/>
 <part name="J1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5"/>
 <part name="CNANO1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="CURIOSITYNANO4809" device="" package3d_urn="urn:adsk.eagle:package:15461704/5"/>
-<part name="FRAME1" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
-<part name="FRAME3" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
-<part name="FRAME4" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
-<part name="FRAME5" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
-<part name="FRAME6" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
-<part name="FRAME7" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
-<part name="FRAME8" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
+<part name="FRAME1" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
+<part name="FRAME3" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
+<part name="FRAME4" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
+<part name="FRAME5" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
+<part name="FRAME6" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
+<part name="FRAME7" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
+<part name="FRAME8" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
 <part name="J3" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X8-MOLEX-SHROUD" device="" package3d_urn="urn:adsk.eagle:package:18132194/5"/>
 <part name="GND27" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="C21" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/3" value="0.1uF"/>
@@ -13102,7 +13102,7 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 <part name="R15" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/4" value="10K"/>
 <part name="GND37" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="PS1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="OKI-78SR-5/1.5-W36-C" device="" package3d_urn="urn:adsk.eagle:package:24308288/2"/>
-<part name="FRAME11" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
+<part name="FRAME11" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
 <part name="JP6" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-2X3" device="" package3d_urn="urn:adsk.eagle:package:24493429/1" value="2x3 pinhdr"/>
 <part name="JP1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-2X5" device="" package3d_urn="urn:adsk.eagle:package:24435877/1" value="2x5 pinhdr"/>
 <part name="U12" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="74HC2G17" device="TSSOP-6" package3d_urn="urn:adsk.eagle:package:9152015/2"/>
@@ -13185,7 +13185,7 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 <part name="R6" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/4" value="10K"/>
 <part name="P+28" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="GND43" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
-<part name="FRAME2" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device=""/>
+<part name="FRAME2" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="FRAME_A_L" device="" value="Frame_A_L"/>
 <part name="TP1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="TP5000-TESTPOINT-BLK" device="" package3d_urn="urn:adsk.eagle:package:24642442/4"/>
 <part name="TP2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="TP5000-TESTPOINT-RED" device="" package3d_urn="urn:adsk.eagle:package:24643663/2"/>
 <part name="TP3" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="TP5000-TESTPOINT-BLU" device="" package3d_urn="urn:adsk.eagle:package:24643711/2"/>

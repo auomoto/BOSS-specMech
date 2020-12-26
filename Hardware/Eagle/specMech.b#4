@@ -162,7 +162,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.cGVyc29uYWw6dWUyZDgyNjcx" projecturn="a.cGVyc29uYWw6dWUyZDgyNjcxIzIwMTgxMjIwMTY2NDc1MjMx" f3durn="urn:adsk.wipprod:dm.lineage:JfX9Sz9hQ7uElenyZAoR3A" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="b7089f91-521e-400d-aa2b-c8455e88ed13" lastsyncedrevisionid="b7089f91-521e-400d-aa2b-c8455e88ed13" lastboardhashguid="c909b06f-cd60-a296-e4ec-5dabf79a3735" lastpushedtime="2020-11-11T00:53:55Z" linktopcb3d="true"/>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyZDgyNjcx" projecturn="a.cGVyc29uYWw6dWUyZDgyNjcxIzIwMTgxMjIwMTY2NDc1MjMx" f3durn="urn:adsk.wipprod:dm.lineage:JfX9Sz9hQ7uElenyZAoR3A" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="1355235e-36ac-4c84-a01f-06d2e9f91592" lastsyncedrevisionid="1355235e-36ac-4c84-a01f-06d2e9f91592" lastboardhashguid="1e2856ac-e693-80bc-b6fc-f57b1ccbf2b6" lastpushedtime="2020-11-11T01:50:39Z" linktopcb3d="true"/>
 <plain>
 <circle x="122.428" y="116.586" radius="4.0894" width="0.1524" layer="21"/>
 <circle x="136.906" y="50.546" radius="4.0894" width="0.1524" layer="21"/>
@@ -2899,7 +2899,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="70.805" y1="44.77" x2="69.85" y2="44.77" width="0.1524" layer="1"/>
 <wire x1="74.295" y1="48.26" x2="70.805" y2="44.77" width="0.1524" layer="1"/>
 <contactref element="BO1" pad="2"/>
-<wire x1="38.1" y1="116.84" x2="38.1" y2="117.475" width="0.1524" layer="1"/>
 <wire x1="40.64" y1="81.28" x2="41.91" y2="81.28" width="0.1524" layer="1"/>
 <wire x1="41.91" y1="81.28" x2="43.815" y2="79.375" width="0.1524" layer="1"/>
 <wire x1="43.815" y1="79.375" x2="43.815" y2="76.835" width="0.1524" layer="1"/>
@@ -2946,7 +2945,6 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="74.295" y1="55.88" x2="74.295" y2="52.07" width="0.1524" layer="1"/>
 <wire x1="104.775" y1="98.425" x2="95.885" y2="89.535" width="0.1524" layer="1"/>
 <wire x1="95.885" y1="64.77" x2="87.63" y2="56.515" width="0.1524" layer="1"/>
-<wire x1="38.1" y1="117.475" x2="38.1" y2="114.935" width="0.1524" layer="1"/>
 <wire x1="38.1" y1="114.935" x2="29.845" y2="106.68" width="0.1524" layer="1"/>
 <wire x1="30.48" y1="76.2" x2="29.845" y2="76.835" width="0.1524" layer="1"/>
 <wire x1="30.48" y1="76.2" x2="41.275" y2="76.2" width="0.1524" layer="1"/>
@@ -2989,6 +2987,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="29.845" y1="102.87" x2="32.385" y2="100.33" width="0.1524" layer="1"/>
 <wire x1="64.135" y1="88.9" x2="38.1" y2="114.935" width="0.1524" layer="1"/>
 <wire x1="67.8688" y1="88.9" x2="64.135" y2="88.9" width="0.1524" layer="1"/>
+<wire x1="38.1" y1="117.475" x2="38.1" y2="114.935" width="0.1524" layer="1"/>
 </signal>
 <signal name="N$1">
 <contactref element="JP3" pad="1"/>

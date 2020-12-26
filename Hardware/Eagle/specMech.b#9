@@ -3775,10 +3775,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <contactref element="VR2" pad="VOUT"/>
 <wire x1="32.105" y1="25.15" x2="29.275" y2="25.15" width="0.3048" layer="1"/>
 <wire x1="29.275" y1="25.15" x2="29.21" y2="25.085" width="0.3048" layer="1"/>
-<wire x1="6.8275" y1="26.1925" x2="6.67" y2="26.035" width="0.1524" layer="16"/>
 <wire x1="21.905" y1="32.385" x2="24.085" y2="32.385" width="0.508" layer="16"/>
-<wire x1="24.085" y1="32.385" x2="7.62" y2="32.385" width="0.508" layer="1"/>
-<wire x1="6.985" y1="31.75" x2="7.62" y2="32.385" width="0.508" layer="1"/>
+<wire x1="24.085" y1="32.385" x2="8.128" y2="32.385" width="0.508" layer="1"/>
+<wire x1="6.985" y1="31.242" x2="8.128" y2="32.385" width="0.508" layer="1"/>
 <wire x1="24.085" y1="32.385" x2="26.99" y2="32.385" width="0.508" layer="16"/>
 <wire x1="31.75" y1="21.27" x2="32.07" y2="21.59" width="0.1524" layer="1"/>
 <wire x1="32.07" y1="21.59" x2="32.385" y2="21.59" width="0.1524" layer="1"/>
@@ -3791,9 +3790,9 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <wire x1="26.67" y1="29.8" x2="26.67" y2="26.67" width="0.508" layer="1"/>
 <wire x1="26.67" y1="26.67" x2="28.255" y2="25.085" width="0.508" layer="1"/>
 <contactref element="J7" pad="3.3V"/>
-<wire x1="6.985" y1="31.115" x2="6.985" y2="31.75" width="0.508" layer="1"/>
+<wire x1="6.985" y1="31.115" x2="6.985" y2="31.242" width="0.508" layer="1"/>
 <wire x1="6.985" y1="31.115" x2="6.985" y2="26.35" width="0.1524" layer="16"/>
-<wire x1="6.985" y1="26.35" x2="6.8275" y2="26.1925" width="0.1524" layer="16"/>
+<wire x1="6.985" y1="26.35" x2="6.67" y2="26.035" width="0.1524" layer="16"/>
 </signal>
 <signal name="VBAT1">
 <contactref element="U6" pad="6"/>

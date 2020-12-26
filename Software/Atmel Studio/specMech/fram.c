@@ -1,11 +1,10 @@
 /*------------------------------------------------------------------------------
-Curiosity Nano ATMega4809 Fujitsu FRAM TWI/I2C interface routines
-
+fram.c
+	Fujitsu FRAM TWI/I2C interface routines
 ------------------------------------------------------------------------------*/
 
 #ifndef FRAMC
 #define FRAMC
-#endif
 
 #define FRAMADDR	(0xA0)	// A0, A1, A2 grounded
 
@@ -81,3 +80,5 @@ uint8_t write_FRAM(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nbytes)
 	return(0);
 
 }
+
+#endif

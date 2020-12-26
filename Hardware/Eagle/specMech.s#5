@@ -15100,7 +15100,7 @@ Pin 8 at 5.61, 0.83 in</text>
 <label x="246.38" y="167.64" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="VDD" class="0">
+<net name="ADCVDD" class="0">
 <segment>
 <pinref part="C12" gate="G$1" pin="1"/>
 <wire x1="96.52" y1="180.34" x2="96.52" y2="177.8" width="0.1524" layer="91"/>
@@ -15344,7 +15344,7 @@ Pin 8 at 5.61, 1.73 in</text>
 <wire x1="154.94" y1="124.46" x2="172.72" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="VDD" class="0">
+<net name="ADCVDD" class="0">
 <segment>
 <pinref part="U11" gate="A" pin="VDD"/>
 <wire x1="154.94" y1="129.54" x2="157.48" y2="129.54" width="0.1524" layer="91"/>
