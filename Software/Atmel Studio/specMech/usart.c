@@ -49,7 +49,6 @@ void init_USART(void)
 
 	Check the pin positions for alternate USART connections (set the
 	PORTMUX.USAROUTEA register to use alternates).
-
 ------------------------------------------------------------------------------*/
 void init_USART(void)
 {
@@ -98,7 +97,6 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 		port - The USARTn port (0, 1, or 3)
 		data - Contains the data to send
 		nbytes - Number of bytes to send
-
 ------------------------------------------------------------------------------*/
 void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 {
@@ -147,7 +145,6 @@ ISR(USART0_RXC_vect)
 	If the character received is a <CR> ('\r'), a string terminator
 	('\0') is inserted into the buffer instead of the '\r'. The done
 	flag is set and the nxfrd value set back to 0.
-
 ---------------------------------------------------------------------*/
 ISR(USART0_RXC_vect)
 {
@@ -163,17 +160,6 @@ ISR(USART0_RXC_vect)
 	}
 	recv0_buf.head = (recv0_buf.head + 1) % BUFSIZE;
 
-/*
-	if (((char) c == '\r') || (recv0_buf.nxfrd >= (BUFSIZE-1))) {
-		recv0_buf.done = YES;
-		recv0_buf.data[recv0_buf.nxfrd] = 0;	// String terminator
-		recv0_buf.nbytes = recv0_buf.nxfrd;
-		recv0_buf.nxfrd = 0;
-		return;
-	} else {
-		recv0_buf.data[recv0_buf.nxfrd++] = c;
-	}
-*/
 }
 
 /*---------------------------------------------------------------------
@@ -188,7 +174,6 @@ ISR(USART0_DRE_vect)
 	to YES and turn off this interrupt.
 
 	Sending is started by calling send_USART(port).
-
 ---------------------------------------------------------------------*/
 ISR(USART0_DRE_vect)
 {
@@ -215,7 +200,6 @@ CHANGE AS NEEDED:
 	If the character received is a <CR> ('\r'), a string terminator
 	('\0') is inserted into the buffer instead of the '\r'. The done
 	flag is set and the nxfrd value set back to 0.
-
 ---------------------------------------------------------------------*/
 ISR(USART1_RXC_vect)
 {
@@ -247,7 +231,6 @@ ISR(USART1_DRE_vect)
 	to YES and turn off this interrupt.
 
 	Sending is started by calling send_USART(port).
-
 ---------------------------------------------------------------------*/
 ISR(USART1_DRE_vect)
 {
@@ -271,7 +254,6 @@ CHANGE AS NEEDED:
 	If the character received is a <CR> ('\r'), a string terminator
 	('\0') is inserted into the buffer instead of the '\r'. The done
 	flag is set and the nxfrd value set back to 0.
-
 ---------------------------------------------------------------------*/
 ISR(USART3_RXC_vect)
 {
@@ -303,7 +285,6 @@ ISR(USART3_DRE_vect)
 	to YES and turn off this interrupt.
 
 	Sending is started by calling send_USART(port).
-
 ---------------------------------------------------------------------*/
 ISR(USART3_DRE_vect)
 {

@@ -12,14 +12,16 @@ pneu.c
 
 // Valve actions
 #define SHUTTERBM		(0x22)	// OR existing value with this first, then
-#define SHUTTEROPEN		(0xCE)	// AND with current port pattern to open
-#define SHUTTERCLOSE	(0xEC)	// AND with current port pattern to close
+#define SHUTTEROPEN		(0xCE)	// AND with this pattern to open
+#define SHUTTERCLOSE	(0xEC)	// AND with this pattern to close
+
 #define LEFTBM			(0x44)	// OR existing value with this, then
-#define LEFTOPEN		(0xAE)	// All used bits high except left open
-#define LEFTCLOSE		(0xEA)	// All used bits high except left close
-#define RIGHTBM			(0x88)
-#define RIGHTOPEN		(0x6E)
-#define RIGHTCLOSE		(0xE6)
+#define LEFTOPEN		(0xAE)	// AND with this pattern to open
+#define LEFTCLOSE		(0xEA)	// AND with this pattern to close
+
+#define RIGHTBM			(0x88)	// OR existing value with this, then
+#define RIGHTOPEN		(0x6E)	// AND with this pattern to open
+#define RIGHTCLOSE		(0xE6)	// AND with this pattern to close
 
 #include "mcp23008.c"
 

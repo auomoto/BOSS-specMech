@@ -8,12 +8,16 @@ twi.c
 
 #define TWIFREQ		100000UL		// Fastest allowed for F_CPU = 3.33 MHz
 #define TWIBAUD		((uint8_t) (F_CPU/(2*TWIFREQ)) - 5)	// Ignore rise time
+//#define TWISENDACK	(TWI0.MCTRLB = TWI_MCMD_RECVTRANS_gc)
+//#define TWISENDNACK	(TWI0.MCTRLB = (TWI_ACKACT_bm | TWI_MCMD_RECVTRANS_gc))
+//#define TWINACKNEXT	(TWI0.MCTRLB |= TWI_ACKACT_NACK_gc)
+//#define TWIACKNEXT	(TWI0.MCTRLB |= TWI_ACKACT_ACK_gc)
 #define TWIWRITE	0
 #define TWIREAD		1
 #define TWIBUSERR	1
 #define TWIARBLOST	2
 #define TWIACKERR	3
-#define TWINODEVICE	4
+#define TWINOSLAVE	4
 
 // Function prototypes
 void init_TWI(void);
@@ -40,10 +44,10 @@ void init_TWI(void)
 	1.	Set SDASETUP and SDAHOLD in TWI.CTRLA. These are important only for
 		SMB operation so will use the startup defaults (do nothing).
 
-	2.	Write Master Baud Rate Register TWIn.BAUD *before* enabling TWI master.
+	2a.	Write Master Baud Rate Register TWIn.BAUD *before* enabling TWI master.
 		The data sheet formula for F_SCL, the TWI frequency is:
-			F_SCL = F_CPU/(10 + 2*BAUD + F_CPU*T_RISE) or
-			BAUD = (F_CPU/2*F_SCL) - 5 - ((F_CPU*T_RISE)/2)
+		F_SCL = F_CPU/(10 + 2*BAUD + F_CPU*T_RISE) or
+		BAUD = (F_CPU/2*F_SCL) - 5 - ((F_CPU*T_RISE)/2)
 		These are defined as macros at the top of this file and changing TWIFREQ
 		(defined in Hz) controls the baud rate.
 
@@ -52,6 +56,14 @@ void init_TWI(void)
 			BAUD = ((F_CPU/2*F_SCL) - 5)
 			BAUD = 12 gives F_SCL =  98015 for F_CPU=3333333
 			BAUD = 11 gives F_SCL = 104140 for F_CPU=3333333
+
+	2b.	Smart mode (25.3.4.4 p337) is enabled by setting the SMEN bit in
+		TWI.MCTRLA. Smart mode causes the TWI interface to send automatically
+		an ACK when the master data register TWI.MDATA is read. The ACKACT bit
+		must also be set to ACK (cleared bit) in TWI.MCTRLB (this is the default;
+		the data sheet seems to have an error in saying this bit is in TWI.MCTRLA).
+		Experiments show that an ACK is sent automatically anyway without setting
+		this bit, so we won't.
 
 	3.	Write a '1' to the ENABLE bit in TWIn.MCTRLA.
 
@@ -69,24 +81,64 @@ void init_TWI(void)
 /*------------------------------------------------------------------------------
 uint8_t read_TWI(void)
 
-	Read one byte then send an ACK.
-	Use readlast_TWI() to read the last byte and send a NACK.
+	Read one byte then send an ACK. Use readlast_TWI() to read the last byte
+	and send a NACK.
+
+old note:
+	NB: This does not work if nbytes is 1. The ACKACT bit in TWI0.MCTRLB must
+	be set to 1 BEFORE doing the start_TWI read operation. The start_TWI will
+	immediately read the first data byte and send an ACK, which seems to cause
+	(at least the MCP23008) to hold the clock line low, freezing the software
+	(issuing a STOP condition doesn't get out of this; only a reset of the
+	MCP23008 does).
+uint8_t read_TWI(void)
+{
+
+	uint8_t data;
+	int x;
+
+	TWI0.MCTRLB |= TWI_ACKACT_ACK_gc;			// Set ACK after read
+
+on_LED();
+_delay_ms(1000);
+x = 0;
+	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait for data
+		asm("nop");
+		if (x++ > 1000) break;
+	}
+off_LED();
+_delay_ms(1000);
+on_LED();
+_delay_ms(50);
+	data = TWI0.MDATA;
+off_LED();
+_delay_ms(500);
+//	TWI0.MCTRLB = (TWI_ACKACT_ACK_gc | TWI_MCMD_RECVTRANS_gc);			// Send ACK after read
+	return(data);
+
+}
 ------------------------------------------------------------------------------*/
 uint8_t read_TWI(void)
 {
 
 	uint8_t data;
 
-	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait xfer to complete
-		asm("nop");								// Should set timer here
+//	TWI0.MCTRLB |= TWI_ACKACT_ACK_gc;			// Set ACK after read
+//	TWI0.MCTRLB |= TWI_ACKACT_bm;
+	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait for data
+		asm("nop");
 	}
-
-	TWI0.MCTRLB &= ~(1<<TWI_ACKACT_bp);			// Send ACK, next read
+TWI0.MCTRLB &= ~(1<<TWI_ACKACT_bp);
 	data = TWI0.MDATA;
-	TWI0.MCTRLB |= TWI_MCMD_RECVTRANS_gc;		// Send ACK after read
+//	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait for data
+//		asm("nop");
+//	}
+//	TWI0.MCTRLB |= (TWI_ACKACT_bm | TWI_MCMD_RECVTRANS_gc);			// Send ACK after read
+	TWI0.MCTRLB |= TWI_MCMD_RECVTRANS_gc;			// Send ACK after read
 
 	return(data);
 }
+
 
 /*------------------------------------------------------------------------------
 uint8_t readlast_TWI(void)
@@ -99,12 +151,13 @@ uint8_t readlast_TWI(void)
 
 	uint8_t data;
 
-	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait for xfer to complete
+//	TWI0.MCTRLB |= TWI_ACKACT_NACK_gc;			// Set NACK after read
+	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait for data
 		asm("nop");
 	}
-
 	TWI0.MCTRLB |= TWI_ACKACT_NACK_gc;
 	data = TWI0.MDATA;
+//	TWI0.MCTRLB = (TWI_ACKACT_NACK_gc | TWI_MCMD_RECVTRANS_gc);			// Send NACK after read THIS IS BAD HERE
 
 	return(data);
 
@@ -113,17 +166,17 @@ uint8_t readlast_TWI(void)
 /*------------------------------------------------------------------------------
 uint8_t start_TWI(uint8_t address, uint8_t rw)
 
-	Puts a start condition on the bus and sends the device address and R/W bit.
+	Puts a start condition on the bus and sends the slave address and R/W bit.
 	The address has already been left-shifted to make space for the rw bit
 	(bit 0), which will be added or cleared here depending on the value of rw.
 
-	Input:	addr - device address, left shifted one bit
+	Input:	addr - slave address, left shifted one bit
 			rw - either TWIWRITE (0) or TWIREAD (1)
 
 	Return:	0 - All OK
 			TWIARBLOST - bus arbitration lost
 			TWIBUSERR - bus error
-			TWINODEVICE - no TWI device sent an ACK
+			TWINOSLAVE - no device sent an ACK
 
 Notes:
 
@@ -156,7 +209,7 @@ uint8_t start_TWI(uint8_t addr, uint8_t rw)
 	} else if (TWI0.MSTATUS & TWI_ARBLOST_bm) {	// Arbitration lost
 		return(TWIARBLOST);
 	} else if (TWI0.MSTATUS & TWI_RXACK_bm) {	// No device responded
-		return(TWINODEVICE);
+		return(TWINOSLAVE);
 	} else {									// OK
 		return(0);
 	}
@@ -171,6 +224,7 @@ void stop_TWI(void)
 void stop_TWI(void)
 {
 
+//	TWI0.MCTRLB |= TWI_MCMD_STOP_gc;
 	TWI0.MCTRLB = (TWI_ACKACT_bm | TWI_MCMD_STOP_gc);	// NACK and STOP
 
 }
@@ -178,7 +232,7 @@ void stop_TWI(void)
 /*------------------------------------------------------------------------------
 uint8_t write_TWI(uint8_t data)
 
-	Write data onto the TWI bus.
+	Write data onto the TWI bus.\
 	The test for RXACK being set is probably not interesting since an ACK
 	is required to get out of the NOP loop at the top.
 

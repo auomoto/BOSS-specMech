@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
-Watchdog Timer
+wdt.c
+	Watchdog timer setup
 	We use this only to reboot from the command line.
-
 ------------------------------------------------------------------------------*/
 
 #ifndef WDTC

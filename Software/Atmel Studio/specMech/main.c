@@ -1,10 +1,8 @@
-/* Add OLED Display
- * 2020-10-11
- * And eeprom
- * 2020-10-12
- * And WDT for reboots
-*/
-
+/*------------------------------------------------------------------------------
+specMech.c
+	BOSS motion controller board based on an ATMega4809 implemented on a
+	Microchip Curiosity Nano
+------------------------------------------------------------------------------*/
 #define F_CPU		3333333UL
 #define VERSION		"2020-12-27"
 
@@ -18,22 +16,21 @@
 #include <stdio.h>		// sprintf
 #include <string.h>		// for strcpy, strlen
 
-#include "ports.c"
-#include "led.c"
-#include "twi.c"
-#include "mcp23008.c"
-#include "pneu.c"
-#include "usart.c"
-#include "fram.c"
-#include "ds3231.c"
-#include "nmea.c"
-#include "oled.c"
-#include "eeprom.c"
-#include "wdt.c"
+#include "ports.c"		// ATMega4809 ports
+#include "led.c"		// On-board LED
+#include "twi.c"		// I2C
+#include "mcp23008.c"	// MCP23008 port expander
+#include "pneu.c"		// Pneumatic valves and sensors
+#include "usart.c"		// Serial (RS232) communications
+#include "fram.c"		// FRAM memory
+#include "ds3231.c"		// Day-time clock
+#include "nmea.c"		// GPS style output
+#include "oled.c"		// Newhaven OLED display
+#include "eeprom.c"		// ATMega4809 eeprom
+#include "wdt.c"		// Watchdog timer used only for reboot function
 
 // Function Prototypes
 uint8_t close(char*);
-void checksum_NMEA(char*);
 void commands(void);
 uint8_t get_specID(void);
 uint8_t open(char*);
@@ -261,7 +258,7 @@ uint8_t report(char *ptr)
 //			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
-		case 't':					// Send current time on specMech clock
+		case 't':					// Report current time on specMech clock
 			get_time(isotime);
 			sprintf(outbuf, format_TIM, get_specID(), isotime);
 			checksum_NMEA(outbuf);
@@ -336,7 +333,7 @@ uint8_t set(char *ptr)
 	switch(*ptr) {
 		case 't':			// date/time
 			ptr++;
-//			put_time(ptr);
+			put_time(ptr);
 			break;
 
 		default:

@@ -1,6 +1,5 @@
-#ifndef EEPROMH
-#define EEPROMH
-#endif
+#ifndef EEPROMC
+#define EEPROMC
 
 #include <avr/eeprom.h>
 
@@ -33,8 +32,10 @@ void get_VERSION(char *version)
 
 void init_EEPROM(void)
 {
+
 	update_BOOTTIME();
 	update_VERSION();
+
 }
 
 void update_BOOTTIME(void)
@@ -56,3 +57,5 @@ void update_VERSION(void)
 	eeprom_update_block((const void *)version, (void *)VERSIONADDR, VERSIONSIZE);
 
 }
+
+#endif

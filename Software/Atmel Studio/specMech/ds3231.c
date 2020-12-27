@@ -24,7 +24,6 @@ void convert_ds2iso(char *isotime, uint8_t *ds3231time)
 	Output:
 		isotime - 21 character array with the UTC time in ISO format:
 			YYYY-MM-DDThh:mm:ssZ
-	
 ------------------------------------------------------------------------------*/
 void convert_ds2iso(char *isotime, uint8_t *ds3231time)
 {
@@ -45,7 +44,7 @@ void convert_ds2iso(char *isotime, uint8_t *ds3231time)
 
 /*------------------------------------------------------------------------------
 void convert_iso2ds(uint8_t (uint8_t *ds3231time, char *isotime)
-	Creates a ds3231time array.
+	Creates a 7-byte ds3231time array.
 
 	ISO time format is YYYY-MM-DDThh:mm:ssZ
 ------------------------------------------------------------------------------*/
@@ -92,6 +91,20 @@ uint8_t get_time(char *isotime)
 
 }
 
+/*------------------------------------------------------------------------------
+uint8_t out_time(char *isotime)
+	Converts a time in ISO format to DS3231 clock format and writes to the
+	DS3231 clock
+
+	Input
+		*isotime - array with the 7-bytes of DS3231 time data
+
+	Output
+		None
+
+	Returns
+		0 on success or TWI error
+------------------------------------------------------------------------------*/
 uint8_t put_time(char *isotime)
 {
 
@@ -104,7 +117,6 @@ uint8_t put_time(char *isotime)
 	return(0);
 
 }
-
 
 /*------------------------------------------------------------------------------
 uint8_t read_DS3231(uint8_t addr, uint8_t *ds3231time)
@@ -135,7 +147,6 @@ uint8_t read_DS3231(uint8_t addr, uint8_t *ds3231time)
 
 	The clock time is UTC. Communications to the outside is via the ISO time
 	format: YYYY-MM-DDThh:mm:ssZ (20 characters).
-
 ------------------------------------------------------------------------------*/
 uint8_t read_DS3231(uint8_t addr, uint8_t ds3231time[])
 {
@@ -169,14 +180,13 @@ uint8_t read_DS3231(uint8_t addr, uint8_t ds3231time[])
 
 /*------------------------------------------------------------------------------
 uint8_t write_DS3231(uint8_t addr, char *ds3231time)
-	Set the time in the DS3231 clock chip.
+	Write the time in the DS3231 clock chip registers
 
 	Inputs
 		ds3231time is a pointer to an array of 7 DS3231 register values
 
 	Returns
 		TWI errors
-
 ------------------------------------------------------------------------------*/
 uint8_t write_DS3231(uint8_t addr, uint8_t *ds3231time)
 {

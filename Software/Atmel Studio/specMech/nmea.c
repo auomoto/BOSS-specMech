@@ -1,12 +1,10 @@
 #ifndef NMEAC
 #define NMEAC
-#endif
 
 /*------------------------------------------------------------------------------
 NMEA checksum computations
 	These routines append the NMEA style checksums to the presented character
 	string.
-
 ------------------------------------------------------------------------------*/
 // Function Prototypes
 void checksum_NMEA(char*);
@@ -29,22 +27,6 @@ void checksum_NMEA(char *str)
 
 }
 
-/*
-void get_EOD(char *str)
-{
-
-	const char eod1[]="$S1EOD*2C\r\n";
-	const char eod2[]="$S2EOD*2F\r\n";
-
-	if (get_specID() == 1) {
-		strcpy(str, eod1);
-	} else {
-		strcpy(str, eod2);
-	}
-
-}
-*/
-
 void get_ERR(char *str)
 {
 
@@ -62,8 +44,9 @@ void get_ERR(char *str)
 uint8_t get_specID(void)
 {
 
-	// Read the jumper instead
+	// Read the jumper instead of just returning 2
 	return(2);
 
 }
 
+#endif
