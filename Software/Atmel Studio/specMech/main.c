@@ -242,8 +242,8 @@ uint8_t report(char *ptr)
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 
-			get_EOD(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+//			get_EOD(outbuf);
+//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 		case 't':					// Send current time on specMech clock
@@ -252,8 +252,8 @@ uint8_t report(char *ptr)
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 
-			get_EOD(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+//			get_EOD(outbuf);
+//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 		case 'v':
@@ -262,8 +262,8 @@ uint8_t report(char *ptr)
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 
-			get_EOD(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+//			get_EOD(outbuf);
+//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 		default:
@@ -293,8 +293,8 @@ void send_prompt(uint8_t prompt_flag)
 		case 1:
 			get_ERR(prompt_str);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
-			get_EOD(prompt_str);
-			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
+//			get_EOD(prompt_str);
+//			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			strcpy(prompt_str, str0);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			break;

@@ -42,7 +42,7 @@ void update_BOOTTIME(void)
 
 	char boottime[21];
 
-//	get_time(boottime);
+	get_time(boottime);
 	eeprom_update_block((const void *)boottime, (void *)BOOTTIMEADDR, BOOTTIMESIZE);
 
 }

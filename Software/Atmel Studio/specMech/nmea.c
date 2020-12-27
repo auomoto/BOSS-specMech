@@ -29,6 +29,7 @@ void checksum_NMEA(char *str)
 
 }
 
+/*
 void get_EOD(char *str)
 {
 
@@ -42,6 +43,7 @@ void get_EOD(char *str)
 	}
 
 }
+*/
 
 void get_ERR(char *str)
 {
