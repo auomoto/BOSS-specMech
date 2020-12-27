@@ -6,7 +6,7 @@
 */
 
 #define F_CPU		3333333UL
-#define VERSION		"2020-12-17"
+#define VERSION		"2020-12-27"
 
 #define	YES			1
 #define	NO			0
@@ -24,7 +24,7 @@
 #include "mcp23008.c"
 #include "pneu.c"
 #include "usart.c"
-//#include "fram.c"
+#include "fram.c"
 #include "ds3231.c"
 #include "nmea.c"
 #include "oled.c"
@@ -103,10 +103,10 @@ uint8_t close(char *ptr)
 void commands(void)
 {
 
-	uint8_t i, prompt_flag; //, framdata[10];
+	uint8_t i, prompt_flag, framdata[10], framtest[10];
 	char cmdline[BUFSIZE];
-	char *ptr, strbuf[20];
-//	uint16_t memaddress;
+	char *ptr, strbuf[40];
+	uint16_t memaddress;
 	static uint8_t rebootnack = 1;
 
 	// Copy the command to cmdline[]
@@ -152,11 +152,26 @@ void commands(void)
 			break;
 
 		case 'f':
-//			memaddress = 0;
-//			framdata[0] = 0xAA;
-//			write_FRAM(FRAMADDR, memaddress, framdata, 1);
-//			read_FRAM(FRAMADDR, memaddress, framdata, 2);
-			strcpy(strbuf, "read FRAM\r\n");
+			framdata[0] = 'A';
+			framdata[1] = 'B';
+			framdata[2] = 'X';
+			framdata[3] = 'D';
+			framdata[4] = 'E';
+			framdata[5] = 'F';
+			framdata[6] = 'G';
+			framdata[7] = 'H';
+			framdata[8] = 'I';
+			framdata[9] = '\0';
+
+			memaddress = 0;
+			write_FRAM(FRAMADDR, memaddress, framdata, 10);
+
+			for (i = 0; i < 10; i++) {
+				framtest[i] = 0;
+			}
+			memaddress = 1;
+			read_FRAM(FRAMADDR, memaddress, framtest, 9);
+			sprintf(strbuf, "%s read from fram\r\n", framtest);
 			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
 			prompt_flag = 0;
 			break;
@@ -177,7 +192,7 @@ void commands(void)
 		case 's':				// set
 			prompt_flag = set(ptr);
 			break;
-			
+
 		case '\0':
 			prompt_flag = 0;
 			break;
