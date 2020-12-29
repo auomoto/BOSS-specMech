@@ -21,6 +21,7 @@ specMech.c
 #include "twi.c"		// I2C
 #include "mcp23008.c"	// MCP23008 port expander
 #include "pneu.c"		// Pneumatic valves and sensors
+#include "ads1115.c"	// ADS1115 ADC
 #include "usart.c"		// Serial (RS232) communications
 #include "fram.c"		// FRAM memory
 #include "ds3231.c"		// Day-time clock
