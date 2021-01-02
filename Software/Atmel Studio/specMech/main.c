@@ -4,11 +4,13 @@ specMech.c
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
 #define F_CPU		3333333UL
-#define VERSION		"2020-12-27"
+#define VERSION		"2021-01-02"
 
-#define	YES			1
-#define	NO			0
-#define REBOOTNACK	2
+#define	YES				1
+#define	NO				0
+#define GREATERPROMPT	0	// Standard return prompt >
+#define EXCLAIMPROMPT	1	// No REBOOT ACK prompt !
+#define ERRORPROMPT		2	// Generate error line, then >
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -32,10 +34,12 @@ specMech.c
 #include "wdt.c"		// Watchdog timer used only for reboot function
 
 // Function Prototypes
-uint8_t close(char*);
+uint8_t pneu_close(char*);
 void commands(void);
+float get_humidity(uint8_t);
 uint8_t get_specID(void);
-uint8_t open(char*);
+float get_temperature(uint8_t);
+uint8_t pneu_open(char*);
 uint8_t report(char*);
 void send_prompt(uint8_t);
 uint8_t set(char*);
@@ -65,40 +69,6 @@ int main(void)
 
 }
 
-uint8_t close(char *ptr)
-{
-
-	ptr++;
-
-	switch (*ptr) {
-
-		case 'b':
-			set_valves(LEFTBM, LEFTCLOSE);
-			set_valves(RIGHTBM, RIGHTCLOSE);
-			break;
-
-		case 'l':
-			set_valves(LEFTBM, LEFTCLOSE);
-			break;
-			
-		case 'r':
-			set_valves(RIGHTBM, RIGHTCLOSE);
-			break;
-
-		case 's':										// Close shutter
-			set_valves(SHUTTERBM, SHUTTERCLOSE);
-			break;
-
-		default:
-			return(1);
-			break;
-
-	}
-
-	return(0);
-
-}
-
 void commands(void)
 {
 
@@ -120,38 +90,38 @@ void commands(void)
 	if (rebootnack) {			// Rebooted, but not acknowledged
 		if (cmdline[0] == '!') {
 			rebootnack = 0;
-			send_prompt(0);
+			send_prompt(GREATERPROMPT);
 			return;
 		} else {
-			send_prompt(REBOOTNACK);
+			send_prompt(EXCLAIMPROMPT);
 			return;			
 		}
 	}
 
-	prompt_flag = 0;
+	prompt_flag = GREATERPROMPT;
 	ptr = cmdline;
 
 	switch (*ptr) {
 
 		case 'c':
-			prompt_flag = close(ptr);
+			prompt_flag = pneu_close(ptr);
 			break;
 
 // IGNORE---------------------------------------------
 		case 'e':
 			ptr++;
 			writestr_OLED(0, ptr, 1);
-			prompt_flag = 0;
+			prompt_flag = GREATERPROMPT;
 			break;
 
 		case 'E':
 			ptr++;
 			writestr_OLED(0, ptr, 2);
-			prompt_flag = 0;
+			prompt_flag = GREATERPROMPT;
 			break;
 
 		case 'f':
-			framdata[0] = 'A';
+			framdata[0] = 'Q';
 			framdata[1] = 'B';
 			framdata[2] = 'X';
 			framdata[3] = 'D';
@@ -168,16 +138,16 @@ void commands(void)
 			for (i = 0; i < 10; i++) {
 				framtest[i] = 0;
 			}
-			memaddress = 1;
-			read_FRAM(FRAMADDR, memaddress, framtest, 9);
-			printf(strbuf, "%s read from fram\r\n", framtest);
+			memaddress = 0;
+			read_FRAM(FRAMADDR, memaddress, framtest, 10);
+			sprintf(strbuf, "%s read from fram\r\n", framtest);
 			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
-			prompt_flag = 0;
+			prompt_flag = GREATERPROMPT;
 			break;
 // STOP IGNORE----------------------------------------
 
 		case 'o':				// open
-			prompt_flag = open(ptr);
+			prompt_flag = pneu_open(ptr);
 			break;
 
 		case 'r':				// report
@@ -193,16 +163,67 @@ void commands(void)
 			break;
 
 		case '\0':
-			prompt_flag = 0;
+			prompt_flag = GREATERPROMPT;
 			break;
 	
-		default:				// send a ?
-			prompt_flag = 1;
+		default:				// send an error
+			prompt_flag = ERRORPROMPT;
 			break;
 
 	}
 
 	send_prompt(prompt_flag);
+
+}
+
+/*------------------------------------------------------------------------------
+float get_humidity(uint8_t sensor)
+	Returns the relative humidity measured by a Honeywell HiH-4030 sensor.
+
+	TRANSFER FUNCTION:
+
+	From the data sheet, page 2, the signal from the HiH-4030 is
+		Vout = Vsupply x (0.0062 x (sensorRH) + 0.16) typical at 25C
+			-or-
+		sensorRH = ((Vout/Vsupply) - 0.16) / 0.0062 (in %)
+
+	Adding the temperature correction:
+	TrueRH = (sensorRH)/(1.0546 - 0.00216 x T) (where T is in C)
+
+	Note the voltage reference is the supply voltage. The final specMech
+	circuit will use a 5V regulator for power, which ought to be stable
+	enough for this measurement.
+------------------------------------------------------------------------------*/
+float get_humidity(uint8_t sensor)
+{
+
+	uint8_t adcpin;
+	float humidity, temperature;
+
+	switch (sensor) {
+		case 0:
+			temperature = get_temperature(0);
+			adcpin = AIN1;		// test unit and production
+			break;
+		case 1:
+			temperature = get_temperature(1);
+			adcpin = AIN2;
+			break;
+		case 2:
+			temperature = get_temperature(2);
+			adcpin = AIN3;
+			break;
+		default:
+			// flag an error
+			adcpin = AIN1;			// to avoid uninitialized note
+			temperature = 20.0;		// to avoid uninitialized note
+			break;
+	}
+
+	humidity = ((read_ADS1115(ADC_RH, PGA6144, adcpin, DR128)/5.0) - 0.16) / 0.0062;
+	humidity = (humidity / (1.0546 - 0.00216 * temperature));
+
+	return(humidity);
 
 }
 
@@ -227,58 +248,86 @@ float get_temperature(uint8_t sensor)
 float get_temperature(uint8_t sensor)
 {
 
-//	uint8_t s;
 	float temperature, voltage;
-/*
-	switch (sensor) {
-		case 0:
-			s = AIN0;
-			break;
-		case 1:
-			s = AIN1;
-			break;
-		case 2:
-			s = AIN2;
-			break;
-		default:
-			s = AIN3;		// this is really an error
-			break;
-	}
-*/
+
 	voltage = read_AD590(sensor);
 	temperature = (AD590RESISTOR * voltage) - 273.15;
 	
-//check adc	operation: temperature = read_ADS1115(ADC_TE, PGA0512, pin, DR128);
-// more stuff needed here
 	return(temperature);
-
-
-
-/*
-	if (sensor == 0) {
-		return(0.0);
-	} else if (sensor == 1) {
-		return(1.0);
-	} else if (sensor == 2) {
-		return(2.0);
-	} else {
-		return(-14.44);
-	}
-
-	int16_t ival;				// Raw ADC output, 16-bit 2s complement
-	float fullscale, loadresistance;
-
-	fullscale = 512.0;			// mV (ADS1115 ADC selectable)
-	loadresistance = 1500.0;	// ohms (selected in hardware)
-	ival = read_AD590(sensor);
-	
-	return((((float) ival / 32767.0) * fullscale * loadresistance) - 273.15);
-*/
-
 
 }
 
-uint8_t open(char *ptr)
+/*------------------------------------------------------------------------------
+uint8_t pneu_close(char *ptr)
+	Close the shutter or Hartmann doors
+
+	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
+	controlled by a pair of air valves, both of which must be commanded to
+	move the shutter or door. One of the pair must be open and the other closed
+	to make the item move.
+
+	The valves are electronically activated via an MCP23008 port expander that
+	is controlled by the set_valves routine in pneu.c.
+
+	Input:
+		*ptr - a character that selects the shutter, left Hartmann door,
+		right Hartmann door, or both doors.
+
+MOVE THIS TO pneu.c?
+------------------------------------------------------------------------------*/
+uint8_t pneu_close(char *ptr)
+{
+
+	ptr++;
+
+	switch (*ptr) {
+
+		case 'b':
+			set_valves(LEFTBM, LEFTCLOSE);
+			set_valves(RIGHTBM, RIGHTCLOSE);
+			break;
+
+		case 'l':
+			set_valves(LEFTBM, LEFTCLOSE);
+			break;
+			
+		case 'r':
+			set_valves(RIGHTBM, RIGHTCLOSE);
+			break;
+
+		case 's':										// Close shutter
+			set_valves(SHUTTERBM, SHUTTERCLOSE);
+			break;
+
+		default:
+			return(ERRORPROMPT);
+			break;
+
+	}
+
+	return(GREATERPROMPT);
+
+}
+
+/*------------------------------------------------------------------------------
+uint8_t pneu_open(char *ptr)
+	Open the shutter or Hartmann doors
+
+	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
+	controlled by a pair of air valves, both of which must be commanded to
+	move the shutter or door. One of the pair must be open and the other closed
+	to make the item move.
+
+	The valves are electronically activated via an MCP23008 port expander that
+	is controlled by the set_valves routine in pneu.c.
+
+	Input:
+		*ptr - a character that selects the shutter, left Hartmann door,
+		right Hartmann door, or both doors.
+
+MOVE THIS TO pneu.c?
+------------------------------------------------------------------------------*/
+uint8_t pneu_open(char *ptr)
 {
 
 	ptr++;
@@ -302,23 +351,37 @@ uint8_t open(char *ptr)
 			break;
 
 		default:
-			return(1);
+			return(ERRORPROMPT);
 
 	}
 
-	return(0);
+	return(GREATERPROMPT);
 
 }
 
+/*------------------------------------------------------------------------------
+uint8_t report(char *ptr)
+	Report status, including reading sensors
+
+	Input
+		*ptr - Command line pointer. Incremented to find object to report
+
+	Output
+		Prints NMEA formatted output to the serial port.
+
+	Returns
+		0 - GREATERPROMPT on success
+		1 - ERRORPROMPT on error (invalid command noun)
+------------------------------------------------------------------------------*/
 uint8_t report(char *ptr)
 {
 
 	char outbuf[81], isotime[21], version[11];
-	float t0, t1, t2;
+	float t0, t1, t2, h0, h1, h2;		// temperature and humidity
 	const char format_BTM[]="$S%dBTM,%s";
 	const char format_TIM[]="$S%dTIM,%s";
 	const char format_VER[]="$S%dVER,%s";
-	const char format_ENV[]="$S%dENV,%3.3f,%3.1f,%3.1f";
+	const char format_ENV[]="$S%dENV,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%";
 
 	ptr++;
 
@@ -329,16 +392,16 @@ uint8_t report(char *ptr)
 			sprintf(outbuf, format_BTM, get_specID(), isotime);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
-
-//			get_EOD(outbuf);
-//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 		case 'e':					// Environment (temperature & humidity)
 			t0 = get_temperature(0);
+			h0 = get_humidity(0);
 			t1 = get_temperature(1);
+			h1 = get_humidity(1);
 			t2 = get_temperature(2);
-			sprintf(outbuf, format_ENV, get_specID(), t0, t1, t2);
+			h2 = get_humidity(2);
+			sprintf(outbuf, format_ENV, get_specID(), t0, h0, t1, h1, t2, h2);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 
@@ -349,9 +412,6 @@ uint8_t report(char *ptr)
 			sprintf(outbuf, format_TIM, get_specID(), isotime);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
-
-//			get_EOD(outbuf);
-//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 		case 'v':
@@ -359,21 +419,27 @@ uint8_t report(char *ptr)
 			sprintf(outbuf, format_VER, get_specID(), version);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
-
-//			get_EOD(outbuf);
-//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 		default:
-			return(1);
+			return(ERRORPROMPT);
 			break;
 
 	}
 
-	return(0);
+	return(GREATERPROMPT);
 
 }
 
+/*------------------------------------------------------------------------------
+void send_prompt(uint8_t prompt_flag)
+	Puts a command line prompt on the output line. These could be the normal
+	greater than (>) for a successful transaction, or an NMEA error line
+	followed by the greater than (>).
+
+	If specMech is rebooted, it will only prompt with a single exclamation
+	point (!) until it receives an acknowledgment in the form of a single !.
+------------------------------------------------------------------------------*/
 void send_prompt(uint8_t prompt_flag)
 {
 
@@ -383,21 +449,19 @@ void send_prompt(uint8_t prompt_flag)
 	char prompt_str[25];
 
 	switch (prompt_flag) {
-		case 0:
+		case GREATERPROMPT:
 			strcpy(prompt_str, str0);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			break;
 
-		case 1:
+		case ERRORPROMPT:
 			get_ERR(prompt_str);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
-//			get_EOD(prompt_str);
-//			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			strcpy(prompt_str, str0);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			break;
 
-		case REBOOTNACK:
+		case EXCLAIMPROMPT:
 			strcpy(prompt_str, str1);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			break;
@@ -406,12 +470,22 @@ void send_prompt(uint8_t prompt_flag)
 			strcpy(prompt_str, str1);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			break;
-			
-	}
 
+	}
 
 }
 
+/*------------------------------------------------------------------------------
+uint8_t set (char *ptr)
+	Sets hardware parameters.
+
+	Input:
+		*ptr - Command line pointer that is incremented to find the item to set.
+
+	Returns:
+		0 - on success
+		1 - invalid item to set (an unrecognized character on the command line).
+------------------------------------------------------------------------------*/
 uint8_t set(char *ptr)
 {
 
@@ -423,8 +497,8 @@ uint8_t set(char *ptr)
 			break;
 
 		default:
-			return(1);
+			return(ERRORPROMPT);
 			break;
 	}
-	return(0);
+	return(GREATERPROMPT);
 }
