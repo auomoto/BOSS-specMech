@@ -75,10 +75,6 @@ float read_AD590(uint8_t sensor)
 			pins = 0x20;
 //			pins = 0x10;	// t2
 			break;
-		case 3:
-			pins = 0xE0;
-//			pins = 0x15;	// All three AD590s on
-			break;
 		default:
 			pins = 0x00;
 			break;
@@ -88,7 +84,8 @@ float read_AD590(uint8_t sensor)
 	write_MCP23008(AD590DRIVER, GPPU, 0x00);	// Disable pullups on input pins
 	write_MCP23008(AD590DRIVER, IODIR, ~pins);	// Pins are inputs if the bit is high
 	write_MCP23008(AD590DRIVER, OLAT, pins);	// Set high the selected pins
-_delay_us(20);	// AD590 startup time
+	_delay_us(20);	// AD590 turn-on time
+
 	// Use 0.512 volts range and 128 samples per second
 //	value = read_ADS1115(ADC_TE, PGA0512, AIN3, DR128);	// on specMech board
 	value = read_ADS1115(ADC_TE, PGA0512, AIN2, DR128);	// on test board

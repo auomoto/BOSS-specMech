@@ -2,11 +2,11 @@
 usart.c
 	Serial read/write routines.
 
-	The #define computation for 9600 baud works for the 3.3MHz processor
-	speed. Haven't checked for how fast you can go with a 3.33MHz processor.
+	The #define computation for 9600 baud works for the 3.3MHz processor speed.
+	Haven't checked for how fast you can go with a 3.33MHz processor.
 
-	There are three data buffers for transmit and three for receive for a
-	total of six I/O buffers. These are the USARTBuf structures defined here.
+	There are three data buffers for transmit and three for receive for a total
+	of six I/O buffers. These are the USARTBuf structures defined here.
 
 	BUFSIZE is the length of the I/O buffer. The sendX_buf structures are
 	handled as ring buffers while the recvX_buf structures simply collect data
@@ -42,7 +42,6 @@ USARTBuf
 
 /*------------------------------------------------------------------------------
 void init_USART(void)
-
 	Set up three serial USART ports (USART0, USART1, and USART3) for 9600 baud,
 	8N1. The USART2 pins are used for the 32.768 kHz crystal oscillator so that
 	port is not available.
@@ -90,7 +89,6 @@ void init_USART(void)
 
 /*------------------------------------------------------------------------------
 void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
-
 	Send data out a serial USART port.
 
 	Input:
@@ -134,18 +132,18 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 
 }
 
-/*---------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 ISR(USART0_RXC_vect)
-	A byte at USART0 has been received. This is the channel to the
-	high level control program coming in through the EtherNET port.
+	A byte at USART0 has been received. This is the channel to the high level
+	control program coming in through the EtherNET port.
 
-	If the character received is not a <CR> ('\r') then the nxfrd
-	(number of bytes transferred) is incremented.
+	If the character received is not a <CR> ('\r') then the nxfrd (number of
+	bytes transferred) is incremented.
 
-	If the character received is a <CR> ('\r'), a string terminator
-	('\0') is inserted into the buffer instead of the '\r'. The done
-	flag is set and the nxfrd value set back to 0.
----------------------------------------------------------------------*/
+	If the character received is a <CR> ('\r'), a string terminator ('\0') is
+	inserted into the buffer instead of the '\r'. The done flag is set and the
+	nxfrd value set back to 0.
+------------------------------------------------------------------------------*/
 ISR(USART0_RXC_vect)
 {
 
@@ -162,19 +160,18 @@ ISR(USART0_RXC_vect)
 
 }
 
-/*---------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 ISR(USART0_DRE_vect)
-	Transmit data register empty interrupt. When the transmit data
-	register (USART0.TXDATAL) is empty and the interrupt is enabled,
-	you end up here.
+	Transmit data register empty interrupt. When the transmit data register
+	(USART0.TXDATAL) is empty and the interrupt is enabled, you end up here.
 	
-	Here, we send out another byte of data and then compare the number
-	of bytes already transferred (nxfrd) with the number requested
-	(nbytes). If nxfrd == nbytes, then we set the send0_buf.done flag
-	to YES and turn off this interrupt.
+	Here, we send out another byte of data and then compare the number of
+	bytes already transferred (nxfrd) with the number requested (nbytes).
+	If nxfrd == nbytes, then we set the send0_buf.done flag to YES and turn
+	off this interrupt.
 
 	Sending is started by calling send_USART(port).
----------------------------------------------------------------------*/
+------------------------------------------------------------------------------*/
 ISR(USART0_DRE_vect)
 {
 
@@ -189,18 +186,18 @@ ISR(USART0_DRE_vect)
 
 }
 
-/*---------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 ISR(USART1_RXC_vect)
 	A byte at USART1 has been received.
 
 CHANGE AS NEEDED:
-	If the character received is not a <CR> ('\r') then the nxfrd
-	(number of bytes transferred) is incremented.
+	If the character received is not a <CR> ('\r') then the nxfrd (number of
+	bytes transferred) is incremented.
 
-	If the character received is a <CR> ('\r'), a string terminator
-	('\0') is inserted into the buffer instead of the '\r'. The done
-	flag is set and the nxfrd value set back to 0.
----------------------------------------------------------------------*/
+	If the character received is a <CR> ('\r'), a string terminator ('\0') is
+	inserted into the buffer instead of the '\r'. The done flag is set and the
+	nxfrd value set back to 0.
+------------------------------------------------------------------------------*/
 ISR(USART1_RXC_vect)
 {
 
@@ -219,19 +216,18 @@ ISR(USART1_RXC_vect)
 
 }
 
-/*---------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 ISR(USART1_DRE_vect)
-	Transmit data register empty interrupt. When the transmit data
-	register (USART1.TXDATAL) is empty and the interrupt is enabled,
-	you end up here.
+	Transmit data register empty interrupt. When the transmit data register
+	(USART1.TXDATAL) is empty and the interrupt is enabled, you end up here.
 	
-	Here, we send out another byte of data and then compare the number
-	of bytes already transferred (nxfrd) with the number requested
-	(nbytes). If nxfrd == nbytes, then we set the send0_buf.done flag
-	to YES and turn off this interrupt.
+	Here, we send out another byte of data and then compare the number of
+	bytes already transferred (nxfrd) with the number requested (nbytes).
+	If nxfrd == nbytes, then we set the send0_buf.done flag to YES and turn
+	off this interrupt.
 
 	Sending is started by calling send_USART(port).
----------------------------------------------------------------------*/
+------------------------------------------------------------------------------*/
 ISR(USART1_DRE_vect)
 {
 
@@ -243,18 +239,18 @@ ISR(USART1_DRE_vect)
 
 }
 
-/*---------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 ISR(USART3_RXC_vect)
 	A byte at USART3 has been received.
 
 CHANGE AS NEEDED:
-	If the character received is not a <CR> ('\r') then the nxfrd
-	(number of bytes transferred) is incremented.
+	If the character received is not a <CR> ('\r') then the nxfrd (number of
+	bytes transferred) is incremented.
 
-	If the character received is a <CR> ('\r'), a string terminator
-	('\0') is inserted into the buffer instead of the '\r'. The done
-	flag is set and the nxfrd value set back to 0.
----------------------------------------------------------------------*/
+	If the character received is a <CR> ('\r'), a string terminator ('\0') is
+	inserted into the buffer instead of the '\r'. The done flag is set and the
+	nxfrd value set back to 0.
+------------------------------------------------------------------------------*/
 ISR(USART3_RXC_vect)
 {
 
@@ -273,19 +269,18 @@ ISR(USART3_RXC_vect)
 
 }
 
-/*---------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 ISR(USART3_DRE_vect)
-	Transmit data register empty interrupt. When the transmit data
-	register (USART3.TXDATAL) is empty and the interrupt is enabled,
-	you end up here.
+	Transmit data register empty interrupt. When the transmit data register
+	(USART3.TXDATAL) is empty and the interrupt is enabled, you end up here.
 	
-	Here, we send out another byte of data and then compare the number
-	of bytes already transferred (nxfrd) with the number requested
-	(nbytes). If nxfrd == nbytes, then we set the send0_buf.done flag
-	to YES and turn off this interrupt.
+	Here, we send out another byte of data and then compare the number of
+	bytes already transferred (nxfrd) with the number requested (nbytes).
+	If nxfrd == nbytes, then we set the send0_buf.done flag to YES and turn
+	off this interrupt.
 
 	Sending is started by calling send_USART(port).
----------------------------------------------------------------------*/
+------------------------------------------------------------------------------*/
 ISR(USART3_DRE_vect)
 {
 

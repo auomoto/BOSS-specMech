@@ -1,3 +1,8 @@
+/*------------------------------------------------------------------------------
+eeprom.c
+	Reads and writes the specMech version and system boot time.
+------------------------------------------------------------------------------*/
+
 #ifndef EEPROMC
 #define EEPROMC
 
@@ -5,7 +10,7 @@
 
 // EEPROM defines
 #define VERSIONADDR		(0)		// Version string must have exactly 11 bytes
-#define VERSIONSIZE		(11)	// Date as in YYYY-DD-MM
+#define VERSIONSIZE		(11)	// Version is the date, as YYYY-DD-MM
 #define BOOTTIMEADDR	(11)	// Boot time has exactly 21 bytes
 #define BOOTTIMESIZE	(21)	// ISO date format, nearest second
 

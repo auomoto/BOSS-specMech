@@ -70,7 +70,7 @@ void init_OLED(uint8_t displaynumber)
 	} else {
 		twiaddr = OLEDADDR1;
 		PORTE.OUTCLR = PIN1_bm;		// Change these for real life
-		PORTE.DIRSET = PIN1_bm;		// PE01is the /RESET pin for the OLED1 display
+		PORTE.DIRSET = PIN1_bm;		// PE1 is the /RESET pin for the OLED1 display
 		_delay_ms(1);
 		PORTE.OUTSET = PIN1_bm;
 

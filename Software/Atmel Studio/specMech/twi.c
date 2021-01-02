@@ -25,7 +25,6 @@ uint8_t write_TWI(uint8_t);
 
 /*------------------------------------------------------------------------------
 void init_TWI(void)
-
 	Initialize the TWI interface on a megaAVR 0-series processor.
 
 	On the ATMega4809:
@@ -68,7 +67,6 @@ void init_TWI(void)
 
 /*------------------------------------------------------------------------------
 uint8_t read_TWI(void)
-
 	Read one byte then send an ACK.
 	Use readlast_TWI() to read the last byte and send a NACK.
 ------------------------------------------------------------------------------*/
@@ -90,7 +88,6 @@ uint8_t read_TWI(void)
 
 /*------------------------------------------------------------------------------
 uint8_t readlast_TWI(void)
-
 	Read the last byte in a sequence, or the first byte in a single-byte read.
 	This routine sends a NACK.
 ------------------------------------------------------------------------------*/
@@ -112,7 +109,6 @@ uint8_t readlast_TWI(void)
 
 /*------------------------------------------------------------------------------
 uint8_t start_TWI(uint8_t address, uint8_t rw)
-
 	Puts a start condition on the bus and sends the device address and R/W bit.
 	The address has already been left-shifted to make space for the rw bit
 	(bit 0), which will be added or cleared here depending on the value of rw.
@@ -164,7 +160,6 @@ uint8_t start_TWI(uint8_t addr, uint8_t rw)
 
 /*------------------------------------------------------------------------------
 void stop_TWI(void)
-
 	Puts a stop condition on the TWI bus. The TWI_MCMD_STOP_gc bit in MCTRLB
 	is a strobe action.
 ------------------------------------------------------------------------------*/
@@ -177,7 +172,6 @@ void stop_TWI(void)
 
 /*------------------------------------------------------------------------------
 uint8_t write_TWI(uint8_t data)
-
 	Write data onto the TWI bus.
 	The test for RXACK being set is probably not interesting since an ACK
 	is required to get out of the NOP loop at the top.

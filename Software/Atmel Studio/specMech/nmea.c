@@ -1,15 +1,19 @@
+/*------------------------------------------------------------------------------
+NMEA checksum computations
+	Append the NMEA style checksums to the presented character string.
+------------------------------------------------------------------------------*/
+
 #ifndef NMEAC
 #define NMEAC
 
-/*------------------------------------------------------------------------------
-NMEA checksum computations
-	These routines append the NMEA style checksums to the presented character
-	string.
-------------------------------------------------------------------------------*/
 // Function Prototypes
 void checksum_NMEA(char*);
 uint8_t get_specID(void);
 
+/*------------------------------------------------------------------------------
+void checksum_NMEA(char *str)
+	Append checksum to a string
+------------------------------------------------------------------------------*/
 void checksum_NMEA(char *str)
 {
 	const char format_CSM[]="*%02X\r\n";
@@ -27,6 +31,10 @@ void checksum_NMEA(char *str)
 
 }
 
+/*------------------------------------------------------------------------------
+void get_ERR(char *str)
+	Returns the stock error indicator line depending on spectrograph ID.
+------------------------------------------------------------------------------*/
 void get_ERR(char *str)
 {
 

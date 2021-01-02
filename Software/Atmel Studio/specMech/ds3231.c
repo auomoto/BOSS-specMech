@@ -1,3 +1,9 @@
+/*------------------------------------------------------------------------------
+ds3231.c
+	TWI routines for the DS3231 day/time clock. Includes routines to convert
+	device time to ISO time (YYYY-MM-DDTHH:MM:SSZ) and vice versa.
+------------------------------------------------------------------------------*/
+
 #ifndef DS3231C
 #define DS3231C
 
@@ -48,7 +54,6 @@ void convert_iso2ds(uint8_t (uint8_t *ds3231time, char *isotime)
 
 	ISO time format is YYYY-MM-DDThh:mm:ssZ
 ------------------------------------------------------------------------------*/
-
 void convert_iso2ds(uint8_t *ds3231time, char *isotime)
 {
 
