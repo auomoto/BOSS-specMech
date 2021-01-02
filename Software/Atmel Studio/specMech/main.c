@@ -22,6 +22,7 @@ specMech.c
 #include "mcp23008.c"	// MCP23008 port expander
 #include "pneu.c"		// Pneumatic valves and sensors
 #include "ads1115.c"	// ADS1115 ADC
+#include "ad590.c"		// AD590 temperature sensors
 #include "usart.c"		// Serial (RS232) communications
 #include "fram.c"		// FRAM memory
 #include "ds3231.c"		// Day-time clock
@@ -169,7 +170,7 @@ void commands(void)
 			}
 			memaddress = 1;
 			read_FRAM(FRAMADDR, memaddress, framtest, 9);
-			sprintf(strbuf, "%s read from fram\r\n", framtest);
+			printf(strbuf, "%s read from fram\r\n", framtest);
 			send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
 			prompt_flag = 0;
 			break;
@@ -202,6 +203,78 @@ void commands(void)
 	}
 
 	send_prompt(prompt_flag);
+
+}
+
+/*------------------------------------------------------------------------------
+float get_temperature(uint8_t sensor)
+	Return the temperature in degrees C.
+
+	Input
+		sensor - 0, 1, 2, or 3 depending on which AD590 sensor you want.
+			sensor=3 turns them all on and you get the average.
+
+	Output
+		The temperature in C
+
+	We assume that the ADC and sensor have no zero-point errors, that is, we
+	did not calibrate the devices but used them as-is out of the box. For our
+	purposes this is probably OK but we might want to at least measure a zero-
+	point for the actual devices.
+
+	The signal is 1.5E-3 mV/K with a 1500 kOhm dropping resistor.
+------------------------------------------------------------------------------*/
+float get_temperature(uint8_t sensor)
+{
+
+//	uint8_t s;
+	float temperature, voltage;
+/*
+	switch (sensor) {
+		case 0:
+			s = AIN0;
+			break;
+		case 1:
+			s = AIN1;
+			break;
+		case 2:
+			s = AIN2;
+			break;
+		default:
+			s = AIN3;		// this is really an error
+			break;
+	}
+*/
+	voltage = read_AD590(sensor);
+	temperature = (AD590RESISTOR * voltage) - 273.15;
+	
+//check adc	operation: temperature = read_ADS1115(ADC_TE, PGA0512, pin, DR128);
+// more stuff needed here
+	return(temperature);
+
+
+
+/*
+	if (sensor == 0) {
+		return(0.0);
+	} else if (sensor == 1) {
+		return(1.0);
+	} else if (sensor == 2) {
+		return(2.0);
+	} else {
+		return(-14.44);
+	}
+
+	int16_t ival;				// Raw ADC output, 16-bit 2s complement
+	float fullscale, loadresistance;
+
+	fullscale = 512.0;			// mV (ADS1115 ADC selectable)
+	loadresistance = 1500.0;	// ohms (selected in hardware)
+	ival = read_AD590(sensor);
+	
+	return((((float) ival / 32767.0) * fullscale * loadresistance) - 273.15);
+*/
+
 
 }
 
@@ -241,9 +314,11 @@ uint8_t report(char *ptr)
 {
 
 	char outbuf[81], isotime[21], version[11];
+	float t0, t1, t2;
 	const char format_BTM[]="$S%dBTM,%s";
 	const char format_TIM[]="$S%dTIM,%s";
 	const char format_VER[]="$S%dVER,%s";
+	const char format_ENV[]="$S%dENV,%3.3f,%3.1f,%3.1f";
 
 	ptr++;
 
@@ -257,6 +332,16 @@ uint8_t report(char *ptr)
 
 //			get_EOD(outbuf);
 //			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		case 'e':					// Environment (temperature & humidity)
+			t0 = get_temperature(0);
+			t1 = get_temperature(1);
+			t2 = get_temperature(2);
+			sprintf(outbuf, format_ENV, get_specID(), t0, t1, t2);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+
 			break;
 
 		case 't':					// Report current time on specMech clock
