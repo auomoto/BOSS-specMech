@@ -5,7 +5,6 @@ specMech.c
 ------------------------------------------------------------------------------*/
 #define F_CPU		3333333UL
 #define VERSION		"2021-01-02"
-
 #define	YES				1
 #define	NO				0
 #define GREATERPROMPT	0	// Standard return prompt >
@@ -18,28 +17,28 @@ specMech.c
 #include <stdio.h>		// sprintf
 #include <string.h>		// for strcpy, strlen
 
-#include "ports.c"		// ATMega4809 ports
-#include "led.c"		// On-board LED
-#include "twi.c"		// I2C
-#include "mcp23008.c"	// MCP23008 port expander
-#include "pneu.c"		// Pneumatic valves and sensors
-#include "ads1115.c"	// ADS1115 ADC
-#include "ad590.c"		// AD590 temperature sensors
-#include "usart.c"		// Serial (RS232) communications
-#include "fram.c"		// FRAM memory
-#include "ds3231.c"		// Day-time clock
-#include "nmea.c"		// GPS style output
-#include "oled.c"		// Newhaven OLED display
-#include "eeprom.c"		// ATMega4809 eeprom
-#include "wdt.c"		// Watchdog timer used only for reboot function
+#include "ports.c"			// ATMega4809 ports
+#include "led.c"			// On-board LED
+#include "specid.c"			// Spectrograph ID jumper
+#include "twi.c"			// I2C
+#include "mcp23008.c"		// MCP23008 port expander
+#include "pneu.c"			// Pneumatic valves and sensors
+#include "ads1115.c"		// ADS1115 ADC
+#include "ad590.c"			// AD590 temperature sensors
+#include "mcp9808.c"		// MCP9808 sensor
+#include "temperature.c"	// AD590 and MCP9808 sensors
+#include "humidity.c"		// Honeywell HiH-4031
+#include "ionpump.c"		// Read the ion pump vacuum
+#include "usart.c"			// Serial (RS232) communications
+#include "fram.c"			// FRAM memory
+#include "ds3231.c"			// Day-time clock
+#include "nmea.c"			// GPS style output
+#include "oled.c"			// Newhaven OLED display
+#include "eeprom.c"			// ATMega4809 eeprom
+#include "wdt.c"			// Watchdog timer used only for reboot function
 
 // Function Prototypes
-uint8_t pneu_close(char*);
 void commands(void);
-float get_humidity(uint8_t);
-uint8_t get_specID(void);
-float get_temperature(uint8_t);
-uint8_t pneu_open(char*);
 uint8_t report(char*);
 void send_prompt(uint8_t);
 uint8_t set(char*);
@@ -53,6 +52,7 @@ int main(void)
 
 	init_PORTS();
 	init_LED();
+	init_SPECID();
 	init_TWI();
 	init_PNEU();
 	init_USART();
@@ -177,189 +177,6 @@ void commands(void)
 }
 
 /*------------------------------------------------------------------------------
-float get_humidity(uint8_t sensor)
-	Returns the relative humidity measured by a Honeywell HiH-4030 sensor.
-
-	TRANSFER FUNCTION:
-
-	From the data sheet, page 2, the signal from the HiH-4030 is
-		Vout = Vsupply x (0.0062 x (sensorRH) + 0.16) typical at 25C
-			-or-
-		sensorRH = ((Vout/Vsupply) - 0.16) / 0.0062 (in %)
-
-	Adding the temperature correction:
-	TrueRH = (sensorRH)/(1.0546 - 0.00216 x T) (where T is in C)
-
-	Note the voltage reference is the supply voltage. The final specMech
-	circuit will use a 5V regulator for power, which ought to be stable
-	enough for this measurement.
-------------------------------------------------------------------------------*/
-float get_humidity(uint8_t sensor)
-{
-
-	uint8_t adcpin;
-	float humidity, temperature;
-
-	switch (sensor) {
-		case 0:
-			temperature = get_temperature(0);
-			adcpin = AIN1;		// test unit and production
-			break;
-		case 1:
-			temperature = get_temperature(1);
-			adcpin = AIN2;
-			break;
-		case 2:
-			temperature = get_temperature(2);
-			adcpin = AIN3;
-			break;
-		default:
-			// flag an error
-			adcpin = AIN1;			// to avoid uninitialized note
-			temperature = 20.0;		// to avoid uninitialized note
-			break;
-	}
-
-	humidity = ((read_ADS1115(ADC_RH, PGA6144, adcpin, DR128)/5.0) - 0.16) / 0.0062;
-	humidity = (humidity / (1.0546 - 0.00216 * temperature));
-
-	return(humidity);
-
-}
-
-/*------------------------------------------------------------------------------
-float get_temperature(uint8_t sensor)
-	Return the temperature in degrees C.
-
-	Input
-		sensor - 0, 1, 2, or 3 depending on which AD590 sensor you want.
-			sensor=3 turns them all on and you get the average.
-
-	Output
-		The temperature in C
-
-	We assume that the ADC and sensor have no zero-point errors, that is, we
-	did not calibrate the devices but used them as-is out of the box. For our
-	purposes this is probably OK but we might want to at least measure a zero-
-	point for the actual devices.
-
-	The signal is 1.5E-3 mV/K with a 1500 kOhm dropping resistor.
-------------------------------------------------------------------------------*/
-float get_temperature(uint8_t sensor)
-{
-
-	float temperature, voltage;
-
-	voltage = read_AD590(sensor);
-	temperature = (AD590RESISTOR * voltage) - 273.15;
-	
-	return(temperature);
-
-}
-
-/*------------------------------------------------------------------------------
-uint8_t pneu_close(char *ptr)
-	Close the shutter or Hartmann doors
-
-	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
-	controlled by a pair of air valves, both of which must be commanded to
-	move the shutter or door. One of the pair must be open and the other closed
-	to make the item move.
-
-	The valves are electronically activated via an MCP23008 port expander that
-	is controlled by the set_valves routine in pneu.c.
-
-	Input:
-		*ptr - a character that selects the shutter, left Hartmann door,
-		right Hartmann door, or both doors.
-
-MOVE THIS TO pneu.c?
-------------------------------------------------------------------------------*/
-uint8_t pneu_close(char *ptr)
-{
-
-	ptr++;
-
-	switch (*ptr) {
-
-		case 'b':
-			set_valves(LEFTBM, LEFTCLOSE);
-			set_valves(RIGHTBM, RIGHTCLOSE);
-			break;
-
-		case 'l':
-			set_valves(LEFTBM, LEFTCLOSE);
-			break;
-			
-		case 'r':
-			set_valves(RIGHTBM, RIGHTCLOSE);
-			break;
-
-		case 's':										// Close shutter
-			set_valves(SHUTTERBM, SHUTTERCLOSE);
-			break;
-
-		default:
-			return(ERRORPROMPT);
-			break;
-
-	}
-
-	return(GREATERPROMPT);
-
-}
-
-/*------------------------------------------------------------------------------
-uint8_t pneu_open(char *ptr)
-	Open the shutter or Hartmann doors
-
-	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
-	controlled by a pair of air valves, both of which must be commanded to
-	move the shutter or door. One of the pair must be open and the other closed
-	to make the item move.
-
-	The valves are electronically activated via an MCP23008 port expander that
-	is controlled by the set_valves routine in pneu.c.
-
-	Input:
-		*ptr - a character that selects the shutter, left Hartmann door,
-		right Hartmann door, or both doors.
-
-MOVE THIS TO pneu.c?
-------------------------------------------------------------------------------*/
-uint8_t pneu_open(char *ptr)
-{
-
-	ptr++;
-	switch (*ptr) {
-
-		case 'b':
-			set_valves(LEFTBM, LEFTOPEN);
-			set_valves(RIGHTBM, RIGHTOPEN);
-			break;
-
-		case 'l':
-			set_valves(LEFTBM, LEFTOPEN);
-			break;
-		
-		case 'r':
-			set_valves(RIGHTBM, RIGHTOPEN);
-			break;
-
-		case 's':
-			set_valves(SHUTTERBM, SHUTTEROPEN);
-			break;
-
-		default:
-			return(ERRORPROMPT);
-
-	}
-
-	return(GREATERPROMPT);
-
-}
-
-/*------------------------------------------------------------------------------
 uint8_t report(char *ptr)
 	Report status, including reading sensors
 
@@ -377,13 +194,18 @@ uint8_t report(char *ptr)
 {
 
 	char outbuf[81], isotime[21], version[11];
-	float t0, t1, t2, h0, h1, h2;		// temperature and humidity
+	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
+	float redvac, bluvac;						// red and blue vacuum
 	const char format_BTM[]="$S%dBTM,%s";
 	const char format_TIM[]="$S%dTIM,%s";
 	const char format_VER[]="$S%dVER,%s";
-	const char format_ENV[]="$S%dENV,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%";
+	const char format_ENV[]="$S%dENV,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC";
+	const char format_VAC[]="$S%dVAC,%6.3f,%6.3f";
 
 	ptr++;
+
+	t0 = t1 = t2 = t3 = -99.0;
+	h0 = h1 = h2 = -99.0;
 
 	switch(*ptr++) {
 
@@ -401,10 +223,10 @@ uint8_t report(char *ptr)
 			h1 = get_humidity(1);
 			t2 = get_temperature(2);
 			h2 = get_humidity(2);
-			sprintf(outbuf, format_ENV, get_specID(), t0, h0, t1, h1, t2, h2);
+			t3 = get_temperature(3);
+			sprintf(outbuf, format_ENV, get_specID(), t0, h0, t1, h1, t2, h2, t3);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
-
 			break;
 
 		case 't':					// Report current time on specMech clock
@@ -415,6 +237,14 @@ uint8_t report(char *ptr)
 			break;
 
 		case 'v':
+			redvac = read_ionpump(REDPUMP);
+			bluvac = read_ionpump(BLUEPUMP);
+			sprintf(outbuf, format_VAC, get_specID(), redvac, bluvac);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		case 'V':
 			get_VERSION(version);	// Send the specMech version
 			sprintf(outbuf, format_VER, get_specID(), version);
 			checksum_NMEA(outbuf);
@@ -455,7 +285,7 @@ void send_prompt(uint8_t prompt_flag)
 			break;
 
 		case ERRORPROMPT:
-			get_ERR(prompt_str);
+			format_ERR(prompt_str);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			strcpy(prompt_str, str0);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));

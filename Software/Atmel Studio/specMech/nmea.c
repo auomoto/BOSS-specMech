@@ -8,7 +8,7 @@ NMEA checksum computations
 
 // Function Prototypes
 void checksum_NMEA(char*);
-uint8_t get_specID(void);
+void format_ERR(char*);
 
 /*------------------------------------------------------------------------------
 void checksum_NMEA(char *str)
@@ -16,7 +16,7 @@ void checksum_NMEA(char *str)
 ------------------------------------------------------------------------------*/
 void checksum_NMEA(char *str)
 {
-	const char format_CSM[]="*%02X\r\n";
+	const char format_CSM[] = "*%02X\r\n";
 
 	char chksum[6];
 	uint8_t i, nchar, checksum;
@@ -32,28 +32,16 @@ void checksum_NMEA(char *str)
 }
 
 /*------------------------------------------------------------------------------
-void get_ERR(char *str)
-	Returns the stock error indicator line depending on spectrograph ID.
+void format_ERR(char *str)
+	Returns an error line
 ------------------------------------------------------------------------------*/
-void get_ERR(char *str)
+void format_ERR(char *str)
 {
 
-	const char err1[]="$S1ERR*27\r\n";
-	const char err2[]="$S2ERR*24\r\n";
+	const char errformat[] = "$%dERR";
 
-	if (get_specID() == 1) {
-		strcpy(str, err1);
-	} else {
-		strcpy(str, err2);
-	}
-
-}
-
-uint8_t get_specID(void)
-{
-
-	// Read the jumper instead of just returning 2
-	return(2);
+	sprintf(str, errformat, get_specID());
+	checksum_NMEA(str);
 
 }
 

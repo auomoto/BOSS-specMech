@@ -19,9 +19,10 @@ main.d main.o: .././main.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././ports.c .././led.c .././twi.c .././mcp23008.c .././pneu.c \
- .././ads1115.c .././ad590.c .././usart.c .././fram.c .././ds3231.c \
- .././nmea.c .././oled.c .././eeprom.c \
+ .././ports.c .././led.c .././specid.c .././twi.c .././mcp23008.c \
+ .././pneu.c .././ads1115.c .././ad590.c .././mcp9808.c \
+ .././temperature.c .././humidity.c .././ionpump.c .././usart.c \
+ .././fram.c .././ds3231.c .././nmea.c .././oled.c .././eeprom.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././wdt.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\wdt.h
@@ -70,6 +71,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././led.c:
 
+.././specid.c:
+
 .././twi.c:
 
 .././mcp23008.c:
@@ -79,6 +82,14 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././ads1115.c:
 
 .././ad590.c:
+
+.././mcp9808.c:
+
+.././temperature.c:
+
+.././humidity.c:
+
+.././ionpump.c:
 
 .././usart.c:
 

@@ -11,7 +11,6 @@ void init_PORTS(void);
 
 /*------------------------------------------------------------------------------
 void init_PORTS(void)
-
 	Sets all I/O ports on the ATMega4809 to be inputs with pullups enabled
 	except ADC ports, which have their inputs disabled. This is just to make
 	sure nothing lurks in the background by accident.

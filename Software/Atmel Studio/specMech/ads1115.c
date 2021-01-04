@@ -22,10 +22,10 @@ ads1115.c
 #define ADS1115CONFIG		(0x01)	// Config register
 #define ADS1115CONVERSION	(0x00)	// Conversion register
 
-// ADS1115 device addresses
+// ADS1115 TWI device addresses
 #define ADC_TE	0b10010000		// ADDR pin connected to GND (temperature)
 #define ADC_RH	0b10010000		// Relative Humidity (same unit as temperature)
-#define ADC_IP	0b01001001		// ADDR pin connected to VDD (ion pump)
+#define ADC_IP	0b10010010		// ADDR pin connected to VDD (ion pump)
 
 // ADS1115 analog input pin (bits 6, 5, & 4)
 #define AIN0	0b01000000		// 100
@@ -64,11 +64,12 @@ ads1115.c
 float read_ADS1115(uint8_t, uint8_t, uint8_t, uint8_t);
 
 /*------------------------------------------------------------------------------
-float read_ADS1115(uint8_t address, uint8_t scale, uint8_t pin)
-	Returns the voltage read by the ADS1115 ADC. The address is TWI address
-	left-shifted and zero-filled by one bit (for the R/W bit). The scale selects
+float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
+	Returns the voltage read by an ADS1115 ADC. The address is the TWI address
+	left-shifted and zero-filled by one bit (for the R/W bit). The gain selects
 	the programmable gain amplifier setting (values are in the #defines at the
-	top of this listing). The pin selects one of the four inputs (0 to 3).
+	top of this listing). The pin selects the input pin configuration, either
+	single-ended or differential. The datarate selects the obvious.
 
 	Quickstart guide is on page 30 of the data sheet. The steps are:
 
@@ -187,8 +188,18 @@ float read_ADS1115(uint8_t address, uint8_t scale, uint8_t pin)
 	|  001	| 4.096	|  4.096/32767	|  1.250038E-4	|
 	|  000	| 6.144	|  6.144/32767	|  1.875057E-4	|
 	-------------------------------------------------
-------------------------------------------------------------------------------*/
+	where the Scale is the voltage change in the LSB.
 
+	Inputs:
+		addr - TWI address of the ADS1115, left shifted one bit with bit 0, the
+			TWI R/W bit, being 0.
+		gain - One of the six possible gain settings.
+		pins - The input pin or pins to be read. These can be either single-
+			ended (positive only) or differential.
+		datarate - one of the eight selectable data rates. We chose the
+			default of 128 samples per second although we haven't explored
+			any other options.
+------------------------------------------------------------------------------*/
 float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
 {
 
@@ -200,11 +211,12 @@ float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
 	// Write the CONFIG register
 	confighi = 0b10000001 | gain | pins;
 	configlo = datarate;					// Change to add conversion ready?
+
 	if ((retval = start_TWI(addr, TWIWRITE))) {		// TWI start condition
 		stop_TWI();
 		return(retval);
 	}
-	if ((retval = write_TWI(ADS1115CONFIG))) {		// Select CONFIG register
+	if ((retval = write_TWI(ADS1115CONFIG))) {		// Write the CONFIG register
 		stop_TWI();
 		return(retval);
 	}
@@ -218,31 +230,30 @@ float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
 	}
 	stop_TWI();
 
-	_delay_us(25);							// Power-up time
+	_delay_us(25);									// Power-up time
 
 	converting = YES;
-	while (converting) {					// Wait for conversion to finish
+	while (converting) {							// Wait for conversion to finish
 		start_TWI(addr, TWIREAD);
-		flag = readlast_TWI();	// CHANGE TO HARDWARE SENSE ON RDY PIN?
-		if (flag & 0b10000000) {
+		flag = readlast_TWI();				// CHANGE TO HARDWARE SENSE ON RDY PIN?
+		if (flag & 0b10000000) {			// or add a timer timeout
 			converting = NO;
 		}
 	}
 	stop_TWI();
 
 	start_TWI(addr, TWIWRITE);
-	write_TWI(ADS1115CONVERSION);
-	start_TWI(addr, TWIREAD);
+	write_TWI(ADS1115CONVERSION);					// Start the ADC conversion
+	start_TWI(addr, TWIREAD);						// Read the data
 	highbyte = read_TWI();
 	lowbyte = readlast_TWI();
 	stop_TWI();
-
 
 	value = highbyte;
 	value = value << 8;
 	value |= lowbyte;
 
-	switch (gain) {					// Convert to voltage
+	switch (gain) {									// Convert to voltage
 		case PGA0256:
 			scale = SCA0256;
 			break;
