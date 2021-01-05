@@ -796,14 +796,14 @@ END GROUP
  *(.fini0)
                 0x00002b60                _etext = .
 
-.rodata         0x00006b60       0xe3 load address 0x00002b60
+.rodata         0x00006b60       0xec load address 0x00002b60
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00006b60       0xe3 main.o
+                0x00006b60       0xec main.o
  *(.gnu.linkonce.r*)
 
-.data           0x00802800        0x2 load address 0x00002c43
+.data           0x00802800        0x2 load address 0x00002c4c
                 0x00802800                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -828,8 +828,8 @@ END GROUP
                 0x00802a16                send3_buf
                 0x00802a9b                send1_buf
                 0x00802b20                PROVIDE (__bss_end, .)
-                0x00002c43                __data_load_start = LOADADDR (.data)
-                0x00002c45                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00002c4c                __data_load_start = LOADADDR (.data)
+                0x00002c4e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00802b20        0x0
                 [!provide]                PROVIDE (__noinit_start, .)

@@ -200,7 +200,7 @@ uint8_t report(char *ptr)
 	const char format_TIM[]="$S%dTIM,%s";
 	const char format_VER[]="$S%dVER,%s";
 	const char format_ENV[]="$S%dENV,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC";
-	const char format_VAC[]="$S%dVAC,%6.3f,%6.3f";
+	const char format_VAC[]="$S%dVAC,%6.3f,red,%6.3f,blue";
 
 	ptr++;
 
