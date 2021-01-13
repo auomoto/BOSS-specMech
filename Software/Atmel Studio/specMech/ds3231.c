@@ -43,7 +43,7 @@ void convert_ds2iso(char *isotime, uint8_t *ds3231time)
 	month = (*ds3231time++);
 	year = (*ds3231time);
 
-	sprintf(isotime, "20%02x-%02x-%02xT%02x:%02x:%02xZ",
+	sprintf(isotime, "20%02x-%02x-%02xT%02x:%02x:%02x",
 		year, month, date, hours, minutes, seconds);
 
 }
