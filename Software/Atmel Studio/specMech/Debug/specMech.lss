@@ -2545,7 +2545,7 @@ uint8_t report(char *ptr)
     1508:	0d 92       	st	X+, r0
     150a:	2a 95       	dec	r18
     150c:	e1 f7       	brne	.-8      	; 0x1506 <report+0x78>
-	const char format_VAC[]="$S%dVAC,%6.3f,red,%6.3f,blue";
+	const char format_VAC[]="$S%dVAC,%5.2f,red,%5.2f,blue";
     150e:	2d e1       	ldi	r18, 0x1D	; 29
     1510:	ea e1       	ldi	r30, 0x1A	; 26
     1512:	fc e6       	ldi	r31, 0x6C	; 108
@@ -2567,11 +2567,11 @@ uint8_t report(char *ptr)
     1526:	85 36       	cpi	r24, 0x65	; 101
     1528:	c1 f1       	breq	.+112    	; 0x159a <report+0x10c>
     152a:	30 f4       	brcc	.+12     	; 0x1538 <report+0xaa>
-    152c:	86 35       	cpi	r24, 0x56	; 86
-    152e:	09 f4       	brne	.+2      	; 0x1532 <report+0xa4>
-    1530:	72 c1       	rjmp	.+740    	; 0x1816 <__DATA_REGION_LENGTH__+0x16>
-    1532:	82 36       	cpi	r24, 0x62	; 98
-    1534:	41 f0       	breq	.+16     	; 0x1546 <report+0xb8>
+    152c:	82 34       	cpi	r24, 0x42	; 66
+    152e:	59 f0       	breq	.+22     	; 0x1546 <report+0xb8>
+    1530:	86 35       	cpi	r24, 0x56	; 86
+    1532:	09 f4       	brne	.+2      	; 0x1536 <report+0xa8>
+    1534:	70 c1       	rjmp	.+736    	; 0x1816 <__DATA_REGION_LENGTH__+0x16>
     1536:	99 c1       	rjmp	.+818    	; 0x186a <__DATA_REGION_LENGTH__+0x6a>
     1538:	84 37       	cpi	r24, 0x74	; 116
     153a:	09 f4       	brne	.+2      	; 0x153e <report+0xb0>
@@ -2581,7 +2581,7 @@ uint8_t report(char *ptr)
     1542:	30 c1       	rjmp	.+608    	; 0x17a4 <report+0x316>
     1544:	92 c1       	rjmp	.+804    	; 0x186a <__DATA_REGION_LENGTH__+0x6a>
 
-		case 'b':					// Boot time
+		case 'B':					// Boot time
 			get_BOOTTIME(isotime);
     1546:	8e 01       	movw	r16, r28
     1548:	0e 5a       	subi	r16, 0xAE	; 174
@@ -2629,7 +2629,7 @@ uint8_t report(char *ptr)
 
 	return(GREATERPROMPT);
     1596:	80 e0       	ldi	r24, 0x00	; 0
-		case 'b':					// Boot time
+		case 'B':					// Boot time
 			get_BOOTTIME(isotime);
 			sprintf(outbuf, format_BTM, get_specID(), isotime);
 			checksum_NMEA(outbuf);

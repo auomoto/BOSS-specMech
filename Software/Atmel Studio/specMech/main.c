@@ -200,7 +200,7 @@ uint8_t report(char *ptr)
 	const char format_TIM[]="$S%dTIM,%s";
 	const char format_VER[]="$S%dVER,%s";
 	const char format_ENV[]="$S%dENV,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC";
-	const char format_VAC[]="$S%dVAC,%6.3f,red,%6.3f,blue";
+	const char format_VAC[]="$S%dVAC,%5.2f,red,%5.2f,blue";
 
 	ptr++;
 
@@ -209,7 +209,7 @@ uint8_t report(char *ptr)
 
 	switch(*ptr++) {
 
-		case 'b':					// Boot time
+		case 'B':					// Boot time
 			get_BOOTTIME(isotime);
 			sprintf(outbuf, format_BTM, get_specID(), isotime);
 			checksum_NMEA(outbuf);
