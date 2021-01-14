@@ -796,14 +796,14 @@ END GROUP
  *(.fini0)
                 0x00002b60                _etext = .
 
-.rodata         0x00006b60       0xeb load address 0x00002b60
+.rodata         0x00006b60       0xec load address 0x00002b60
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00006b60       0xeb main.o
+                0x00006b60       0xec main.o
  *(.gnu.linkonce.r*)
 
-.data           0x00802800        0x2 load address 0x00002c4b
+.data           0x00802800        0x2 load address 0x00002c4c
                 0x00802800                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -828,8 +828,8 @@ END GROUP
                 0x00802a16                send3_buf
                 0x00802a9b                send1_buf
                 0x00802b20                PROVIDE (__bss_end, .)
-                0x00002c4b                __data_load_start = LOADADDR (.data)
-                0x00002c4d                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00002c4c                __data_load_start = LOADADDR (.data)
+                0x00002c4e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00802b20        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -922,15 +922,15 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x5506
+.debug_info     0x00000000     0x54f6
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x248a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
- .debug_info    0x0000248a     0x2d5d main.o
- .debug_info    0x000051e7       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
- .debug_info    0x00005287       0xa1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
- .debug_info    0x00005328       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
- .debug_info    0x000053c8       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
- .debug_info    0x00005467       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+ .debug_info    0x0000248a     0x2d4d main.o
+ .debug_info    0x000051d7       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_info    0x00005277       0xa1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_info    0x00005318       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_info    0x000053b8       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_info    0x00005457       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
 .debug_abbrev   0x00000000     0x2704
  *(.debug_abbrev)

@@ -38,7 +38,7 @@ void format_ERR(char *str)
 void format_ERR(char *str)
 {
 
-	const char errformat[] = "$%dERR";
+	const char errformat[] = "$S%dERR";
 
 	sprintf(str, errformat, get_specID());
 	checksum_NMEA(str);
