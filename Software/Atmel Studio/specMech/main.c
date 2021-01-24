@@ -78,7 +78,7 @@ void commands(void)
 	uint16_t memaddress;
 	static uint8_t rebootnack = 1;
 
-	// Copy the command to cmdline[]
+	// Copy the command string, not including the \r, to cmdline[]
 	for (i = 0; i < BUFSIZE; i++) {
 		cmdline[i] = recv0_buf.data[recv0_buf.tail];
 		recv0_buf.tail = (recv0_buf.tail + 1) % BUFSIZE;
@@ -87,12 +87,12 @@ void commands(void)
 		}
 	}
 
-	if (rebootnack) {			// Rebooted, but not acknowledged
-		if (cmdline[0] == '!') {
+	if (rebootnack) {				// Rebooted, but not acknowledged
+		if (cmdline[0] == '!') {	// Reboot was acknowledged (! received)
 			rebootnack = 0;
 			send_prompt(GREATERPROMPT);
 			return;
-		} else {
+		} else {					// Reboot not acknowledged, send another !
 			send_prompt(EXCLAIMPROMPT);
 			return;			
 		}
