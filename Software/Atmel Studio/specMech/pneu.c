@@ -23,6 +23,7 @@ pneu.c
 #define RIGHTOPEN		(0x6E)	// AND with this pattern to open
 #define RIGHTCLOSE		(0xE6)	// AND with this pattern to close
 
+//#include "main.h"
 #include "mcp23008.c"
 
 // Function prototypes
@@ -95,7 +96,7 @@ uint8_t pneu_close(char mech)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t pneu_open(char mech)
+uint8_t pneu_open(char mechanism)
 	Open the shutter or Hartmann doors
 
 	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
@@ -107,13 +108,13 @@ uint8_t pneu_open(char mech)
 	is controlled by the set_valves routine in pneu.c.
 
 	Input:
-		mech - a character that selects the shutter, left Hartmann door,
+		mechanism - a character that selects the shutter, left Hartmann door,
 		right Hartmann door, or both doors.
 ------------------------------------------------------------------------------*/
-uint8_t pneu_open(char mech)
+uint8_t pneu_open(char mechanism)
 {
 
-	switch (mech) {
+	switch (mechanism) {
 
 		case 'b':
 			set_valves(LEFTBM, LEFTOPEN);

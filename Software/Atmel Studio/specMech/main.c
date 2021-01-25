@@ -46,21 +46,21 @@ void commands(void);
 void echo_cmd(char *str);
 uint8_t isaletter(char);
 void parse_cmd(char*, uint8_t);
-uint8_t report(char*);
+uint8_t report(uint8_t);
 void send_prompt(uint8_t);
-uint8_t set(char*);
-
-typedef struct {
-	char cverb,				// Single character command
-		cobject,			// Single character object
-		cvalue[CVALUESIZE],	// Input value string for object
-		cid[CIDSIZE];		// Command ID string
-} ParsedCMD;
+uint8_t set(uint8_t);
 
 // Globals
 extern USARTBuf		// These are declared in usart.c
 	send0_buf, send1_buf, send3_buf,
 	recv0_buf, recv1_buf, recv3_buf;
+
+typedef struct {
+	char cverb,				// Single character command
+	cobject,			// Single character object
+	cvalue[CVALUESIZE],	// Input value string for object
+	cid[CIDSIZE];		// Command ID string
+} ParsedCMD;
 
 ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 
@@ -90,6 +90,7 @@ void commands(void)
 {
 
 	char cmdline[BUFSIZE];			// BUFSIZE is the size of the ring buffer
+	char verb, object;
 	uint8_t i, prompt_flag = GREATERPROMPT;
 	static uint8_t rebootnack = 1;
 	static uint8_t cstack = 0;		// Index for pcmd
@@ -117,22 +118,32 @@ void commands(void)
 
 	echo_cmd(cmdline);
 	parse_cmd(cmdline, cstack);
-
-	switch (pcmd[cstack].cverb) {
+	verb = pcmd[cstack].cverb;
+	object = pcmd[cstack].cobject;
+	switch (verb) {
 		case 'c':				// close
-			prompt_flag = pneu_close(pcmd[cstack].cobject);
+			prompt_flag = pneu_close(object);
 			break;
 
 		case 'o':				// open
-			prompt_flag = pneu_open(pcmd[cstack].cobject);
+			prompt_flag = pneu_open(object);
 			break;
 
-		case 'R':				// reboot
-			_delay_ms(100);		// avoid finishing the command loop before reboot
+		case 'r':				// Report
+			prompt_flag = report(cstack);
+			break;
+
+		case 's':
+			prompt_flag = set(cstack);
+			break;
+
+		case 'R':				// Reboot
+			_delay_ms(100);		// Avoid finishing the command loop before reboot
 			reboot();
 			return;
 
 		default:
+			prompt_flag = ERRORPROMPT;
 			break;			
 	}
 
@@ -349,6 +360,74 @@ uint8_t report(char *ptr)
 		0 - GREATERPROMPT on success
 		1 - ERRORPROMPT on error (invalid command noun)
 ------------------------------------------------------------------------------*/
+uint8_t report(uint8_t cstack)
+{
+
+	char outbuf[BUFSIZE+10], version[11], isotime[21];
+	const char format_BTM[] = "$S%dBTM,%s,%s";
+	const char format_ENV[]="$S%dENV,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
+	const char format_TIM[]="$S%dTIM,%s,%s";
+	const char format_VAC[]="$S%dVAC,%5.2f,rvac,%5.2f,bvac,%s";
+	const char format_VER[] = "$S%dVER,%s,%s";
+	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
+	float redvac, bluvac;					// red and blue vacuum
+
+	switch(pcmd[cstack].cobject) {
+
+		case 'B':					// Boot time
+			get_BOOTTIME(isotime);
+			sprintf(outbuf, format_BTM, get_specID(), isotime, pcmd[cstack].cid);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		case 'e':					// Environment (temperature & humidity)
+			t0 = get_temperature(0);
+			h0 = get_humidity(0);
+			t1 = get_temperature(1);
+			h1 = get_humidity(1);
+			t2 = get_temperature(2);
+			h2 = get_humidity(2);
+			t3 = get_temperature(3);
+			sprintf(outbuf, format_ENV, get_specID(), t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+
+		case 't':					// Report current time on specMech clock
+			get_time(isotime);
+			sprintf(outbuf, format_TIM, get_specID(), isotime, pcmd[cstack].cid);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		case 'v':
+			redvac = read_ionpump(REDPUMP);
+			bluvac = read_ionpump(BLUEPUMP);
+			sprintf(outbuf, format_VAC, get_specID(), redvac, bluvac, pcmd[cstack].cid);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		case 'V':
+			get_VERSION(version);	// Send the specMech version
+			sprintf(outbuf, format_VER, get_specID(), version, pcmd[cstack].cid);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		default:
+			return(ERRORPROMPT);
+			break;
+	}
+
+	return(GREATERPROMPT);
+
+}
+
+
+/*
 uint8_t report(char *ptr)
 {
 
@@ -420,6 +499,9 @@ uint8_t report(char *ptr)
 
 }
 
+*/
+
+
 /*------------------------------------------------------------------------------
 void send_prompt(uint8_t prompt_flag)
 	Puts a command line prompt on the output line. These could be the normal
@@ -475,6 +557,27 @@ uint8_t set (char *ptr)
 		0 - on success
 		1 - invalid item to set (an unrecognized character on the command line).
 ------------------------------------------------------------------------------*/
+uint8_t set(uint8_t cstack)
+{
+
+	char object;
+
+	object = pcmd[cstack].cobject;
+
+	switch(object) {
+		case 't':
+			if (strlen(pcmd[cstack].cvalue) != 19) {
+				return(ERRORPROMPT);
+			}
+			put_time(pcmd[cstack].cvalue);
+			break;
+
+		default:
+			return(ERRORPROMPT);
+	}
+	return(GREATERPROMPT);
+}
+/*
 uint8_t set(char *ptr)
 {
 
@@ -491,3 +594,4 @@ uint8_t set(char *ptr)
 	}
 	return(GREATERPROMPT);
 }
+*/

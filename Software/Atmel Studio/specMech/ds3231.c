@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------------------
 ds3231.c
 	TWI routines for the DS3231 day/time clock. Includes routines to convert
-	device time to ISO time (YYYY-MM-DDTHH:MM:SSZ) and vice versa.
+	device time to ISO time (YYYY-MM-DDTHH:MM:SS) and vice versa.
 ------------------------------------------------------------------------------*/
 
 #ifndef DS3231C
@@ -151,7 +151,7 @@ uint8_t read_DS3231(uint8_t addr, uint8_t *ds3231time)
 	be clear (0) to indicate a 24 hour clock system.
 
 	The clock time is UTC. Communications to the outside is via the ISO time
-	format: YYYY-MM-DDThh:mm:ssZ (20 characters).
+	format: YYYY-MM-DDThh:mm:ss (19 characters).
 ------------------------------------------------------------------------------*/
 uint8_t read_DS3231(uint8_t addr, uint8_t ds3231time[])
 {
