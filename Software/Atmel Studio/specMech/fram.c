@@ -7,6 +7,7 @@ fram.c
 #define FRAMC
 
 #define FRAMADDR	(0xA0)	// A0, A1, A2 grounded
+#define SETTIMEADDR	(0x00)	// When the day/time clock was set (20 bytes)
 
 // Function Prototypes
 uint8_t read_FRAM(uint8_t, uint16_t, uint8_t *, uint8_t);

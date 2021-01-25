@@ -2,6 +2,9 @@
 ds3231.c
 	TWI routines for the DS3231 day/time clock. Includes routines to convert
 	device time to ISO time (YYYY-MM-DDTHH:MM:SS) and vice versa.
+
+	The first two digits of the year are assumed always to be "20" since this
+	simplifies reading and writing the registers.
 ------------------------------------------------------------------------------*/
 
 #ifndef DS3231C
@@ -28,8 +31,8 @@ void convert_ds2iso(char *isotime, uint8_t *ds3231time)
 		ds3231time - array with first 7 ds3231 registers
 
 	Output:
-		isotime - 21 character array with the UTC time in ISO format:
-			YYYY-MM-DDThh:mm:ssZ
+		isotime - 20 character array with the UTC time in ISO format:
+			YYYY-MM-DDThh:mm:ss
 ------------------------------------------------------------------------------*/
 void convert_ds2iso(char *isotime, uint8_t *ds3231time)
 {

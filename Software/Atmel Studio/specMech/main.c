@@ -86,6 +86,10 @@ int main(void)
 
 }
 
+/*------------------------------------------------------------------------------
+void commands(void)
+	Command loop
+------------------------------------------------------------------------------*/
 void commands(void)
 {
 
@@ -116,10 +120,18 @@ void commands(void)
 		}
 	}
 
+	// Echo the command back to the user
 	echo_cmd(cmdline);
+
+	if (strlen(cmdline) == 0) {		// Catch a terminal cr
+		send_prompt(GREATERPROMPT);
+		return;
+	}
+
 	parse_cmd(cmdline, cstack);
 	verb = pcmd[cstack].cverb;
 	object = pcmd[cstack].cobject;
+
 	switch (verb) {
 		case 'c':				// close
 			prompt_flag = pneu_close(object);
@@ -133,7 +145,7 @@ void commands(void)
 			prompt_flag = report(cstack);
 			break;
 
-		case 's':
+		case 's':				// Set
 			prompt_flag = set(cstack);
 			break;
 
@@ -152,6 +164,10 @@ void commands(void)
 
 }
 
+/*------------------------------------------------------------------------------
+void echo_cmd(char *cmdline)
+	Echo the command line back to the user, adding the NMEA header and checksum.
+------------------------------------------------------------------------------*/
 void echo_cmd(char *cmdline)
 {
 
@@ -165,6 +181,35 @@ void echo_cmd(char *cmdline)
 
 }
 
+/*------------------------------------------------------------------------------
+uint8_t isaletter(char c)
+	Checks if the character is in the range A-Z and a-z
+------------------------------------------------------------------------------*/
+uint8_t isaletter(char c)
+{
+
+	if (c >= 'a' && c <= 'z') {
+		return(1);
+	}
+
+	if (c >= 'A' && c <= 'Z') {
+		return(1);
+	}
+
+	return(0);
+
+}
+
+/*------------------------------------------------------------------------------
+void parse_cmd(char *ptr, uint8_t n)
+	Breaks up the command line into its components. The components are:
+		verb - The command verb, a single character.
+		object - The commanded object, a single character.
+		value - The object's new value, a character string.
+		ID - An identifier selected by the user, a character string.
+	These components are in the ParsedCMD structure defined in main.c. The pcmd
+	variable is a ParsedCMD array.
+------------------------------------------------------------------------------*/
 void parse_cmd(char *ptr, uint8_t n)
 {
 
@@ -221,21 +266,6 @@ void parse_cmd(char *ptr, uint8_t n)
 
 }
 
-uint8_t isaletter(char c)
-{
-
-	if (c >= 'a' && c <= 'z') {
-		return(1);
-	}
-
-	if (c >= 'A' && c <= 'Z') {
-		return(1);
-	}
-
-	return(0);
-
-}
-
 /*------------------------------------------------------------------------------
 uint8_t report(char *ptr)
 	Report status, including reading sensors
@@ -253,20 +283,21 @@ uint8_t report(char *ptr)
 uint8_t report(uint8_t cstack)
 {
 
-	char outbuf[BUFSIZE+10], version[11], isotime[21];
+	char outbuf[BUFSIZE+10], version[11];
+	char currenttime[20], lastsettime[20], boottime[20];
 	const char format_BTM[] = "$S%dBTM,%s,%s";
-	const char format_ENV[]="$S%dENV,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
-	const char format_TIM[]="$S%dTIM,%s,%s";
-	const char format_VAC[]="$S%dVAC,%5.2f,rvac,%5.2f,bvac,%s";
-	const char format_VER[] = "$S%dVER,%s,%s";
+	const char format_ENV[]="$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
+	const char format_TIM[]="$S%dTIM,%s,%s,set,%s,boot,%s";
+	const char format_VAC[]="$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
+	const char format_VER[] = "$S%dVER,%s,%s,%s";
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float redvac, bluvac;					// red and blue vacuum
 
 	switch(pcmd[cstack].cobject) {
 
 		case 'B':					// Boot time
-			get_BOOTTIME(isotime);
-			sprintf(outbuf, format_BTM, get_specID(), isotime, pcmd[cstack].cid);
+			get_BOOTTIME(boottime);
+			sprintf(outbuf, format_BTM, get_specID(), boottime, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
@@ -279,15 +310,19 @@ uint8_t report(uint8_t cstack)
 			t2 = get_temperature(2);
 			h2 = get_humidity(2);
 			t3 = get_temperature(3);
-			sprintf(outbuf, format_ENV, get_specID(), t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
+			get_time(currenttime);
+			sprintf(outbuf, format_ENV, get_specID(), currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 
 		case 't':					// Report current time on specMech clock
-			get_time(isotime);
-			sprintf(outbuf, format_TIM, get_specID(), isotime, pcmd[cstack].cid);
+			get_time(currenttime);
+			read_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) lastsettime, 20);
+			get_BOOTTIME(boottime);
+			sprintf(outbuf, format_TIM, get_specID(), currenttime, lastsettime,
+				boottime, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
@@ -295,14 +330,16 @@ uint8_t report(uint8_t cstack)
 		case 'v':
 			redvac = read_ionpump(REDPUMP);
 			bluvac = read_ionpump(BLUEPUMP);
-			sprintf(outbuf, format_VAC, get_specID(), redvac, bluvac, pcmd[cstack].cid);
+			get_time(currenttime);
+			sprintf(outbuf, format_VAC, get_specID(), currenttime, redvac, bluvac, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
 		case 'V':
 			get_VERSION(version);	// Send the specMech version
-			sprintf(outbuf, format_VER, get_specID(), version, pcmd[cstack].cid);
+			get_time(currenttime);
+			sprintf(outbuf, format_VER, get_specID(), currenttime, version, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
@@ -362,14 +399,14 @@ void send_prompt(uint8_t prompt_flag)
 
 /*------------------------------------------------------------------------------
 uint8_t set (char *ptr)
-	Sets hardware parameters.
 
 	Input:
-		*ptr - Command line pointer that is incremented to find the item to set.
+		cstack - The array index in the ParsedCMD array (pcmd). The command
+			must have been parsed already
 
 	Returns:
-		0 - on success
-		1 - invalid item to set (an unrecognized character on the command line).
+		GREATERPROMPT on success
+		ERRORPROMPT if an invalid object was requested.
 ------------------------------------------------------------------------------*/
 uint8_t set(uint8_t cstack)
 {
@@ -384,6 +421,7 @@ uint8_t set(uint8_t cstack)
 				return(ERRORPROMPT);
 			}
 			put_time(pcmd[cstack].cvalue);
+			write_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) pcmd[cstack].cvalue, 20);
 			break;
 
 		default:
