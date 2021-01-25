@@ -4,12 +4,15 @@ specMech.c
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
 #define F_CPU		3333333UL
-#define VERSION		"2021-01-02"
+#define VERSION		"2021-01-24"
 #define	YES				1
 #define	NO				0
 #define GREATERPROMPT	0	// Standard return prompt >
 #define EXCLAIMPROMPT	1	// No REBOOT ACK prompt !
 #define ERRORPROMPT		2	// Generate error line, then >
+#define CVALUESIZE		41	// Maximum length of a command value string
+#define CIDSIZE			9	// Maximum length of a command ID string
+#define CSTACKSIZE		10	// Number of stacked up commands allowed
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -38,14 +41,28 @@ specMech.c
 #include "wdt.c"			// Watchdog timer used only for reboot function
 
 // Function Prototypes
+void Xcommands(void);
 void commands(void);
+void echo_cmd(char *str);
+uint8_t isaletter(char);
+void parse_cmd(char*, uint8_t);
 uint8_t report(char*);
 void send_prompt(uint8_t);
 uint8_t set(char*);
 
+typedef struct {
+	char cverb,				// Single character command
+		cobject,			// Single character object
+		cvalue[CVALUESIZE],	// Input value string for object
+		cid[CIDSIZE];		// Command ID string
+} ParsedCMD;
+
+// Globals
 extern USARTBuf		// These are declared in usart.c
 	send0_buf, send1_buf, send3_buf,
 	recv0_buf, recv1_buf, recv3_buf;
+
+ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 
 int main(void)
 {
@@ -70,6 +87,146 @@ int main(void)
 }
 
 void commands(void)
+{
+
+	char cmdline[BUFSIZE];			// BUFSIZE is the size of the ring buffer
+	uint8_t i, prompt_flag = GREATERPROMPT;
+	static uint8_t rebootnack = 1;
+	static uint8_t cstack = 0;		// Index for pcmd
+
+	// Copy the command string to cmdline
+	for (i = 0; i < BUFSIZE; i++) {
+		cmdline[i] = recv0_buf.data[recv0_buf.tail];
+		recv0_buf.tail = (recv0_buf.tail + 1) % BUFSIZE;
+		if (cmdline[i] == '\0') {
+			break;
+		}
+	}
+
+	// Check if rebooted
+	if (rebootnack) {
+		if (cmdline[0] != '!') {
+			send_prompt(EXCLAIMPROMPT);		
+			return;
+		} else {
+			send_prompt(GREATERPROMPT);
+			rebootnack = 0;
+			return;
+		}
+	}
+
+	echo_cmd(cmdline);
+	parse_cmd(cmdline, cstack);
+
+	switch (pcmd[cstack].cverb) {
+		case 'c':				// close
+			prompt_flag = pneu_close(pcmd[cstack].cobject);
+			break;
+
+		case 'o':				// open
+			prompt_flag = pneu_open(pcmd[cstack].cobject);
+			break;
+
+		case 'R':				// reboot
+			_delay_ms(100);		// avoid finishing the command loop before reboot
+			reboot();
+			return;
+
+		default:
+			break;			
+	}
+
+	cstack = (cstack + 1) % CSTACKSIZE;
+	send_prompt(prompt_flag);
+
+}
+
+void echo_cmd(char *cmdline)
+{
+
+	char format_CMD[] = "$S%dCMD,%s";
+	char strbuf[BUFSIZE+10];		// Add $SXCMD, and *HH checksum
+
+		// Format and echo the command line
+	sprintf(strbuf, format_CMD, get_specID(), cmdline);
+	checksum_NMEA(strbuf);
+	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+
+}
+
+void parse_cmd(char *ptr, uint8_t n)
+{
+
+	uint8_t i;
+
+		// Clear the command parts
+	pcmd[n].cverb = '?';
+	pcmd[n].cobject = '?';
+	pcmd[n].cvalue[0] = '\0';
+	pcmd[n].cid[0] = '\0';
+
+		// Find the verb
+	while (!isaletter(*ptr)) {
+		if (*ptr == '\0') {
+			return;
+		}
+		ptr++;
+	}
+	pcmd[n].cverb = *ptr++;
+
+		// Find the object
+	while (!isaletter(*ptr)) {
+		if (*ptr == '\0') {
+			return;
+		}
+		ptr++;
+	}
+	pcmd[n].cobject = *ptr++;
+
+		// Get the value, if there is one
+	for (i = 0; i < CVALUESIZE; i++) {
+		if (*ptr == '\0') {
+			pcmd[n].cvalue[i] = '\0';
+			return;
+		}
+		if (*ptr == ';') {
+			pcmd[n].cvalue[i] = '\0';
+			break;
+		}
+		pcmd[n].cvalue[i] = *ptr++;
+	}
+
+		// get the command ID if there is one
+	ptr++;
+	for (i = 0; i < CIDSIZE; i++) {
+		if (*ptr == '\0') {
+			pcmd[n].cid[i] = '\0';
+			return;
+		}
+		pcmd[n].cid[i] = *ptr++;
+	}	
+
+	return;
+
+}
+
+uint8_t isaletter(char c)
+{
+
+	if (c >= 'a' && c <= 'z') {
+		return(1);
+	}
+
+	if (c >= 'A' && c <= 'Z') {
+		return(1);
+	}
+
+	return(0);
+
+}
+
+/*
+void Xcommands(void)
 {
 
 	uint8_t i, prompt_flag, framdata[10], framtest[10];
@@ -175,6 +332,8 @@ void commands(void)
 	send_prompt(prompt_flag);
 
 }
+*/
+
 
 /*------------------------------------------------------------------------------
 uint8_t report(char *ptr)

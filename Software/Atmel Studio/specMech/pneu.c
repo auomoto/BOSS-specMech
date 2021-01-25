@@ -27,8 +27,8 @@ pneu.c
 
 // Function prototypes
 uint8_t init_pneu(void);
-uint8_t pneu_close(char *ptr);
-uint8_t pneu_open(char *ptr);
+uint8_t pneu_close(char);
+uint8_t pneu_open(char);
 uint8_t set_valves(uint8_t, uint8_t);
 
 uint8_t init_PNEU(void)
@@ -47,7 +47,7 @@ uint8_t init_PNEU(void)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t pneu_close(char *ptr)
+uint8_t pneu_close(char mech)
 	Close the shutter or Hartmann doors
 
 	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
@@ -59,17 +59,13 @@ uint8_t pneu_close(char *ptr)
 	is controlled by the set_valves routine in pneu.c.
 
 	Input:
-		*ptr - a character that selects the shutter, left Hartmann door,
+		mech - a character that selects the shutter, left Hartmann door,
 		right Hartmann door, or both doors.
-
-MOVE THIS TO pneu.c?
 ------------------------------------------------------------------------------*/
-uint8_t pneu_close(char *ptr)
+uint8_t pneu_close(char mech)
 {
 
-	ptr++;
-
-	switch (*ptr) {
+	switch (mech) {
 
 		case 'b':
 			set_valves(LEFTBM, LEFTCLOSE);
@@ -99,7 +95,7 @@ uint8_t pneu_close(char *ptr)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t pneu_open(char *ptr)
+uint8_t pneu_open(char mech)
 	Open the shutter or Hartmann doors
 
 	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
@@ -111,16 +107,13 @@ uint8_t pneu_open(char *ptr)
 	is controlled by the set_valves routine in pneu.c.
 
 	Input:
-		*ptr - a character that selects the shutter, left Hartmann door,
+		mech - a character that selects the shutter, left Hartmann door,
 		right Hartmann door, or both doors.
-
-MOVE THIS TO pneu.c?
 ------------------------------------------------------------------------------*/
-uint8_t pneu_open(char *ptr)
+uint8_t pneu_open(char mech)
 {
 
-	ptr++;
-	switch (*ptr) {
+	switch (mech) {
 
 		case 'b':
 			set_valves(LEFTBM, LEFTOPEN);
