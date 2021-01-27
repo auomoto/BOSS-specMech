@@ -3451,25 +3451,15 @@
 <rectangle x1="8.636" y1="-6.604" x2="9.144" y2="-6.096" layer="51" rot="R180"/>
 <rectangle x1="-9.144" y1="-6.604" x2="-8.636" y2="-6.096" layer="51" rot="R180"/>
 </package>
-<package name="JST_B2B-PH-K-S(LF)(SN)" urn="urn:adsk.eagle:footprint:24616268/1" library_version="256">
-<wire x1="-2.95" y1="-2.25" x2="-2.95" y2="2.25" width="0.127" layer="51"/>
-<wire x1="-2.95" y1="2.25" x2="2.95" y2="2.25" width="0.127" layer="51"/>
-<wire x1="2.95" y1="2.25" x2="2.95" y2="-2.25" width="0.127" layer="51"/>
-<wire x1="2.95" y1="-2.25" x2="-2.95" y2="-2.25" width="0.127" layer="51"/>
-<wire x1="-2.95" y1="2.25" x2="2.95" y2="2.25" width="0.127" layer="21"/>
-<wire x1="2.95" y1="2.25" x2="2.95" y2="-2.25" width="0.127" layer="21"/>
-<wire x1="2.95" y1="-2.25" x2="-2.95" y2="-2.25" width="0.127" layer="21"/>
-<wire x1="-2.95" y1="-2.25" x2="-2.95" y2="2.25" width="0.127" layer="21"/>
-<wire x1="-3.2" y1="-2.5" x2="-3.2" y2="2.5" width="0.05" layer="39"/>
-<wire x1="-3.2" y1="2.5" x2="3.2" y2="2.5" width="0.05" layer="39"/>
-<wire x1="3.2" y1="2.5" x2="3.2" y2="-2.5" width="0.05" layer="39"/>
-<wire x1="3.2" y1="-2.5" x2="-3.2" y2="-2.5" width="0.05" layer="39"/>
-<text x="-3.20481875" y="2.60391875" size="1.01753125" layer="25">&gt;NAME</text>
-<text x="-3.30138125" y="-3.601509375" size="1.01643125" layer="27">&gt;VALUE</text>
-<circle x="3.6" y="-0.5" radius="0.1" width="0.2" layer="21"/>
-<circle x="3.6" y="-0.5" radius="0.1" width="0.2" layer="51"/>
-<pad name="1" x="1" y="-0.55" drill="0.86" shape="square" rot="R180"/>
-<pad name="2" x="-1" y="-0.55" drill="0.86" rot="R180"/>
+<package name="1X02-MOLEX-22112022" urn="urn:adsk.eagle:footprint:24727025/3" library_version="413">
+<pad name="1" x="-1.27" y="0" drill="1.016" shape="square"/>
+<pad name="2" x="1.27" y="0" drill="1.016"/>
+<wire x1="-2.54" y1="-3.175" x2="-2.54" y2="3.175" width="0.127" layer="21"/>
+<wire x1="-2.54" y1="3.175" x2="2.54" y2="3.175" width="0.127" layer="21"/>
+<wire x1="2.54" y1="3.175" x2="2.54" y2="-3.175" width="0.127" layer="21"/>
+<wire x1="2.54" y1="-3.175" x2="-2.54" y2="-3.175" width="0.127" layer="21"/>
+<text x="-2.54" y="3.302" size="1.016" layer="25" font="vector">&gt;NAME</text>
+<text x="-2.54" y="-4.445" size="1.016" layer="27" font="vector">&gt;VALUE</text>
 </package>
 <package name="C0402" urn="urn:adsk.eagle:footprint:23121/1" library_version="257">
 <description>&lt;b&gt;CAPACITOR&lt;/b&gt;</description>
@@ -7094,9 +7084,9 @@ Digikey 609-2845-ND</description>
 <packageinstance name="1X08"/>
 </packageinstances>
 </package3d>
-<package3d name="JST_B2B-PH-K-S(LF)(SN)" urn="urn:adsk.eagle:package:24616272/2" type="model" library_version="256">
+<package3d name="1X2-MOLEX-22112022" urn="urn:adsk.eagle:package:24727026/5" type="model" library_version="413">
 <packageinstances>
-<packageinstance name="JST_B2B-PH-K-S(LF)(SN)"/>
+<packageinstance name="1X02-MOLEX-22112022"/>
 </packageinstances>
 </package3d>
 <package3d name="C0402" urn="urn:adsk.eagle:package:4021261/2" type="box" library_version="257">
@@ -8893,15 +8883,15 @@ Digikey 609-2845-ND</description>
 <text x="-5.08" y="12.7" size="1.27" layer="95">&gt;NAME</text>
 <text x="-5.08" y="-15.24" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
-<symbol name="B2B-PH-K-S(LF)(SN)" urn="urn:adsk.eagle:symbol:24616266/1" library_version="256">
-<wire x1="-2.54" y1="-5.08" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="2.54" x2="2.54" y2="2.54" width="0.254" layer="94"/>
-<wire x1="2.54" y1="2.54" x2="2.54" y2="-5.08" width="0.254" layer="94"/>
+<symbol name="PINHD-1X2-MOLEX-22112022" urn="urn:adsk.eagle:symbol:24727024/2" library_version="413">
+<pin name="1" x="-5.08" y="2.54" length="short"/>
+<pin name="2" x="-5.08" y="-2.54" length="short"/>
+<wire x1="-2.54" y1="-5.08" x2="-2.54" y2="5.08" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="5.08" x2="2.54" y2="5.08" width="0.254" layer="94"/>
+<wire x1="2.54" y1="5.08" x2="2.54" y2="-5.08" width="0.254" layer="94"/>
 <wire x1="2.54" y1="-5.08" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
-<text x="-2.544359375" y="3.30766875" size="1.78105" layer="95">&gt;NAME</text>
-<text x="-2.544590625" y="-7.633759375" size="1.781209375" layer="96">&gt;VALUE</text>
-<pin name="1" x="-7.62" y="0" length="middle" direction="pas"/>
-<pin name="2" x="-7.62" y="-2.54" length="middle" direction="pas"/>
+<text x="-2.54" y="6.35" size="1.27" layer="95">&gt;NAME</text>
+<text x="-2.54" y="-7.62" size="1.27" layer="95">&gt;VALUE</text>
 </symbol>
 <symbol name="TP5000-TESTPOINT" urn="urn:adsk.eagle:symbol:24642438/2" library_version="281">
 <pin name="1" x="-5.08" y="0" visible="pin" length="short"/>
@@ -12973,30 +12963,21 @@ Digikey 609-2845-ND</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="JST-2-PIN-2B-PH-K-S(LF)(SN)" urn="urn:adsk.eagle:component:24616273/2" prefix="J" library_version="256">
-<description>JST 2-pin 
-PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</description>
+<deviceset name="PINHD-1X2-MOLEX-22112022" urn="urn:adsk.eagle:component:24728606/5" prefix="J" library_version="413">
 <gates>
-<gate name="G$1" symbol="B2B-PH-K-S(LF)(SN)" x="0" y="0"/>
+<gate name="G$1" symbol="PINHD-1X2-MOLEX-22112022" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="JST_B2B-PH-K-S(LF)(SN)">
+<device name="" package="1X02-MOLEX-22112022">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:24616272/2"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:24727026/5"/>
 </package3dinstances>
 <technologies>
-<technology name="">
-<attribute name="DESCRIPTION" value=" Connector Header Through Hole 2 position 0.079 (2.00mm) "/>
-<attribute name="DIGI-KEY_PART_NUMBER" value="455-1704-ND"/>
-<attribute name="MF" value="JST Sales"/>
-<attribute name="MP" value="B2B-PH-K-S(LF)(SN)"/>
-<attribute name="PACKAGE" value="None"/>
-<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/B2B-PH-K-S(LF)(SN)/?ref=eda"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -13336,7 +13317,7 @@ PH Series 2 Position 2 mm Pitch Through Hole Top Entry Shrouded Header</descript
 <part name="GND44" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="GND45" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="J7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="XPORT" device="XPORT-2" package3d_urn="urn:adsk.eagle:package:18328251/5" value="Lantronix XPORT"/>
-<part name="J2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="JST-2-PIN-2B-PH-K-S(LF)(SN)" device="" package3d_urn="urn:adsk.eagle:package:24616272/2"/>
+<part name="J2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X2-MOLEX-22112022" device="" package3d_urn="urn:adsk.eagle:package:24727026/5" value="MOLEX-22112022"/>
 <part name="GND4" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="P+27" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="JP7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:21589412/1" value="1x3 pinhdr"/>
@@ -13599,14 +13580,14 @@ DFRobot has connector kits for cables</text>
 <attribute name="VALUE" x="83.82" y="115.57" size="1.778" layer="96"/>
 </instance>
 <instance part="J2" gate="G$1" x="177.8" y="137.16" smashed="yes">
-<attribute name="NAME" x="175.255640625" y="140.46766875" size="1.78105" layer="95"/>
+<attribute name="NAME" x="175.255640625" y="143.00766875" size="1.78105" layer="95"/>
 <attribute name="VALUE" x="175.255409375" y="129.526240625" size="1.781209375" layer="96"/>
 </instance>
 <instance part="GND4" gate="1" x="167.64" y="129.54" smashed="yes">
 <attribute name="VALUE" x="165.1" y="127" size="1.27" layer="96"/>
 </instance>
-<instance part="P+27" gate="1" x="167.64" y="142.24" smashed="yes">
-<attribute name="VALUE" x="168.91" y="144.78" size="1.27" layer="96" rot="R180"/>
+<instance part="P+27" gate="1" x="167.64" y="144.78" smashed="yes">
+<attribute name="VALUE" x="168.91" y="147.32" size="1.27" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -13637,7 +13618,7 @@ DFRobot has connector kits for cables</text>
 <pinref part="GND4" gate="1" pin="GND"/>
 <wire x1="167.64" y1="132.08" x2="167.64" y2="134.62" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="2"/>
-<wire x1="167.64" y1="134.62" x2="170.18" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="167.64" y1="134.62" x2="172.72" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -13655,9 +13636,9 @@ DFRobot has connector kits for cables</text>
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="1"/>
-<wire x1="170.18" y1="137.16" x2="167.64" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="172.72" y1="139.7" x2="167.64" y2="139.7" width="0.1524" layer="91"/>
 <pinref part="P+27" gate="1" pin="+5V"/>
-<wire x1="167.64" y1="137.16" x2="167.64" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="167.64" y1="139.7" x2="167.64" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+12V" class="0">
