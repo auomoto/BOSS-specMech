@@ -4,7 +4,7 @@ specMech.c
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
 #define F_CPU		3333333UL
-#define VERSION		"2021-01-24"
+#define VERSION		"2021-01-31"
 #define	YES				1
 #define	NO				0
 #define GREATERPROMPT	0	// Standard return prompt >
@@ -35,8 +35,9 @@ specMech.c
 #include "usart.c"			// Serial (RS232) communications
 #include "fram.c"			// FRAM memory
 #include "ds3231.c"			// Day-time clock
+#include "mma8451.c"		// Accelerometer
 #include "nmea.c"			// GPS style output
-#include "oled.c"			// Newhaven OLED display
+#include "oled.c"			// Newhaven OLED displays
 #include "eeprom.c"			// ATMega4809 eeprom
 #include "wdt.c"			// Watchdog timer used only for reboot function
 
@@ -75,6 +76,7 @@ int main(void)
 	init_USART();
 	init_OLED(0);
 	init_EEPROM();
+	init_MMA8451();
 	sei();
 
 	for (;;) {
@@ -150,6 +152,7 @@ void commands(void)
 			break;
 
 		case 'R':				// Reboot
+			send_prompt(GREATERPROMPT);
 			_delay_ms(100);		// Avoid finishing the command loop before reboot
 			reboot();
 			return;
@@ -286,11 +289,13 @@ uint8_t report(uint8_t cstack)
 	char outbuf[BUFSIZE+10], version[11];
 	char currenttime[20], lastsettime[20], boottime[20];
 	const char format_BTM[] = "$S%dBTM,%s,%s";
-	const char format_ENV[]="$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
-	const char format_TIM[]="$S%dTIM,%s,%s,set,%s,boot,%s";
-	const char format_VAC[]="$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
+	const char format_ENV[] = "$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
+	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
+	const char format_TIM[] = "$S%dTIM,%s,%s,set,%s,boot,%s";
+	const char format_VAC[] = "$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char format_VER[] = "$S%dVER,%s,%s,%s";
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
+	float x, y, z;							// accelerometer
 	float redvac, bluvac;					// red and blue vacuum
 
 	switch(pcmd[cstack].cobject) {
@@ -316,6 +321,14 @@ uint8_t report(uint8_t cstack)
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
 
+		case 'o':					// Orientation
+			get_orientation(MMA8451ADDR, &x, &y, &z);
+			get_time(currenttime);
+			sprintf(outbuf, format_ORI, get_specID(), currenttime, x, y, z, pcmd[cstack].cid);
+//			sprintf(outbuf, "x=%03.1f y=%03.1f z=%03.1f", x, y, z);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
 
 		case 't':					// Report current time on specMech clock
 			get_time(currenttime);

@@ -22,7 +22,8 @@ main.d main.o: .././main.c \
  .././ports.c .././led.c .././specid.c .././twi.c .././mcp23008.c \
  .././pneu.c .././ads1115.c .././ad590.c .././mcp9808.c \
  .././temperature.c .././humidity.c .././ionpump.c .././usart.c \
- .././fram.c .././ds3231.c .././nmea.c .././oled.c .././eeprom.c \
+ .././fram.c .././ds3231.c .././mma8451.c .././nmea.c .././oled.c \
+ .././eeprom.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././wdt.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\wdt.h
@@ -96,6 +97,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././fram.c:
 
 .././ds3231.c:
+
+.././mma8451.c:
 
 .././nmea.c:
 
