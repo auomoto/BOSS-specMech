@@ -11,9 +11,12 @@ void init_PORTS(void);
 
 /*------------------------------------------------------------------------------
 void init_PORTS(void)
-	Sets all I/O ports on the ATMega4809 to be inputs with pullups enabled
+	Sets most I/O ports on the ATMega4809 to be inputs with pullups enabled
 	except ADC ports, which have their inputs disabled. This is just to make
 	sure nothing lurks in the background by accident.
+
+	Pin PF6 is the pushbutton on the Curiosity Nano and is set up to interrupt
+	on a falling edge to request a reboot.
 ------------------------------------------------------------------------------*/
 void init_PORTS(void)
 {
@@ -64,7 +67,7 @@ void init_PORTS(void)
 	PORTF.PIN3CTRL = PORT_PULLUPEN_bm;
 	PORTF.PIN4CTRL = PORT_PULLUPEN_bm;
 	PORTF.PIN5CTRL = PORT_PULLUPEN_bm;
-	PORTF.PIN6CTRL = PORT_PULLUPEN_bm;
+	PORTF.PIN6CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc;
 
 }
 

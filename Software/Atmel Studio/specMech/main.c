@@ -4,7 +4,7 @@ specMech.c
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
 #define F_CPU		3333333UL
-#define VERSION		"2021-02-03"
+#define VERSION		"2021-02-06"
 #define	YES				1
 #define	NO				0
 #define GREATERPROMPT	0	// Standard return prompt >
@@ -41,6 +41,7 @@ specMech.c
 #include "oled.c"			// Newhaven OLED displays
 #include "eeprom.c"			// ATMega4809 eeprom
 #include "wdt.c"			// Watchdog timer used only for reboot function
+#include "interrupts.c"		// Interrupt service routines
 
 // Function Prototypes
 void Xcommands(void);
@@ -70,7 +71,7 @@ uint8_t specMechErrors;
 
 int main(void)
 {
-
+	char strbuf[11];
 	init_PORTS();
 	init_LED();
 	init_BEEPER();
@@ -82,6 +83,13 @@ int main(void)
 	init_OLED(1);
 	init_EEPROM();
 	init_MMA8451();
+
+/*
+	writestr_OLED(1, "specMech Version", 1);
+	get_VERSION(strbuf);
+	writestr_OLED(1, strbuf, 2);
+*/
+
 	sei();
 
 	specMechErrors = 0;
@@ -134,9 +142,6 @@ off_BEEPER();
 
 	// Echo the command back to the user
 	echo_cmd(cmdline);
-
-//writestr_OLED(0, cmdline, 1);
-writestr_OLED(1, cmdline, 1);
 
 	if (strlen(cmdline) == 0) {		// Catch a terminal cr
 		send_prompt(GREATERPROMPT);
@@ -194,6 +199,11 @@ void echo_cmd(char *cmdline)
 	sprintf(strbuf, format_CMD, get_specID(), cmdline);
 	checksum_NMEA(strbuf);
 	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+
+		// Put it on the display
+	clear_OLED(1);
+	on_OLED(1);
+	writestr_OLED(1, cmdline, 1);
 
 }
 
