@@ -59,7 +59,7 @@ void init_OLED(uint8_t displaynumber)
 {
 
 	uint8_t twiaddr;
-
+/*
 	if (displaynumber == 0) {
 		twiaddr = OLEDADDR0;
 		PORTE.OUTCLR = PIN0_bm;		// Change these for real life
@@ -74,6 +74,18 @@ void init_OLED(uint8_t displaynumber)
 		_delay_ms(1);
 		PORTE.OUTSET = PIN1_bm;
 
+	}
+*/
+
+	PORTD.OUTCLR = PIN6_bm;		// PD6 is the /RESET pin for the OLED displays
+	PORTD.DIRSET = PIN6_bm;
+	_delay_ms(1);
+	PORTD.OUTSET = PIN6_bm;
+
+	if (displaynumber == 0) {
+		twiaddr = OLEDADDR0;
+	} else {
+		twiaddr = OLEDADDR1;
 	}
 
 	write_OLED(twiaddr, OLEDCMD, 0x2A);	// Function set (extended command set)

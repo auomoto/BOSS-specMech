@@ -4,7 +4,7 @@ specMech.c
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
 #define F_CPU		3333333UL
-#define VERSION		"2021-01-31"
+#define VERSION		"2021-02-03"
 #define	YES				1
 #define	NO				0
 #define GREATERPROMPT	0	// Standard return prompt >
@@ -22,6 +22,7 @@ specMech.c
 
 #include "ports.c"			// ATMega4809 ports
 #include "led.c"			// On-board LED
+#include "beeper.c"			// Beeper
 #include "specid.c"			// Spectrograph ID jumper
 #include "twi.c"			// I2C
 #include "mcp23008.c"		// MCP23008 port expander
@@ -57,7 +58,7 @@ extern USARTBuf		// These are declared in usart.c
 	recv0_buf, recv1_buf, recv3_buf;
 
 typedef struct {
-	char cverb,				// Single character command
+	char cverb,			// Single character command
 	cobject,			// Single character object
 	cvalue[CVALUESIZE],	// Input value string for object
 	cid[CIDSIZE];		// Command ID string
@@ -65,20 +66,25 @@ typedef struct {
 
 ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 
+uint8_t specMechErrors;
+
 int main(void)
 {
 
 	init_PORTS();
 	init_LED();
+	init_BEEPER();
 	init_SPECID();
 	init_TWI();
 	init_PNEU();
 	init_USART();
 	init_OLED(0);
+	init_OLED(1);
 	init_EEPROM();
 	init_MMA8451();
 	sei();
 
+	specMechErrors = 0;
 	for (;;) {
 		if (recv0_buf.done) {
 			recv0_buf.done = NO;
@@ -100,6 +106,10 @@ void commands(void)
 	uint8_t i, prompt_flag = GREATERPROMPT;
 	static uint8_t rebootnack = 1;
 	static uint8_t cstack = 0;		// Index for pcmd
+
+on_BEEPER();
+_delay_ms(50);
+off_BEEPER();
 
 	// Copy the command string to cmdline
 	for (i = 0; i < BUFSIZE; i++) {
@@ -125,6 +135,9 @@ void commands(void)
 	// Echo the command back to the user
 	echo_cmd(cmdline);
 
+//writestr_OLED(0, cmdline, 1);
+writestr_OLED(1, cmdline, 1);
+
 	if (strlen(cmdline) == 0) {		// Catch a terminal cr
 		send_prompt(GREATERPROMPT);
 		return;
@@ -136,11 +149,11 @@ void commands(void)
 
 	switch (verb) {
 		case 'c':				// close
-			prompt_flag = pneu_close(object);
+			prompt_flag = close_pneu(object);
 			break;
 
 		case 'o':				// open
-			prompt_flag = pneu_open(object);
+			prompt_flag = open_pneu(object);
 			break;
 
 		case 'r':				// Report
@@ -291,12 +304,14 @@ uint8_t report(uint8_t cstack)
 	const char format_BTM[] = "$S%dBTM,%s,%s";
 	const char format_ENV[] = "$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
 	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
+	const char format_PNU[] = "$S%dPNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
 	const char format_TIM[] = "$S%dTIM,%s,%s,set,%s,boot,%s";
 	const char format_VAC[] = "$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char format_VER[] = "$S%dVER,%s,%s,%s";
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float x, y, z;							// accelerometer
 	float redvac, bluvac;					// red and blue vacuum
+	char shutter, left, right, air;
 
 	switch(pcmd[cstack].cobject) {
 
@@ -326,6 +341,14 @@ uint8_t report(uint8_t cstack)
 			get_time(currenttime);
 			sprintf(outbuf, format_ORI, get_specID(), currenttime, x, y, z, pcmd[cstack].cid);
 //			sprintf(outbuf, "x=%03.1f y=%03.1f z=%03.1f", x, y, z);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		case 'p':
+			get_time(currenttime);
+			read_pneusensors(&shutter, &left, &right, &air);
+			sprintf(outbuf, format_PNU, get_specID(), currenttime, shutter, left, right, air, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;

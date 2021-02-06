@@ -210,7 +210,7 @@ float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
 
 	// Write the CONFIG register
 	confighi = 0b10000001 | gain | pins;
-	configlo = datarate;					// Change to add conversion ready?
+	configlo = datarate | 0b00000011;				// Disable comparator
 
 	if ((retval = start_TWI(addr, TWIWRITE))) {		// TWI start condition
 		stop_TWI();

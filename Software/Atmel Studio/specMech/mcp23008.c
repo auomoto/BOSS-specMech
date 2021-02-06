@@ -20,7 +20,11 @@ MCP23008.c
 #define GPIO	(0x09)	// Read for input
 #define OLAT	(0x0A)	// Write for output
 
+#define MCP23008ERROR_bm	(0b00000001)	// bit 0 is an MCP23008 error
+
 #include "twi.c"
+
+extern uint8_t specMechErrors;	// Declared in main.c
 
 // Function prototypes
 uint8_t read_MCP23008(uint8_t, uint8_t, uint8_t*);
@@ -46,13 +50,16 @@ uint8_t read_MCP23008(uint8_t addr, uint8_t reg, uint8_t *val)
 	uint8_t retval;
 
 	if ((retval = start_TWI(addr, TWIWRITE))) {
-		return(retval);
+		specMechErrors |= MCP23008ERROR_bm;
+		return(specMechErrors);
 	}
 	if ((retval = write_TWI(reg))) {
-		return(retval);
+		specMechErrors |= MCP23008ERROR_bm;
+		return(specMechErrors);
 	}
 	if ((retval = start_TWI(addr, TWIREAD))) {
-		return(retval);
+		specMechErrors |= MCP23008ERROR_bm;
+		return(specMechErrors);
 	}
 	*val = readlast_TWI();
 	stop_TWI();
