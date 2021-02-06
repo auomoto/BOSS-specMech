@@ -42,6 +42,7 @@ specMech.c
 #include "eeprom.c"			// ATMega4809 eeprom
 #include "wdt.c"			// Watchdog timer used only for reboot function
 #include "interrupts.c"		// Interrupt service routines
+#include "rtc.c"			// Real time clock one second ticks
 
 // Function Prototypes
 void Xcommands(void);
@@ -71,10 +72,13 @@ uint8_t specMechErrors;
 
 int main(void)
 {
-	char strbuf[11];
+
+//	char strbuf[11];
+
 	init_PORTS();
 	init_LED();
 	init_BEEPER();
+	init_RTC(64);	// Fast flashing LED before reboot ACK
 	init_SPECID();
 	init_TWI();
 	init_PNEU();
@@ -135,6 +139,7 @@ off_BEEPER();
 			return;
 		} else {
 			send_prompt(GREATERPROMPT);
+			init_RTC(511);
 			rebootnack = 0;
 			return;
 		}
