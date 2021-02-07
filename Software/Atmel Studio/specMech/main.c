@@ -3,7 +3,17 @@ specMech.c
 	BOSS motion controller board based on an ATMega4809 implemented on a
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
+<<<<<<< HEAD
 
+=======
+#define F_CPU		3333333UL
+#define VERSION		"2021-02-03"
+#define	YES				1
+#define	NO				0
+#define GREATERPROMPT	0	// Standard return prompt >
+#define EXCLAIMPROMPT	1	// No REBOOT ACK prompt !
+#define ERRORPROMPT		2	// Generate error line, then >
+>>>>>>> parent of ed8c8aa... Enabled button to reboot
 #define CVALUESIZE		41	// Maximum length of a command value string
 #define CIDSIZE			9	// Maximum length of a command ID string
 #define CSTACKSIZE		10	// Number of stacked up commands allowed
@@ -34,7 +44,6 @@ specMech.c
 //#include "oled.c"			// Newhaven OLED displays
 //#include "eeprom.c"			// ATMega4809 eeprom
 #include "wdt.c"			// Watchdog timer used only for reboot function
-#include "interrupts.c"		// Interrupt service routines
 
 //#include "rtc.c"			// Real time clock one second ticks
 
@@ -63,6 +72,7 @@ uint8_t specMechErrors;
 int main(void)
 {
 
+<<<<<<< HEAD
 
 //	char strbuf[11];
 	initialize();
@@ -74,6 +84,19 @@ int main(void)
 	writestr_OLED(1, strbuf, 2);
 */
 
+=======
+	init_PORTS();
+	init_LED();
+	init_BEEPER();
+	init_SPECID();
+	init_TWI();
+	init_PNEU();
+	init_USART();
+	init_OLED(0);
+	init_OLED(1);
+	init_EEPROM();
+	init_MMA8451();
+>>>>>>> parent of ed8c8aa... Enabled button to reboot
 	sei();
 
 	specMechErrors = 0;
@@ -126,6 +149,9 @@ off_BEEPER();
 
 	// Echo the command back to the user
 	echo_cmd(cmdline);
+
+//writestr_OLED(0, cmdline, 1);
+writestr_OLED(1, cmdline, 1);
 
 	if (strlen(cmdline) == 0) {		// Catch a terminal cr
 		send_prompt(GREATERPROMPT);
@@ -183,11 +209,6 @@ void echo_cmd(char *cmdline)
 	sprintf(strbuf, format_CMD, get_SPECID(), cmdline);
 	checksum_NMEA(strbuf);
 	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
-
-		// Put it on the display
-	clear_OLED(1);
-	on_OLED(1);
-	writestr_OLED(1, cmdline, 1);
 
 }
 /*

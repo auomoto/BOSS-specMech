@@ -10,7 +10,31 @@ oled.c
 	0 and 1 respectively. There are only two choices for this display.
 ------------------------------------------------------------------------------*/
 
+<<<<<<< HEAD
 #include "globals.h"
+=======
+#ifndef OLEDC
+#define OLEDC
+
+// OLED display
+#define CLEARDISPLAY	0x01		// Newhaven command (not used)
+#define DISPLAYON		0x0C		// Newhaven command (not used)
+#define DISPLAYOFF		0x08		// Newhaven command (not used)
+#define OLEDADDR0		(0x3c << 1)	// TWI bus address
+#define OLEDADDR1		(0x3d << 1)	// TWI bus address
+#define OLEDCMD			0x00		// Newhaven command was 1
+#define OLEDDATA		0x40		// Newhaven command was 0
+#define OLEDLINE1		0x80		// Newhaven command
+#define OLEDLINE2		0xC0		// Newhaven command
+
+#include "twi.c"
+
+// Function Prototypes
+void clear_OLED(uint8_t);
+void init_OLED(uint8_t);
+void write_OLED(uint8_t, uint8_t, uint8_t);
+void writestr_OLED(uint8_t, char*, uint8_t);
+>>>>>>> parent of ed8c8aa... Enabled button to reboot
 
 /*------------------------------------------------------------------------------
 void clear_OLED(uint8_t displaynumber)
@@ -39,13 +63,35 @@ void init_OLED(uint8_t displaynumber)
 {
 
 	uint8_t twiaddr;
+/*
+	if (displaynumber == 0) {
+		twiaddr = OLEDADDR0;
+		PORTE.OUTCLR = PIN0_bm;		// Change these for real life
+		PORTE.DIRSET = PIN0_bm;		// PE0 is the /RESET pin for the OLED0 display
+		_delay_ms(1);
+		PORTE.OUTSET = PIN0_bm;
+
+	} else {
+		twiaddr = OLEDADDR1;
+		PORTE.OUTCLR = PIN1_bm;		// Change these for real life
+		PORTE.DIRSET = PIN1_bm;		// PE1 is the /RESET pin for the OLED1 display
+		_delay_ms(1);
+		PORTE.OUTSET = PIN1_bm;
+
+	}
+*/
 
 	PORTD.OUTCLR = PIN6_bm;		// PD6 is the /RESET pin for the OLED displays
 	PORTD.DIRSET = PIN6_bm;
 	_delay_ms(1);
 	PORTD.OUTSET = PIN6_bm;
 
-	twiaddr = (displaynumber == 0 ? OLEDADDR0 : OLEDADDR1);
+	if (displaynumber == 0) {
+		twiaddr = OLEDADDR0;
+	} else {
+		twiaddr = OLEDADDR1;
+	}
+
 	write_OLED(twiaddr, OLEDCMD, 0x2A);	// Function set (extended command set)
 	write_OLED(twiaddr, OLEDCMD, 0x71);	//function selection A
 //	write_OLED(twiaddr, OLEDDATA, 0x00);	// disable internal VDD regulator (2.8V I/O). data(0x5C) = enable regulator (5V I/O)
@@ -60,7 +106,7 @@ void init_OLED(uint8_t displaynumber)
 	write_OLED(twiaddr, OLEDCMD, 0x08);	//extended function set (2-lines)
 	write_OLED(twiaddr, OLEDCMD, 0x06);	//COM SEG direction
 	write_OLED(twiaddr, OLEDCMD, 0x72);	//function selection B
-//	write_OLED(twiaddr, OLEDDATA, 0x00);	//ROM CGRAM selection (removing this enables the $)
+	write_OLED(twiaddr, OLEDDATA, 0x00);	//ROM CGRAM selection
 	write_OLED(twiaddr, OLEDCMD, 0x2A);	//function set (extended command set)
 	write_OLED(twiaddr, OLEDCMD, 0x79);	//OLED command set enabled
 	write_OLED(twiaddr, OLEDCMD, 0xDA);	//set SEG pins hardware configuration
@@ -79,40 +125,6 @@ void init_OLED(uint8_t displaynumber)
 	write_OLED(twiaddr, OLEDCMD, 0x80);	//set DDRAM address to 0x00
 	write_OLED(twiaddr, OLEDCMD, 0x0C);	// Display ON
 	_delay_ms(100);				// Wait after display-on command
-
-}
-
-/*------------------------------------------------------------------------------
-void off_OLED(uint8_t displaynumber)
-	Turn off the OLED display.
-
-	Inputs:
-		displaynumber - 0 or 1
-------------------------------------------------------------------------------*/
-void off_OLED(uint8_t displaynumber)
-{
-	
-	uint8_t twiaddr;
-	
-	twiaddr = (displaynumber == 0) ? OLEDADDR0 : OLEDADDR1;
-	write_OLED(twiaddr, OLEDCMD, 0x08);	// Display off
-
-}
-
-/*------------------------------------------------------------------------------
-void on_OLED(uint8_t displaynumber)
-	Turn on the OLED display.
-
-	Inputs:
-		displaynumber - 0 or 1
-------------------------------------------------------------------------------*/
-void on_OLED(uint8_t displaynumber)
-{
-
-	uint8_t twiaddr;
-
-	twiaddr = (displaynumber == 0) ? OLEDADDR0 : OLEDADDR1;
-	write_OLED(twiaddr, OLEDCMD, 0x0C);	// Display ON
 
 }
 
