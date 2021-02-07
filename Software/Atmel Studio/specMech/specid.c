@@ -3,12 +3,7 @@ specID.c
 	Curiosity Nano ATMega4809 on-board LED. The LED is on pin PF5.
 ------------------------------------------------------------------------------*/
 
-#ifndef SPECIDC
-#define SPECIDC
-
-// Function prototypes
-void init_specID(void);
-uint8_t get_specID(void);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 void init_SPECID(void)
@@ -24,7 +19,7 @@ void init_SPECID(void)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t get_specID(void);
+uint8_t get_SPECID(void);
 	Reads the hardware jumper that selects between spectrograph 1 or 2.
 
 	Input:
@@ -33,7 +28,7 @@ uint8_t get_specID(void);
 		1 - jumper set to spectrograph 1
 		2 - jumper set to spectrograph 2
 ------------------------------------------------------------------------------*/
-uint8_t get_specID(void)
+uint8_t get_SPECID(void)
 {
 
 	uint8_t id;
@@ -50,5 +45,3 @@ uint8_t get_specID(void)
 	return(id);
 
 }
-
-#endif

@@ -3,23 +3,7 @@ eeprom.c
 	Reads and writes the specMech version and system boot time.
 ------------------------------------------------------------------------------*/
 
-#ifndef EEPROMC
-#define EEPROMC
-
-#include <avr/eeprom.h>
-
-// EEPROM defines
-#define VERSIONADDR		(0)		// Version string must have exactly 11 bytes
-#define VERSIONSIZE		(11)	// Version is the date, as YYYY-DD-MM
-#define BOOTTIMEADDR	(11)	// Boot time has exactly 21 bytes
-#define BOOTTIMESIZE	(21)	// ISO date format, nearest second
-
-// Function Prototypes
-void get_BOOTTIME(char *);
-void get_VERSION(char *);
-void init_EEPROM(void);
-void update_BOOTTIME(void);
-void update_VERSION(void);
+#include "globals.h"
 
 void get_BOOTTIME(char *boottime)
 {
@@ -62,5 +46,3 @@ void update_VERSION(void)
 	eeprom_update_block((const void *)version, (void *)VERSIONADDR, VERSIONSIZE);
 
 }
-
-#endif

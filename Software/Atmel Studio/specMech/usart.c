@@ -16,16 +16,11 @@ usart.c
 	another.
 ------------------------------------------------------------------------------*/
 
-#ifndef USARTC
-#define USARTC
-
+#include "globals.h"
 #define	USART_BAUD_RATE(BAUD_RATE)	((float)(F_CPU * 64 / (16 * (float)BAUD_RATE)) + 0.5)
-#define BUFSIZE 128
 
-// Function Prototypes
-void send_USART(uint8_t, uint8_t*, uint8_t);
-void init_USART(void);
 
+/*
 typedef struct {
 	uint8_t					// Serial I/O buffer
 		data[BUFSIZE],		// Data to send or data received
@@ -35,6 +30,7 @@ typedef struct {
 		nxfrd;				// Temporary counter (number of bytes transferred)
 	uint8_t	volatile done;	// Is the transfer complete ('\r' seen)?
 } USARTBuf;
+*/
 
 USARTBuf
 	send0_buf, send1_buf, send3_buf,
@@ -291,5 +287,3 @@ ISR(USART3_DRE_vect)
 	}
 
 }
-
-#endif

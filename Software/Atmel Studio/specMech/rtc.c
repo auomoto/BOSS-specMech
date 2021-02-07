@@ -3,11 +3,7 @@ rtc.c
 	Curiosity Nano ATMega4809 one second timer
 ------------------------------------------------------------------------------*/
 
-#ifndef RTCC
-#define RTCC
-
-// Function prototypes
-void init_RTC(uint16_t);
+#include "globals.h"
 
 /*----------------------------------------------------------------------
 void init_RTC(uint16_t ticks)
@@ -77,4 +73,3 @@ void init_RTC(uint16_t ticks)
 
 }
 
-#endif

@@ -3,36 +3,7 @@ pneu.c
 	Pneumatic valves and their sensors
 ------------------------------------------------------------------------------*/
 
-#ifndef PNEUMATICSC
-#define PNEUMATICSC
-
-// MCP23008 addresses
-#define PNEUSENSORS		(0x42)	// GMR sensors on pneumatic cylinders
-#define HIGHCURRENT		(0x48)	// High current driver for pneumatic valves
-//#define HIGHCURRENT		(0x40)	// test device is at 0x40
-
-// Valve actions
-#define SHUTTERBM		(0x22)	// OR existing value with this first, then
-#define SHUTTEROPEN		(0xCE)	// AND with this pattern to open
-#define SHUTTERCLOSE	(0xEC)	// AND with this pattern to close
-
-#define LEFTBM			(0x44)	// OR existing value with this, then
-#define LEFTOPEN		(0xAE)	// AND with this pattern to open
-#define LEFTCLOSE		(0xEA)	// AND with this pattern to close
-
-#define RIGHTBM			(0x88)	// OR existing value with this, then
-#define RIGHTOPEN		(0x6E)	// AND with this pattern to open
-#define RIGHTCLOSE		(0xE6)	// AND with this pattern to close
-
-#include "mcp23008.c"
-
-// Function prototypes
-void read_pneusensors(char*, char*, char*, char*);
-//char read_shutterstate();
-uint8_t init_pneu(void);
-uint8_t close_pneu(char);
-uint8_t open_pneu(char);
-uint8_t set_valves(uint8_t, uint8_t);
+#include "globals.h"
 
 //NEED TO FIX ERROR RETURN SITUATION
 void read_pneusensors(char *shutter, char *left, char *right, char *air)
@@ -90,7 +61,7 @@ void read_pneusensors(char *shutter, char *left, char *right, char *air)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t init_PNEU(void)
+uint8_t init_pneuvalves(void)
 	Initializes the MCP23008 port expander connected to the high current
 	driver. The MCP23008 port expander connected to the GMR (pneumatic) sensors
 	is assumed to be in input mode.
@@ -111,7 +82,7 @@ uint8_t init_PNEU(void)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t close_pneu(char mech)
+uint8_t close_PNEU(char mech)
 	Close the shutter or Hartmann doors
 
 	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
@@ -126,7 +97,7 @@ uint8_t close_pneu(char mech)
 		mech - a character that selects the shutter, left Hartmann door,
 		right Hartmann door, or both doors.
 ------------------------------------------------------------------------------*/
-uint8_t close_pneu(char mech)
+uint8_t close_PNEU(char mech)
 {
 
 	switch (mech) {
@@ -159,7 +130,7 @@ uint8_t close_pneu(char mech)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t open_pneu(char mechanism)
+uint8_t open_PNEU(char mechanism)
 	Open the shutter or Hartmann doors
 
 	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
@@ -174,7 +145,7 @@ uint8_t open_pneu(char mechanism)
 		mechanism - a character that selects the shutter, left Hartmann door,
 		right Hartmann door, or both doors.
 ------------------------------------------------------------------------------*/
-uint8_t open_pneu(char mechanism)
+uint8_t open_PNEU(char mechanism)
 {
 
 	switch (mechanism) {
@@ -229,5 +200,3 @@ uint8_t set_valves(uint8_t bitmap, uint8_t action)
 	return(0);
 
 }
-
-#endif

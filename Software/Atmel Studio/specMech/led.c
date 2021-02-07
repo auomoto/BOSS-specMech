@@ -3,8 +3,7 @@ led.c
 	Curiosity Nano ATMega4809 on-board LED. The LED is on pin PF5.
 ------------------------------------------------------------------------------*/
 
-#ifndef LEDC
-#define LEDC
+#include "globals.h"
 
 void init_LED(void)
 {
@@ -26,5 +25,3 @@ void toggle_LED(void)
 {
 	PORTF.OUTTGL = PIN5_bm;
 }
-
-#endif

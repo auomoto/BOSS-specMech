@@ -6,7 +6,7 @@ interrupts.c
 #ifndef INTERRUPTSC
 #define INTERRUPTSC
 
-#include "led.c"
+//#include "led.c"
 #include "wdt.c"
 
 /*----------------------------------------------------------------------
@@ -24,12 +24,7 @@ ISR(PORTF_PORT_vect)
 
 /*---------------------------------------------------------------------
 Interrupt routine for RTC
-
-Start a fill after the fill interval has passed. Increment the fill
-interval time and the valve-open times. If the valve has been open
-longer than MAXOPENTIME or BUFMAXOPEN, then close the valve and set
-the MAXOPEN flag. Usually, the valve should be closed by a thermistor
-signal before MAXOPEN times are reached.
+	Every tick of the RTC executes here
 ----------------------------------------------------------------------*/
 ISR(RTC_CNT_vect)
 {

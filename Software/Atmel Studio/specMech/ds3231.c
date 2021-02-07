@@ -7,21 +7,7 @@ ds3231.c
 	simplifies reading and writing the registers.
 ------------------------------------------------------------------------------*/
 
-#ifndef DS3231C
-#define DS3231C
-
-// TWI address
-#define DS3231ADDR	(0xD0)	// No choice here
-
-#include "twi.c"
-
-// Function Prototypes
-void convert_ds2iso(char*, uint8_t*);
-void convert_iso2ds(uint8_t *, char*);
-uint8_t get_time(char*);
-uint8_t read_DS3231(uint8_t, uint8_t*);
-uint8_t uint8_to_bcd(uint8_t);
-uint8_t write_DS3231(uint8_t, uint8_t*);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 void convert_ds2iso(char *isotime, uint8_t *ds3231time)
@@ -222,5 +208,3 @@ uint8_t write_DS3231(uint8_t addr, uint8_t *ds3231time)
 	return(0);
 
 }
-
-#endif

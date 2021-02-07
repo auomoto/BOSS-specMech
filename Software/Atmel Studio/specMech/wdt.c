@@ -7,10 +7,7 @@ wdt.c
 #ifndef WDTC
 #define WDTC
 
-#include <avr/wdt.h>
-
-// Function Prototypes
-void reboot(void);
+#include "globals.h"
 
 void reboot(void)
 {

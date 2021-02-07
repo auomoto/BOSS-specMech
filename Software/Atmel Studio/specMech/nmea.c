@@ -3,12 +3,7 @@ NMEA checksum computations
 	Append the NMEA style checksums to the presented character string.
 ------------------------------------------------------------------------------*/
 
-#ifndef NMEAC
-#define NMEAC
-
-// Function Prototypes
-void checksum_NMEA(char*);
-void format_ERR(char*);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 void checksum_NMEA(char *str)
@@ -44,5 +39,3 @@ void format_ERR(char *str)
 	checksum_NMEA(str);
 
 }
-
-#endif

@@ -140,7 +140,46 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="beeper.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ds3231.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eeprom.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="initialize.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="led.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mcp23008.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mma8451.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pneu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ports.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rtc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="specid.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="twi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="usart.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

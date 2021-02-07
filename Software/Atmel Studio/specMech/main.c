@@ -3,49 +3,41 @@ specMech.c
 	BOSS motion controller board based on an ATMega4809 implemented on a
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
-#define F_CPU		3333333UL
-#define VERSION		"2021-02-06"
-#define	YES				1
-#define	NO				0
-#define GREATERPROMPT	0	// Standard return prompt >
-#define EXCLAIMPROMPT	1	// No REBOOT ACK prompt !
-#define ERRORPROMPT		2	// Generate error line, then >
+
 #define CVALUESIZE		41	// Maximum length of a command value string
 #define CIDSIZE			9	// Maximum length of a command ID string
 #define CSTACKSIZE		10	// Number of stacked up commands allowed
 
+#include "globals.h"		// Global variables
+
 #include <avr/io.h>
 #include <util/delay.h>
-#include <avr/interrupt.h>
-#include <stdio.h>		// sprintf
-#include <string.h>		// for strcpy, strlen
 
-#include "ports.c"			// ATMega4809 ports
-#include "led.c"			// On-board LED
-#include "beeper.c"			// Beeper
-#include "specid.c"			// Spectrograph ID jumper
-#include "twi.c"			// I2C
-#include "mcp23008.c"		// MCP23008 port expander
-#include "pneu.c"			// Pneumatic valves and sensors
+//#include "ports.c"			// ATMega4809 port initializations
+//#include "led.c"			// On-board LED
+//#include "beeper.c"			// Beeper
+//#include "specid.c"			// Spectrograph ID jumper
+//#include "twi.c"			// I2C
+//#include "mcp23008.c"		// MCP23008 port expander
+//#include "pneu.c"			// Pneumatic valves and sensors
 #include "ads1115.c"		// ADS1115 ADC
 #include "ad590.c"			// AD590 temperature sensors
 #include "mcp9808.c"		// MCP9808 sensor
 #include "temperature.c"	// AD590 and MCP9808 sensors
 #include "humidity.c"		// Honeywell HiH-4031
 #include "ionpump.c"		// Read the ion pump vacuum
-#include "usart.c"			// Serial (RS232) communications
+//#include "usart.c"			// Serial (RS232) communications
 #include "fram.c"			// FRAM memory
-#include "ds3231.c"			// Day-time clock
-#include "mma8451.c"		// Accelerometer
-#include "nmea.c"			// GPS style output
-#include "oled.c"			// Newhaven OLED displays
-#include "eeprom.c"			// ATMega4809 eeprom
+//#include "ds3231.c"			// Day-time clock
+//#include "mma8451.c"		// Accelerometer
+//#include "nmea.c"			// GPS style output
+//#include "oled.c"			// Newhaven OLED displays
+//#include "eeprom.c"			// ATMega4809 eeprom
 #include "wdt.c"			// Watchdog timer used only for reboot function
 #include "interrupts.c"		// Interrupt service routines
-#include "rtc.c"			// Real time clock one second ticks
+//#include "rtc.c"			// Real time clock one second ticks
 
 // Function Prototypes
-void Xcommands(void);
 void commands(void);
 void echo_cmd(char *str);
 uint8_t isaletter(char);
@@ -53,11 +45,7 @@ void parse_cmd(char*, uint8_t);
 uint8_t report(uint8_t);
 void send_prompt(uint8_t);
 uint8_t set(uint8_t);
-
-// Globals
-extern USARTBuf		// These are declared in usart.c
-	send0_buf, send1_buf, send3_buf,
-	recv0_buf, recv1_buf, recv3_buf;
+void initialize(void);
 
 typedef struct {
 	char cverb,			// Single character command
@@ -74,19 +62,7 @@ int main(void)
 {
 
 //	char strbuf[11];
-
-	init_PORTS();
-	init_LED();
-	init_BEEPER();
-	init_RTC(64);	// Fast flashing LED before reboot ACK
-	init_SPECID();
-	init_TWI();
-	init_PNEU();
-	init_USART();
-	init_OLED(0);
-	init_OLED(1);
-	init_EEPROM();
-	init_MMA8451();
+	initialize();
 
 /*
 	writestr_OLED(1, "specMech Version", 1);
@@ -159,11 +135,11 @@ off_BEEPER();
 
 	switch (verb) {
 		case 'c':				// close
-			prompt_flag = close_pneu(object);
+			prompt_flag = close_PNEU(object);
 			break;
 
 		case 'o':				// open
-			prompt_flag = open_pneu(object);
+			prompt_flag = open_PNEU(object);
 			break;
 
 		case 'r':				// Report
@@ -201,7 +177,7 @@ void echo_cmd(char *cmdline)
 	char strbuf[BUFSIZE+10];		// Add $SXCMD, and *HH checksum
 
 		// Format and echo the command line
-	sprintf(strbuf, format_CMD, get_specID(), cmdline);
+	sprintf(strbuf, format_CMD, get_SPECID(), cmdline);
 	checksum_NMEA(strbuf);
 	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
 
@@ -211,7 +187,27 @@ void echo_cmd(char *cmdline)
 	writestr_OLED(1, cmdline, 1);
 
 }
+/*
+void initialize(void)
+{
 
+		// Curiosity nano on-board button
+	PORTF.PIN6CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc;
+	init_PORTS();
+	init_LED();
+	init_BEEPER();
+	init_RTC(64);	// Fast flashing LED before reboot ACK
+	init_SPECID();
+	init_TWI();
+	init_PNEU();
+	init_USART();
+	init_OLED(0);
+	init_OLED(1);
+	init_EEPROM();
+	init_MMA8451();
+
+}
+*/
 /*------------------------------------------------------------------------------
 uint8_t isaletter(char c)
 	Checks if the character is in the range A-Z and a-z
@@ -332,7 +328,7 @@ uint8_t report(uint8_t cstack)
 
 		case 'B':					// Boot time
 			get_BOOTTIME(boottime);
-			sprintf(outbuf, format_BTM, get_specID(), boottime, pcmd[cstack].cid);
+			sprintf(outbuf, format_BTM, get_SPECID(), boottime, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
@@ -346,7 +342,7 @@ uint8_t report(uint8_t cstack)
 			h2 = get_humidity(2);
 			t3 = get_temperature(3);
 			get_time(currenttime);
-			sprintf(outbuf, format_ENV, get_specID(), currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
+			sprintf(outbuf, format_ENV, get_SPECID(), currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
@@ -354,7 +350,7 @@ uint8_t report(uint8_t cstack)
 		case 'o':					// Orientation
 			get_orientation(MMA8451ADDR, &x, &y, &z);
 			get_time(currenttime);
-			sprintf(outbuf, format_ORI, get_specID(), currenttime, x, y, z, pcmd[cstack].cid);
+			sprintf(outbuf, format_ORI, get_SPECID(), currenttime, x, y, z, pcmd[cstack].cid);
 //			sprintf(outbuf, "x=%03.1f y=%03.1f z=%03.1f", x, y, z);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
@@ -363,7 +359,7 @@ uint8_t report(uint8_t cstack)
 		case 'p':
 			get_time(currenttime);
 			read_pneusensors(&shutter, &left, &right, &air);
-			sprintf(outbuf, format_PNU, get_specID(), currenttime, shutter, left, right, air, pcmd[cstack].cid);
+			sprintf(outbuf, format_PNU, get_SPECID(), currenttime, shutter, left, right, air, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
@@ -372,7 +368,7 @@ uint8_t report(uint8_t cstack)
 			get_time(currenttime);
 			read_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) lastsettime, 20);
 			get_BOOTTIME(boottime);
-			sprintf(outbuf, format_TIM, get_specID(), currenttime, lastsettime,
+			sprintf(outbuf, format_TIM, get_SPECID(), currenttime, lastsettime,
 				boottime, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
@@ -382,7 +378,7 @@ uint8_t report(uint8_t cstack)
 			redvac = read_ionpump(REDPUMP);
 			bluvac = read_ionpump(BLUEPUMP);
 			get_time(currenttime);
-			sprintf(outbuf, format_VAC, get_specID(), currenttime, redvac, bluvac, pcmd[cstack].cid);
+			sprintf(outbuf, format_VAC, get_SPECID(), currenttime, redvac, bluvac, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;
@@ -390,7 +386,7 @@ uint8_t report(uint8_t cstack)
 		case 'V':
 			get_VERSION(version);	// Send the specMech version
 			get_time(currenttime);
-			sprintf(outbuf, format_VER, get_specID(), currenttime, version, pcmd[cstack].cid);
+			sprintf(outbuf, format_VER, get_SPECID(), currenttime, version, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;

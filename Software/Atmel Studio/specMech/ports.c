@@ -3,11 +3,7 @@ ports.c
 	Initialize ATMega4809 ports
 ------------------------------------------------------------------------------*/
 
-#ifndef PORTSC
-#define PORTSC
-
-// Function Prototypes
-void init_PORTS(void);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 void init_PORTS(void)
@@ -67,8 +63,6 @@ void init_PORTS(void)
 	PORTF.PIN3CTRL = PORT_PULLUPEN_bm;
 	PORTF.PIN4CTRL = PORT_PULLUPEN_bm;
 	PORTF.PIN5CTRL = PORT_PULLUPEN_bm;
-	PORTF.PIN6CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc;
+	PORTF.PIN6CTRL = PORT_PULLUPEN_bm;
 
 }
-
-#endif
