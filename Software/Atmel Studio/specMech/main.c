@@ -37,7 +37,10 @@ specMech.c
 #include "interrupts.c"		// Interrupt service routines
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 //#include "rtc.c"			// Real time clock one second ticks
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
@@ -68,10 +71,13 @@ int main(void)
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 //	char strbuf[11];
 	initialize();
 =======
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
 	char strbuf[11];
