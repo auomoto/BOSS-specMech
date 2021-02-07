@@ -3,9 +3,7 @@ specMech.c
 	BOSS motion controller board based on an ATMega4809 implemented on a
 	Microchip Curiosity Nano
 ------------------------------------------------------------------------------*/
-<<<<<<< HEAD
 
-=======
 #define F_CPU		3333333UL
 #define VERSION		"2021-02-03"
 #define	YES				1
@@ -13,7 +11,6 @@ specMech.c
 #define GREATERPROMPT	0	// Standard return prompt >
 #define EXCLAIMPROMPT	1	// No REBOOT ACK prompt !
 #define ERRORPROMPT		2	// Generate error line, then >
->>>>>>> parent of ed8c8aa... Enabled button to reboot
 #define CVALUESIZE		41	// Maximum length of a command value string
 #define CIDSIZE			9	// Maximum length of a command ID string
 #define CSTACKSIZE		10	// Number of stacked up commands allowed
@@ -72,8 +69,6 @@ uint8_t specMechErrors;
 int main(void)
 {
 
-<<<<<<< HEAD
-
 //	char strbuf[11];
 	initialize();
 
@@ -96,7 +91,7 @@ int main(void)
 	init_OLED(1);
 	init_EEPROM();
 	init_MMA8451();
->>>>>>> parent of ed8c8aa... Enabled button to reboot
+
 	sei();
 
 	specMechErrors = 0;
