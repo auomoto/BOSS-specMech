@@ -535,7 +535,11 @@ END GROUP
  *(.rela.plt)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .text           0x00000000     0x327a
+=======
+.text           0x00000000     0x3580
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
 .text           0x00000000     0x3580
 >>>>>>> parent of b752f80... Set up RTC for flashing led
@@ -1106,6 +1110,9 @@ END GROUP
  .fini9         0x0000357c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_exit.o)
                 0x0000357c                _exit
                 0x0000357c                exit
+<<<<<<< HEAD
+>>>>>>> parent of b752f80... Set up RTC for flashing led
+=======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
  *(.fini9)
  *(.fini8)
@@ -1125,6 +1132,7 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
+<<<<<<< HEAD
 <<<<<<< HEAD
  .fini0         0x00003276        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_exit.o)
  *(.fini0)
@@ -1147,6 +1155,8 @@ END GROUP
  *(.data*)
  .data.rebootnack.3762
 =======
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
  .fini0         0x0000357c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3\libgcc.a(_exit.o)
  *(.fini0)
                 0x00003580                _etext = .
@@ -1163,6 +1173,9 @@ END GROUP
  *(.data)
  *(.data*)
  .data.rebootnack.4020
+<<<<<<< HEAD
+>>>>>>> parent of b752f80... Set up RTC for flashing led
+=======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
                 0x00802800        0x1 main.o
  *(.gnu.linkonce.d*)
@@ -1176,7 +1189,11 @@ END GROUP
  *(.bss)
  *(.bss*)
 <<<<<<< HEAD
+<<<<<<< HEAD
  .bss.cstack.3763
+=======
+ .bss.cstack.4021
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
  .bss.cstack.4021
 >>>>>>> parent of b752f80... Set up RTC for flashing led
@@ -1194,8 +1211,13 @@ END GROUP
                 0x00802ca5                send1_buf
                 0x00802d2a                PROVIDE (__bss_end, .)
 <<<<<<< HEAD
+<<<<<<< HEAD
                 0x000033ba                __data_load_start = LOADADDR (.data)
                 0x000033bc                __data_load_end = (__data_load_start + SIZEOF (.data))
+=======
+                0x000036f2                __data_load_start = LOADADDR (.data)
+                0x000036f4                __data_load_end = (__data_load_start + SIZEOF (.data))
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
                 0x000036f2                __data_load_start = LOADADDR (.data)
                 0x000036f4                __data_load_end = (__data_load_start + SIZEOF (.data))
@@ -1286,6 +1308,7 @@ END GROUP
  *(.debug_sfnames)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .debug_aranges  0x00000000      0x3e0
  *(.debug_aranges)
  .debug_aranges
@@ -1338,10 +1361,27 @@ END GROUP
  .debug_aranges
                 0x000002e0       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 >>>>>>> parent of b752f80... Set up RTC for flashing led
+=======
+.debug_aranges  0x00000000      0x300
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000      0x260 main.o
+ .debug_aranges
+                0x00000260       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_aranges
+                0x00000280       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_aranges
+                0x000002a0       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_aranges
+                0x000002c0       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_aranges
+                0x000002e0       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 
 .debug_pubnames
  *(.debug_pubnames)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 .debug_info     0x00000000     0x6f59
  *(.debug_info .gnu.linkonce.wi.*)
@@ -1492,6 +1532,40 @@ END GROUP
 
 .debug_frame    0x00000000      0xa04
  *(.debug_frame)
+=======
+.debug_info     0x00000000     0x5f78
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x00000000     0x248a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
+ .debug_info    0x0000248a     0x37cf main.o
+ .debug_info    0x00005c59       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_info    0x00005cf9       0xa1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_info    0x00005d9a       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_info    0x00005e3a       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_info    0x00005ed9       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+
+.debug_abbrev   0x00000000     0x275e
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000     0x2296 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
+ .debug_abbrev  0x00002296      0x464 main.o
+ .debug_abbrev  0x000026fa       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_abbrev  0x0000270e       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_abbrev  0x00002722       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_abbrev  0x00002736       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_abbrev  0x0000274a       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+
+.debug_line     0x00000000     0x20b8
+ *(.debug_line .debug_line.* .debug_line_end)
+ .debug_line    0x00000000      0x187 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
+ .debug_line    0x00000187     0x1c75 main.o
+ .debug_line    0x00001dfc       0x5d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_line    0x00001e59       0xa5 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_line    0x00001efe       0x80 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_line    0x00001f7e       0xc1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_line    0x0000203f       0x79 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.4.331/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+
+.debug_frame    0x00000000      0xa04
+ *(.debug_frame)
+>>>>>>> parent of b752f80... Set up RTC for flashing led
  .debug_frame   0x00000000      0xa04 main.o
 
 .debug_str      0x00000000     0x1be9
@@ -1503,6 +1577,9 @@ END GROUP
 .debug_loc      0x00000000     0x35d1
  *(.debug_loc)
  .debug_loc     0x00000000     0x35d1 main.o
+<<<<<<< HEAD
+>>>>>>> parent of b752f80... Set up RTC for flashing led
+=======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
 
 .debug_macinfo
@@ -1524,6 +1601,7 @@ END GROUP
  *(.debug_pubtypes)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .debug_ranges   0x00000000      0x280
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x28 beeper.o
@@ -1538,6 +1616,11 @@ END GROUP
  .debug_ranges  0x00000210       0x10 rtc.o
  .debug_ranges  0x00000220       0x18 specid.o
  .debug_ranges  0x00000238       0x48 usart.o
+=======
+.debug_ranges   0x00000000      0x250
+ *(.debug_ranges)
+ .debug_ranges  0x00000000      0x250 main.o
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
 .debug_ranges   0x00000000      0x250
  *(.debug_ranges)

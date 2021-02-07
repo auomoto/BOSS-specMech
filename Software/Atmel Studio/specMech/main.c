@@ -36,7 +36,10 @@ specMech.c
 #include "wdt.c"			// Watchdog timer used only for reboot function
 #include "interrupts.c"		// Interrupt service routines
 <<<<<<< HEAD
+<<<<<<< HEAD
 //#include "rtc.c"			// Real time clock one second ticks
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
 
@@ -64,10 +67,13 @@ uint8_t specMechErrors;
 int main(void)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 //	char strbuf[11];
 	initialize();
 =======
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 	char strbuf[11];
 	init_PORTS();
 	init_LED();

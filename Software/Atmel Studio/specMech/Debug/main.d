@@ -39,6 +39,9 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
  .././wdt.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\wdt.h \
  .././interrupts.c
+<<<<<<< HEAD
+>>>>>>> parent of b752f80... Set up RTC for flashing led
+=======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:

@@ -7,7 +7,10 @@ interrupts.c
 #define INTERRUPTSC
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //#include "led.c"
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
 #include "wdt.c"
@@ -26,6 +29,7 @@ ISR(PORTF_PORT_vect)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*---------------------------------------------------------------------
 Interrupt routine for RTC
 	Every tick of the RTC executes here
@@ -38,6 +42,8 @@ ISR(RTC_CNT_vect)
 
 }
 
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 =======
 >>>>>>> parent of b752f80... Set up RTC for flashing led
 #endif
