@@ -6,7 +6,10 @@ interrupts.c
 #ifndef INTERRUPTSC
 #define INTERRUPTSC
 
+<<<<<<< HEAD
 //#include "led.c"
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 #include "wdt.c"
 
 /*----------------------------------------------------------------------
@@ -17,11 +20,12 @@ ISR(PORTF_PORT_vect)
 
 	if (PORTF.INTFLAGS & PIN6_bm) {		// Curiosity Nano button
 		PORTF.INTFLAGS = PIN6_bm;		// Clear the interrupt flag
-		reboot();						// Defined in wdt.c
+		reboot();
 	}
 
 }
 
+<<<<<<< HEAD
 /*---------------------------------------------------------------------
 Interrupt routine for RTC
 	Every tick of the RTC executes here
@@ -34,4 +38,6 @@ ISR(RTC_CNT_vect)
 
 }
 
+=======
+>>>>>>> parent of b752f80... Set up RTC for flashing led
 #endif
