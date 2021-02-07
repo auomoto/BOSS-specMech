@@ -35,16 +35,9 @@ specMech.c
 //#include "eeprom.c"			// ATMega4809 eeprom
 #include "wdt.c"			// Watchdog timer used only for reboot function
 #include "interrupts.c"		// Interrupt service routines
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 //#include "rtc.c"			// Real time clock one second ticks
-=======
->>>>>>> parent of b752f80... Set up RTC for flashing led
-=======
->>>>>>> parent of b752f80... Set up RTC for flashing led
-=======
->>>>>>> parent of b752f80... Set up RTC for flashing led
+
 
 // Function Prototypes
 void commands(void);
@@ -69,30 +62,11 @@ uint8_t specMechErrors;
 
 int main(void)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 //	char strbuf[11];
 	initialize();
-=======
-=======
->>>>>>> parent of b752f80... Set up RTC for flashing led
-=======
->>>>>>> parent of b752f80... Set up RTC for flashing led
-	char strbuf[11];
-	init_PORTS();
-	init_LED();
-	init_BEEPER();
-	init_SPECID();
-	init_TWI();
-	init_PNEU();
-	init_USART();
-	init_OLED(0);
-	init_OLED(1);
-	init_EEPROM();
-	init_MMA8451();
->>>>>>> parent of b752f80... Set up RTC for flashing led
+
 
 /*
 	writestr_OLED(1, "specMech Version", 1);
