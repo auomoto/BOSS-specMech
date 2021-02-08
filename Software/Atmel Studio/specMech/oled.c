@@ -12,6 +12,8 @@ oled.c
 
 #include "globals.h"
 
+uint16_t timerOLED, timeoutOLED;	// Used to turn off the display
+
 /*------------------------------------------------------------------------------
 void clear_OLED(uint8_t displaynumber)
 	Clears the OLED screen by writing blank spaces to both lines.
@@ -23,9 +25,11 @@ void clear_OLED(uint8_t displaynumber)
 
 	writestr_OLED(displaynumber, blanks, 1);
 	writestr_OLED(displaynumber, blanks, 2);
+	timerOLED = 0;
 
 }
 
+/*
 void off_OLED(uint8_t displaynumber)
 {
 
@@ -51,9 +55,11 @@ void on_OLED(uint8_t displaynumber)
 		twiaddr = OLEDADDR1;
 	}
 	write_OLED(twiaddr, OLEDCMD, 0x0C);	// Display ON
+//??
 	_delay_ms(500);
 
 }
+*/
 
 /*------------------------------------------------------------------------------
 void init_OLED(uint8_t displaynumber)
@@ -131,6 +137,9 @@ void init_OLED(uint8_t displaynumber)
 	write_OLED(twiaddr, OLEDCMD, 0x0C);	// Display ON
 	_delay_ms(100);				// Wait after display-on command
 
+	timerOLED = 0;
+	timeoutOLED = 5;
+
 }
 
 /*------------------------------------------------------------------------------
@@ -188,6 +197,8 @@ void writestr_OLED(uint8_t displaynumber, char *str, uint8_t lineno)
 	for (i = 0; i < 16; i++) {
 		write_OLED(twiaddr, OLEDDATA, strbuf[i]);
 	}
+
+	timerOLED = 1;
 
 }
 

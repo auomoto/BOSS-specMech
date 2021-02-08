@@ -152,8 +152,8 @@ uint8_t set_PNEUVALVES(uint8_t, uint8_t);
 #define CLEARDISPLAY	0x01		// Newhaven command (not used)
 #define DISPLAYON		0x0C		// Newhaven command (not used)
 #define DISPLAYOFF		0x08		// Newhaven command (not used)
-#define OLEDADDR0		(0x3c << 1)	// TWI bus address
-#define OLEDADDR1		(0x3d << 1)	// TWI bus address
+#define OLEDADDR0		(0x3C << 1)	// TWI bus address
+#define OLEDADDR1		(0x3D << 1)	// TWI bus address
 #define OLEDCMD			0x00		// Newhaven command was 1
 #define OLEDDATA		0x40		// Newhaven command was 0
 #define OLEDLINE1		0x80		// Newhaven command
@@ -164,6 +164,7 @@ void on_OLED(uint8_t);
 void init_OLED(uint8_t);
 void write_OLED(uint8_t, uint8_t, uint8_t);
 void writestr_OLED(uint8_t, char*, uint8_t);
+extern uint16_t timerOLED, timeoutOLED;	// Used to turn off the display
 
 // fram.c
 #define FRAMADDR	(0xA0)	// A0, A1, A2 grounded
