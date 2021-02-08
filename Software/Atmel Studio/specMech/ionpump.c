@@ -22,18 +22,8 @@ ionpump.c
 		rough, but good enough to tell you when to be worried about the vacuum.
 ------------------------------------------------------------------------------*/
 
-#ifndef IONPUMPC
-#define IONPUMPC
+#include "globals.h"
 
-#define REDPUMP		1
-#define BLUEPUMP	2
-#define ISO224SLOPE	(2.0053)	// To log10(pressure) from ISO224 voltage
-#define ISO224INTER	(-6.8637)	// Transfer function from Modion pump voltage
-
-#include "ads1115.c"	// ADC
-
-// Function prototypes
-float read_ionpump(uint8_t);
 
 /*------------------------------------------------------------------------------
 float read_ionpump(uint8_t pumpid)
@@ -75,5 +65,3 @@ float read_ionpump(uint8_t pumpid) {
 	return(vacuum);
 
 }
-
-#endif

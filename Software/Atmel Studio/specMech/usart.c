@@ -1,40 +1,8 @@
-/*------------------------------------------------------------------------------
-usart.c
-	Serial read/write routines.
-
-	The #define computation for 9600 baud works for the 3.3MHz processor speed.
-	Haven't checked for how fast you can go with a 3.33MHz processor.
-
-	There are three data buffers for transmit and three for receive for a total
-	of six I/O buffers. These are the USARTBuf structures defined here.
-
-	BUFSIZE is the length of the I/O buffer. The sendX_buf structures are
-	handled as ring buffers while the recvX_buf structures simply collect data
-	until a <CR> is received. So commands to the instrument should not come
-	too quickly or the buffer could be overwritten. It's probably a good idea
-	to receive completely the response from the previous command before sending
-	another.
-------------------------------------------------------------------------------*/
-
 #include "globals.h"
+
 #define	USART_BAUD_RATE(BAUD_RATE)	((float)(F_CPU * 64 / (16 * (float)BAUD_RATE)) + 0.5)
 
-
-/*
-typedef struct {
-	uint8_t					// Serial I/O buffer
-		data[BUFSIZE],		// Data to send or data received
-		head,				// Ring buffer head index
-		tail,				// Ring buffer tail index
-		nbytes,				// Number of data bytes in data[];
-		nxfrd;				// Temporary counter (number of bytes transferred)
-	uint8_t	volatile done;	// Is the transfer complete ('\r' seen)?
-} USARTBuf;
-*/
-
-USARTBuf
-	send0_buf, send1_buf, send3_buf,
-	recv0_buf, recv1_buf, recv3_buf;
+USARTBuf send0_buf, send1_buf, send3_buf, recv0_buf, recv1_buf, recv3_buf;
 
 /*------------------------------------------------------------------------------
 void init_USART(void)

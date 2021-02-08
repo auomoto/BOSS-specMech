@@ -1,14 +1,4 @@
-/*------------------------------------------------------------------------------
-humidity.c
-	Honeywell HiH-4031 humidity sensors. Voltage output is roughly 0.75 V to
-	4.0 V, 0% to 100% RH at 0 C. There is a temperature correction required.
-------------------------------------------------------------------------------*/
-
-#ifndef HUMIDITYC
-#define HUMIDITYC
-
-// Function prototypes
-float get_humidity(uint8_t);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 float get_humidity(uint8_t sensor)
@@ -29,6 +19,9 @@ float get_humidity(uint8_t sensor)
 	enough for this measurement.
 	
 	CREATE a read_hih430x routine
+
+	Honeywell HiH-4031 humidity sensors. Voltage output is roughly 0.75 V to
+	4.0 V, 0% to 100% RH at 0 C. There is a temperature correction required.
 ------------------------------------------------------------------------------*/
 float get_humidity(uint8_t sensor)
 {
@@ -62,5 +55,3 @@ float get_humidity(uint8_t sensor)
 	return(humidity);
 
 }
-
-#endif

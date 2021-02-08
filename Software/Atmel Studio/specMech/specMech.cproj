@@ -20,127 +20,118 @@
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>
     <ProgFlashFromRam>true</ProgFlashFromRam>
-    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <RamSnippetAddress />
     <UncachedRange />
     <preserveEEPROM>true</preserveEEPROM>
-    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <OverrideVtorValue />
     <BootSegment>2</BootSegment>
     <ResetRule>0</ResetRule>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <EraseKey />
     <AsfFrameworkConfig>
       <framework-data xmlns="">
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.47.0" />
-        </dependencies>
-      </framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.49.1" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
-    <avrtool>com.atmel.avrdbg.tool.nedbg</avrtool>
-    <avrtoolserialnumber>ATML3094051800001847</avrtoolserialnumber>
-    <avrdeviceexpectedsignature>0x1E9651</avrdeviceexpectedsignature>
-    <avrtoolinterface>UPDI</avrtoolinterface>
-    <com_atmel_avrdbg_tool_nedbg>
-      <ToolOptions>
-        <InterfaceProperties>
-          <UpdiClock>750000</UpdiClock>
-        </InterfaceProperties>
-        <InterfaceName>UPDI</InterfaceName>
-      </ToolOptions>
-      <ToolType>com.atmel.avrdbg.tool.nedbg</ToolType>
-      <ToolNumber>ATML3094051800001847</ToolNumber>
-      <ToolName>nEDBG</ToolName>
-    </com_atmel_avrdbg_tool_nedbg>
-    <avrtoolinterfaceclock>750000</avrtoolinterfaceclock>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.common.Device>-mmcu=atmega4809 -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.4.331\gcc\dev\atmega4809"</avrgcc.common.Device>
-        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.4.331\include</Value>
-          </ListValues>
-        </avrgcc.compiler.directories.IncludePaths>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcc.linker.general.UseVprintfLibrary>True</avrgcc.linker.general.UseVprintfLibrary>
-        <avrgcc.linker.libraries.Libraries>
-          <ListValues>
-            <Value>libm</Value>
-          </ListValues>
-        </avrgcc.linker.libraries.Libraries>
-        <avrgcc.linker.miscellaneous.LinkerFlags>-lprintf_flt</avrgcc.linker.miscellaneous.LinkerFlags>
-        <avrgcc.assembler.general.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.4.331\include</Value>
-          </ListValues>
-        </avrgcc.assembler.general.IncludePaths>
-        <avrgcc.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>NDEBUG</Value>
-          </ListValues>
-        </avrgcc.compiler.symbols.DefSymbols>
-        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
-      </AvrGcc>
+  <avrgcc.common.Device>-mmcu=atmega4809 -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>NDEBUG</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\include\</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.Libraries>
+  <avrgcc.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\include\</Value>
+    </ListValues>
+  </avrgcc.assembler.general.IncludePaths>
+</AvrGcc>
     </ToolchainSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.common.Device>-mmcu=atmega4809 -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.4.331\gcc\dev\atmega4809"</avrgcc.common.Device>
-        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.4.331\include</Value>
-          </ListValues>
-        </avrgcc.compiler.directories.IncludePaths>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcc.linker.general.UseVprintfLibrary>True</avrgcc.linker.general.UseVprintfLibrary>
-        <avrgcc.linker.libraries.Libraries>
-          <ListValues>
-            <Value>libm</Value>
-          </ListValues>
-        </avrgcc.linker.libraries.Libraries>
-        <avrgcc.linker.miscellaneous.LinkerFlags>-lprintf_flt</avrgcc.linker.miscellaneous.LinkerFlags>
-        <avrgcc.assembler.general.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.4.331\include</Value>
-          </ListValues>
-        </avrgcc.assembler.general.IncludePaths>
-        <avrgcc.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>DEBUG</Value>
-          </ListValues>
-        </avrgcc.compiler.symbols.DefSymbols>
-        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
-        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
-        <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
-      </AvrGcc>
+  <avrgcc.common.Device>-mmcu=atmega4809 -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>DEBUG</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\include\</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize debugging experience (-Og)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.linker.general.UseVprintfLibrary>True</avrgcc.linker.general.UseVprintfLibrary>
+  <avrgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.Libraries>
+  <avrgcc.linker.miscellaneous.LinkerFlags>-lprintf_flt</avrgcc.linker.miscellaneous.LinkerFlags>
+  <avrgcc.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\include\</Value>
+    </ListValues>
+  </avrgcc.assembler.general.IncludePaths>
+  <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
+</AvrGcc>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ad590.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ads1115.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="beeper.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="commands.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ds3231.c">
@@ -149,7 +140,19 @@
     <Compile Include="eeprom.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="fram.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="humidity.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="initialize.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="interrupts.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ionpump.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="led.c">
@@ -161,7 +164,16 @@
     <Compile Include="mcp23008.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="mcp9808.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="mma8451.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="nmea.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="oled.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="pneu.c">
@@ -170,10 +182,19 @@
     <Compile Include="ports.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="report.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="rtc.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="specid.c">
+    <Compile Include="set.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="specID.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="temperature.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="twi.c">
@@ -182,6 +203,12 @@
     <Compile Include="usart.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="wdt.c">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

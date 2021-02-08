@@ -15,16 +15,7 @@ mcp9808.c
 	NOT VERIFIED FOR NEGATIVE TEMPERATURES YET 2021-01-03
 ------------------------------------------------------------------------------*/
 
-#ifndef MCP9808C
-#define MCP9808C
-
-#define MCP9808ADDR		(0x30)	// TWI address
-#define TEMPREGISTER	(0x05)	// Ambient temperature register
-
-#include "twi.c"
-
-// Function prototypes
-float read_MCP9808(void);
+#include "globals.h"
 
 float read_MCP9808(void)
 {
@@ -47,5 +38,3 @@ float read_MCP9808(void)
 	}
 	return(temperature);
 }
-
-#endif

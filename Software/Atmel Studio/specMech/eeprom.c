@@ -1,10 +1,9 @@
+#include "globals.h"
 /*------------------------------------------------------------------------------
 eeprom.c
 	Reads and writes the specMech version and system boot time.
+	TWI must be enabled first (init_TWI()) since it calls get_time().
 ------------------------------------------------------------------------------*/
-
-#include "globals.h"
-
 void get_BOOTTIME(char *boottime)
 {
 

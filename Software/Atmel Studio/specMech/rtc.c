@@ -1,8 +1,3 @@
-/*------------------------------------------------------------------------------
-rtc.c
-	Curiosity Nano ATMega4809 one second timer
-------------------------------------------------------------------------------*/
-
 #include "globals.h"
 
 /*----------------------------------------------------------------------
@@ -73,3 +68,14 @@ void init_RTC(uint16_t ticks)
 
 }
 
+/*---------------------------------------------------------------------
+Interrupt routine for RTC
+	Every tick of the RTC executes here
+----------------------------------------------------------------------*/
+ISR(RTC_CNT_vect)
+{
+
+	RTC.INTFLAGS = RTC_OVF_bm;		// Clear interrupt flag
+	toggle_LED;						// Defined in led.c
+
+}

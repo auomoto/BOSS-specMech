@@ -16,21 +16,7 @@ ad590.c
 		The temperature in C
 ------------------------------------------------------------------------------*/
 
-#ifndef AD590C
-#define AD590C
-
-// MCP23008 address
-#define AD590DRIVER			(0x4E)	// MCP23008 address
-//#define AD590DRIVER		(0x40)	// Test unit MCP23008 address
-
-//#define AD590RESISTOR	(1500.0)	// Ohms; better resolution but prob not needed
-#define AD590RESISTOR	(1000.0)	// Ohms
-
-#include "mcp23008.c"
-#include "ads1115.c"
-
-// Function prototypes
-float read_AD590(uint8_t sensor);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 float read_AD590(uint8_t sensor)
@@ -84,5 +70,3 @@ float read_AD590(uint8_t sensor)
 	return(temperature);
 
 }
-
-#endif

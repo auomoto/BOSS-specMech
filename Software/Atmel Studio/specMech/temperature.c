@@ -1,13 +1,4 @@
-/*------------------------------------------------------------------------------
-temperature.c
-	Temperature sensors
-------------------------------------------------------------------------------*/
-
-#ifndef TEMPERATUREC
-#define TEMPERATUREC
-
-// Function prototypes
-float get_temperature(uint8_t);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 float get_temperature(uint8_t sensor)
@@ -49,5 +40,3 @@ float get_temperature(uint8_t sensor)
 	return(temperature);
 
 }
-
-#endif

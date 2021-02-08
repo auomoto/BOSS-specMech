@@ -1,8 +1,3 @@
-/*------------------------------------------------------------------------------
-NMEA checksum computations
-	Append the NMEA style checksums to the presented character string.
-------------------------------------------------------------------------------*/
-
 #include "globals.h"
 
 /*------------------------------------------------------------------------------
@@ -35,7 +30,7 @@ void format_ERR(char *str)
 
 	const char errformat[] = "$S%dERR";
 
-	sprintf(str, errformat, get_specID());
+	sprintf(str, errformat, get_SPECID);
 	checksum_NMEA(str);
 
 }

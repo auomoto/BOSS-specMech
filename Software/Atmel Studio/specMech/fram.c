@@ -3,15 +3,7 @@ fram.c
 	Fujitsu MB85RC256V FRAM TWI interface. 32K x 8bit memory.
 ------------------------------------------------------------------------------*/
 
-#ifndef FRAMC
-#define FRAMC
-
-#define FRAMADDR	(0xA0)	// A0, A1, A2 grounded
-#define SETTIMEADDR	(0x00)	// When the day/time clock was set (20 bytes)
-
-// Function Prototypes
-uint8_t read_FRAM(uint8_t, uint16_t, uint8_t *, uint8_t);
-uint8_t write_FRAM(uint8_t, uint16_t, uint8_t *, uint8_t);
+#include "globals.h"
 
 /*------------------------------------------------------------------------------
 uint8_t read_FRAM(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nybtes)
@@ -111,5 +103,3 @@ uint8_t write_FRAM(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nbytes)
 	return(0);
 
 }
-
-#endif

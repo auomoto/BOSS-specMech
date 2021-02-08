@@ -1,12 +1,3 @@
-/*------------------------------------------------------------------------------
-wdt.c
-	Watchdog timer setup
-	We use this only to reboot from the command line.
-------------------------------------------------------------------------------*/
-
-#ifndef WDTC
-#define WDTC
-
 #include "globals.h"
 
 void reboot(void)
@@ -16,5 +7,3 @@ void reboot(void)
 	WDT.CTRLA = WDT_PERIOD_8CLK_gc;
 
 }
-
-#endif

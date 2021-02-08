@@ -10,31 +10,7 @@ oled.c
 	0 and 1 respectively. There are only two choices for this display.
 ------------------------------------------------------------------------------*/
 
-<<<<<<< HEAD
 #include "globals.h"
-=======
-#ifndef OLEDC
-#define OLEDC
-
-// OLED display
-#define CLEARDISPLAY	0x01		// Newhaven command (not used)
-#define DISPLAYON		0x0C		// Newhaven command (not used)
-#define DISPLAYOFF		0x08		// Newhaven command (not used)
-#define OLEDADDR0		(0x3c << 1)	// TWI bus address
-#define OLEDADDR1		(0x3d << 1)	// TWI bus address
-#define OLEDCMD			0x00		// Newhaven command was 1
-#define OLEDDATA		0x40		// Newhaven command was 0
-#define OLEDLINE1		0x80		// Newhaven command
-#define OLEDLINE2		0xC0		// Newhaven command
-
-#include "twi.c"
-
-// Function Prototypes
-void clear_OLED(uint8_t);
-void init_OLED(uint8_t);
-void write_OLED(uint8_t, uint8_t, uint8_t);
-void writestr_OLED(uint8_t, char*, uint8_t);
->>>>>>> parent of ed8c8aa... Enabled button to reboot
 
 /*------------------------------------------------------------------------------
 void clear_OLED(uint8_t displaynumber)
