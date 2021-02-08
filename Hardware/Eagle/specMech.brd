@@ -1969,7 +1969,7 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="NAME" x="81.915" y="115.57" size="1.016" layer="25" font="vector" rot="SR0"/>
 <attribute name="VENDOR" value="Bourns Electronics" x="86.36" y="116.332" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="U5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" package="SOIC127P1030X245-18" package3d_urn="urn:adsk.eagle:package:10465865/2" value="TBD62083" x="121.285" y="102.87" smashed="yes">
+<element name="U5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" package="SOIC127P1030X245-18" package3d_urn="urn:adsk.eagle:package:10465865/2" value="TBD62083AFWG,EL" x="121.285" y="102.87" smashed="yes">
 <attribute name="NAME" x="120.65" y="109.6875" size="1.016" layer="25" font="vector"/>
 </element>
 <element name="U8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" package="SOIC18-W_MC" package3d_urn="urn:adsk.eagle:package:18133672/2" value="MCP23008-E/SO" x="107.315" y="104.14" smashed="yes">

@@ -15,21 +15,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00003758  2**2
                   CONTENTS, READONLY
-  6 .debug_aranges 00000558  00000000  00000000  00003798  2**3
+  6 .debug_aranges 00000568  00000000  00000000  00003798  2**3
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   0000867c  00000000  00000000  00003cf0  2**0
+  7 .debug_info   00008750  00000000  00000000  00003d00  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00003ebf  00000000  00000000  0000c36c  2**0
+  8 .debug_abbrev 00003eeb  00000000  00000000  0000c450  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   000035ad  00000000  00000000  0001022b  2**0
+  9 .debug_line   00003605  00000000  00000000  0001033b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000b80  00000000  00000000  000137d8  2**2
+ 10 .debug_frame  00000ba0  00000000  00000000  00013940  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    0000200a  00000000  00000000  00014358  2**0
+ 11 .debug_str    0000201b  00000000  00000000  000144e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    0000321b  00000000  00000000  00016362  2**0
+ 12 .debug_loc    000032fd  00000000  00000000  000164fb  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 000002f8  00000000  00000000  0001957d  2**0
+ 13 .debug_ranges 00000308  00000000  00000000  000197f8  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1324,7 +1324,7 @@ off_BEEPER;
 
 	// Check if rebooted
 	if (rebootnack) {
-     83e:	80 91 00 28 	lds	r24, 0x2800	; 0x802800 <__data_start>
+     83e:	80 91 00 28 	lds	r24, 0x2800	; 0x802800 <__DATA_REGION_ORIGIN__>
      842:	88 23       	and	r24, r24
      844:	89 f0       	breq	.+34     	; 0x868 <commands+0x8e>
 		if (cmdline[0] != '!') {
@@ -1345,7 +1345,7 @@ off_BEEPER;
      85c:	80 e0       	ldi	r24, 0x00	; 0
      85e:	0e 94 67 03 	call	0x6ce	; 0x6ce <send_prompt>
 			rebootnack = 0;
-     862:	10 92 00 28 	sts	0x2800, r1	; 0x802800 <__data_start>
+     862:	10 92 00 28 	sts	0x2800, r1	; 0x802800 <__DATA_REGION_ORIGIN__>
 			return;
      866:	5c c0       	rjmp	.+184    	; 0x920 <commands+0x146>
 		}
@@ -3455,30 +3455,17 @@ void format_ERR(char *str)
     13c6:	08 95       	ret
 
 000013c8 <write_OLED>:
-	the screen. The next byte sent is either the  command or the screen
-	character.
-
-------------------------------------------------------------------------------*/
-void write_OLED(uint8_t twiaddr, uint8_t type, uint8_t byteToSend)
-{
     13c8:	cf 93       	push	r28
     13ca:	df 93       	push	r29
     13cc:	d6 2f       	mov	r29, r22
     13ce:	c4 2f       	mov	r28, r20
-
-	start_TWI(twiaddr, TWIWRITE);
     13d0:	60 e0       	ldi	r22, 0x00	; 0
     13d2:	0e 94 6b 10 	call	0x20d6	; 0x20d6 <start_TWI>
-	write_TWI(type);
     13d6:	8d 2f       	mov	r24, r29
     13d8:	0e 94 90 10 	call	0x2120	; 0x2120 <write_TWI>
-	write_TWI(byteToSend);
     13dc:	8c 2f       	mov	r24, r28
     13de:	0e 94 90 10 	call	0x2120	; 0x2120 <write_TWI>
-	stop_TWI();
     13e2:	0e 94 8c 10 	call	0x2118	; 0x2118 <stop_TWI>
-
-}
     13e6:	df 91       	pop	r29
     13e8:	cf 91       	pop	r28
     13ea:	08 95       	ret
@@ -3508,7 +3495,7 @@ void init_OLED(uint8_t displaynumber)
     13fc:	11 97       	sbiw	r26, 0x01	; 1
     13fe:	f1 f7       	brne	.-4      	; 0x13fc <init_OLED+0x10>
     1400:	00 00       	nop
-	_delay_ms(1);
+	_delay_ms(1);				// Reset time
 	PORTD.OUTSET = PIN6_bm;
     1402:	95 83       	std	Z+5, r25	; 0x05
 

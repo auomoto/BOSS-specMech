@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -13472,7 +13472,7 @@ Digikey 609-2845-ND</description>
 <part name="R11" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="4609X-101-103LF" device="" package3d_urn="urn:adsk.eagle:package:15461702/6"/>
 <part name="R14" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="4609X-101-103LF" device="" package3d_urn="urn:adsk.eagle:package:15461702/6" value="10K"/>
 <part name="P+17" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
-<part name="U5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="TBD62083" device="SOP18-P-375-1.27" package3d_urn="urn:adsk.eagle:package:10465865/2" value="TBD62083"/>
+<part name="U5" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="TBD62083" device="SOP18-P-375-1.27" package3d_urn="urn:adsk.eagle:package:10465865/2" value="TBD62083AFWG,EL"/>
 <part name="U8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MCP23008-E/SO" device="" package3d_urn="urn:adsk.eagle:package:18133672/2"/>
 <part name="P+19" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="P+20" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
