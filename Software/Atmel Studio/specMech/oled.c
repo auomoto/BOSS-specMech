@@ -29,38 +29,6 @@ void clear_OLED(uint8_t displaynumber)
 
 }
 
-/*
-void off_OLED(uint8_t displaynumber)
-{
-
-	uint8_t twiaddr;
-
-	if (displaynumber == 0) {
-		twiaddr = OLEDADDR0;
-	} else {
-		twiaddr = OLEDADDR1;
-	}
-	write_OLED(twiaddr, OLEDCMD, 0x08);	//display off, cursor off, blink off
-
-}
-
-void on_OLED(uint8_t displaynumber)
-{
-
-	uint8_t twiaddr;
-
-	if (displaynumber == 0) {
-		twiaddr = OLEDADDR0;
-	} else {
-		twiaddr = OLEDADDR1;
-	}
-	write_OLED(twiaddr, OLEDCMD, 0x0C);	// Display ON
-//??
-	_delay_ms(500);
-
-}
-*/
-
 /*------------------------------------------------------------------------------
 void init_OLED(uint8_t displaynumber)
 	Initialize a Newhaven NHD-0216AW-1B3 OLED display. This is taken straight
@@ -74,23 +42,6 @@ void init_OLED(uint8_t displaynumber)
 {
 
 	uint8_t twiaddr;
-/*
-	if (displaynumber == 0) {
-		twiaddr = OLEDADDR0;
-		PORTE.OUTCLR = PIN0_bm;		// Change these for real life
-		PORTE.DIRSET = PIN0_bm;		// PE0 is the /RESET pin for the OLED0 display
-		_delay_ms(1);
-		PORTE.OUTSET = PIN0_bm;
-
-	} else {
-		twiaddr = OLEDADDR1;
-		PORTE.OUTCLR = PIN1_bm;		// Change these for real life
-		PORTE.DIRSET = PIN1_bm;		// PE1 is the /RESET pin for the OLED1 display
-		_delay_ms(1);
-		PORTE.OUTSET = PIN1_bm;
-
-	}
-*/
 
 	PORTD.OUTCLR = PIN6_bm;		// PD6 is the /RESET pin for the OLED displays
 	PORTD.DIRSET = PIN6_bm;
@@ -183,8 +134,10 @@ void writestr_OLED(uint8_t displaynumber, char *str, uint8_t lineno)
 	} else {
 		twiaddr = OLEDADDR1;
 	}
-
 	strcpy(strbuf, str);
+	if (strlen(strbuf) > 16) {
+		strbuf[16] = '\0';
+	}
 	strcat(strbuf, blanks);		// pad with blanks
 
 	if (lineno == 1) {

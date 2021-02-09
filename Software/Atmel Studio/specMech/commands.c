@@ -33,6 +33,7 @@ off_BEEPER;
 			return;
 		} else {
 			init_RTC(511);		// 1-sec RTC clock
+			timeoutOLED = 5;	// 5 second timeout
 			send_prompt(GREATERPROMPT);
 			rebootnack = 0;
 			return;
@@ -41,9 +42,6 @@ off_BEEPER;
 
 	// Echo the command back to the user
 	echo_cmd(cmdline);
-
-//writestr_OLED(0, cmdline, 1);
-writestr_OLED(1, cmdline, 1);
 
 	if (strlen(cmdline) == 0) {		// Catch a terminal cr
 		send_prompt(GREATERPROMPT);

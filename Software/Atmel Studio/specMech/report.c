@@ -22,9 +22,12 @@ uint8_t report(uint8_t cstack)
 	const char format_BTM[] = "$S%dBTM,%s,%s";
 	const char format_ENV[] = "$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
 	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
+	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
 	const char format_PNU[] = "$S%dPNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
+	const char dformat_PNU[] = "%c %c %c %c";
 	const char format_TIM[] = "$S%dTIM,%s,%s,set,%s,boot,%s";
 	const char format_VAC[] = "$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
+	const char dformat_VAC[] = "%2.2f %2.2f";
 	const char format_VER[] = "$S%dVER,%s,%s,%s";
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float x, y, z;							// accelerometer
@@ -38,6 +41,8 @@ uint8_t report(uint8_t cstack)
 			sprintf(outbuf, format_BTM, get_SPECID, boottime, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			writestr_OLED(1, "Boot time", 1);
+			writestr_OLED(1, &boottime[5], 2);
 			break;
 
 		case 'e':					// Environment (temperature & humidity)
@@ -52,15 +57,20 @@ uint8_t report(uint8_t cstack)
 			sprintf(outbuf, format_ENV, get_SPECID, currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			writestr_OLED(1, "Temp & Humidity", 1);
+			sprintf(outbuf, "%1.1fC %1.0fF %1.0f%%", t0, ((t0*1.8)+32), h0);
+			writestr_OLED(1, outbuf, 2);
 			break;
 
 		case 'o':					// Orientation
 			get_orientation(MMA8451ADDR, &x, &y, &z);
 			get_time(currenttime);
-x=y=z=23.4;
 			sprintf(outbuf, format_ORI, get_SPECID, currenttime, x, y, z, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			writestr_OLED(1, "Orientation", 1);
+			sprintf(outbuf, dformat_ORI, x, y, z);
+			writestr_OLED(1, outbuf, 2);
 			break;
 
 		case 'p':
@@ -69,6 +79,9 @@ x=y=z=23.4;
 			sprintf(outbuf, format_PNU, get_SPECID, currenttime, shutter, left, right, air, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			writestr_OLED(1, "S L R A", 1);
+			sprintf(outbuf, dformat_PNU, shutter, left, right, air);
+			writestr_OLED(1, outbuf, 2);
 			break;
 
 		case 't':					// Report current time on specMech clock
@@ -79,6 +92,8 @@ x=y=z=23.4;
 				boottime, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			writestr_OLED(1, "Time", 1);
+			writestr_OLED(1, &currenttime[11], 2);			
 			break;
 
 		case 'v':
@@ -88,6 +103,9 @@ x=y=z=23.4;
 			sprintf(outbuf, format_VAC, get_SPECID, currenttime, redvac, bluvac, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			writestr_OLED(1, "Vacuum Red Blue", 1);
+			sprintf(outbuf, dformat_VAC, redvac, bluvac);
+			writestr_OLED(1, outbuf, 2);
 			break;
 
 		case 'V':
@@ -96,6 +114,9 @@ x=y=z=23.4;
 			sprintf(outbuf, format_VER, get_SPECID, currenttime, version, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			writestr_OLED(1, "specMech Version", 1);
+			get_VERSION(outbuf);
+			writestr_OLED(1, outbuf, 2);
 			break;
 
 		default:

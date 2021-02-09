@@ -20,6 +20,20 @@ uint8_t read_MCP23008(uint8_t addr, uint8_t reg, uint8_t *val)
 		val - data in that MCP23008 register
 		Function return value is 0 if OK, TWI-error if not (see twi.c)
 ------------------------------------------------------------------------------*/
+uint8_t read_MCP23008(uint8_t addr, uint8_t reg)
+{
+
+	uint8_t val;
+
+	start_TWI(addr, TWIWRITE);
+	write_TWI(reg);
+	start_TWI(addr, TWIREAD);
+	val = readlast_TWI();
+	stop_TWI();
+	return(val);
+
+}
+/*
 uint8_t read_MCP23008(uint8_t addr, uint8_t reg, uint8_t *val)
 {
 
@@ -39,6 +53,8 @@ uint8_t read_MCP23008(uint8_t addr, uint8_t reg, uint8_t *val)
 	return(0);
 
 }
+*/
+
 
 /*------------------------------------------------------------------------------
 uint8_t write_MCP23008(uint8_t addr, uint8_t reg, uint8_t val)

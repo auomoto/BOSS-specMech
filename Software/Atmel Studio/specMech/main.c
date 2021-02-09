@@ -14,9 +14,6 @@ int main(void)
 	initialize();
 	sei();
 
-writestr_OLED(1,"hi1 there", 1);
-writestr_OLED(0,"hi0 there", 1);
-
 	for (;;) {
 		if (recv0_buf.done) {
 			recv0_buf.done = NO;

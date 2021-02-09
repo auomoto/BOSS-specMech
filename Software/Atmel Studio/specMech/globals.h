@@ -2,7 +2,7 @@
 #define GLOBALSH
 
 #define F_CPU	3333333UL
-#define VERSION		"2021-02-07"
+#define VERSION		"2021-02-08"
 #define	YES			1
 #define	NO			0
 #define GREATERPROMPT	0	// Standard return prompt >
@@ -115,7 +115,7 @@ uint8_t write_DS3231(uint8_t, uint8_t*);
 #define GPIO	(0x09)	// Read for input
 #define OLAT	(0x0A)	// Write for output
 #define MCP23008ERROR_bm	(0b00000001)	// bit 0 is an MCP23008 error
-uint8_t read_MCP23008(uint8_t, uint8_t, uint8_t*);
+uint8_t read_MCP23008(uint8_t, uint8_t);
 uint8_t write_MCP23008(uint8_t, uint8_t, uint8_t);
 
 // mma8451.c Accelerometer
@@ -147,6 +147,7 @@ uint8_t init_PNEU(void);
 uint8_t close_PNEU(char);
 uint8_t open_PNEU(char);
 uint8_t set_PNEUVALVES(uint8_t, uint8_t);
+extern volatile uint8_t pneuState;
 
 // oled.c
 #define CLEARDISPLAY	0x01		// Newhaven command (not used)
