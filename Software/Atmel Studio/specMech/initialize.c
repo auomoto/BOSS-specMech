@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "initialize.h"
 
 void initialize(void)
 {

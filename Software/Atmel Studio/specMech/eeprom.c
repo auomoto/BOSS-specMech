@@ -1,4 +1,11 @@
 #include "globals.h"
+#include <avr/eeprom.h>
+
+#define VERSIONADDR		(0)		// Version string must have exactly 11 bytes
+#define VERSIONSIZE		(11)	// Version is the date, as YYYY-DD-MM
+#define BOOTTIMEADDR	(11)	// EEPROM address for boot time
+#define BOOTTIMESIZE	(21)	// ISO date format, exactly 21 bytes
+
 /*------------------------------------------------------------------------------
 eeprom.c
 	Reads and writes the specMech version and system boot time.

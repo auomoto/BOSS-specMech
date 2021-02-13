@@ -1,5 +1,7 @@
 #include "globals.h"
 
+void init_RTC(uint16_t);
+
 /*------------------------------------------------------------------------------
 void commands(void)
 	Command loop

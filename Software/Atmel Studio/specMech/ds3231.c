@@ -8,6 +8,12 @@ ds3231.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#define DS3231ADDR	(0xD0)	// Day/Time clock TWI address
+void convert_ds2iso(char*, uint8_t*);
+void convert_iso2ds(uint8_t *, char*);
+uint8_t read_DS3231(uint8_t, uint8_t*);
+uint8_t uint8_to_bcd(uint8_t);
+uint8_t write_DS3231(uint8_t, uint8_t*);
 
 /*------------------------------------------------------------------------------
 void convert_ds2iso(char *isotime, uint8_t *ds3231time)
@@ -86,7 +92,7 @@ uint8_t get_time(char *isotime)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t out_time(char *isotime)
+uint8_t put_time(char *isotime)
 	Converts a time in ISO format to DS3231 clock format and writes to the
 	DS3231 clock
 

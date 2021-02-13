@@ -17,19 +17,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   6 .debug_aranges 00000560  00000000  00000000  00003e30  2**3
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   00008e1e  00000000  00000000  00004390  2**0
+  7 .debug_info   00008e19  00000000  00000000  00004390  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00004029  00000000  00000000  0000d1ae  2**0
+  8 .debug_abbrev 00004006  00000000  00000000  0000d1a9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   000037e0  00000000  00000000  000111d7  2**0
+  9 .debug_line   000037f4  00000000  00000000  000111af  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000c20  00000000  00000000  000149b8  2**2
+ 10 .debug_frame  00000c20  00000000  00000000  000149a4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    0000205c  00000000  00000000  000155d8  2**0
+ 11 .debug_str    0000205c  00000000  00000000  000155c4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    0000340c  00000000  00000000  00017634  2**0
+ 12 .debug_loc    0000340c  00000000  00000000  00017620  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000300  00000000  00000000  0001aa40  2**0
+ 13 .debug_ranges 00000300  00000000  00000000  0001aa2c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -2392,6 +2392,7 @@ float get_humidity(uint8_t sensor)
 
 00000de6 <initialize>:
 #include "globals.h"
+#include "initialize.h"
 
 void initialize(void)
 {
@@ -2667,7 +2668,7 @@ void init_LED(void)
      f68:	08 95       	ret
 
 00000f6a <main>:
-ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
+extern void initialize(void);
 
 int main(void)
 {
@@ -2788,9 +2789,9 @@ uint8_t write_MCP23008(uint8_t addr, uint8_t reg, uint8_t val)
     1002:	08 95       	ret
 
 00001004 <read_MCP9808>:
-------------------------------------------------------------------------------*/
-
 #include "globals.h"
+#define MCP9808ADDR		(0x30)	// TWI address
+#define TEMPREGISTER	(0x05)	// Ambient temperature register
 
 float read_MCP9808(void)
 {
@@ -5953,7 +5954,7 @@ uint8_t report(uint8_t cstack)
     23cc:	b8 01       	movw	r22, r16
     23ce:	80 e0       	ldi	r24, 0x00	; 0
     23d0:	0e 94 da 13 	call	0x27b4	; 0x27b4 <send_USART>
-			writestr_OLED(1, "Vacuum Red Blue", 1);
+			writestr_OLED(1, "RedVac  BlueVac", 1);
     23d4:	41 e0       	ldi	r20, 0x01	; 1
     23d6:	6a ea       	ldi	r22, 0xAA	; 170
     23d8:	7b e7       	ldi	r23, 0x7B	; 123
@@ -5993,7 +5994,7 @@ uint8_t report(uint8_t cstack)
     2410:	80 e0       	ldi	r24, 0x00	; 0
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
-			writestr_OLED(1, "Vacuum Red Blue", 1);
+			writestr_OLED(1, "RedVac  BlueVac", 1);
 			sprintf(outbuf, dformat_VAC, redvac, bluvac);
 			writestr_OLED(1, outbuf, 2);
 			break;

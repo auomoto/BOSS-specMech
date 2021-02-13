@@ -149,7 +149,13 @@
     <Compile Include="humidity.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="IncFile1.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="initialize.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="initialize.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="interrupts.c">
@@ -173,13 +179,22 @@
     <Compile Include="mma8451.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="mma8451.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="nmea.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="oled.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="oled.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="pneu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pneu.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ports.c">

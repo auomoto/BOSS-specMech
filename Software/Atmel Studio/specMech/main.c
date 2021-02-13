@@ -8,6 +8,8 @@ specMech.c
 
 ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 
+extern void initialize(void);
+
 int main(void)
 {
 

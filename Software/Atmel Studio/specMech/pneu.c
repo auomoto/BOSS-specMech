@@ -4,6 +4,7 @@ pneu.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "pneu.h"
 
 volatile uint8_t pneuState;
 

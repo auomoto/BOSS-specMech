@@ -103,7 +103,7 @@ uint8_t report(uint8_t cstack)
 			sprintf(outbuf, format_VAC, get_SPECID, currenttime, redvac, bluvac, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
-			writestr_OLED(1, "Vacuum Red Blue", 1);
+			writestr_OLED(1, "RedVac  BlueVac", 1);
 			sprintf(outbuf, dformat_VAC, redvac, bluvac);
 			writestr_OLED(1, outbuf, 2);
 			break;
