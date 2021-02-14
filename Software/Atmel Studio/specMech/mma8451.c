@@ -12,7 +12,8 @@ uint8_t get_orientation(uint8_t addr, float *x, float *y, float *z)
 	Put the accelerometer readout into x, y, and z after scaling to 980.6
 	cm/s/s gravity.
 ------------------------------------------------------------------------------*/
-uint8_t get_orientation(uint8_t addr, float *x, float *y, float *z)
+//uint8_t get_orientation(uint8_t addr, float *x, float *y, float *z)
+uint8_t get_orientation(float *x, float *y, float *z)
 {
 
 	uint8_t datain[6];
@@ -20,7 +21,7 @@ uint8_t get_orientation(uint8_t addr, float *x, float *y, float *z)
 
 	*x = *y = *z = -9999.9;
 
-	read_MMA8451(addr, MMA8451OUTXMSB, datain, 6);
+	read_MMA8451(MMA8451ADDR, MMA8451OUTXMSB, datain, 6);
 
 	ix = datain[0];
 	ix <<= 8;
@@ -60,7 +61,6 @@ uint8_t init_MMA8451(void)
 	uint8_t addr, retval;
 
 	addr = MMA8451ADDR;
-
 	write_MMA8451(addr, MMA8451CTRLREG2, 0x40);			// reset
 	read_MMA8451(addr, MMA8451CTRLREG2, &retval, 1);	// Wait to finish
 	while (retval & 0x40) {

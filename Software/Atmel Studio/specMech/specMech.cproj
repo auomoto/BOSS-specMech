@@ -128,6 +128,9 @@
     <Compile Include="ads1115.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ads1115.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="beeper.c">
       <SubType>compile</SubType>
     </Compile>
@@ -147,9 +150,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="humidity.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="IncFile1.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="initialize.c">

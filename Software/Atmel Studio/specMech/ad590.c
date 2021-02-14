@@ -17,7 +17,9 @@ ad590.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
-#define AD590DRIVER		(0x4E)		// MCP23008 address
+#include "ads1115.h"
+
+#define AD590DRIVER		(0x27)		// MCP23008 address (selects which sensor)
 #define AD590RESISTOR	(1000.0)	// Ohms
 
 /*------------------------------------------------------------------------------
@@ -25,7 +27,8 @@ float read_AD590(uint8_t sensor)
 	Reports the voltage across the AD590 load resistor for the selected sensor.
 
 	Input:
-		sensor - 0, 1, or 2
+		sensor - 0, 1, or 2. The sensor is turned on by providing voltage to
+			the MCP23008 port pin connected to the sensor.
 
 	Output:
 		Returns the temperature. -999.9 for invalid sensor value
@@ -39,18 +42,14 @@ float read_AD590(uint8_t sensor)
 	offset = 0.0;
 	switch (sensor) {		// Select the sensor(s) to turn on
 		case 0:
-// The commented alternates are for the prototype ADS1115 board:
-//			pins = 0x80;
 			pins = 0x01;	// t0
 			offset = 7.6;
 			break;
 		case 1:
-//			pins = 0x40;
 			pins = 0x04;	// t1
 			offset = 0.0;
 			break;
 		case 2:
-//			pins = 0x20;
 			pins = 0x10;	// t2
 			offset = 0.0;
 			break;
@@ -59,16 +58,15 @@ float read_AD590(uint8_t sensor)
 			break;
 	}
 
-	// Turn on the selected AD590
+	// Turn on the selected AD590 sensor
 	write_MCP23008(AD590DRIVER, GPPU, 0x00);	// Disable pullups on input pins
 	write_MCP23008(AD590DRIVER, IODIR, ~pins);	// Pins are inputs if the bit is high
 	write_MCP23008(AD590DRIVER, OLAT, pins);	// Set high the selected pins
 	_delay_us(20);	// AD590 turn-on time
 
 	// Use 0.512 volts range and 128 samples per second
-//	voltage = read_ADS1115(ADC_TE, PGA0512, AIN2, DR128);		// test board input port is AIN2
-	voltage = read_ADS1115(ADC_TE, PGA0512, AIN3, DR128);		// on specMech board
-	temperature = (AD590RESISTOR * voltage) - 273.15 + offset;	// Include offset calibration
+	voltage = read_ADS1115(ADC_TE, PGA0512, AIN3, DR128);
+	temperature = (AD590RESISTOR * voltage) - 273.15 + offset;	// Temperature & offset calibration
 	return(temperature);
 
 }

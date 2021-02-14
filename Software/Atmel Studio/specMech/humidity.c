@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "ads1115.h"
 
 /*------------------------------------------------------------------------------
 float get_humidity(uint8_t sensor)

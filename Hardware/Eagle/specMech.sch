@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -15052,12 +15052,12 @@ Pin 8 at 5.61, 0.83 in</text>
 <segment>
 <pinref part="TVS2" gate="G$1" pin="CC1"/>
 <wire x1="226.06" y1="170.18" x2="223.52" y2="170.18" width="0.1524" layer="91"/>
-<label x="223.52" y="170.18" size="1.016" layer="95" rot="R180" xref="yes"/>
+<label x="223.52" y="170.18" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="TVS2" gate="G$1" pin="CC2"/>
 <wire x1="251.46" y1="170.18" x2="254" y2="170.18" width="0.1524" layer="91"/>
-<label x="254" y="170.18" size="1.016" layer="95" xref="yes"/>
+<label x="254" y="170.18" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="SDA" class="0">

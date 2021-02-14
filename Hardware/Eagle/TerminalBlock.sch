@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -3019,10 +3019,12 @@ Wickmann</description>
 <text x="-15.24" y="17.78" size="1.778" layer="150" rot="R180">Black</text>
 <text x="-17.78" y="-2.54" size="1.778" layer="150" rot="R180">Yellow</text>
 <text x="-17.78" y="10.16" size="1.778" layer="150" rot="R180">Red</text>
-<text x="38.1" y="-1.27" size="1.016" layer="150" rot="R180">Top motor controller</text>
+<text x="43.18" y="-1.27" size="1.016" layer="150" rot="R180">To both motor controllers yellow</text>
 <text x="-10.16" y="-8.89" size="1.016" layer="150" rot="R180">Pin X Connector 2</text>
 <text x="-20.32" y="-25.4" size="1.778" layer="150">Connectors are numbered
 from top to bottom 1-4</text>
+<text x="43.18" y="1.27" size="1.016" layer="150" rot="R180">To both motor controllers purple</text>
+<text x="50.8" y="3.81" size="1.016" layer="150" rot="R180">Pin R connector 3; Pin ? connector ? purple</text>
 </plain>
 <instances>
 <instance part="JP1" gate="A" x="12.7" y="17.78" smashed="yes" rot="MR0">
@@ -3286,6 +3288,10 @@ from top to bottom 1-4</text>
 <wire x1="10.16" y1="2.54" x2="10.16" y2="0" width="0.1524" layer="91"/>
 <junction x="10.16" y="2.54"/>
 <junction x="10.16" y="0"/>
+<wire x1="15.24" y1="0" x2="22.86" y2="0" width="0.1524" layer="91"/>
+<junction x="15.24" y="0"/>
+<wire x1="15.24" y1="2.54" x2="22.86" y2="2.54" width="0.1524" layer="91"/>
+<junction x="15.24" y="2.54"/>
 </segment>
 </net>
 <net name="N$14" class="0">

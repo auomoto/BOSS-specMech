@@ -1,8 +1,8 @@
 #ifndef PNEUH
 #define PNEUH
 
-#define PNEUSENSORS		(0x42)	// GMR sensors on pneumatic cylinders
-#define HIGHCURRENT		(0x48)	// High current driver for pneumatic valves
+#define PNEUSENSORS		(0x21)	// TWI address for pneumatic cylinder sensors
+#define HIGHCURRENT		(0x24)	// High current driver for pneumatic valves
 #define SHUTTERBM		(0x22)	// OR existing value with this first, then
 #define SHUTTEROPEN		(0xCE)	// AND with this pattern to open
 #define SHUTTERCLOSE	(0xEC)	// AND with this pattern to close

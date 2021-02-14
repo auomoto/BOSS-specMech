@@ -23,9 +23,9 @@ ionpump.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
-#define ISO224SLOPE	(2.0053)	// To log10(pressure) from ISO224 voltage
+#include "ads1115.h"
+#define ISO224SLOPE	(2.0455)	// To log10(pressure) from ISO224 voltage
 #define ISO224INTER	(-6.8637)	// Transfer function from Modion pump voltage
-
 
 /*------------------------------------------------------------------------------
 float read_ionpump(uint8_t pumpid)
@@ -57,13 +57,15 @@ float read_ionpump(uint8_t pumpid) {
 
 	voltage = read_ADS1115(ADC_IP, PGA4096, pins, DR128);
 
-	if (voltage < 0.5) {						// Useful range for the Modion pump
+	if (voltage < 0.4) {						// Useful range for the Modion pump
 		return(-999.9);							// after ISO224 op-amp is 0.5 to 2.0 V
 	} else if (voltage > 2.0) {
 		return(-999.9);
 	}
 
 	vacuum = ISO224SLOPE * voltage + ISO224INTER;
+
 	return(vacuum);
+//return(voltage);
 
 }

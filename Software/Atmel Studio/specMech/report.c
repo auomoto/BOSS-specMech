@@ -24,10 +24,12 @@ uint8_t report(uint8_t cstack)
 	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
 	const char format_PNU[] = "$S%dPNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
-	const char dformat_PNU[] = "%c %c %c %c";
+//	const char dformat_PNU[] = "%c %c %c %c";
+	const char dformat_PN1[] = "left:%c   right:%c";
+	const char dformat_PN2[] = "shutter:%c  air:%c";
 	const char format_TIM[] = "$S%dTIM,%s,%s,set,%s,boot,%s";
 	const char format_VAC[] = "$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
-	const char dformat_VAC[] = "%2.2f %2.2f";
+	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "$S%dVER,%s,%s,%s";
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float x, y, z;							// accelerometer
@@ -63,7 +65,7 @@ uint8_t report(uint8_t cstack)
 			break;
 
 		case 'o':					// Orientation
-			get_orientation(MMA8451ADDR, &x, &y, &z);
+			get_orientation(&x, &y, &z);
 			get_time(currenttime);
 			sprintf(outbuf, format_ORI, get_SPECID, currenttime, x, y, z, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
@@ -79,8 +81,9 @@ uint8_t report(uint8_t cstack)
 			sprintf(outbuf, format_PNU, get_SPECID, currenttime, shutter, left, right, air, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
-			writestr_OLED(1, "S L R A", 1);
-			sprintf(outbuf, dformat_PNU, shutter, left, right, air);
+			sprintf(outbuf, dformat_PN1, left, right);
+			writestr_OLED(1, outbuf, 1);
+			sprintf(outbuf, dformat_PN2, shutter, air);
 			writestr_OLED(1, outbuf, 2);
 			break;
 
