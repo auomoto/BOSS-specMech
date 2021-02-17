@@ -13281,14 +13281,14 @@ Number Select</text>
 <wire x1="134.62" y1="76.2" x2="142.24" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="RC-TX" class="0">
+<net name="RC-RX" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PC1"/>
 <wire x1="88.9" y1="106.68" x2="86.36" y2="106.68" width="0.1524" layer="91"/>
 <label x="86.36" y="106.68" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="RC-RX" class="0">
+<net name="RC-TX" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PC0"/>
 <wire x1="88.9" y1="109.22" x2="86.36" y2="109.22" width="0.1524" layer="91"/>
@@ -15821,14 +15821,14 @@ on roboclaw 12v handling</text>
 <junction x="203.2" y="71.12"/>
 </segment>
 </net>
-<net name="RC-TX" class="0">
+<net name="RC-RX" class="0">
 <segment>
 <pinref part="U12" gate="A" pin="2Y"/>
 <wire x1="50.8" y1="101.6" x2="53.34" y2="101.6" width="0.1524" layer="91"/>
 <label x="53.34" y="101.6" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="RC-RX" class="0">
+<net name="RC-TX" class="0">
 <segment>
 <pinref part="U12" gate="A" pin="1A"/>
 <wire x1="30.48" y1="106.68" x2="25.4" y2="106.68" width="0.1524" layer="91"/>

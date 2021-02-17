@@ -4,6 +4,8 @@
 
 USARTBuf send0_buf, send1_buf, send3_buf, recv0_buf, recv1_buf, recv3_buf;
 
+volatile static uint8_t charcount = 0;
+
 /*------------------------------------------------------------------------------
 void init_USART(void)
 	Set up three serial USART ports (USART0, USART1, and USART3) for 9600 baud,
@@ -37,7 +39,12 @@ void init_USART(void)
 	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
 	USART1.CTRLB |= USART_TXEN_bm;
 	USART1.CTRLB |= USART_RXEN_bm;
+	send1_buf.head = 0;
+	send1_buf.tail = 0;
 	send1_buf.done = YES;
+	recv1_buf.head = 0;
+	recv1_buf.tail = 0;
+	recv1_buf.data[0] = '\0';
 	recv1_buf.done = NO;
 
 	// USART3 PB0 is TxD, PB1 is RxD
@@ -117,8 +124,10 @@ ISR(USART0_RXC_vect)
 	if ((char) c == '\r') {
 		recv0_buf.done = YES;
 		recv0_buf.data[recv0_buf.head] = '\0';
+		charcount = 0;
 	} else {
 		recv0_buf.data[recv0_buf.head] = c;
+		charcount++;
 	}
 	recv0_buf.head = (recv0_buf.head + 1) % BUFSIZE;
 
@@ -195,12 +204,22 @@ ISR(USART1_DRE_vect)
 ISR(USART1_DRE_vect)
 {
 
+	USART1.CTRLA &= ~USART_DREIE_bm;	// Turn off interrupts
+	if (send1_buf.head - send1_buf.tail) {
+		USART1.TXDATAL = send1_buf.data[send1_buf.tail++];
+		send1_buf.tail %= BUFSIZE;
+		USART1.CTRLA |= USART_DREIE_bm;		// Turn on interrupts
+		} else {
+		send1_buf.done = YES;
+	}
+
+/*
 	USART1.TXDATAL = send1_buf.data[send1_buf.nxfrd++];
 	if (send1_buf.nxfrd >= send1_buf.nbytes) {
 		USART1.CTRLA &= ~USART_DREIE_bm;	// Turn off interrupts
 		send1_buf.done = YES;
 	}
-
+*/
 }
 
 /*------------------------------------------------------------------------------

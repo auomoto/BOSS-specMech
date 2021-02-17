@@ -15,10 +15,6 @@ void commands(void)
 	static uint8_t rebootnack = 1;
 	static uint8_t cstack = 0;		// Index for pcmd
 
-on_BEEPER;
-_delay_ms(50);
-off_BEEPER;
-
 	// Copy the command string to cmdline
 	for (i = 0; i < BUFSIZE; i++) {
 		cmdline[i] = recv0_buf.data[recv0_buf.tail];
@@ -28,16 +24,15 @@ off_BEEPER;
 		}
 	}
 
-	// Check if rebooted
 	if (rebootnack) {
-		if (cmdline[0] != '!') {
-			send_prompt(EXCLAIMPROMPT);		
-			return;
-		} else {
-			init_RTC(511);		// 1-sec RTC clock
-			timeoutOLED = 5;	// 5 second timeout
+		if ((cmdline[0] == '!') && (cmdline[1] == '\0')) {
+			init_RTC(511);		// 1-sec RTC clock ticks
+			timeoutOLED = 5;	// 5-sec display timeout
 			send_prompt(GREATERPROMPT);
 			rebootnack = 0;
+			return;
+		} else {
+			send_prompt(EXCLAIMPROMPT);
 			return;
 		}
 	}
@@ -101,7 +96,7 @@ void echo_cmd(char *cmdline)
 	sprintf(strbuf, format_CMD, get_SPECID, cmdline);
 	checksum_NMEA(strbuf);
 	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
-
+send_USART(1, (uint8_t*) strbuf, strlen(strbuf));
 }
 
 /*------------------------------------------------------------------------------
