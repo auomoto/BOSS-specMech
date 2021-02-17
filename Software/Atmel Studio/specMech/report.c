@@ -37,7 +37,7 @@ uint8_t report(uint8_t cstack)
 	char shutter, left, right, air;
 
 	switch(pcmd[cstack].cobject) {
-
+/*
 		case 'B':					// Boot time
 			get_BOOTTIME(boottime);
 			sprintf(outbuf, format_BTM, get_SPECID, boottime, pcmd[cstack].cid);
@@ -46,7 +46,7 @@ uint8_t report(uint8_t cstack)
 			writestr_OLED(1, "Boot time", 1);
 			writestr_OLED(1, &boottime[5], 2);
 			break;
-
+*/
 		case 'e':					// Environment (temperature & humidity)
 			t0 = get_temperature(0);
 			h0 = get_humidity(0);
