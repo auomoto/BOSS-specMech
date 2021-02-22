@@ -177,7 +177,7 @@ ground</text>
 <text x="37.465" y="95.25" size="1.016" layer="21" font="vector">Use CR2032 Battery</text>
 <text x="33.9725" y="2.2225" size="1.016" layer="21" font="vector">OLED Display</text>
 <text x="53.975" y="2.2225" size="1.016" layer="21" font="vector">LN2 Controller</text>
-<text x="76.5175" y="1.905" size="1.016" layer="21" font="vector">Beeper</text>
+<text x="76.5175" y="2.8575" size="1.016" layer="21" font="vector">Beeper</text>
 <text x="104.4575" y="77.47" size="1.016" layer="21" font="vector">  Collimator
 Motors USART</text>
 <text x="44.7675" y="22.5425" size="1.016" layer="21" font="vector">Temperature</text>
@@ -191,7 +191,7 @@ Supply</text>
 <text x="68.2625" y="32.7025" size="1.016" layer="21" font="vector">I2C Driver</text>
 <text x="108.9025" y="20.0025" size="1.016" layer="21" font="vector">Analog
 Corner</text>
-<text x="24.765" y="72.7075" size="2.54" layer="21" rot="R90">2021-02-19
+<text x="24.765" y="72.7075" size="2.54" layer="21" rot="R90">2021-02-21
 BOSS Motion Controller</text>
 <wire x1="0" y1="49.53" x2="18.415" y2="49.53" width="0.254" layer="21"/>
 <wire x1="18.415" y1="49.53" x2="20.32" y2="47.625" width="0.254" layer="21"/>
@@ -251,6 +251,7 @@ Spectrograph</text>
 <circle x="122.4026" y="5.3086" radius="4.09499375" width="0.2032" layer="42"/>
 <circle x="20.828" y="116.586" radius="4.277465625" width="0.2032" layer="42"/>
 <circle x="122.428" y="116.6114" radius="4.149228125" width="0.2032" layer="42"/>
+<text x="86.6775" y="2.8575" size="1.016" layer="21" font="vector">Fan</text>
 </plain>
 <libraries>
 <library name="AUmlib" urn="urn:adsk.eagle:library:9166017">
@@ -2228,10 +2229,10 @@ Note, that not all DRC settings must be set by the manufacturer. Several can be 
 <attribute name="NAME" x="64.77" y="2.54" size="1.016" layer="25" font="vector" rot="R180"/>
 </element>
 <element name="J9" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" package="1X02-MOLEX-22112022" package3d_urn="urn:adsk.eagle:package:24727026/5" value="MOLEX-22112022" x="87.63" y="7.62" smashed="yes" rot="R180">
-<attribute name="NAME" x="90.17" y="4.0005" size="1.016" layer="25" font="vector" rot="R180"/>
+<attribute name="NAME" x="89.8525" y="12.2555" size="1.016" layer="25" font="vector" rot="R180"/>
 </element>
 <element name="J10" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" package="1X02-MOLEX-22112022" package3d_urn="urn:adsk.eagle:package:24727026/5" value="MOLEX-22112022" x="78.74" y="7.62" smashed="yes" rot="R180">
-<attribute name="NAME" x="81.28" y="4.0005" size="1.016" layer="25" font="vector" rot="R180"/>
+<attribute name="NAME" x="80.9625" y="12.2555" size="1.016" layer="25" font="vector" rot="R180"/>
 </element>
 <element name="U15" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" package="SOT95P280X145-5N" package3d_urn="urn:adsk.eagle:package:26950572/3" value="SN74LV1T34DBVR" x="6.985" y="23.495" smashed="yes" rot="MR180">
 <attribute name="DESCRIPTION" value=" Single Power Supply BUFFER Logic Level Shifter (no enable) 5-SOT-23 -40 to 125 " x="6.985" y="23.495" size="1.778" layer="28" rot="MR180" display="off"/>
