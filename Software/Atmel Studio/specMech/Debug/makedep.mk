@@ -44,6 +44,8 @@ ports.c
 
 report.c
 
+roboclaw.c
+
 rtc.c
 
 set.c
@@ -57,4 +59,6 @@ twi.c
 usart.c
 
 wdt.c
+
+xport.c
 

@@ -59,13 +59,15 @@ C_SRCS +=  \
 ../pneu.c \
 ../ports.c \
 ../report.c \
+../roboclaw.c \
 ../rtc.c \
 ../set.c \
 ../specID.c \
 ../temperature.c \
 ../twi.c \
 ../usart.c \
-../wdt.c
+../wdt.c \
+../xport.c
 
 
 PREPROCESSING_SRCS += 
@@ -96,13 +98,15 @@ oled.o \
 pneu.o \
 ports.o \
 report.o \
+roboclaw.o \
 rtc.o \
 set.o \
 specID.o \
 temperature.o \
 twi.o \
 usart.o \
-wdt.o
+wdt.o \
+xport.o
 
 OBJS_AS_ARGS +=  \
 ad590.o \
@@ -126,13 +130,15 @@ oled.o \
 pneu.o \
 ports.o \
 report.o \
+roboclaw.o \
 rtc.o \
 set.o \
 specID.o \
 temperature.o \
 twi.o \
 usart.o \
-wdt.o
+wdt.o \
+xport.o
 
 C_DEPS +=  \
 ad590.d \
@@ -156,13 +162,15 @@ oled.d \
 pneu.d \
 ports.d \
 report.d \
+roboclaw.d \
 rtc.d \
 set.d \
 specID.d \
 temperature.d \
 twi.d \
 usart.d \
-wdt.d
+wdt.d \
+xport.d
 
 C_DEPS_AS_ARGS +=  \
 ad590.d \
@@ -186,13 +194,15 @@ oled.d \
 pneu.d \
 ports.d \
 report.d \
+roboclaw.d \
 rtc.d \
 set.d \
 specID.d \
 temperature.d \
 twi.d \
 usart.d \
-wdt.d
+wdt.d \
+xport.d
 
 OUTPUT_FILE_PATH +=specMech.elf
 
@@ -355,6 +365,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./roboclaw.o: .././roboclaw.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./rtc.o: .././rtc.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -398,6 +415,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./wdt.o: .././wdt.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./xport.o: .././xport.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

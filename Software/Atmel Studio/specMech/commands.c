@@ -31,6 +31,10 @@ void commands(void)
 			send_prompt(GREATERPROMPT);
 			rebootnack = 0;
 			return;
+		} else if ((cmdline[0] == '!') && (cmdline[1] != '\0')) {
+			send_prompt(EXCLAIMPROMPT);
+			reboot();
+			return;
 		} else {
 			send_prompt(EXCLAIMPROMPT);
 			return;
@@ -96,7 +100,7 @@ void echo_cmd(char *cmdline)
 	sprintf(strbuf, format_CMD, get_SPECID, cmdline);
 	checksum_NMEA(strbuf);
 	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
-send_USART(1, (uint8_t*) strbuf, strlen(strbuf));
+send_USART(1, (uint8_t*) strbuf, strlen(strbuf)); // testing the port
 }
 
 /*------------------------------------------------------------------------------

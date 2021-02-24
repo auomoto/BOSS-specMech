@@ -152,6 +152,9 @@
     <Compile Include="humidity.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="IncFile1.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="initialize.c">
       <SubType>compile</SubType>
     </Compile>
@@ -203,6 +206,12 @@
     <Compile Include="report.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="roboclaw.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="roboclaw.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="rtc.c">
       <SubType>compile</SubType>
     </Compile>
@@ -222,6 +231,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="wdt.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="xport.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

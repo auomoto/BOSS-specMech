@@ -2,7 +2,7 @@
 #define GLOBALSH
 
 #define F_CPU	3333333UL
-#define VERSION		"2021-02-23"
+#define VERSION		"2021-02-24"
 #define	YES			1
 #define	NO			0
 #define GREATERPROMPT	0	// Standard return prompt >

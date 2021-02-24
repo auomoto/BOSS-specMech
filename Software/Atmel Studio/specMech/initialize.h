@@ -2,6 +2,7 @@
 #define INITIALIZEH
 
 void init_PORTS(void);
+void init_XPORT(void);
 void init_LED(void);
 void init_BEEPER(void);
 void init_SPECID(void);

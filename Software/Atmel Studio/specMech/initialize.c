@@ -7,7 +7,8 @@ void initialize(void)
 	char versionstr[11];
 
 	init_PORTS();
-	PORTF.PIN6CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc;	// Pushbutton
+	PORTF.PIN6CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc;	// Pushbutton setup
+	init_XPORT();
 	init_SPECID();
 	init_LED();
 	init_BEEPER();
