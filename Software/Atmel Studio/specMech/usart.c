@@ -4,7 +4,7 @@
 
 USARTBuf send0_buf, send1_buf, send3_buf, recv0_buf, recv1_buf, recv3_buf;
 
-volatile static uint8_t charcount = 0;
+//volatile static uint8_t charcount = 0;
 
 /*------------------------------------------------------------------------------
 void init_USART(void)
@@ -124,10 +124,8 @@ ISR(USART0_RXC_vect)
 	if ((char) c == '\r') {
 		recv0_buf.done = YES;
 		recv0_buf.data[recv0_buf.head] = '\0';
-		charcount = 0;
 	} else {
 		recv0_buf.data[recv0_buf.head] = c;
-		charcount++;
 	}
 	recv0_buf.head = (recv0_buf.head + 1) % BUFSIZE;
 

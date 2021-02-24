@@ -16,18 +16,18 @@ void commands(void)
 	static uint8_t cstack = 0;		// Index for pcmd
 
 	// Copy the command string to cmdline
-	for (i = 0; i < BUFSIZE; i++) {
+	for (i = 0; i < (BUFSIZE-1); i++) {
 		cmdline[i] = recv0_buf.data[recv0_buf.tail];
 		recv0_buf.tail = (recv0_buf.tail + 1) % BUFSIZE;
 		if (cmdline[i] == '\0') {
 			break;
 		}
 	}
-
+	cmdline[i] = '\0';		// Overflow protection
 	if (rebootnack) {
 		if ((cmdline[0] == '!') && (cmdline[1] == '\0')) {
 			init_RTC(511);		// 1-sec RTC clock ticks
-			timeoutOLED = 5;	// 5-sec display timeout
+			timeoutOLED = 5;	// 5-sec display timeout (min)
 			send_prompt(GREATERPROMPT);
 			rebootnack = 0;
 			return;
@@ -40,7 +40,7 @@ void commands(void)
 	// Echo the command back to the user
 	echo_cmd(cmdline);
 
-	if (strlen(cmdline) == 0) {		// Catch a terminal cr
+	if (strlen(cmdline) == 0) {		// Catch a terminal cr (not an error)
 		send_prompt(GREATERPROMPT);
 		return;
 	}

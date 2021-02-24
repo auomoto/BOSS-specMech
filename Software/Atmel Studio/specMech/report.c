@@ -19,7 +19,6 @@ uint8_t report(uint8_t cstack)
 
 	char outbuf[BUFSIZE+10], version[11];
 	char currenttime[20], lastsettime[20], boottime[20];
-	const char format_BTM[] = "$S%dBTM,%s,%s";
 	const char format_ENV[] = "$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
 	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
@@ -40,7 +39,7 @@ uint8_t report(uint8_t cstack)
 /*
 		case 'B':					// Boot time
 			get_BOOTTIME(boottime);
-			sprintf(outbuf, format_BTM, get_SPECID, boottime, pcmd[cstack].cid);
+			sprintf(outbuf, get_SPECID, boottime, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			writestr_OLED(1, "Boot time", 1);

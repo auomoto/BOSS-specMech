@@ -2,7 +2,7 @@
 #define GLOBALSH
 
 #define F_CPU	3333333UL
-#define VERSION		"2021-02-13"
+#define VERSION		"2021-02-23"
 #define	YES			1
 #define	NO			0
 #define GREATERPROMPT	0	// Standard return prompt >
@@ -38,14 +38,14 @@ void update_VERSION(void);
 void reboot(void);
 
 // usart.c
-#define BUFSIZE 128
+#define BUFSIZE 255
 typedef struct {
-	uint8_t					// Serial I/O buffer
-	data[BUFSIZE],		// Data to send or data received
-	head,				// Ring buffer head index
-	tail,				// Ring buffer tail index
-	nbytes,				// Number of data bytes in data[];
-	nxfrd;				// Temporary counter (number of bytes transferred)
+	uint8_t				// Serial I/O buffer
+		data[BUFSIZE],		// Data to send or data received
+		head,				// Ring buffer head index
+		tail,				// Ring buffer tail index
+		nbytes,				// Number of data bytes in data[];
+		nxfrd;				// Temporary counter (number of bytes transferred)
 	uint8_t	volatile done;	// Is the transfer complete ('\r' seen)?
 } USARTBuf;
 
