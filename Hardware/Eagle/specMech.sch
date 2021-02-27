@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -13453,14 +13453,14 @@ Number Select</text>
 <wire x1="134.62" y1="76.2" x2="142.24" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="NANO-RX2" class="0">
+<net name="NANO-RX1" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PC1"/>
 <wire x1="88.9" y1="106.68" x2="86.36" y2="106.68" width="0.1524" layer="91"/>
 <label x="86.36" y="106.68" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="NANO-TX2" class="0">
+<net name="NANO-TX1" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PC0"/>
 <wire x1="88.9" y1="109.22" x2="86.36" y2="109.22" width="0.1524" layer="91"/>
@@ -13481,7 +13481,7 @@ Number Select</text>
 <label x="86.36" y="96.52" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="NANO-TX1" class="0">
+<net name="NANO-TX0" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PA0"/>
 <wire x1="88.9" y1="132.08" x2="86.36" y2="132.08" width="0.1524" layer="91"/>
@@ -13529,14 +13529,14 @@ Number Select</text>
 <wire x1="132.08" y1="78.74" x2="142.24" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="OL/RST" class="0">
+<net name="OLED/RST" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PD6"/>
 <wire x1="119.38" y1="129.54" x2="121.92" y2="129.54" width="0.1524" layer="91"/>
 <label x="121.92" y="129.54" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="NANO-RX1" class="0">
+<net name="NANO-RX0" class="0">
 <segment>
 <pinref part="CNANO1" gate="G$1" pin="PA1"/>
 <wire x1="88.9" y1="129.54" x2="86.36" y2="129.54" width="0.1524" layer="91"/>
@@ -16072,7 +16072,7 @@ cabling</text>
 <wire x1="243.84" y1="185.42" x2="243.84" y2="190.5" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="OL/RST" class="0">
+<net name="OLED/RST" class="0">
 <segment>
 <pinref part="JP6" gate="A" pin="4"/>
 <wire x1="48.26" y1="182.88" x2="55.88" y2="182.88" width="0.1524" layer="91"/>
@@ -16133,14 +16133,14 @@ cabling</text>
 <junction x="203.2" y="71.12"/>
 </segment>
 </net>
-<net name="NANO-RX2" class="0">
+<net name="NANO-RX1" class="0">
 <segment>
 <pinref part="U12" gate="A" pin="2Y"/>
 <wire x1="50.8" y1="101.6" x2="53.34" y2="101.6" width="0.1524" layer="91"/>
 <label x="53.34" y="101.6" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="NANO-TX2" class="0">
+<net name="NANO-TX1" class="0">
 <segment>
 <pinref part="U12" gate="A" pin="1A"/>
 <wire x1="30.48" y1="106.68" x2="25.4" y2="106.68" width="0.1524" layer="91"/>
@@ -16216,14 +16216,14 @@ cabling</text>
 <wire x1="175.26" y1="106.68" x2="193.04" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="NANO-RX1" class="0">
+<net name="NANO-RX0" class="0">
 <segment>
 <pinref part="U3" gate="A" pin="B1"/>
 <wire x1="218.44" y1="111.76" x2="220.98" y2="111.76" width="0.1524" layer="91"/>
 <label x="220.98" y="111.76" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="NANO-TX1" class="0">
+<net name="NANO-TX0" class="0">
 <segment>
 <pinref part="U3" gate="A" pin="B2"/>
 <wire x1="218.44" y1="109.22" x2="220.98" y2="109.22" width="0.1524" layer="91"/>

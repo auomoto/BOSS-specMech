@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "roboclaw.h"
 
 #define	USART_BAUD_RATE(BAUD_RATE)	((float)(F_CPU * 64 / (16 * (float)BAUD_RATE)) + 0.5)
 
@@ -71,6 +72,7 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 {
 
 	uint8_t i;
+	uint16_t crc;
 
 	switch (port) {
 		case 0:
@@ -82,10 +84,17 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 			break;
 
 		case 1:
+			crc = crc16(data, nbytes);
 			for (i = 0; i < nbytes; i++) {
 				send1_buf.data[send1_buf.head] = *data++;
 				send1_buf.head = (send1_buf.head + 1) % BUFSIZE;
 			}
+			send1_buf.data[send1_buf.head] = (crc >> 8);
+			send1_buf.head = (send1_buf.head + 1) % BUFSIZE;
+			send1_buf.data[send1_buf.head] = (crc & 0xFF);
+			send1_buf.head = (send1_buf.head + 1) % BUFSIZE;
+			send1_buf.nbytes = nbytes + 2;
+			send1_buf.nxfrd = 0;
 			USART1.CTRLA |= USART_DREIE_bm;		// Enable interrupts
 			break;
 
@@ -207,7 +216,7 @@ ISR(USART1_DRE_vect)
 		USART1.TXDATAL = send1_buf.data[send1_buf.tail++];
 		send1_buf.tail %= BUFSIZE;
 		USART1.CTRLA |= USART_DREIE_bm;		// Turn on interrupts
-		} else {
+	} else {
 		send1_buf.done = YES;
 	}
 
