@@ -9,7 +9,6 @@ void commands(void)
 ------------------------------------------------------------------------------*/
 void commands(void)
 {
-uint8_t buffer[20];
 
 	char cmdline[BUFSIZE];			// BUFSIZE is the size of the ring buffer
 	char verb, object;
@@ -18,8 +17,9 @@ uint8_t buffer[20];
 	static uint8_t cstack = 0;		// Index for pcmd
 
 	// Copy the command string to cmdline
-	for (i = 0; i < (BUFSIZE-1); i++) {
+	for (i = 0; recv0_buf.length; i++) {
 		cmdline[i] = recv0_buf.data[recv0_buf.tail];
+		recv0_buf.length--;
 		recv0_buf.tail = (recv0_buf.tail + 1) % BUFSIZE;
 		if (cmdline[i] == '\0') {
 			break;

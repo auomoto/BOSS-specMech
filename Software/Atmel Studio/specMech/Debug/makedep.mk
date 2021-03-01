@@ -54,6 +54,8 @@ specID.c
 
 temperature.c
 
+timers.c
+
 twi.c
 
 usart.c

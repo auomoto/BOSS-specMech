@@ -32,6 +32,7 @@ void init_USART(void)
 	recv0_buf.head = 0;
 	recv0_buf.tail = 0;
 	recv0_buf.data[0] = '\0';
+	recv0_buf.length = 0;
 	recv0_buf.done = NO;
 
 	// USART1 PC0 is TxD, PC1 is RxD
@@ -129,15 +130,17 @@ ISR(USART0_RXC_vect)
 
 	uint8_t c;
 
-	c = USART0.RXDATAL;
-	if ((char) c == '\r') {
-		recv0_buf.done = YES;
-		recv0_buf.data[recv0_buf.head] = '\0';
-	} else {
-		recv0_buf.data[recv0_buf.head] = c;
+	if (recv0_buf.length < BUFSIZE) {
+		c = USART0.RXDATAL;
+		if ((char) c == '\r') {
+			recv0_buf.done = YES;
+			recv0_buf.data[recv0_buf.head] = '\0';
+		} else {
+			recv0_buf.data[recv0_buf.head] = c;
+		}
+		recv0_buf.length++;
+		recv0_buf.head = (recv0_buf.head + 1) % BUFSIZE;
 	}
-	recv0_buf.head = (recv0_buf.head + 1) % BUFSIZE;
-
 }
 
 /*------------------------------------------------------------------------------

@@ -19,9 +19,9 @@ int main(void)
 	for (;;) {
 		if (recv0_buf.done) {
 			recv0_buf.done = NO;
-			on_BEEPER;
-			_delay_ms(50);
-			off_BEEPER;
+//			on_BEEPER;
+//			_delay_ms(50);
+//			off_BEEPER;
 			commands();
 		}
 	}

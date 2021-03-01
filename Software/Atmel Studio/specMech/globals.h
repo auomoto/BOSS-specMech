@@ -45,6 +45,7 @@ typedef struct {
 		head,				// Ring buffer head index
 		tail,				// Ring buffer tail index
 		nbytes,				// Number of data bytes in data[];
+		length,				// Number of unread bytes in the FIFO
 		nxfrd;				// Temporary counter (number of bytes transferred)
 	uint8_t	volatile done;	// Is the transfer complete ('\r' seen)?
 } USARTBuf;
@@ -149,5 +150,10 @@ void send_prompt(uint8_t);
 
 // report.c
 uint8_t report(uint8_t);
+
+// timers.c
+volatile static uint16_t ticks;
+void start_TCB0(uint16_t);
+void stop_TCB0(void);
 
 #endif
