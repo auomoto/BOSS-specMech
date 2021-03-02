@@ -1,9 +1,5 @@
 #include "globals.h"
 #define TWIBAUD		((uint8_t) (F_CPU/(2*TWIFREQ)) - 5)	// Ignore rise time
-#define TWIBUSERR	1
-#define TWIARBLOST	2
-#define TWIACKERR	3
-#define TWINODEVICE	4
 
 /*------------------------------------------------------------------------------
 void init_TWI(void)
@@ -118,15 +114,15 @@ uint8_t start_TWI(uint8_t addr, uint8_t rw)
 {
 
 	if (rw == TWIREAD) {
-//		addr |= 0x01;
-		addr = ((addr << 1) | 0x01);
-
+//		addr = ((addr << 1) | 0x01);
+		TWI0.MADDR = ((addr << 1) | 0x01);
 	} else {
-		addr = ((addr << 1) & ~0x01);
-//		addr &= ~0x01;
+//		addr = ((addr << 1) & ~0x01);
+//		addr = (addr << 1);
+		TWI0.MADDR = (addr << 1);
 	}
 
-	TWI0.MADDR = addr;							// Start condition
+//	TWI0.MADDR = addr;							// Start condition
 
 	while (!(TWI0.MSTATUS & (TWI_WIF_bm | TWI_RIF_bm))) {
 		asm("nop");								// Wait for addr transmission
@@ -177,7 +173,7 @@ uint8_t write_TWI(uint8_t data)
 	}
 
 	if (TWI0.MSTATUS & TWI_RXACK_bm) {		// If device did not ACK
-		return(TWIACKERR);
+		return(TWINODEVICE);
 	} else {
 		return(0);
 	}

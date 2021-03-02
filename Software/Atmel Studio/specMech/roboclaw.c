@@ -18,8 +18,24 @@ float get_ROBOVoltage(uint8_t controller)
 	tbuf[0] = controller;
 	tbuf[1] = cmd;
 	send_USART(1, tbuf, 2);
-	//START WORK HERE	
-	return(0);
+	//START WORK HERE
+	for (;;) {
+		if (recv1_buf.done == YES) {
+			break;
+		}
+	}
+	value = (recv1_buf.data[0] << 8) | recv1_buf.data[1];
+	crcReceived = (recv1_buf.data[2] << 8) | recv1_buf.data[3];
+	recv1_buf.data[2] = recv1_buf.data[0];
+	recv1_buf.data[3] = recv1_buf.data[1];
+	recv1_buf.data[0] = controller;
+	recv1_buf.data[1] = cmd;
+	crcExpected = crc16(recv1_buf.data, 4);
+	if (crcExpected != crcReceived) {
+		return(-666.0);
+	} else {
+		return((float) value / 10.0);
+	}
 }
 
 /*------------------------------------------------------------------------------

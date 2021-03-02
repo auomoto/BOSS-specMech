@@ -25,12 +25,14 @@ void checksum_NMEA(char *str)
 void format_ERR(char *str)
 	Returns an error line
 ------------------------------------------------------------------------------*/
-void format_ERR(char *str)
+void printError(uint8_t errorVal, char *string)
 {
 
-	const char errformat[] = "$S%dERR";
+	char strbuf[81];
+	const char errformat[] = "$S%dERR,%d,%s";
 
-	sprintf(str, errformat, get_SPECID);
-	checksum_NMEA(str);
+	sprintf(strbuf, errformat, get_SPECID, errorVal, string);
+	checksum_NMEA(strbuf);
+	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
 
 }

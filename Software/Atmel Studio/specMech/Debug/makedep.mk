@@ -54,6 +54,8 @@ specID.c
 
 temperature.c
 
+testroutine.c
+
 timers.c
 
 twi.c

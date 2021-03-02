@@ -39,6 +39,7 @@ void init_USART(void)
 	PORTC.OUTSET = PIN0_bm;
 	PORTC.DIRSET = PIN0_bm;
 	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
+	USART1.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
 	USART1.CTRLB |= USART_TXEN_bm;
 	USART1.CTRLB |= USART_RXEN_bm;
 	send1_buf.head = 0;
@@ -189,7 +190,8 @@ ISR(USART1_RXC_vect)
 	c = USART1.RXDATAL;
 	if (recv1_buf.nxfrd < recv1_buf.nbytes) {
 		recv1_buf.data[recv1_buf.nxfrd++] = c;
-	} else {
+	}
+	if (recv1_buf.nxfrd >= recv1_buf.nbytes) {
 		recv1_buf.done = YES;
 	}
 

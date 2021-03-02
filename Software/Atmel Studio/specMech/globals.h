@@ -60,6 +60,10 @@ void send_USART(uint8_t, uint8_t*, uint8_t);
 #define TWIFREQ		100000UL		// Fastest allowed for F_CPU = 3.33 MHz
 #define TWIWRITE	0
 #define TWIREAD		1
+#define TWIBUSERR	2
+#define TWIARBLOST	3
+#define TWINODEVICE	4
+
 uint8_t read_TWI(void);
 uint8_t readlast_TWI(void);
 uint8_t start_TWI(uint8_t, uint8_t);
@@ -155,5 +159,13 @@ uint8_t report(uint8_t);
 volatile static uint16_t ticks;
 void start_TCB0(uint16_t);
 void stop_TCB0(void);
+
+// testroutine.c
+void testroutine(void);
+uint8_t scratchbuf[120];
+
+// errors
+#define ERR_GETTIME		(101)	// DS3231 day-time clock not responding
+void printError(uint8_t, char*);
 
 #endif

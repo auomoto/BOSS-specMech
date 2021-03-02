@@ -77,6 +77,10 @@ void commands(void)
 			prompt_flag = set(cstack);
 			break;
 
+		case 't':
+			testroutine();
+			break;
+
 		case 'R':				// Reboot
 			send_prompt(GREATERPROMPT);
 			_delay_ms(100);		// Avoid finishing the command loop before reboot
@@ -107,7 +111,7 @@ void echo_cmd(char *cmdline)
 	sprintf(strbuf, format_CMD, get_SPECID, cmdline);
 	checksum_NMEA(strbuf);
 	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
-send_USART(1, (uint8_t*) strbuf, strlen(strbuf)); // testing the port
+//send_USART(1, (uint8_t*) strbuf, strlen(strbuf)); // testing the port
 }
 
 /*------------------------------------------------------------------------------
@@ -217,14 +221,14 @@ void send_prompt(uint8_t prompt_flag)
 			strcpy(prompt_str, str0);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			break;
-
+/*
 		case ERRORPROMPT:
-			format_ERR(prompt_str);
+			printError(prompt_str);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			strcpy(prompt_str, str0);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));
 			break;
-
+*/
 		case EXCLAIMPROMPT:
 			strcpy(prompt_str, str1);
 			send_USART(0, (uint8_t*) prompt_str, strlen(prompt_str));

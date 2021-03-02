@@ -101,7 +101,10 @@ uint8_t report(uint8_t cstack)
 		case 'v':
 			redvac = read_ionpump(REDPUMP);
 			bluvac = read_ionpump(BLUEPUMP);
-			get_time(currenttime);
+			if (get_time(currenttime)) {
+				printError(ERR_GETTIME, "Can't get current time");
+				strcpy(currenttime, "Time");
+			}
 			sprintf(outbuf, format_VAC, get_SPECID, currenttime, redvac, bluvac, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));

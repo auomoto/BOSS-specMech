@@ -1,7 +1,14 @@
 /*------------------------------------------------------------------------------
 MCP23008.c
 	MCP23008 8-bit port expander with I2C (TWI) interface
-	init_TWI() must be called first
+	init_TWI() must be called first.
+	
+	The 7-bit address is 0b0100AAAX where AAA are the three address pins in
+	A2, A1, and A0 order. If all three pins are grounded, the 7-bit address
+	is 0x20.
+
+	Convention:
+		Write to OLAT, read from GPIO
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
