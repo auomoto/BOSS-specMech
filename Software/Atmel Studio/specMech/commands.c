@@ -65,8 +65,9 @@ void commands(void)
 			break;
 
 		case 'm':
-			get_ROBOVoltage(MOTORAADDR);
-//			send_USART(1, buffer, 3);
+			prompt_flag = ROBOMove(cstack, 64);
+			_delay_ms(1000);
+			prompt_flag = ROBOMove(cstack, 0);
 			break;
 
 		case 'r':				// Report

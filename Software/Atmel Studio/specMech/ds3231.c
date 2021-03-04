@@ -83,7 +83,7 @@ uint8_t get_time(char *isotime)
 	uint8_t retval, ds3231time[7];
 
 	if ((retval = read_DS3231(DS3231ADDR, ds3231time))) {
-		strcpy(isotime, "?DS3231");
+		strcpy(isotime, "CurrentTime?");
 		return(retval);
 	}
 

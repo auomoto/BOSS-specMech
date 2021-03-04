@@ -139,10 +139,10 @@ uint8_t set(uint8_t);
 #define CIDSIZE			9	// Maximum length of a command ID string
 #define CSTACKSIZE		10	// Number of stacked up commands allowed
 typedef struct {
-	char cverb,			// Single character command
-	cobject,			// Single character object
-	cvalue[CVALUESIZE],	// Input value string for object
-	cid[CIDSIZE];		// Command ID string
+	char cverb,				// Single character command
+		cobject,			// Single character object
+		cvalue[CVALUESIZE],	// Input value string for object
+		cid[CIDSIZE];		// Command ID string
 } ParsedCMD;
 extern ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 

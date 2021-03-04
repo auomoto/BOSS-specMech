@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "roboclaw.h"
 
 /*------------------------------------------------------------------------------
 uint8_t report(char *ptr)
@@ -19,23 +20,58 @@ uint8_t report(uint8_t cstack)
 
 	char outbuf[BUFSIZE+10], version[11];
 	char currenttime[20], lastsettime[20], boottime[20];
+	char shutter, left, right, air;
 	const char format_ENV[] = "$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
+	const char format_MTR[] = "$S%dMTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
 	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
 	const char format_PNU[] = "$S%dPNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
-//	const char dformat_PNU[] = "%c %c %c %c";
 	const char dformat_PN1[] = "left:%c   right:%c";
 	const char dformat_PN2[] = "shutter:%c  air:%c";
 	const char format_TIM[] = "$S%dTIM,%s,%s,set,%s,boot,%s";
 	const char format_VAC[] = "$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "$S%dVER,%s,%s,%s";
+	uint8_t status, controller;
+	uint32_t encoderValue, encoderSpeed, icurrents;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
+	float voltage;							// voltage
+	uint16_t current;
 	float x, y, z;							// accelerometer
 	float redvac, bluvac;					// red and blue vacuum
-	char shutter, left, right, air;
 
 	switch(pcmd[cstack].cobject) {
+/*
+		case 'A':
+			voltage = get_ROBOFloat(MOTORAADDR, ROBOREADMAINVOLTAGE);
+			t0 = get_ROBOFloat(MOTORAADDR, ROBOREADTEMPERATURE);
+			get_time(currenttime);
+			sprintf(outbuf, format_MTR, get_SPECID, currenttime, (char) (MOTORAADDR-63),
+				voltage, t0, pcmd[cstack].cid);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+*/
+		case 'a':
+		case 'b':
+		case 'c':
+			get_time(currenttime);
+			controller = pcmd[cstack].cobject + 31;
+			status = get_ROBOEncoder(controller, ROBOREADENCODERCOUNT, &encoderValue);
+			status = get_ROBOEncoder(controller, ROBOREADENCODERSPEED, &encoderSpeed);
+			icurrents = get_ROBOInt32(controller, ROBOREADCURRENT);
+			current = (uint16_t) ((icurrents >> 16) * 10);	// convert to mA
+			sprintf(outbuf, format_MTR, get_SPECID, currenttime, pcmd[cstack].cobject,
+				encoderValue, encoderSpeed, current, pcmd[cstack].cid);
+			checksum_NMEA(outbuf);
+			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			break;
+
+		case 'B':
+			break;
+
+		case 'C':
+			break;
 /*
 		case 'B':					// Boot time
 			get_BOOTTIME(boottime);
@@ -102,8 +138,7 @@ uint8_t report(uint8_t cstack)
 			redvac = read_ionpump(REDPUMP);
 			bluvac = read_ionpump(BLUEPUMP);
 			if (get_time(currenttime)) {
-				printError(ERR_GETTIME, "Can't get current time");
-				strcpy(currenttime, "Time");
+				printError(ERR_GETTIME, "DS3231");
 			}
 			sprintf(outbuf, format_VAC, get_SPECID, currenttime, redvac, bluvac, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);

@@ -52,15 +52,15 @@ float read_ionpump(uint8_t pumpid) {
 	} else if (pumpid == BLUEPUMP) {
 		pins = AIN23;
 	} else {
-		return(-999.9);
+		return(-666.0);
 	}
 
 	voltage = read_ADS1115(ADC_IP, PGA4096, pins, DR128);
 
 	if (voltage < 0.4) {						// Useful range for the Modion pump
-		return(-999.9);							// after ISO224 op-amp is 0.5 to 2.0 V
+		return(-666.0);							// after ISO224 op-amp is 0.5 to 2.0 V
 	} else if (voltage > 2.0) {
-		return(-999.9);
+		return(-666.0);
 	}
 
 	vacuum = ISO224SLOPE * voltage + ISO224INTER;
