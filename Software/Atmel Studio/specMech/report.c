@@ -33,9 +33,10 @@ uint8_t report(uint8_t cstack)
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "$S%dVER,%s,%s,%s";
 	uint8_t status, controller;
-	uint32_t encoderValue, encoderSpeed, icurrents;
+	int32_t encoderValue, encoderSpeed, micronValue, micronSpeed;
+	uint32_t icurrents;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
-	float voltage;							// voltage
+//	float voltage;							// voltage
 	uint16_t current;
 	float x, y, z;							// accelerometer
 	float redvac, bluvac;					// red and blue vacuum
@@ -58,11 +59,13 @@ uint8_t report(uint8_t cstack)
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 31;
 			status = get_ROBOEncoder(controller, ROBOREADENCODERCOUNT, &encoderValue);
+			micronValue = encoderValue/ROBOCOUNTSPERMICRON;
 			status = get_ROBOEncoder(controller, ROBOREADENCODERSPEED, &encoderSpeed);
+			micronSpeed = encoderSpeed/ROBOCOUNTSPERMICRON;
 			icurrents = get_ROBOInt32(controller, ROBOREADCURRENT);
 			current = (uint16_t) ((icurrents >> 16) * 10);	// convert to mA
 			sprintf(outbuf, format_MTR, get_SPECID, currenttime, pcmd[cstack].cobject,
-				encoderValue, encoderSpeed, current, pcmd[cstack].cid);
+				micronValue, micronSpeed, current, pcmd[cstack].cid);
 			checksum_NMEA(outbuf);
 			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			break;

@@ -38,7 +38,7 @@ void init_USART(void)
 	// USART1 PC0 is TxD, PC1 is RxD
 	PORTC.OUTSET = PIN0_bm;
 	PORTC.DIRSET = PIN0_bm;
-	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
+	USART1.BAUD = (uint16_t) USART_BAUD_RATE(38400);
 	USART1.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
 	USART1.CTRLB |= USART_TXEN_bm;
 	USART1.CTRLB |= USART_RXEN_bm;
@@ -174,13 +174,6 @@ ISR(USART0_DRE_vect)
 ISR(USART1_RXC_vect)
 	A byte at USART1 has been received.
 
-CHANGE AS NEEDED:
-	If the character received is not a <CR> ('\r') then the nxfrd (number of
-	bytes transferred) is incremented.
-
-	If the character received is a <CR> ('\r'), a string terminator ('\0') is
-	inserted into the buffer instead of the '\r'. The done flag is set and the
-	nxfrd value set back to 0.
 ------------------------------------------------------------------------------*/
 ISR(USART1_RXC_vect)
 {
@@ -188,9 +181,11 @@ ISR(USART1_RXC_vect)
 	uint8_t c;
 
 	c = USART1.RXDATAL;
+
 	if (recv1_buf.nxfrd < recv1_buf.nbytes) {
 		recv1_buf.data[recv1_buf.nxfrd++] = c;
 	}
+
 	if (recv1_buf.nxfrd >= recv1_buf.nbytes) {
 		recv1_buf.done = YES;
 	}

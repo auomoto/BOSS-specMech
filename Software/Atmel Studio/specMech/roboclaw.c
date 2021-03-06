@@ -6,11 +6,152 @@ roboclaw.c
 #include "globals.h"
 #include "roboclaw.h"
 
+uint8_t ROBOGoTo(uint8_t controller, int32_t newPosition)
+{
+
+	uint8_t tbuf[21], buffer;
+	uint16_t crc;
+	uint32_t acceleration, deceleration, speed;
+
+	acceleration = ACCELERATION;
+	deceleration = DECELERATION;
+	speed = SPEED;
+	buffer = 0;							// 0 -> command is buffered
+
+	tbuf[0] = controller;
+	tbuf[1] = ROBODRIVETO;				// Command 65
+	tbuf[2] = (acceleration >> 24) & 0XFF;
+	tbuf[3] = (acceleration >> 16) & 0xFF;
+	tbuf[4] = (acceleration >> 8) & 0xFF;
+	tbuf[5] = (acceleration) & 0xFF;
+	tbuf[6] = (speed >> 24) & 0xFF;
+	tbuf[7] = (speed >> 16) & 0xFF;
+	tbuf[8] = (speed >> 8) & 0xFF;
+	tbuf[9] = (speed) & 0xFF;
+	tbuf[10] = (deceleration >> 24) & 0xFF;
+	tbuf[11] = (deceleration >> 16) & 0xFF;
+	tbuf[12] = (deceleration >> 8) & 0xFF;
+	tbuf[13] = (deceleration) & 0xFF;
+	tbuf[14] = (newPosition >> 24) & 0xFF;
+	tbuf[15] = (newPosition >> 16) & 0xFF;
+	tbuf[16] = (newPosition >> 8) & 0xFF;
+	tbuf[17] = (newPosition) & 0xFF;
+	tbuf[18] = buffer;
+	crc = crc16(tbuf, 19);
+	tbuf[19] = (crc >> 8) & 0xFF;
+	tbuf[20] = crc & 0xFF;
+	send_USART(1, tbuf, 21);
+
+	recv1_buf.data[0] = 0x00;
+	recv1_buf.nbytes = 1;
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
+	stop_TCB0();
+	start_TCB0(1);
+	for (;;) {
+		if (ticks > 50) {		// 4 ms just works at 38400 baud
+			break;
+		}
+		if (recv1_buf.done == YES) {
+			break;
+		}
+	}
+
+	if (recv1_buf.data[0] != 0xFF) {
+		return(ERRORPROMPT);
+	}
+	return(GREATERPROMPT);
+}
+
+uint8_t ROBOMoveAbsolute(uint8_t controller, int32_t position)
+{
+
+	uint8_t tbuf[9];
+	uint16_t crc;
+
+	tbuf[0] = controller;
+	tbuf[1] = ROBOMOVETO;			// Command 119
+	tbuf[2] = (position >> 24) & 0xFF;
+	tbuf[3] = (position >> 16) & 0xFF;
+	tbuf[4] = (position >> 8) & 0xFF;
+	tbuf[5] = (position) & 0xFF;
+	tbuf[6] = 1;				// Allow interrupting an ongoing motion
+	crc = crc16(tbuf, 7);
+	tbuf[7] = (crc >> 8) & 0xFF;
+	tbuf[8] = crc & 0xFF;
+	send_USART(1, tbuf, 9);
+
+	recv1_buf.data[0] = 0x00;
+	recv1_buf.nbytes = 1;
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
+	stop_TCB0();
+	start_TCB0(1);
+	for (;;) {
+		if (ticks > 10) {		// 4 ms just works at 38400 baud
+			break;
+		}
+		if (recv1_buf.done == YES) {
+			break;
+		}
+	}
+
+	if (recv1_buf.data[0] != 0xFF) {
+		return(ERRORPROMPT);
+	}
+	return(GREATERPROMPT);
+
+}
+
+uint8_t ROBOMove(uint8_t cstack)
+{
+	uint8_t motor, controller;
+	int32_t newPosition, currentPosition;
+
+	motor = pcmd[cstack].cobject;
+	switch(motor) {
+		case 'A':
+		case 'B':
+		case 'C':
+			controller = motor + 63;
+			newPosition = atol(pcmd[cstack].cvalue) * ROBOCOUNTSPERMICRON;	// convert to encoder values
+			break;
+		case 'a':
+		case 'b':
+		case 'c':
+			controller = motor + 31;
+			get_ROBOEncoder(controller, ROBOREADENCODERCOUNT, &currentPosition);
+			newPosition = currentPosition + (atol(pcmd[cstack].cvalue) * ROBOCOUNTSPERMICRON);
+			break;
+
+		default:
+			return(ERRORPROMPT);
+			break;	
+	}
+
+//	return(ROBOMoveAbsolute(controller, newPosition));
+	return(ROBOGoTo(controller, newPosition));
+}
+
 /*------------------------------------------------------------------------------
 uint8_t get_ROBOEncoder(uint8_t controller, uint8_t command, uint32_t *value)
-	Read the 32-bit encoder value
+	Read the 32-bit encoder value and speed
+
+	Inputs:
+		controller - the controller address
+		command - either ROBOREADENCODERCOUNT (command 16) or
+			ROBOREADENCODERSPEED (command 18)
+	Returns
+		value - a 32-bit integer, the encoder value or speed.
+		status - from page 86 of version 5.7 of the manual:
+			Bit0 - Counter underflow (1=underflow occurred, clear after reading)
+			Bit1 - Direction (0=forward, 1-backwards)
+			Bit2 - Counter overflow (1=overflow occurred, clear after reading)
+			Bits 3-7 are "reserved" and masked out here since Bit7 returns 1
 ------------------------------------------------------------------------------*/
-uint8_t get_ROBOEncoder(uint8_t controller, uint8_t command, uint32_t *value)
+uint8_t get_ROBOEncoder(uint8_t controller, uint8_t command, int32_t *value)
 {
 	uint8_t i, status, tbuf[7];
 	uint16_t crcReceived, crcExpected;
@@ -129,7 +270,7 @@ float get_ROBOFloat(uint8_t controller, uint8_t command)
 
 uint32_t get_ROBOInt32(uint8_t controller, uint8_t command)
 {
-	uint8_t i, status, tbuf[6];
+	uint8_t i, tbuf[6];
 	uint16_t crcReceived, crcExpected;
 	uint32_t value;
 
@@ -164,6 +305,7 @@ uint32_t get_ROBOInt32(uint8_t controller, uint8_t command)
 
 }
 
+/*
 uint8_t ROBOMove(uint8_t cstack, uint8_t speed)
 {
 	uint8_t controller, command, tbuf[5];
@@ -195,7 +337,7 @@ uint8_t ROBOMove(uint8_t cstack, uint8_t speed)
 	}
 	return(GREATERPROMPT);
 }
-
+*/
 
 /*
 float get_ROBOTemperature(uint8_t controller)

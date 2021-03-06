@@ -64,10 +64,11 @@ void commands(void)
 			prompt_flag = open_PNEU(object);
 			break;
 
-		case 'm':
-			prompt_flag = ROBOMove(cstack, 64);
+		case 'm':				// move
+		prompt_flag = ROBOMove(cstack);
+/*			prompt_flag = ROBOMove(cstack, 64);
 			_delay_ms(1000);
-			prompt_flag = ROBOMove(cstack, 0);
+			prompt_flag = ROBOMove(cstack, 0); */
 			break;
 
 		case 'r':				// Report
@@ -116,20 +117,27 @@ void echo_cmd(char *cmdline)
 }
 
 /*------------------------------------------------------------------------------
+uint8_t isadigit(char d)
+	Checks if the character is in the range 0-9
+------------------------------------------------------------------------------*/
+uint8_t isadigit(char d)
+{
+	if ((d >= '0') && (d <= '9')) {
+		return(1);
+	}
+	return(0);
+}
+
+/*------------------------------------------------------------------------------
 uint8_t isaletter(char c)
 	Checks if the character is in the range A-Z and a-z
 ------------------------------------------------------------------------------*/
 uint8_t isaletter(char c)
 {
 
-	if (c >= 'a' && c <= 'z') {
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 		return(1);
 	}
-
-	if (c >= 'A' && c <= 'Z') {
-		return(1);
-	}
-
 	return(0);
 
 }

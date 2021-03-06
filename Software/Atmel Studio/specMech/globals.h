@@ -2,7 +2,7 @@
 #define GLOBALSH
 
 #define F_CPU	3333333UL
-#define VERSION		"2021-02-24"
+#define VERSION		"2021-03-04"
 #define	YES			1
 #define	NO			0
 #define GREATERPROMPT	0	// Standard return prompt >
@@ -13,6 +13,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <stdio.h>		// sprintf
+#include <stdlib.h>		// atol()
 #include <string.h>		// for strcpy, strlen
 
 // led.c
@@ -148,6 +149,7 @@ extern ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 
 void commands(void);
 void echo_cmd(char*);
+uint8_t isadigit(char);
 uint8_t isaletter(char);
 void parse_cmd(char*, uint8_t);
 void send_prompt(uint8_t);
@@ -156,7 +158,7 @@ void send_prompt(uint8_t);
 uint8_t report(uint8_t);
 
 // timers.c
-volatile static uint16_t ticks;
+volatile uint16_t ticks;
 void start_TCB0(uint16_t);
 void stop_TCB0(void);
 
