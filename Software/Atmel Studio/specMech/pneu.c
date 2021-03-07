@@ -4,7 +4,9 @@ pneu.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "mcp23008.h"
 #include "pneu.h"
+#include "oled.h"
 
 volatile uint8_t pneuState;
 

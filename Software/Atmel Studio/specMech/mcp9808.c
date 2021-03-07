@@ -16,9 +16,8 @@ mcp9808.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
-//#define MCP9808ADDR		(0x30)	// TWI address
-#define MCP9808ADDR		(0x18)	// TWI address
-#define TEMPREGISTER	(0x05)	// Ambient temperature register
+#include "mcp9808.h"
+#include "twi.h"
 
 float read_MCP9808(void)
 {

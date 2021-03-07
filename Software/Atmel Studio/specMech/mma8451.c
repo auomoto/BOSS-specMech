@@ -6,6 +6,7 @@ mma8451.c
 
 #include "globals.h"
 #include "mma8451.h"
+#include "twi.h"
 
 /*------------------------------------------------------------------------------
 uint8_t get_orientation(uint8_t addr, float *x, float *y, float *z)
@@ -19,7 +20,7 @@ uint8_t get_orientation(float *x, float *y, float *z)
 	uint8_t datain[6];
 	int16_t ix, iy, iz;
 
-	*x = *y = *z = -9999.9;
+	*x = *y = *z = -666.0;
 
 	read_MMA8451(MMA8451ADDR, MMA8451OUTXMSB, datain, 6);
 

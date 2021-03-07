@@ -16,6 +16,7 @@ ads1115.c
 
 #include "globals.h"
 #include "ads1115.h"
+#include "twi.h"
 
 /*------------------------------------------------------------------------------
 float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)

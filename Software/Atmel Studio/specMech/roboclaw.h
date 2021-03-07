@@ -4,9 +4,12 @@
 #include "globals.h"
 
 #define ROBOCOUNTSPERMICRON		268	// Needs checking
-#define ACCELERATION			4096
-#define DECELERATION			4096
-#define SPEED					8192
+//#define ACCELERATION			4096
+//#define DECELERATION			4096
+//#define SPEED					8192
+#define ACCELERATION			8192
+#define DECELERATION			8192
+#define SPEED					16384
 #define MOTORAADDR	128
 #define MOTORBADDR	129
 #define MOTORCADDR	130

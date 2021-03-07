@@ -20,7 +20,10 @@ report.d report.o: .././report.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././roboclaw.h
+ .././usart.h .././commands.h .././ds3231.h .././roboclaw.h .././oled.h \
+ .././mma8451.h .././pneu.h .././fram.h .././ionpump.h .././nmea.h \
+ .././eeprom.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h
 
 .././globals.h:
 
@@ -66,4 +69,26 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
+.././usart.h:
+
+.././commands.h:
+
+.././ds3231.h:
+
 .././roboclaw.h:
+
+.././oled.h:
+
+.././mma8451.h:
+
+.././pneu.h:
+
+.././fram.h:
+
+.././ionpump.h:
+
+.././nmea.h:
+
+.././eeprom.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:

@@ -5,6 +5,8 @@ roboclaw.c
 
 #include "globals.h"
 #include "roboclaw.h"
+#include "usart.h"
+#include "commands.h"
 
 uint8_t ROBOGoTo(uint8_t controller, int32_t newPosition)
 {

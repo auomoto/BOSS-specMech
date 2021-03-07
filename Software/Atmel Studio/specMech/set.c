@@ -1,4 +1,7 @@
 #include "globals.h"
+#include "fram.h"
+#include "ds3231.h"
+#include "commands.h"
 
 /*------------------------------------------------------------------------------
 uint8_t set (char *ptr)

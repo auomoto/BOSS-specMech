@@ -1,5 +1,7 @@
 #include "globals.h"
 #include "initialize.h"
+#include "oled.h"
+#include "eeprom.h"
 
 void initialize(void)
 {

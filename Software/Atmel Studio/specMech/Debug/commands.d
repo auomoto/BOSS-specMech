@@ -20,7 +20,8 @@ commands.d commands.o: .././commands.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././roboclaw.h
+ .././commands.h .././usart.h .././nmea.h .././roboclaw.h .././oled.h \
+ .././pneu.h .././rtc.h
 
 .././globals.h:
 
@@ -66,4 +67,16 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
+.././commands.h:
+
+.././usart.h:
+
+.././nmea.h:
+
 .././roboclaw.h:
+
+.././oled.h:
+
+.././pneu.h:
+
+.././rtc.h:

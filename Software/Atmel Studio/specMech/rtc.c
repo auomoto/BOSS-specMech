@@ -1,4 +1,6 @@
 #include "globals.h"
+#include "led.h"
+#include "oled.h"
 
 /*----------------------------------------------------------------------
 void init_RTC(uint16_t ticks)

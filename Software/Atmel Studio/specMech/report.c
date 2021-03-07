@@ -1,5 +1,15 @@
 #include "globals.h"
+#include "usart.h"
+#include "commands.h"
+#include "ds3231.h"
 #include "roboclaw.h"
+#include "oled.h"
+#include "mma8451.h"
+#include "pneu.h"
+#include "fram.h"
+#include "ionpump.h"
+#include "nmea.h"
+#include "eeprom.h"
 
 /*------------------------------------------------------------------------------
 uint8_t report(char *ptr)

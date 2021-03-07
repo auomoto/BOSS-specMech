@@ -5,6 +5,8 @@ specMech.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "usart.h"
+#include "commands.h"
 
 ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 

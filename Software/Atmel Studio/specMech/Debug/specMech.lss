@@ -21,15 +21,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_abbrev 000048d9  00000000  00000000  0000f28d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   000042e6  00000000  00000000  00013b66  2**0
+  9 .debug_line   000044bb  00000000  00000000  00013b66  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000e5c  00000000  00000000  00017e4c  2**2
+ 10 .debug_frame  00000e5c  00000000  00000000  00018024  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00002265  00000000  00000000  00018ca8  2**0
+ 11 .debug_str    00002265  00000000  00000000  00018e80  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00003f29  00000000  00000000  0001af0d  2**0
+ 12 .debug_loc    00003f29  00000000  00000000  0001b0e5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000388  00000000  00000000  0001ee36  2**0
+ 13 .debug_ranges 00000388  00000000  00000000  0001f00e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -2403,8 +2403,9 @@ float get_humidity(uint8_t sensor)
      e10:	08 95       	ret
 
 00000e12 <initialize>:
-#include "globals.h"
 #include "initialize.h"
+#include "oled.h"
+#include "eeprom.h"
 
 void initialize(void)
 {
@@ -2807,9 +2808,9 @@ uint8_t write_MCP23008(uint8_t addr, uint8_t reg, uint8_t val)
     1032:	08 95       	ret
 
 00001034 <read_MCP9808>:
-//#define MCP9808ADDR		(0x30)	// TWI address
-#define MCP9808ADDR		(0x18)	// TWI address
-#define TEMPREGISTER	(0x05)	// Ambient temperature register
+#include "globals.h"
+#include "mcp9808.h"
+#include "twi.h"
 
 float read_MCP9808(void)
 {
@@ -3015,11 +3016,11 @@ uint8_t get_orientation(float *x, float *y, float *z)
 	uint8_t datain[6];
 	int16_t ix, iy, iz;
 
-	*x = *y = *z = -9999.9;
-    115a:	8a e9       	ldi	r24, 0x9A	; 154
-    115c:	9f e3       	ldi	r25, 0x3F	; 63
-    115e:	ac e1       	ldi	r26, 0x1C	; 28
-    1160:	b6 ec       	ldi	r27, 0xC6	; 198
+	*x = *y = *z = -666.0;
+    115a:	80 e0       	ldi	r24, 0x00	; 0
+    115c:	90 e8       	ldi	r25, 0x80	; 128
+    115e:	a6 e2       	ldi	r26, 0x26	; 38
+    1160:	b4 ec       	ldi	r27, 0xC4	; 196
     1162:	fa 01       	movw	r30, r20
     1164:	80 83       	st	Z, r24
     1166:	91 83       	std	Z+1, r25	; 0x01
@@ -6355,12 +6356,12 @@ uint8_t report(uint8_t cstack)
     2672:	8a 83       	std	Y+2, r24	; 0x02
     2674:	1b 82       	std	Y+3, r1	; 0x03
     2676:	1c 82       	std	Y+4, r1	; 0x04
-    2678:	80 e1       	ldi	r24, 0x10	; 16
+    2678:	80 e2       	ldi	r24, 0x20	; 32
     267a:	8d 83       	std	Y+5, r24	; 0x05
     267c:	1e 82       	std	Y+6, r1	; 0x06
     267e:	1f 82       	std	Y+7, r1	; 0x07
     2680:	18 86       	std	Y+8, r1	; 0x08
-    2682:	90 e2       	ldi	r25, 0x20	; 32
+    2682:	90 e4       	ldi	r25, 0x40	; 64
     2684:	99 87       	std	Y+9, r25	; 0x09
     2686:	1a 86       	std	Y+10, r1	; 0x0a
     2688:	1b 86       	std	Y+11, r1	; 0x0b
@@ -7180,6 +7181,7 @@ float get_temperature(uint8_t sensor)
 
 00002b6a <testroutine>:
 #include "globals.h"
+#include "usart.h"
 #include "roboclaw.h"
 
 void testroutine(void)

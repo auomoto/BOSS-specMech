@@ -1,4 +1,6 @@
 #include "globals.h"
+#include "usart.h"
+#include "nmea.h"
 
 /*------------------------------------------------------------------------------
 void checksum_NMEA(char *str)

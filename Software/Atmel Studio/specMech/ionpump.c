@@ -24,6 +24,8 @@ ionpump.c
 
 #include "globals.h"
 #include "ads1115.h"
+#include "ionpump.h"
+
 #define ISO224SLOPE	(2.0455)	// To log10(pressure) from ISO224 voltage
 #define ISO224INTER	(-6.8637)	// Transfer function from Modion pump voltage
 

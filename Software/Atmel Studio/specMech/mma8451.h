@@ -7,6 +7,8 @@
 #define MMA8451HFCUTOFF		(0x0F)	// MMA8451 HP_FILTER_CUTOFF
 #define MMA8451CTRLREG1		(0x2A)	// MMA8451 CTRL_REG1
 #define MMA8451CTRLREG2		(0x2B)	// MMA8451 CTRL_REG2
+
+uint8_t get_orientation(float*, float*, float*);
 uint8_t init_MMA8451(void);
 uint8_t read_MMA8451(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t write_MMA8451(uint8_t, uint8_t, uint8_t);

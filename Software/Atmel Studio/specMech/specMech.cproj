@@ -125,6 +125,9 @@
     <Compile Include="ad590.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ad590.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ads1115.c">
       <SubType>compile</SubType>
     </Compile>
@@ -137,13 +140,25 @@
     <Compile Include="commands.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="commands.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ds3231.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ds3231.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="eeprom.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="eeprom.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="fram.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fram.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="globals.h">
@@ -164,7 +179,13 @@
     <Compile Include="ionpump.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ionpump.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="led.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="led.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
@@ -173,7 +194,13 @@
     <Compile Include="mcp23008.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="mcp23008.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="mcp9808.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mcp9808.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mma8451.c">
@@ -183,6 +210,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="nmea.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="nmea.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="oled.c">
@@ -212,6 +242,9 @@
     <Compile Include="rtc.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="rtc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="set.c">
       <SubType>compile</SubType>
     </Compile>
@@ -230,7 +263,13 @@
     <Compile Include="twi.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="twi.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="usart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="usart.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="wdt.c">

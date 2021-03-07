@@ -1,11 +1,8 @@
 #include "globals.h"
 #include "roboclaw.h"
-
-#define	USART_BAUD_RATE(BAUD_RATE)	((float)(F_CPU * 64 / (16 * (float)BAUD_RATE)) + 0.5)
+#include "usart.h"
 
 USARTBuf send0_buf, send1_buf, send3_buf, recv0_buf, recv1_buf, recv3_buf;
-
-//volatile static uint8_t charcount = 0;
 
 /*------------------------------------------------------------------------------
 void init_USART(void)

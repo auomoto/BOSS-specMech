@@ -1,4 +1,6 @@
 #include "globals.h"
+#include "mcp9808.h"
+#include "ad590.h"
 
 /*------------------------------------------------------------------------------
 float get_temperature(uint8_t sensor)

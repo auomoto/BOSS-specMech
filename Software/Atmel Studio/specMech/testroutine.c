@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "usart.h"
 #include "roboclaw.h"
 
 void testroutine(void)

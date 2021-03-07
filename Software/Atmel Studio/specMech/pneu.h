@@ -13,7 +13,10 @@
 #define RIGHTOPEN		(0x6E)	// AND with this pattern to open
 #define RIGHTCLOSE		(0xE6)	// AND with this pattern to close
 
-
+uint8_t close_PNEU(char);
+uint8_t open_PNEU(char);
+void read_PNEUSENSORS(char*, char*, char*, char*);
 uint8_t set_PNEUVALVES(uint8_t, uint8_t);
+extern volatile uint8_t pneuState;
 
 #endif

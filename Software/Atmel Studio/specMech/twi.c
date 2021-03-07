@@ -1,5 +1,5 @@
 #include "globals.h"
-#define TWIBAUD		((uint8_t) (F_CPU/(2*TWIFREQ)) - 5)	// Ignore rise time
+#include "twi.h"
 
 /*------------------------------------------------------------------------------
 void init_TWI(void)

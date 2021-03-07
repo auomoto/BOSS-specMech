@@ -17,10 +17,9 @@ ad590.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "ad590.h"
 #include "ads1115.h"
-
-#define AD590DRIVER		(0x27)		// MCP23008 address (selects which sensor)
-#define AD590RESISTOR	(1000.0)	// Ohms
+#include "mcp23008.h"
 
 /*------------------------------------------------------------------------------
 float read_AD590(uint8_t sensor)
