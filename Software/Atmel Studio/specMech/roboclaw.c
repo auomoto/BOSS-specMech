@@ -12,14 +12,15 @@ roboclaw.c
 
 /*------------------------------------------------------------------------------
 uint8_t ROBOGoTo(uint8_t controller, int32_t newPosition)
-	Move the motor at the indicated controller to a new absolute position.
+	Move the motor at the selected controller to a new absolute position.
 
 	Inputs:
 		controller - the Roboclaw controller address (128, 129, or 130)
 		newPosition - the new encoder position in native encoder units
 
 	Returns:
-	
+		ERROR if an error occured
+		NOERROR on success
 ------------------------------------------------------------------------------*/
 uint8_t ROBOGoTo(uint8_t controller, int32_t newPosition)
 {
@@ -57,80 +58,35 @@ uint8_t ROBOGoTo(uint8_t controller, int32_t newPosition)
 	tbuf[20] = crc & 0xFF;
 	send_USART(1, tbuf, 21);
 
-	recv1_buf.data[0] = 0x00;
+	recv1_buf.data[0] = 0x00;	// Set up receiving buffer
 	recv1_buf.nbytes = 1;
 	recv1_buf.nxfrd = 0;
 	recv1_buf.done = NO;
 
 	start_TCB0(1);				// Start 1 ms ticks timer
 	for (;;) {
-		if (recv1_buf.done == YES) {
+		if (recv1_buf.done == YES) {	// Data received
 			break;
 		}
 		if (ticks > 50) {		// 4 ms just barely works at 38400 baud
 			stop_TCB0();
-			printError(ERR_MTRTIMEOUT, "Motor GoTo timeout");
+			printError(ERR_MTRTIMEOUT, "Timeout ROBOGoTo reply");
 			return(ERROR);
-			break;
 		}
 	}
 	stop_TCB0();
 
-//	if (recv1_buf.data[0] != 0xFF) {
-//		printError(ERR_MTRTIMEOUT, "Motor timeout");
-//		return(ERROR);
-//	}
+	if (recv1_buf.data[0] != 0xFF) {
+		printError(ERR_MTRTIMEOUT, "Bad reply (not 0xFF) ROBOGoTo");		
+		return(ERROR);
+	}
 
 	return(NOERROR);
 }
 
-/*
-uint8_t ROBOMoveAbsolute(uint8_t controller, int32_t position)
-{
-
-	uint8_t tbuf[9];
-	uint16_t crc;
-
-	tbuf[0] = controller;
-	tbuf[1] = ROBOMOVETO;			// Command 119
-	tbuf[2] = (position >> 24) & 0xFF;
-	tbuf[3] = (position >> 16) & 0xFF;
-	tbuf[4] = (position >> 8) & 0xFF;
-	tbuf[5] = (position) & 0xFF;
-	tbuf[6] = 1;				// Allow interrupting an ongoing motion
-	crc = crc16(tbuf, 7);
-	tbuf[7] = (crc >> 8) & 0xFF;
-	tbuf[8] = crc & 0xFF;
-	send_USART(1, tbuf, 9);
-
-	recv1_buf.data[0] = 0x00;
-	recv1_buf.nbytes = 1;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	stop_TCB0();
-	start_TCB0(1);
-	for (;;) {
-		if (ticks > 10) {		// 4 ms just works at 38400 baud
-			break;
-		}
-		if (recv1_buf.done == YES) {
-			break;
-		}
-	}
-
-	if (recv1_buf.data[0] != 0xFF) {
-		return(ERRORPROMPT);
-	}
-	return(GREATERPROMPT);
-
-}
-*/
-
-
 /*------------------------------------------------------------------------------
 uint8_t ROBOMove(uint8_t cstack)
-	Move a motor to a new relative or absolute postion. Called by the m
+	Move a motor to a new relative or absolute position. Called by the m
 	command.
 
 	Input:
@@ -163,7 +119,7 @@ uint8_t ROBOMove(uint8_t cstack)
 			break;
 
 		default:
-			printError(ERR_UNKNOWNMTR, "Invalid motor designator");
+			printError(ERR_UNKNOWNMTR, "ROBOMove invalid motor designator");
 			return(ERROR);
 			break;	
 	}
@@ -205,9 +161,9 @@ uint8_t get_ROBOEncoder(uint8_t controller, uint8_t command, int32_t *value)
 	start_TCB0(1);
 	while (recv1_buf.done == NO) {
 		asm("nop");
-		if (ticks > 4) {
+		if (ticks > 50) {
 			stop_TCB0();
-			printError(ERR_MTRENCREAD, "Encoder read timeout");
+			printError(ERR_MTRENCREAD, "ROBOEncoder read timeout");
 			return(ERROR);
 		}
 	}
@@ -222,7 +178,7 @@ uint8_t get_ROBOEncoder(uint8_t controller, uint8_t command, int32_t *value)
 
 	if (crcReceived != crcExpected) {
 		*value = 0;
-		printError(ERR_MTRENCCRC, "Encoder CRC error");
+		printError(ERR_MTRENCCRC, "ROBOEncoder CRC error");
 		return(ERROR);
 	}
 
@@ -236,55 +192,25 @@ uint8_t get_ROBOEncoder(uint8_t controller, uint8_t command, int32_t *value)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t get_ROBOEncoderValue(uint8_t controller, uint32_t *encoderValue)
-	Read the 32-bit encoder value
+uint8_t get_ROBOFloat(uint8_t controller, uint8_t command, float *value)
+	Retrieves a floating poing value (temperature or voltage) from a RoboClaw
+	controller.
+
+	Inputs:
+		controller - Controller address (128, 129, 130)
+		command - RoboClaw command (24 = Main battery voltage, 82 = temperature)
+
+	Outputs:
+		value - 10x the floating point value
+
+	Returns:
+		ERROR - on error
+		NOERROR - no error
 ------------------------------------------------------------------------------*/
-/*
-uint8_t get_ROBOEncoderValue(uint8_t controller, uint32_t *encoderValue)
-{
-	uint8_t i, cmd, status, tbuf[7];
-	uint16_t crcReceived, crcExpected;
-	uint32_t value;
-
-	recv1_buf.nbytes = 7;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	cmd = ROBOREADENCODERCOUNT;
-	tbuf[0] = controller;
-	tbuf[1] = cmd;
-	send_USART(1, tbuf, 2);
-	while (recv1_buf.done == NO) {
-		asm("nop");
-	}
-
-	crcReceived = (recv1_buf.data[5] << 8) | recv1_buf.data[6];
-
-	for (i = 2; i < 7; i++) {
-		tbuf[i] = recv1_buf.data[i-2];
-	}
-	crcExpected = crc16(tbuf, 7);
-
-	if (crcReceived != crcExpected) {
-		*encoderValue = 0;
-		return(0xF0);
-	}
-
-	value =  (uint32_t) recv1_buf.data[0] << 24;
-	value |= (uint32_t) recv1_buf.data[1] << 16;
-	value |= (uint32_t) recv1_buf.data[2] << 8;
-	value |= (uint32_t) recv1_buf.data[3];
-	*encoderValue = value;
-	status = recv1_buf.data[4] & 0x07;		// Blank reserved bits
-	return(status);
-
-}
-*/
-
-float get_ROBOFloat(uint8_t controller, uint8_t command)
+uint8_t get_ROBOFloat(uint8_t controller, uint8_t command, float *value)
 {
 	uint8_t tbuf[4];
-	uint16_t value, crcReceived, crcExpected;
+	uint16_t tempval, crcReceived, crcExpected;
 
 	recv1_buf.nbytes = 4;
 	recv1_buf.nxfrd = 0;
@@ -294,12 +220,20 @@ float get_ROBOFloat(uint8_t controller, uint8_t command)
 	tbuf[1] = command;
 	send_USART(1, tbuf, 2);
 
+	start_TCB0(1);
 	for (;;) {
 		if (recv1_buf.done == YES) {
 			break;
 		}
+		if (ticks > 50) {
+			stop_TCB0();
+			printError(ERR_MTRENCREAD, "ROBOFloat timeout");
+			return(ERROR);
+		}
 	}
-	value = (recv1_buf.data[0] << 8) | recv1_buf.data[1];
+	stop_TCB0();
+
+	tempval = (recv1_buf.data[0] << 8) | recv1_buf.data[1];
 	crcReceived = (recv1_buf.data[2] << 8) | recv1_buf.data[3];
 	recv1_buf.data[2] = recv1_buf.data[0];
 	recv1_buf.data[3] = recv1_buf.data[1];
@@ -307,17 +241,34 @@ float get_ROBOFloat(uint8_t controller, uint8_t command)
 	recv1_buf.data[1] = command;
 	crcExpected = crc16(recv1_buf.data, 4);
 	if (crcExpected != crcReceived) {
-		return(-666.0);
+		printError(ERR_MTRENCCRC, "ROBOFloat CRC error");
+		return(ERROR);
 	} else {
-		return((float) value / 10.0);
+		*value = ((float) tempval / 10.0);
+		return(NOERROR);
 	}
 }
 
-uint32_t get_ROBOInt32(uint8_t controller, uint8_t command)
+/*------------------------------------------------------------------------------
+uint8_t get_ROBOInt32(uint8_t controller, uint8_t command, uint32_t *value)
+	Returns a 32-bit unsigned integer from a RoboClaw controller. This could
+	be the temperature, main battery voltage, or motor current (unscaled)
+
+	Inputs:
+		controller - the controller address (128, 129, or 130)
+		command - RoboClaw command that requests 32-bit integer
+
+	Outputs:
+		value - the 32-bit value
+
+	Returns:
+		
+------------------------------------------------------------------------------*/
+uint8_t get_ROBOInt32(uint8_t controller, uint8_t command, uint32_t *value)
 {
 	uint8_t i, tbuf[6];
 	uint16_t crcReceived, crcExpected;
-	uint32_t value;
+	uint32_t tempval;
 
 	recv1_buf.nbytes = 6;
 	recv1_buf.nxfrd = 0;
@@ -326,9 +277,18 @@ uint32_t get_ROBOInt32(uint8_t controller, uint8_t command)
 	tbuf[0] = controller;
 	tbuf[1] = command;
 	send_USART(1, tbuf, 2);
-	while (recv1_buf.done == NO) {
-		asm("nop");
+	start_TCB0(1);
+	for (;;) {
+		if (recv1_buf.done == YES) {
+			break;
+		}
+		if (ticks > 50) {
+			stop_TCB0();
+			printError(ERR_MTRTIMEOUT, "get_ROBOInt32 timeout");
+			return(ERROR);
+		}
 	}
+	stop_TCB0();
 
 	crcReceived = (recv1_buf.data[4] << 8) | recv1_buf.data[5];
 
@@ -338,130 +298,20 @@ uint32_t get_ROBOInt32(uint8_t controller, uint8_t command)
 	crcExpected = crc16(tbuf, 6);
 
 	if (crcReceived != crcExpected) {
-		value = 0;
-		return(0xF0);
+		printError(ERR_MTRENCCRC, "get_ROBOInt32 CRC error");
+		*value = 0x7FFFFFFF;
+		return(ERROR);
 	}
 
-	value =  (uint32_t) recv1_buf.data[0] << 24;
-	value |= (uint32_t) recv1_buf.data[1] << 16;
-	value |= (uint32_t) recv1_buf.data[2] << 8;
-	value |= (uint32_t) recv1_buf.data[3];
-	return(value);
+	tempval =  (uint32_t) recv1_buf.data[0] << 24;
+	tempval |= (uint32_t) recv1_buf.data[1] << 16;
+	tempval |= (uint32_t) recv1_buf.data[2] << 8;
+	tempval |= (uint32_t) recv1_buf.data[3];
+	*value = tempval;
+	return(NOERROR);
 
 }
 
-/*
-uint8_t ROBOMove(uint8_t cstack, uint8_t speed)
-{
-	uint8_t controller, command, tbuf[5];
-	uint16_t crc;
-
-	recv1_buf.nbytes = 1;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	command = 1;
-	if ((pcmd[cstack].cobject) == 'a') {
-		controller = MOTORAADDR;
-	}
-	tbuf[0] = controller;
-	tbuf[1] = command;
-	tbuf[2] = speed;
-	crc = crc16(tbuf,3);
-	tbuf[3] = (crc >> 8) & 0xFF;
-	tbuf[4] = crc & 0xFF;
-	send_USART(1, tbuf, 5);
-	for (;;) {
-		if (recv1_buf.done == YES) {
-			break;
-		}
-	}
-
-	if (recv1_buf.data[0] != 0xFF) {
-		return(ERRORPROMPT);
-	}
-	return(GREATERPROMPT);
-}
-*/
-
-/*
-float get_ROBOTemperature(uint8_t controller)
-{
-
-	uint8_t cmd, tbuf[4];
-	uint16_t value, crcReceived, crcExpected;
-
-	cmd = ROBOREADTEMPERATURE;
-	recv1_buf.nbytes = 4;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	tbuf[0] = controller;
-	tbuf[1] = cmd;
-	send_USART(1, tbuf, 2);
-
-	for (;;) {
-		if (recv1_buf.done == YES) {
-			break;
-		}
-	}
-	value = (recv1_buf.data[0] << 8) | recv1_buf.data[1];
-	crcReceived = (recv1_buf.data[2] << 8) | recv1_buf.data[3];
-	recv1_buf.data[2] = recv1_buf.data[0];
-	recv1_buf.data[3] = recv1_buf.data[1];
-	recv1_buf.data[0] = controller;
-	recv1_buf.data[1] = cmd;
-	crcExpected = crc16(recv1_buf.data, 4);
-	if (crcExpected != crcReceived) {
-		return(-666.0);
-		} else {
-		return((float) value / 10.0);
-	}
-}
-*/
-/*------------------------------------------------------------------------------
-float get_ROBOVoltage(uint8_t controller)
-	Returns the supply voltage
-
-	Inputs:
-		controller - The address of the RoboClaw controller
-
-	Output:
-		The voltage as measured by the RoboClaw
-------------------------------------------------------------------------------*/
-/*float get_ROBOVoltage(uint8_t controller)
-{
-	uint8_t cmd, tbuf[4];
-	uint16_t value, crcReceived, crcExpected;
-
-	cmd = ROBOREADMAINVOLTAGE;
-	recv1_buf.nbytes = 4;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	tbuf[0] = controller;
-	tbuf[1] = cmd;
-	send_USART(1, tbuf, 2);
-
-	for (;;) {
-		if (recv1_buf.done == YES) {
-			break;
-		}
-	}
-	value = (recv1_buf.data[0] << 8) | recv1_buf.data[1];
-	crcReceived = (recv1_buf.data[2] << 8) | recv1_buf.data[3];
-	recv1_buf.data[2] = recv1_buf.data[0];
-	recv1_buf.data[3] = recv1_buf.data[1];
-	recv1_buf.data[0] = controller;
-	recv1_buf.data[1] = cmd;
-	crcExpected = crc16(recv1_buf.data, 4);
-	if (crcExpected != crcReceived) {
-		return(-666.0);
-	} else {
-		return((float) value / 10.0);
-	}
-}
-*/
 /*------------------------------------------------------------------------------
 	crc16(packet, nbytes)
 
@@ -475,7 +325,6 @@ float get_ROBOVoltage(uint8_t controller)
 	Returns:
 		The CRC16 value as an unsigned 16-bit word
 ------------------------------------------------------------------------------*/
-
 uint16_t crc16(unsigned char *packet, uint16_t nBytes)
 {
 

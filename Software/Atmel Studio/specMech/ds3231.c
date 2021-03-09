@@ -8,8 +8,9 @@ ds3231.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
-#include "ds3231.h"
 #include "twi.h"
+#include "errors.h"
+#include "ds3231.h"
 
 /*------------------------------------------------------------------------------
 void convert_ds2iso(char *isotime, uint8_t *ds3231time)
@@ -78,6 +79,8 @@ uint8_t get_time(char *isotime)
 	uint8_t retval, ds3231time[7];
 
 	if ((retval = read_DS3231(DS3231ADDR, ds3231time))) {
+// avoid a bootup announcement at boot-time by not sending this
+//		printError(ERR_GETTIME, "DS3231 get_time");
 		strcpy(isotime, "CurrentTime?");
 		return(retval);
 	}
