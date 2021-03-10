@@ -54,7 +54,7 @@ void initialize1(void)
 
 	char versionstr[11];
 
-	init_ROBO();
+	init_MOTORS();
 	init_MMA8451();
 	init_PNEU();
 	init_OLED(0);

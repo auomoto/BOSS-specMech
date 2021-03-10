@@ -66,11 +66,11 @@ uint8_t report(uint8_t cstack)
 		case 'C':
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 63;
-			retval = get_ROBOFloat(controller, ROBOREADMAINVOLTAGE, &voltage);
+			retval = get_MOTORFloat(controller, ROBOREADMAINVOLTAGE, &voltage);
 			if (retval == ERROR) {
 				voltage = -666.0;
 			}
-			retval = get_ROBOFloat(controller, ROBOREADTEMPERATURE, &t0);
+			retval = get_MOTORFloat(controller, ROBOREADTEMPERATURE, &t0);
 			if (retval == ERROR) {
 				t0 = -666.0;
 			}
@@ -85,17 +85,17 @@ uint8_t report(uint8_t cstack)
 		case 'c':
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 31;
-			retval = get_ROBOEncoder(controller, ROBOREADENCODERCOUNT, &encoderValue);
+			retval = get_MOTOREncoder(controller, ROBOREADENCODERCOUNT, &encoderValue);
 			if (retval == ERROR) {
 				encoderValue = 0x7FFFFFFF;
 			}
 			micronValue = encoderValue/ROBOCOUNTSPERMICRON;
-			retval = get_ROBOEncoder(controller, ROBOREADENCODERSPEED, &encoderSpeed);
+			retval = get_MOTOREncoder(controller, ROBOREADENCODERSPEED, &encoderSpeed);
 			if (retval == ERROR) {
 				encoderSpeed = 0x7FFFFFFF;
 			}
 			micronSpeed = encoderSpeed/ROBOCOUNTSPERMICRON;			
-			retval = get_ROBOInt32(controller, ROBOREADCURRENT, &icurrents);
+			retval = get_MOTORInt32(controller, ROBOREADCURRENT, &icurrents);
 			if (retval == ERROR) {
 				icurrents = 0x7FFFFFFF;
 			}
@@ -182,7 +182,7 @@ uint8_t report(uint8_t cstack)
 			break;
 
 		default:
-			printError(ERR_BADOBJECT, "report: invalid object");
+			printError(ERR_BADOBJECT, "report: unknown object");
 			break;
 	}
 

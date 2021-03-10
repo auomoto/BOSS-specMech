@@ -23,12 +23,13 @@
 #define ROBOSLOW				16
 
 uint16_t crc16(uint8_t*, uint16_t);
-uint8_t get_ROBOEncoder(uint8_t, uint8_t, int32_t*);
-uint8_t get_ROBOFloat(uint8_t, uint8_t, float*);
-uint8_t ROBOGoTo(uint8_t, int32_t);
-uint8_t get_ROBOInt32(uint8_t, uint8_t, uint32_t*);
-uint8_t init_ROBO(void);
-uint8_t ROBOMove(uint8_t);
-uint8_t set_ROBOEncoder(uint8_t, uint32_t);
+uint8_t get_MOTOREncoder(uint8_t, uint8_t, int32_t*);
+uint8_t get_MOTORFloat(uint8_t, uint8_t, float*);
+uint8_t get_MOTORInt32(uint8_t, uint8_t, uint32_t*);
+uint8_t init_MOTORS(void);
+uint8_t move_MOTOR(uint8_t);
+uint8_t move_MOTORAbsolute(uint8_t, int32_t);
+//uint8_t ROBOMove(uint8_t);
+uint8_t set_MOTOREncoder(uint8_t, uint32_t);
 
 #endif

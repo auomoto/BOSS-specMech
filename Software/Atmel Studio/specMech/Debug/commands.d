@@ -20,9 +20,9 @@ commands.d commands.o: .././commands.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././wdt.h .././usart.h .././set.h .././specID.h .././nmea.h \
- .././roboclaw.h .././oled.h .././pneu.h .././rtc.h .././report.h \
- .././testroutine.h .././commands.h
+ .././wdt.h .././ds3231.h .././usart.h .././set.h .././specID.h \
+ .././nmea.h .././roboclaw.h .././oled.h .././pneu.h .././rtc.h \
+ .././report.h .././errors.h .././testroutine.h .././commands.h
 
 .././globals.h:
 
@@ -70,6 +70,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././wdt.h:
 
+.././ds3231.h:
+
 .././usart.h:
 
 .././set.h:
@@ -87,6 +89,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././rtc.h:
 
 .././report.h:
+
+.././errors.h:
 
 .././testroutine.h:
 

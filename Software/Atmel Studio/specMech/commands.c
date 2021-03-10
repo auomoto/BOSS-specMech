@@ -1,5 +1,6 @@
 #include "globals.h"
 #include "wdt.h"
+#include "ds3231.h"
 #include "usart.h"
 #include "set.h"
 #include "specID.h"
@@ -9,6 +10,7 @@
 #include "pneu.h"
 #include "rtc.h"
 #include "report.h"
+#include "errors.h"
 #include "testroutine.h"
 #include "commands.h"
 
@@ -83,7 +85,7 @@ void commands(void)
 			break;
 
 		case 'm':				// move
-			ROBOMove(cstack);
+			move_MOTOR(cstack);
 			break;
 
 		case 'r':				// Report
@@ -105,6 +107,7 @@ void commands(void)
 			return;
 
 		default:
+			printError(ERR_BADCOMMAND, "Not a command");
 			prompt_flag = GREATERPROMPT;
 			break;			
 	}
@@ -121,11 +124,12 @@ void echo_cmd(char *cmdline)
 void echo_cmd(char *cmdline)
 {
 
-	char format_CMD[] = "$S%dCMD,%s";
-	char strbuf[BUFSIZE+10];		// Add $SXCMD, and *HH checksum
+	char format_CMD[] = "$S%dCMD,%s,%s";
+	char currenttime[20], strbuf[BUFSIZE+10];
 
 		// Format and echo the command line
-	sprintf(strbuf, format_CMD, get_SPECID, cmdline);
+	get_time(currenttime);
+	sprintf(strbuf, format_CMD, get_SPECID, currenttime, cmdline);
 	checksum_NMEA(strbuf);
 	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
 
