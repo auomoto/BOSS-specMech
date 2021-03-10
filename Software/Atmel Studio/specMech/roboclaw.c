@@ -34,6 +34,11 @@ uint8_t ROBOGoTo(uint8_t controller, int32_t newPosition)
 	speed = SPEED;
 	buffer = 0;							// 0 -> command is buffered
 
+	recv1_buf.data[0] = 0x00;			// Set up receiving buffer
+	recv1_buf.nbytes = 1;
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
 	tbuf[0] = controller;
 	tbuf[1] = ROBODRIVETO;				// Command 65
 	tbuf[2] = (acceleration >> 24) & 0XFF;
@@ -56,12 +61,8 @@ uint8_t ROBOGoTo(uint8_t controller, int32_t newPosition)
 	crc = crc16(tbuf, 19);
 	tbuf[19] = (crc >> 8) & 0xFF;
 	tbuf[20] = crc & 0xFF;
-	send_USART(1, tbuf, 21);
 
-	recv1_buf.data[0] = 0x00;	// Set up receiving buffer
-	recv1_buf.nbytes = 1;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
+	send_USART(1, tbuf, 21);
 
 	start_TCB0(1);				// Start 1 ms ticks timer
 	for (;;) {
@@ -193,7 +194,7 @@ uint8_t get_ROBOEncoder(uint8_t controller, uint8_t command, int32_t *value)
 
 /*------------------------------------------------------------------------------
 uint8_t get_ROBOFloat(uint8_t controller, uint8_t command, float *value)
-	Retrieves a floating poing value (temperature or voltage) from a RoboClaw
+	Retrieves a floating point value (temperature or voltage) from a RoboClaw
 	controller.
 
 	Inputs:
@@ -201,7 +202,7 @@ uint8_t get_ROBOFloat(uint8_t controller, uint8_t command, float *value)
 		command - RoboClaw command (24 = Main battery voltage, 82 = temperature)
 
 	Outputs:
-		value - 10x the floating point value
+		value - 0.1X the retrieved integer value
 
 	Returns:
 		ERROR - on error
@@ -308,6 +309,67 @@ uint8_t get_ROBOInt32(uint8_t controller, uint8_t command, uint32_t *value)
 	tempval |= (uint32_t) recv1_buf.data[2] << 8;
 	tempval |= (uint32_t) recv1_buf.data[3];
 	*value = tempval;
+	return(NOERROR);
+
+}
+
+uint8_t init_ROBO(void)
+{
+
+	uint8_t controller, error = 0;
+	uint32_t encoderValue;
+
+	for (controller = 128; controller < 131; controller++) {
+		// get saved encoder value from FRAM
+		encoderValue = 22 * ROBOCOUNTSPERMICRON;	// Proxy for now
+		if (set_ROBOEncoder(controller, encoderValue) == ERROR) {
+			error++;
+		}
+	}
+	if (error) {
+		return(ERROR);
+	} else {
+		return(NOERROR);
+	}
+}
+
+/*------------------------------------------------------------------------------
+	Does not print an error. It's only called at reboot. We should have a
+	double-check at startup to make sure the encoder values agree before a move.
+------------------------------------------------------------------------------*/
+uint8_t set_ROBOEncoder(uint8_t controller, uint32_t value)
+{
+
+	uint8_t tbuf[6];
+
+	recv1_buf.data[0] = 0x00;			// Set up receiving buffer
+	recv1_buf.nbytes = 1;
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
+	tbuf[0] = controller;
+	tbuf[1] = ROBOSETENCODER;
+	tbuf[2] = (value >> 24) & 0xFF;
+	tbuf[3] = (value >> 16) & 0xFF;
+	tbuf[4] = (value >> 8) & 0xFF;
+	tbuf[5] = value & 0xFF;
+
+	send_USART(1, tbuf, 6);
+
+	start_TCB0(1);				// Start 1 ms ticks timer
+	for (;;) {
+		if (recv1_buf.done == YES) {	// Data received
+			stop_TCB0();
+			break;
+		}
+		if (ticks > 50) {		// 4 ms just barely works at 38400 baud
+			stop_TCB0();
+			return(ERROR);
+		}
+	}
+	if (recv1_buf.data[0] != 0xFF) {
+		return(ERROR);
+	}
 	return(NOERROR);
 
 }

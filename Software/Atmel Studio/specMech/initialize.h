@@ -13,5 +13,7 @@ uint8_t init_MMA8451(void);
 uint8_t init_PNEU(void);
 void init_OLED(uint8_t);
 void init_RTC(uint16_t);	// Also called in commands.c
+void initialize0(void);
+void initialize1(void);
 
 #endif

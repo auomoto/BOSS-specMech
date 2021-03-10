@@ -11,7 +11,8 @@ void testroutine(void)
 	char buf[50];
 
 	start_TCB0(1);
-	_delay_ms(100);
+	_delay_ms(10);
+	stop_TCB0();
 	sprintf(buf, "ticks = %d\r\n", ticks);
 	send_USART(0, (uint8_t*) buf, strlen(buf));
 

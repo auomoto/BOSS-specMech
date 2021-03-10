@@ -5,6 +5,7 @@ specMech.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "initialize.h"
 #include "usart.h"
 #include "commands.h"
 
@@ -15,15 +16,13 @@ extern void initialize(void);
 int main(void)
 {
 
-	initialize();
+	initialize0();
 	sei();
+	initialize1();
 
 	for (;;) {
 		if (recv0_buf.done) {
 			recv0_buf.done = NO;
-//			on_BEEPER;
-//			_delay_ms(50);
-//			off_BEEPER;
 			commands();
 		}
 	}

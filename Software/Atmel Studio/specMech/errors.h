@@ -10,6 +10,7 @@
 #define ERR_MTRTIMEOUT	(303)	// Roboclaw does not respond to command
 #define ERR_MTRENCREAD	(304)	// Error reading motor encoder position or speed
 #define ERR_MTRENCCRC	(305)	// CRC error from RoboClaw
+#define ERR_MTRENCSET	(306)	// Error resetting encoder value at initialization
 
 void printError(uint16_t, char*);
 
