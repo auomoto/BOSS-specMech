@@ -30,10 +30,10 @@ float get_temperature(uint8_t sensor)
 		case 0:
 		case 1:
 		case 2:
-			temperature = read_AD590(sensor);
+			read_AD590(sensor, &temperature);
 			break;
 		case 3:
-			temperature = read_MCP9808();
+			read_MCP9808(&temperature);
 			break;
 		default:
 			temperature = -666.0;

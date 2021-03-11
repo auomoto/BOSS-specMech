@@ -17,6 +17,7 @@ ad590.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "errors.h"
 #include "ad590.h"
 #include "ads1115.h"
 #include "mcp23008.h"
@@ -32,11 +33,11 @@ float read_AD590(uint8_t sensor)
 	Output:
 		Returns the temperature. -999.9 for invalid sensor value
 ------------------------------------------------------------------------------*/
-float read_AD590(uint8_t sensor)
+uint8_t read_AD590(uint8_t sensor, float *temperature)
 {
 
 	uint8_t pins;
-	float voltage, offset, temperature;
+	float voltage, offset;
 
 	offset = 0.0;
 	switch (sensor) {		// Select the sensor(s) to turn on
@@ -64,8 +65,11 @@ float read_AD590(uint8_t sensor)
 	_delay_us(20);	// AD590 turn-on time
 
 	// Use 0.512 volts range and 128 samples per second
-	voltage = read_ADS1115(ADC_TE, PGA0512, AIN3, DR128);
-	temperature = (AD590RESISTOR * voltage) - 273.15 + offset;	// Temperature & offset calibration
-	return(temperature);
+	if (read_ADS1115(ADC_TE, PGA0512, AIN3, DR128, &voltage) == ERROR) {
+		*temperature = BADFLOAT;
+		return(ERROR);
+	}
+	*temperature = (AD590RESISTOR * voltage) - 273.15 + offset;	// Temperature & offset calibration
+	return(NOERROR);
 
 }

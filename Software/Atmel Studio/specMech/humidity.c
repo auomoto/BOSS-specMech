@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "errors.h"
 #include "ads1115.h"
 #include "temperature.h"
 #include "humidity.h"
@@ -30,12 +31,11 @@ float get_humidity(uint8_t sensor)
 {
 
 	uint8_t adcpin;
-	float humidity, temperature;
+	float voltage, humidity, temperature;
 
 	switch (sensor) {
 		case 0:
 			temperature = get_temperature(0);
-//			adcpin = AIN1;		// test unit
 			adcpin = AIN0;		// production
 			break;
 		case 1:
@@ -53,8 +53,19 @@ float get_humidity(uint8_t sensor)
 			break;
 	}
 
+	if (read_ADS1115(ADC_RH, PGA6144, adcpin, DR128, &voltage) == ERROR) {
+		humidity = -666.0;
+	}
+	else {
+		humidity = ((voltage / 5.0) - 0.16) / 0.0062;
+		humidity = (humidity / (1.0546 - 0.00216 * temperature));
+	}
+
+/*	
 	humidity = ((read_ADS1115(ADC_RH, PGA6144, adcpin, DR128)/5.0) - 0.16) / 0.0062;
 	humidity = (humidity / (1.0546 - 0.00216 * temperature));
+*/
+
 	return(humidity);
 
 }

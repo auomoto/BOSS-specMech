@@ -24,7 +24,6 @@ void checksum_NMEA(char *str)
 
 }
 
-// Move this to report.c? Add command id counter (after the ;)
 /*------------------------------------------------------------------------------
 void format_ERR(char *str)
 	Returns an error line

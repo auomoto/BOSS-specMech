@@ -16,16 +16,20 @@ mcp9808.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "errors.h"
 #include "mcp9808.h"
 #include "twi.h"
 
-float read_MCP9808(void)
+uint8_t read_MCP9808(float *temperature)
 {
 
 	uint8_t highbyte, lowbyte, sign;
-	float temperature;
+	float temp;
 
-	start_TWI(MCP9808ADDR, TWIWRITE);
+	if (start_TWI(MCP9808ADDR, TWIWRITE) == ERROR) {
+		*temperature = -666.0;
+		return(ERROR);
+	}
 	write_TWI(TEMPREGISTER);
 	start_TWI(MCP9808ADDR, TWIREAD);
 	highbyte = read_TWI();
@@ -34,9 +38,10 @@ float read_MCP9808(void)
 
 	sign = highbyte & 0x10;				// Save sign
 	highbyte &= 0x0F;					// Clear threshold & sign bits
-	temperature = (((float)highbyte * 16.0) + ((float)lowbyte / 16.0));
+	temp = (((float)highbyte * 16.0) + ((float)lowbyte / 16.0));
 	if (sign) {
-		temperature = 256.0 - temperature;
+		temp = 256.0 - temp;
 	}
-	return(temperature);
+	*temperature = temp;
+	return(NOERROR);
 }

@@ -5,9 +5,9 @@
 #define TWIBAUD		((uint8_t) (F_CPU/(2*TWIFREQ)) - 5)	// Ignore rise time
 #define TWIWRITE	0
 #define TWIREAD		1
-#define TWIBUSERR	2
-#define TWIARBLOST	3
-#define TWINODEVICE	4
+//#define TWIBUSERR	2
+//#define TWIARBLOST	3
+//#define TWINODEVICE	4
 
 uint8_t read_TWI(void);
 uint8_t readlast_TWI(void);

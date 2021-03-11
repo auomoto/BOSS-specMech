@@ -15,6 +15,7 @@ ads1115.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "errors.h"
 #include "ads1115.h"
 #include "twi.h"
 
@@ -155,33 +156,35 @@ float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
 			default of 128 samples per second although we haven't explored
 			any other options.
 ------------------------------------------------------------------------------*/
-float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
+uint8_t read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins,
+	uint8_t datarate, float *voltage)
 {
 
 	int value;
-	float scale, voltage;
-	uint8_t confighi, configlo, retval, flag;
+	float scale;
+	uint8_t confighi, configlo, flag;
 	uint8_t converting, lowbyte, highbyte;
 
 	// Write the CONFIG register
 	confighi = 0b10000001 | gain | pins;
 	configlo = datarate | 0b00000011;				// Disable comparator
 
-	if ((retval = start_TWI(addr, TWIWRITE))) {		// TWI start condition
+	*voltage = BADFLOAT;
+	if (start_TWI(addr, TWIWRITE == ERROR)) {		// TWI start condition
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
-	if ((retval = write_TWI(ADS1115CONFIG))) {		// Write the CONFIG register
+	if ((write_TWI(ADS1115CONFIG) == ERROR)) {		// Write the CONFIG register
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
-	if ((retval = write_TWI(confighi))) {			// Write high byte
+	if ((write_TWI(confighi) == ERROR)) {			// Write high byte
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
-	if ((retval = write_TWI(configlo))) {			// Write low byte
+	if ((write_TWI(configlo) == ERROR)) {			// Write low byte
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
 	stop_TWI();
 
@@ -190,8 +193,8 @@ float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
 	converting = YES;
 	while (converting) {							// Wait for conversion to finish
 		start_TWI(addr, TWIREAD);
-		flag = readlast_TWI();				// CHANGE TO HARDWARE SENSE ON RDY PIN?
-		if (flag & 0b10000000) {			// or add a timer timeout
+		flag = readlast_TWI();
+		if (flag & 0b10000000) {
 			converting = NO;
 		}
 	}
@@ -232,7 +235,7 @@ float read_ADS1115(uint8_t addr, uint8_t gain, uint8_t pins, uint8_t datarate)
 			break;
 	}
 
-	voltage = scale * (float) value;
-	return(voltage);
+	*voltage = scale * (float) value;
+	return(NOERROR);
 
 }

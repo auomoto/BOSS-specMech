@@ -150,30 +150,34 @@ uint8_t read_DS3231(uint8_t addr, uint8_t *ds3231time)
 uint8_t read_DS3231(uint8_t addr, uint8_t ds3231time[])
 {
 
-	uint8_t i, retval;
+	uint8_t i;
 
-	if ((retval = start_TWI(addr, TWIWRITE))) {
+	if (start_TWI(addr, TWIWRITE) == ERROR) {
 		stop_TWI();
-		return(retval);
+		return(ERROR);
     }  
 
-	if ((retval = write_TWI(0x00))) {	// Register 00h
+// Can probably remove the error checks
+
+	if (write_TWI(0x00) == ERROR) {	// Register 00h
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
-	if ((retval = start_TWI(DS3231ADDR, TWIREAD))) {
+
+	if (start_TWI(DS3231ADDR, TWIREAD) == ERROR) {
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
 
 	for (i = 0; i < 6; i++) {
 		ds3231time[i] = read_TWI();
 	}
+
 	ds3231time[6] = readlast_TWI();
 
 	stop_TWI();
 
-	return(0);
+	return(NOERROR);
 
 }
 
@@ -190,26 +194,26 @@ uint8_t write_DS3231(uint8_t addr, char *ds3231time)
 uint8_t write_DS3231(uint8_t addr, uint8_t *ds3231time)
 {
 
-	uint8_t i, retval;
+	uint8_t i;
 
-	if ((retval = start_TWI(addr, TWIWRITE))) {
+	if (start_TWI(addr, TWIWRITE) == ERROR) {
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
 
-	if ((retval = write_TWI(0x00))) {	// Start with register 0x00 (seconds)
+	if (write_TWI(0x00) == ERROR) {	// Start with register 0x00 (seconds)
 		stop_TWI();
-		return(retval);
+		return(ERROR);
 	}
 
 	for (i = 0; i < 7; i++) {
-		if ((retval = write_TWI(*ds3231time++))) {	// send the new time
+		if (write_TWI(*ds3231time++) == ERROR) {	// send the new time
 			stop_TWI();
-			return(retval);
+			return(ERROR);
 		}
 	}
 	stop_TWI();
 
-	return(0);
+	return(NOERROR);
 
 }

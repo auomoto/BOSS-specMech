@@ -14,7 +14,11 @@
 #define ERR_MTRENCCRC	(305)	// CRC error from RoboClaw
 #define ERR_MTRSETENC	(306)	// Error setting encoder value at initialization
 #define ERR_MTRNULLMOVE	(307)	// No distance or target position specified
-#define ERR_MCP23008	(401)	// MCP23008 fail to respond to start condition
+
+#define ERR_TWI			(401)	// start_TWI NACK
+#define ERR_MCP23008	(402)	// MCP23008 fail to respond to start condition
+
+#define ERR_PNUMECH		(501)	// Not a valid mechanism (s, l, r, or b)
 
 void printError(uint16_t, char*);
 

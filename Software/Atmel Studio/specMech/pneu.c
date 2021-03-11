@@ -4,9 +4,11 @@ pneu.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "errors.h"
+#include "commands.h"
 #include "mcp23008.h"
-#include "pneu.h"
 #include "oled.h"
+#include "pneu.h"
 
 volatile uint8_t pneuState;
 
@@ -28,13 +30,13 @@ uint8_t close_PNEU(char mech)
 		mech - a character that selects the shutter, left Hartmann door,
 		right Hartmann door, or both doors.
 ------------------------------------------------------------------------------*/
-uint8_t close_PNEU(char mech)
+uint8_t close_PNEU(uint8_t cstack)
 {
 
 	const char dformat_CLO[] = "Close %s";
 	char outbuf[17];
 
-	switch (mech) {
+	switch (pcmd[cstack].cobject) {
 
 		case 'b':
 			set_PNEUVALVES(LEFTBM, LEFTCLOSE);
@@ -58,7 +60,8 @@ uint8_t close_PNEU(char mech)
 			break;
 
 		default:
-			return(ERRORPROMPT);
+			printError(ERR_PNUMECH, "close_PNEU bad object");
+			strcpy(outbuf, "close what?");
 			break;
 
 	}
@@ -75,6 +78,7 @@ uint8_t init_PNEU(void)
 	driver. The MCP23008 port expander connected to the GMR (pneumatic) sensors
 	is assumed to be in input mode.
 ------------------------------------------------------------------------------*/
+/*
 uint8_t init_PNEU(void)
 {
 
@@ -108,6 +112,40 @@ uint8_t init_PNEU(void)
 	return(0);
 
 }
+*/
+
+uint8_t init_PNEU(void)
+{
+
+	if (write_MCP23008(HIGHCURRENT, IODIR, 0x00) == ERROR) {
+		return(ERROR);
+	}
+	if (write_MCP23008(HIGHCURRENT, OLAT, 0x00) == ERROR) {
+		return(ERROR);
+	}
+	if (write_MCP23008(PNEUSENSORS, IODIR, 0xFE) == ERROR) {	// Inputs
+		return(ERROR);
+	}
+	if (write_MCP23008(PNEUSENSORS, IPOL, 0x00) == ERROR) {
+		return(ERROR);
+	}
+	if (write_MCP23008(PNEUSENSORS, GPINTEN, 0b11111100) == ERROR) {
+		return(ERROR);
+	}
+	if (write_MCP23008(PNEUSENSORS, INTCON, 0x00) == ERROR) {
+		return(ERROR);
+	}
+	if (write_MCP23008(PNEUSENSORS, IOCON, 0x20) == ERROR) { // Don't increment addr
+		return(ERROR);
+	}
+	if (write_MCP23008(PNEUSENSORS, GPPU, 0x7F) == ERROR) { // Pullups (not really needed)
+		return(ERROR);
+	}
+	PORTD.PIN7CTRL = PORT_PULLUPEN_bm | PORT_ISC_BOTHEDGES_gc;	// PNEUSENSORS
+	return(NOERROR);
+
+}
+
 
 /*------------------------------------------------------------------------------
 uint8_t open_PNEU(char mechanism)
@@ -125,14 +163,13 @@ uint8_t open_PNEU(char mechanism)
 		mechanism - a character that selects the shutter, left Hartmann door,
 		right Hartmann door, or both doors.
 ------------------------------------------------------------------------------*/
-uint8_t open_PNEU(char mechanism)
+uint8_t open_PNEU(uint8_t cstack)
 {
-
 
 	const char dformat_OPE[] = "Open %s";
 	char outbuf[17];
 
-	switch (mechanism) {
+	switch (pcmd[cstack].cobject) {
 
 		case 'b':
 			set_PNEUVALVES(LEFTBM, LEFTOPEN);
@@ -156,7 +193,9 @@ uint8_t open_PNEU(char mechanism)
 			break;
 
 		default:
-			return(ERRORPROMPT);
+			printError(ERR_PNUMECH, "open_PNEU bad object");
+			strcpy(outbuf, "open what?");
+			break;
 
 	}
 
@@ -176,7 +215,7 @@ void read_PNEUSENSORS(char *shutter, char *left, char *right, char *air)
 
 	uint8_t sensors, state;
 // CHANGE TO pneuState????
-	sensors = read_MCP23008(PNEUSENSORS, GPIO);
+	sensors = read_MCP23008(PNEUSENSORS, GPIO);	// NEEDS ERRORCHECK
 
 	// Shutter
 	state = sensors >> 6;

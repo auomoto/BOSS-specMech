@@ -136,14 +136,21 @@ uint8_t start_TWI(uint8_t addr, uint8_t rw)
 	}
 
 	if ((TWI0.MSTATUS & TWI_BUSERR_bm)) {		// Bus error
-		return(TWIBUSERR);
+		if (notfirstpass) {
+			printError(ERR_TWI, "TWI bus");
+			return(ERROR);
+		}
 	} else if (TWI0.MSTATUS & TWI_ARBLOST_bm) {	// Arbitration lost
-		return(TWIARBLOST);
+		if (notfirstpass) {
+			printError(ERR_TWI, "TWI arbitration");
+			return(ERROR);
+		}
 	} else if (TWI0.MSTATUS & TWI_RXACK_bm) {	// No device responded
-		return(TWINODEVICE);
-	} else {									// OK
-		return(NOERROR);
+			return(ERROR);
 	}
+
+	return(NOERROR);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -175,14 +182,21 @@ uint8_t write_TWI(uint8_t data)
 
 	TWI0.MDATA = data;
 
+	start_TCB0(1);
 	while (!(TWI0.MSTATUS & TWI_WIF_bm)) {
 		asm("nop");
+		ticks++;
+		if (ticks > 50) {
+			stop_TCB0();
+			return(ERROR);
+			break;
+		}
 	}
-
+	stop_TCB0();
 	if (TWI0.MSTATUS & TWI_RXACK_bm) {		// If device did not ACK
-		return(TWINODEVICE);
+		return(ERROR);
 	} else {
-		return(0);
+		return(NOERROR);
 	}
 
 }

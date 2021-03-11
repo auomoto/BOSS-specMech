@@ -38,12 +38,16 @@ uint8_t report(uint8_t cstack)
 	char outbuf[BUFSIZE+10], version[11];
 	char currenttime[20], lastsettime[20], boottime[20];
 	char shutter, left, right, air;
-	const char format_ENV[] = "$S%dENV,%s,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%1.0f%%,%3.1fC,%s";
-	const char format_MTR[] = "$S%dMTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
-	const char format1_MTR[] = "$S%dMTR,%s,%c,%3.1f,V,%3.1f,C,%s";
+//	const char format_ENV[] = "$S%dENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
+	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
+//	const char format_MTR[] = "$S%dMTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
+	const char format_MTR[] = "MTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
+//	const char format1_MTR[] = "$S%dMTR,%s,%c,%3.1f,V,%3.1f,C,%s";
+	const char format_MTV[] = "MTV,%s,%c,%3.1f,V,%3.1f,C,%s";
 	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
-	const char format_PNU[] = "$S%dPNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
+//	const char format_PNU[] = "$S%dPNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
+	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
 	const char dformat_PN1[] = "left:%c   right:%c";
 	const char dformat_PN2[] = "shutter:%c  air:%c";
 	const char format_TIM[] = "$S%dTIM,%s,%s,set,%s,boot,%s";
@@ -74,10 +78,13 @@ uint8_t report(uint8_t cstack)
 			if (retval == ERROR) {
 				t0 = -666.0;
 			}
-			sprintf(outbuf, format1_MTR, get_SPECID, currenttime, (char) (controller-63),
+//			sprintf(outbuf, format1_MTR, get_SPECID, currenttime, (char) (controller-63),
+//				voltage, t0, pcmd[cstack].cid);
+//			checksum_NMEA(outbuf);
+//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			sprintf(outbuf, format_MTV, currenttime, (char) (controller-63),
 				voltage, t0, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			printLine(outbuf);
 			break;
 
 		case 'a':
@@ -100,10 +107,13 @@ uint8_t report(uint8_t cstack)
 				icurrents = 0x7FFFFFFF;
 			}
 			current = (uint16_t) ((icurrents >> 16) * 10);	// convert to mA
-			sprintf(outbuf, format_MTR, get_SPECID, currenttime, pcmd[cstack].cobject,
+//			sprintf(outbuf, format_MTR, get_SPECID, currenttime, pcmd[cstack].cobject,
+//				micronValue, micronSpeed, current, pcmd[cstack].cid);
+//			checksum_NMEA(outbuf);
+//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			sprintf(outbuf, format_MTR, currenttime, pcmd[cstack].cobject,
 				micronValue, micronSpeed, current, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			printLine(outbuf);
 			break;
 
 		case 'e':					// Environment (temperature & humidity)
@@ -115,9 +125,11 @@ uint8_t report(uint8_t cstack)
 			h2 = get_humidity(2);
 			t3 = get_temperature(3);
 			get_time(currenttime);
-			sprintf(outbuf, format_ENV, get_SPECID, currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+//			sprintf(outbuf, format_ENV, get_SPECID, currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
+//			checksum_NMEA(outbuf);
+//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			sprintf(outbuf, format_ENV, currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
+			printLine(outbuf);
 			writestr_OLED(1, "Temp & Humidity", 1);
 			sprintf(outbuf, "%1.1fC %1.0fF %1.0f%%", t0, ((t0*1.8)+32), h0);
 			writestr_OLED(1, outbuf, 2);
@@ -137,9 +149,12 @@ uint8_t report(uint8_t cstack)
 		case 'p':
 			get_time(currenttime);
 			read_PNEUSENSORS(&shutter, &left, &right, &air);
-			sprintf(outbuf, format_PNU, get_SPECID, currenttime, shutter, left, right, air, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+//			sprintf(outbuf, format_PNU, get_SPECID, currenttime, shutter, left, right, air, pcmd[cstack].cid);
+//			checksum_NMEA(outbuf);
+//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			sprintf(outbuf, format_PNU, currenttime, shutter, left, right, air, pcmd[cstack].cid);
+			printLine(outbuf);
+
 			sprintf(outbuf, dformat_PN1, left, right);
 			writestr_OLED(1, outbuf, 1);
 			sprintf(outbuf, dformat_PN2, shutter, air);

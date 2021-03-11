@@ -22,77 +22,42 @@ void commands(void)
 {
 
 	char cmdline[BUFSIZE];			// BUFSIZE is the size of the ring buffer
-	char verb, object;				// Get rid of these and use cstack instead
 	uint8_t prompt_flag = GREATERPROMPT;
-	static uint8_t cstack = 0;		// Index for pcmd
+	static uint8_t cstack = 0;		// pcmd index
 
-/*
-	// Copy the command string to cmdline
-	for (i = 0; recv0_buf.length; i++) {
-		cmdline[i] = recv0_buf.data[recv0_buf.tail];
-		recv0_buf.length--;
-		recv0_buf.tail = (recv0_buf.tail + 1) % BUFSIZE;
-		if (cmdline[i] == '\0') {
-			break;
-		}
-	}
-	cmdline[i] = '\0';		// Overflow protection
-*/
 	get_cmdline(cmdline);
 
-	if (!rebootACKd(cmdline)) {
-//		send_prompt(EXCLAIMPROMPT);
-//		reboot();
+	if (!rebootACKd(cmdline)) {		// Reboot acknowledge failed
 		return;
 	}
-/*
-	if (rebootnack) {
-		if ((cmdline[0] == '!') && (cmdline[1] == '\0')) {
-			init_RTC(511);		// 1-sec RTC clock ticks
-			timeoutOLED = 5;	// 5-sec display timeout (min)
-			send_prompt(GREATERPROMPT);
-			rebootnack = 0;
-			return;
-		} else if ((cmdline[0] == '!') && (cmdline[1] != '\0')) {
-			send_prompt(EXCLAIMPROMPT);
-			reboot();
-			return;
-		} else {
-			send_prompt(EXCLAIMPROMPT);
-			return;
-		}
-	}
-*/
-	// Echo the command back to the user
-		echo_cmd(cmdline);
 
-	if (strlen(cmdline) == 0) {		// Catch a terminal cr (not an error)
+	echo_cmd(cmdline);
+
+	if (cmdline[0] == '\0') {		// <CR> alone is not an error
 		send_prompt(GREATERPROMPT);
 		return;
 	}
 
 	parse_cmd(cmdline, cstack);
-	verb = pcmd[cstack].cverb;
-	object = pcmd[cstack].cobject;
 
-	switch (verb) {
+	switch (pcmd[cstack].cverb) {
 		case 'c':				// close
-			prompt_flag = close_PNEU(object);
+			prompt_flag = close_PNEU(cstack);
 			break;
 
 		case 'o':				// open
-			prompt_flag = open_PNEU(object);
+			prompt_flag = open_PNEU(cstack);
 			break;
 
 		case 'm':				// move
 			move_MOTOR(cstack);
 			break;
 
-		case 'r':				// Report
+		case 'r':				// report
 			prompt_flag = report(cstack);
 			break;
 
-		case 's':				// Set
+		case 's':				// set
 			prompt_flag = set(cstack);
 			break;
 
@@ -102,17 +67,20 @@ void commands(void)
 
 		case 'R':				// Reboot
 			send_prompt(GREATERPROMPT);
-			_delay_ms(100);		// Avoid finishing the command loop before reboot
+			_delay_ms(100);		// Avoids finishing the command loop before reboot
 			reboot();
 			return;
 
 		default:
-			printError(ERR_BADCOMMAND, "Not a command");
+			if (notfirstpass) {
+				printError(ERR_BADCOMMAND, "Not a command");
+			}
 			prompt_flag = GREATERPROMPT;
 			break;			
 	}
 
 	cstack = (cstack + 1) % CSTACKSIZE;
+	notfirstpass = YES;
 	send_prompt(prompt_flag);
 
 }
@@ -124,14 +92,17 @@ void echo_cmd(char *cmdline)
 void echo_cmd(char *cmdline)
 {
 
-	char format_CMD[] = "$S%dCMD,%s,%s";
-	char currenttime[20], strbuf[BUFSIZE+10];
+//	char format_CMD[] = "$S%dCMD,%s,%s";
+	char format_CMD[] = "CMD,%s,%s";
+	char currenttime[20], strbuf[BUFSIZE];
 
 		// Format and echo the command line
 	get_time(currenttime);
-	sprintf(strbuf, format_CMD, get_SPECID, currenttime, cmdline);
-	checksum_NMEA(strbuf);
-	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+//	sprintf(strbuf, format_CMD, get_SPECID, currenttime, cmdline);
+//	checksum_NMEA(strbuf);
+//	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
+	sprintf(strbuf, format_CMD, currenttime, cmdline);
+	printLine(strbuf);
 
 }
 
@@ -264,17 +235,14 @@ uint8_t rebootACKd(char *cmdline)
 uint8_t rebootACKd(char *cmdline)
 {
 
-	static uint8_t rebootnack = 1;
-	
-	if (rebootnack) {
+
+	if (!rebootackd) {
 		if ((cmdline[0] == '!') && (cmdline[1] == '\0')) {
 			init_RTC(511);		// 1-sec RTC clock ticks
 			timeoutOLED = 5;	// 5-sec display timeout (minimum)
-			send_prompt(GREATERPROMPT);
-			rebootnack = 0;
+			rebootackd = YES;
 			return(YES);
 		} else if ((cmdline[0] == '!') && (cmdline[1] != '\0')) {
-//			send_prompt(EXCLAIMPROMPT);
 			reboot();
 			return(NO);
 		} else {
@@ -328,5 +296,17 @@ void send_prompt(uint8_t prompt_flag)
 			break;
 
 	}
+
+}
+
+
+void printLine(char *str)
+{
+
+	char strbuf[BUFSIZE], prFormat[] = "$%d%s";
+
+	sprintf(strbuf, prFormat, get_SPECID, str);
+	checksum_NMEA(strbuf);
+	send_USART(0, (uint8_t*) strbuf, strlen(strbuf));
 
 }

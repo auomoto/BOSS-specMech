@@ -23,6 +23,7 @@ ionpump.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
+#include "errors.h"
 #include "ads1115.h"
 #include "ionpump.h"
 
@@ -57,8 +58,9 @@ float read_ionpump(uint8_t pumpid) {
 		return(-666.0);
 	}
 
-	voltage = read_ADS1115(ADC_IP, PGA4096, pins, DR128);
-
+	if (read_ADS1115(ADC_IP, PGA4096, pins, DR128, &voltage) == ERROR) {
+		return(-666.0);
+	}
 	if (voltage < 0.4) {						// Useful range for the Modion pump
 		return(-666.0);							// after ISO224 op-amp is 0.5 to 2.0 V
 	} else if (voltage > 2.0) {
@@ -66,8 +68,6 @@ float read_ionpump(uint8_t pumpid) {
 	}
 
 	vacuum = ISO224SLOPE * voltage + ISO224INTER;
-
 	return(vacuum);
-//return(voltage);
 
 }

@@ -54,6 +54,8 @@ void initialize1(void)
 
 	char versionstr[11];
 
+	notfirstpass = NO;
+	rebootackd = NO;
 	init_MOTORS();
 	init_MMA8451();
 	init_PNEU();

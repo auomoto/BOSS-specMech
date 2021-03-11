@@ -39,6 +39,6 @@
 #define DR475	0b11000000
 #define DR860	0b11100000
 
-float read_ADS1115(uint8_t, uint8_t, uint8_t, uint8_t);
+uint8_t read_ADS1115(uint8_t, uint8_t, uint8_t, uint8_t, float*);
 
 #endif
