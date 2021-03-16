@@ -22,15 +22,14 @@
 uint8_t report(char *ptr)
 	Report status, including reading sensors
 
-	Input
+	Input:
 		*ptr - Command line pointer. Incremented to find object to report
 
-	Output
+	Output:
 		Prints NMEA formatted output to the serial port.
 
-	Returns
-		0 - GREATERPROMPT on success
-		1 - ERRORPROMPT on error (invalid command noun)
+	Returns:
+		ERROR or NOERROR
 ------------------------------------------------------------------------------*/
 uint8_t report(uint8_t cstack)
 {
@@ -38,24 +37,21 @@ uint8_t report(uint8_t cstack)
 	char outbuf[BUFSIZE+10], version[11];
 	char currenttime[20], lastsettime[20], boottime[20];
 	char shutter, left, right, air;
-//	const char format_ENV[] = "$S%dENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
-//	const char format_MTR[] = "$S%dMTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
 	const char format_MTR[] = "MTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
-//	const char format1_MTR[] = "$S%dMTR,%s,%c,%3.1f,V,%3.1f,C,%s";
 	const char format_MTV[] = "MTV,%s,%c,%3.1f,V,%3.1f,C,%s";
-	const char format_ORI[] = "$S%dORI,%s,%3.1f,%3.1f,%3.1f,%s";
+	const char format_ORI[] = "ORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
-//	const char format_PNU[] = "$S%dPNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
 	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
 	const char dformat_PN1[] = "left:%c   right:%c";
 	const char dformat_PN2[] = "shutter:%c  air:%c";
-	const char format_TIM[] = "$S%dTIM,%s,%s,set,%s,boot,%s";
-	const char format_VAC[] = "$S%dVAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
+	const char format_TIM[] = "TIM,%s,%s,set,%s,boot,%s";
+	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char dformat_VAC[] = "%2.2f  %2.2f";
-	const char format_VER[] = "$S%dVER,%s,%s,%s";
+	const char format_VER[] = "VER,%s,%s,%s";
 	uint8_t retval, controller;
-	int32_t encoderValue, encoderSpeed, micronValue, micronSpeed;
+	int32_t micronValue, micronSpeed;
+	int32_t encoderValue, encoderSpeed;
 	uint32_t icurrents;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float voltage;							// voltage
@@ -78,10 +74,6 @@ uint8_t report(uint8_t cstack)
 			if (retval == ERROR) {
 				t0 = -666.0;
 			}
-//			sprintf(outbuf, format1_MTR, get_SPECID, currenttime, (char) (controller-63),
-//				voltage, t0, pcmd[cstack].cid);
-//			checksum_NMEA(outbuf);
-//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			sprintf(outbuf, format_MTV, currenttime, (char) (controller-63),
 				voltage, t0, pcmd[cstack].cid);
 			printLine(outbuf);
@@ -101,16 +93,12 @@ uint8_t report(uint8_t cstack)
 			if (retval == ERROR) {
 				encoderSpeed = 0x7FFFFFFF;
 			}
-			micronSpeed = encoderSpeed/ROBOCOUNTSPERMICRON;			
+			micronSpeed = encoderSpeed/ROBOCOUNTSPERMICRON;
 			retval = get_MOTORInt32(controller, ROBOREADCURRENT, &icurrents);
 			if (retval == ERROR) {
 				icurrents = 0x7FFFFFFF;
 			}
 			current = (uint16_t) ((icurrents >> 16) * 10);	// convert to mA
-//			sprintf(outbuf, format_MTR, get_SPECID, currenttime, pcmd[cstack].cobject,
-//				micronValue, micronSpeed, current, pcmd[cstack].cid);
-//			checksum_NMEA(outbuf);
-//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			sprintf(outbuf, format_MTR, currenttime, pcmd[cstack].cobject,
 				micronValue, micronSpeed, current, pcmd[cstack].cid);
 			printLine(outbuf);
@@ -125,9 +113,6 @@ uint8_t report(uint8_t cstack)
 			h2 = get_humidity(2);
 			t3 = get_temperature(3);
 			get_time(currenttime);
-//			sprintf(outbuf, format_ENV, get_SPECID, currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
-//			checksum_NMEA(outbuf);
-//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
 			sprintf(outbuf, format_ENV, currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);
 			printLine(outbuf);
 			writestr_OLED(1, "Temp & Humidity", 1);
@@ -138,9 +123,8 @@ uint8_t report(uint8_t cstack)
 		case 'o':					// Orientation
 			get_orientation(&x, &y, &z);
 			get_time(currenttime);
-			sprintf(outbuf, format_ORI, get_SPECID, currenttime, x, y, z, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			sprintf(outbuf, format_ORI, currenttime, x, y, z, pcmd[cstack].cid);
+			printLine(outbuf);
 			writestr_OLED(1, "Orientation", 1);
 			sprintf(outbuf, dformat_ORI, x, y, z);
 			writestr_OLED(1, outbuf, 2);
@@ -148,10 +132,7 @@ uint8_t report(uint8_t cstack)
 
 		case 'p':
 			get_time(currenttime);
-			read_PNEUSENSORS(&shutter, &left, &right, &air);
-//			sprintf(outbuf, format_PNU, get_SPECID, currenttime, shutter, left, right, air, pcmd[cstack].cid);
-//			checksum_NMEA(outbuf);
-//			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			read_PNEUSensors(&shutter, &left, &right, &air);
 			sprintf(outbuf, format_PNU, currenttime, shutter, left, right, air, pcmd[cstack].cid);
 			printLine(outbuf);
 
@@ -163,12 +144,12 @@ uint8_t report(uint8_t cstack)
 
 		case 't':					// Report current time on specMech clock
 			get_time(currenttime);
-			read_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) lastsettime, 20);
+			get_SETTIME(lastsettime);
+//			read_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) lastsettime, 20);
 			get_BOOTTIME(boottime);
-			sprintf(outbuf, format_TIM, get_SPECID, currenttime, lastsettime,
+			sprintf(outbuf, format_TIM, currenttime, lastsettime,
 				boottime, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			printLine(outbuf);
 			writestr_OLED(1, "Time", 1);
 			writestr_OLED(1, &currenttime[11], 2);			
 			break;
@@ -177,9 +158,9 @@ uint8_t report(uint8_t cstack)
 			redvac = read_ionpump(REDPUMP);
 			bluvac = read_ionpump(BLUEPUMP);
 			get_time(currenttime);
-			sprintf(outbuf, format_VAC, get_SPECID, currenttime, redvac, bluvac, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			sprintf(outbuf, format_VAC, currenttime, redvac, bluvac, pcmd[cstack].cid);
+			printLine(outbuf);
+
 			writestr_OLED(1, "RedVac  BlueVac", 1);
 			sprintf(outbuf, dformat_VAC, redvac, bluvac);
 			writestr_OLED(1, outbuf, 2);
@@ -188,9 +169,8 @@ uint8_t report(uint8_t cstack)
 		case 'V':
 			get_VERSION(version);	// Send the specMech version
 			get_time(currenttime);
-			sprintf(outbuf, format_VER, get_SPECID, currenttime, version, pcmd[cstack].cid);
-			checksum_NMEA(outbuf);
-			send_USART(0, (uint8_t*) outbuf, strlen(outbuf));
+			sprintf(outbuf, format_VER, currenttime, version, pcmd[cstack].cid);
+			printLine(outbuf);
 			writestr_OLED(1, "specMech Version", 1);
 			get_VERSION(outbuf);
 			writestr_OLED(1, outbuf, 2);
@@ -198,9 +178,10 @@ uint8_t report(uint8_t cstack)
 
 		default:
 			printError(ERR_BADOBJECT, "report: unknown object");
+			return(ERROR);
 			break;
 	}
 
-	return(GREATERPROMPT);
+	return(NOERROR);
 
 }

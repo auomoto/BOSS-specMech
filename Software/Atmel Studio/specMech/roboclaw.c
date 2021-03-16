@@ -245,6 +245,15 @@ uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
 
 }
 
+uint8_t get_MOTORSpeed(uint8_t controller, uint32_t *speed)
+{
+	if (get_MOTORInt32(controller, ROBOREADENCODERSPEED, speed) == ERROR) {
+		return(ERROR);
+	}
+	return(NOERROR);
+}
+
+
 /*------------------------------------------------------------------------------
 uint8_t init_MOTORS(void)
 	Reads the last-saved encoder value from FRAM and loads it into the three
