@@ -50,8 +50,7 @@ uint8_t report(uint8_t cstack)
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
 	uint8_t retval, controller;
-	int32_t micronValue, micronSpeed;
-	int32_t encoderValue, encoderSpeed;
+	int32_t encoderValue, encoderSpeed, micronValue, micronSpeed;
 	uint32_t icurrents;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float voltage;							// voltage
@@ -145,7 +144,7 @@ uint8_t report(uint8_t cstack)
 		case 't':					// Report current time on specMech clock
 			get_time(currenttime);
 			get_SETTIME(lastsettime);
-//			read_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) lastsettime, 20);
+//			read_FRAM(FRAMTWIADDR, SETTIMEADDR, (uint8_t*) lastsettime, 20);
 			get_BOOTTIME(boottime);
 			sprintf(outbuf, format_TIM, currenttime, lastsettime,
 				boottime, pcmd[cstack].cid);

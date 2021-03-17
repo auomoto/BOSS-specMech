@@ -14,7 +14,7 @@ uint8_t get_SETTIME(char *lastsettime)
 {
 
 	const char timeset[] = "Time Set?";
-	if (read_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) lastsettime, ISOTIMELEN) == ERROR) {;
+	if (read_FRAM(FRAMTWIADDR, SETTIMEADDR, (uint8_t*) lastsettime, ISOTIMELEN) == ERROR) {;
 		strcpy(lastsettime, timeset);
 		return(ERROR);
 	}
@@ -89,7 +89,7 @@ uint8_t write_FRAM(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nybtes)
 		ERROR if start_TWI fails (NACK)
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-uint8_t write_FRAMx(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nbytes)
+uint8_t write_FRAM(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nbytes)
 {
 
 	uint8_t i, memhigh, memlow;
@@ -120,7 +120,7 @@ uint8_t write_FRAMx(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nbytes
 
 }
 
-uint8_t write_FRAM(uint8_t addr, uint8_t item, uint8_t *val)
+uint8_t write_FRAMx(uint8_t addr, uint8_t item, uint8_t *val)
 {
 
 	uint8_t i, memhigh, memlow, nbytes;

@@ -7,8 +7,11 @@ roboclaw.c
 #include "usart.h"
 #include "timers.h"
 #include "commands.h"
+#include "fram.h"
 #include "errors.h"
 #include "roboclaw.h"
+
+uint8_t timerSAVEENCODER;
 
 /*------------------------------------------------------------------------------
 uint16_t crc16(uint8_t *packet, uint16_t nbytes)
@@ -272,6 +275,8 @@ uint8_t init_MOTORS(void)
 	uint8_t controller, error = 0;
 	uint32_t encoderValue;
 
+	timerSAVEENCODER = 0;
+
 	for (controller = 128; controller < 131; controller++) {
 		// get saved encoder value from FRAM
 		encoderValue = 22 * ROBOCOUNTSPERMICRON;	// Proxy for now
@@ -415,6 +420,63 @@ uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
 	}
 
 	return(NOERROR);
+}
+
+/*------------------------------------------------------------------------------
+uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
+	Saves the encoder value in FRAM.
+
+	Inputs:
+		controller: The controller address (128, 129, or 130)
+
+	Outputs:
+		None
+
+	Returns:
+		ERROR on get_MOTOREncoder or write_FRAM failure
+		NOERROR otherwise
+------------------------------------------------------------------------------*/
+uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
+{
+
+	uint8_t tbuf[4];
+	uint16_t memaddr;
+	int32_t oldencoderValue, encoderValue;
+
+	switch (controller) {
+		case MOTORAADDR:
+		memaddr = ENCAFRAMADDR;
+		break;
+		case MOTORBADDR:
+		memaddr = ENCBFRAMADDR;
+		break;
+		case MOTORCADDR:
+		memaddr = ENCCFRAMADDR;
+		break;
+		default:
+		return(ERROR);
+	}
+
+	read_FRAM(FRAMTWIADDR, memaddr, tbuf, 4);
+	oldencoderValue =  (uint32_t) tbuf[0] << 24;
+	oldencoderValue |= (uint32_t) tbuf[1] << 16;
+	oldencoderValue |= (uint32_t) tbuf[2] << 8;
+	oldencoderValue |= (uint32_t) tbuf[3];
+
+	if (get_MOTOREncoder(controller, ROBOREADENCODERCOUNT, &encoderValue) == ERROR) {
+		return(ERROR);
+	}
+
+	if (oldencoderValue == encoderValue) {
+		return(NOERROR);
+	}
+
+	tbuf[0] = (encoderValue >> 24) & 0xFF;
+	tbuf[1] = (encoderValue >> 16) & 0xFF;
+	tbuf[2] = (encoderValue >> 8) & 0xFF;
+	tbuf[3] = encoderValue & 0xFF;
+	return(write_FRAM(FRAMTWIADDR, memaddr, tbuf, 4));
+
 }
 
 /*------------------------------------------------------------------------------

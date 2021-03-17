@@ -30,8 +30,8 @@ uint8_t set(uint8_t cstack)
 				return(ERROR);
 			}
 			put_time(pcmd[cstack].cvalue);
-//			write_FRAM(FRAMADDR, SETTIMEADDR, (uint8_t*) pcmd[cstack].cvalue, 20);
-			write_FRAM(FRAMADDR, SETTIMEFRAM, (uint8_t*) pcmd[cstack].cvalue);
+			write_FRAM(FRAMTWIADDR, SETTIMEADDR, (uint8_t*) pcmd[cstack].cvalue, 20);
+//			write_FRAM(FRAMTWIADDR, SETTIMEFRAM, (uint8_t*) pcmd[cstack].cvalue);
 			break;
 
 		default:

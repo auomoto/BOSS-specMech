@@ -1,6 +1,7 @@
 #include "globals.h"
 #include "led.h"
 #include "oled.h"
+#include "roboclaw.h"
 
 /*----------------------------------------------------------------------
 void init_RTC(uint16_t ticksRTC)
@@ -89,5 +90,7 @@ ISR(RTC_CNT_vect)
 		}
 	}
 	toggle_LED;						// Defined in led.c
+
+	timerSAVEENCODER++;
 
 }

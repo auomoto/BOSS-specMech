@@ -22,6 +22,8 @@
 #define ROBOFAST				64
 #define ROBOSLOW				16
 
+extern uint8_t timerSAVEENCODER;
+
 uint16_t crc16(uint8_t*, uint16_t);
 uint8_t get_MOTOREncoder(uint8_t, uint8_t, int32_t*);
 uint8_t get_MOTORFloat(uint8_t, uint8_t, float*);
@@ -30,6 +32,7 @@ uint8_t get_MOTORSpeed(uint8_t, uint32_t*);
 uint8_t init_MOTORS(void);
 uint8_t move_MOTOR(uint8_t);
 uint8_t move_MOTORAbsolute(uint8_t, int32_t);
+uint8_t save2FRAM_MOTOREncoder(uint8_t);
 uint8_t set_MOTOREncoder(uint8_t, uint32_t);
 
 #endif
