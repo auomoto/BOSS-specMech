@@ -25,6 +25,7 @@
 extern uint8_t timerSAVEENCODER;
 
 uint16_t crc16(uint8_t*, uint16_t);
+uint8_t getFRAM_MOTOREncoder(uint8_t, int32_t*);
 uint8_t get_MOTOREncoder(uint8_t, uint8_t, int32_t*);
 uint8_t get_MOTORFloat(uint8_t, uint8_t, float*);
 uint8_t get_MOTORInt32(uint8_t, uint8_t, uint32_t*);

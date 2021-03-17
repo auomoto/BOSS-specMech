@@ -47,6 +47,57 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 }
 
 /*------------------------------------------------------------------------------
+uint8_t getFRAM_MOTOREncoder(uint8_t controller, int32_t *encoderValue)
+	Retrieves the encoder value stored in FRAM
+
+	Inputs:
+		controller: The controller in question (128, 129, or 130)
+
+	Outputs:
+		encoderValue: The stored encoder value
+
+	Returns:
+		ERROR on FRAM read error
+		NOERROR otherwise
+------------------------------------------------------------------------------*/
+uint8_t getFRAM_MOTOREncoder(uint8_t controller, int32_t *encoderValue)
+{
+
+	uint8_t tbuf[4];
+	uint16_t memaddr;
+	int32_t tempVal;
+
+	switch (controller) {
+		case MOTORAADDR:
+			memaddr = ENCAFRAMADDR;
+			break;
+
+		case MOTORBADDR:
+			memaddr = ENCBFRAMADDR;
+			break;
+
+		case MOTORCADDR:
+			memaddr = ENCCFRAMADDR;
+			break;
+
+		default:
+			return(ERROR);
+	}
+
+	if (read_FRAM(FRAMTWIADDR, memaddr, tbuf, 4) == ERROR) {
+		return(ERROR);
+	}
+	tempVal =  (uint32_t) tbuf[0] << 24;
+	tempVal |= (uint32_t) tbuf[1] << 16;
+	tempVal |= (uint32_t) tbuf[2] << 8;
+	tempVal |= (uint32_t) tbuf[3];
+	*encoderValue = tempVal;
+
+	return(NOERROR);
+
+}
+
+/*------------------------------------------------------------------------------
 uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
 	Gets the 32-bit encoder value and speed
 
@@ -445,19 +496,24 @@ uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
 
 	switch (controller) {
 		case MOTORAADDR:
-		memaddr = ENCAFRAMADDR;
-		break;
+			memaddr = ENCAFRAMADDR;
+			break;
+
 		case MOTORBADDR:
-		memaddr = ENCBFRAMADDR;
-		break;
+			memaddr = ENCBFRAMADDR;
+			break;
+
 		case MOTORCADDR:
-		memaddr = ENCCFRAMADDR;
-		break;
+			memaddr = ENCCFRAMADDR;
+			break;
+
 		default:
-		return(ERROR);
+			return(ERROR);
 	}
 
-	read_FRAM(FRAMTWIADDR, memaddr, tbuf, 4);
+	if (read_FRAM(FRAMTWIADDR, memaddr, tbuf, 4) == ERROR) {
+		return(ERROR);
+	}
 	oldencoderValue =  (uint32_t) tbuf[0] << 24;
 	oldencoderValue |= (uint32_t) tbuf[1] << 16;
 	oldencoderValue |= (uint32_t) tbuf[2] << 8;

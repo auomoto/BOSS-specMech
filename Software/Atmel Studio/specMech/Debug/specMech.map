@@ -187,10 +187,12 @@ Discarded input sections
  .text          0x00000000        0x0 roboclaw.o
  .data          0x00000000        0x0 roboclaw.o
  .bss           0x00000000        0x0 roboclaw.o
+ .text.getFRAM_MOTOREncoder
+                0x00000000       0xa4 roboclaw.o
  .text.get_MOTORSpeed
                 0x00000000       0x10 roboclaw.o
  .text.save2FRAM_MOTOREncoder
-                0x00000000       0xf0 roboclaw.o
+                0x00000000       0xf8 roboclaw.o
  .text          0x00000000        0x0 rtc.o
  .data          0x00000000        0x0 rtc.o
  .bss           0x00000000        0x0 rtc.o
@@ -1236,7 +1238,7 @@ END GROUP
                 0x00802800                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.firstTime.3705
+ .data.firstTime.3720
                 0x00802800        0x3 roboclaw.o
  *(.gnu.linkonce.d*)
                 0x00802804                . = ALIGN (0x2)
@@ -1248,7 +1250,7 @@ END GROUP
                 0x00802804                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.cstack.3713
+ .bss.cstack.3716
                 0x00802804        0x1 commands.o
  *(COMMON)
  COMMON         0x00802805        0x1 commands.o
@@ -1380,7 +1382,7 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x670
+.debug_aranges  0x00000000      0x678
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 ad590.o
@@ -1425,42 +1427,42 @@ END GROUP
  .debug_aranges
                 0x00000388       0x20 report.o
  .debug_aranges
-                0x000003a8       0x68 roboclaw.o
+                0x000003a8       0x70 roboclaw.o
  .debug_aranges
-                0x00000410       0x28 rtc.o
+                0x00000418       0x28 rtc.o
  .debug_aranges
-                0x00000438       0x20 set.o
+                0x00000440       0x20 set.o
  .debug_aranges
-                0x00000458       0x20 specID.o
+                0x00000460       0x20 specID.o
  .debug_aranges
-                0x00000478       0x20 temperature.o
+                0x00000480       0x20 temperature.o
  .debug_aranges
-                0x00000498       0x20 testroutine.o
+                0x000004a0       0x20 testroutine.o
  .debug_aranges
-                0x000004b8       0x30 timers.o
+                0x000004c0       0x30 timers.o
  .debug_aranges
-                0x000004e8       0x48 twi.o
+                0x000004f0       0x48 twi.o
  .debug_aranges
-                0x00000530       0x58 usart.o
+                0x00000538       0x58 usart.o
  .debug_aranges
-                0x00000588       0x28 wdt.o
+                0x00000590       0x28 wdt.o
  .debug_aranges
-                0x000005b0       0x20 xport.o
+                0x000005b8       0x20 xport.o
  .debug_aranges
-                0x000005d0       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+                0x000005d8       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
  .debug_aranges
-                0x000005f0       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+                0x000005f8       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
  .debug_aranges
-                0x00000610       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+                0x00000618       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
  .debug_aranges
-                0x00000630       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+                0x00000638       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
  .debug_aranges
-                0x00000650       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+                0x00000658       0x20 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0xa52a
+.debug_info     0x00000000     0xa5b7
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x248a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
  .debug_info    0x0000248a      0x21b ad590.o
@@ -1484,24 +1486,24 @@ END GROUP
  .debug_info    0x00005fb6      0x868 pneu.o
  .debug_info    0x0000681e      0x255 ports.o
  .debug_info    0x00006a73      0xbb2 report.o
- .debug_info    0x00007625      0xbed roboclaw.o
- .debug_info    0x00008212      0x6c3 rtc.o
- .debug_info    0x000088d5      0x1fb set.o
- .debug_info    0x00008ad0      0x21f specID.o
- .debug_info    0x00008cef      0x106 temperature.o
- .debug_info    0x00008df5      0x1d3 testroutine.o
- .debug_info    0x00008fc8      0x26e timers.o
- .debug_info    0x00009236      0x3f3 twi.o
- .debug_info    0x00009629      0x61e usart.o
- .debug_info    0x00009c47      0x324 wdt.o
- .debug_info    0x00009f6b      0x2a0 xport.o
- .debug_info    0x0000a20b       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
- .debug_info    0x0000a2ab       0xa1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
- .debug_info    0x0000a34c       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
- .debug_info    0x0000a3ec       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
- .debug_info    0x0000a48b       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+ .debug_info    0x00007625      0xc7a roboclaw.o
+ .debug_info    0x0000829f      0x6c3 rtc.o
+ .debug_info    0x00008962      0x1fb set.o
+ .debug_info    0x00008b5d      0x21f specID.o
+ .debug_info    0x00008d7c      0x106 temperature.o
+ .debug_info    0x00008e82      0x1d3 testroutine.o
+ .debug_info    0x00009055      0x26e timers.o
+ .debug_info    0x000092c3      0x3f3 twi.o
+ .debug_info    0x000096b6      0x61e usart.o
+ .debug_info    0x00009cd4      0x324 wdt.o
+ .debug_info    0x00009ff8      0x2a0 xport.o
+ .debug_info    0x0000a298       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_info    0x0000a338       0xa1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_info    0x0000a3d9       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_info    0x0000a479       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_info    0x0000a518       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
-.debug_abbrev   0x00000000     0x47f2
+.debug_abbrev   0x00000000     0x480e
  *(.debug_abbrev)
  .debug_abbrev  0x00000000     0x2296 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
  .debug_abbrev  0x00002296      0x129 ad590.o
@@ -1525,24 +1527,24 @@ END GROUP
  .debug_abbrev  0x000035b4      0x247 pneu.o
  .debug_abbrev  0x000037fb       0xbe ports.o
  .debug_abbrev  0x000038b9      0x151 report.o
- .debug_abbrev  0x00003a0a      0x22a roboclaw.o
- .debug_abbrev  0x00003c34      0x176 rtc.o
- .debug_abbrev  0x00003daa       0xf7 set.o
- .debug_abbrev  0x00003ea1       0xa4 specID.o
- .debug_abbrev  0x00003f45       0xa9 temperature.o
- .debug_abbrev  0x00003fee      0x147 testroutine.o
- .debug_abbrev  0x00004135      0x12b timers.o
- .debug_abbrev  0x00004260      0x14a twi.o
- .debug_abbrev  0x000043aa      0x1e3 usart.o
- .debug_abbrev  0x0000458d       0xf7 wdt.o
- .debug_abbrev  0x00004684      0x10a xport.o
- .debug_abbrev  0x0000478e       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
- .debug_abbrev  0x000047a2       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
- .debug_abbrev  0x000047b6       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
- .debug_abbrev  0x000047ca       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
- .debug_abbrev  0x000047de       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+ .debug_abbrev  0x00003a0a      0x246 roboclaw.o
+ .debug_abbrev  0x00003c50      0x176 rtc.o
+ .debug_abbrev  0x00003dc6       0xf7 set.o
+ .debug_abbrev  0x00003ebd       0xa4 specID.o
+ .debug_abbrev  0x00003f61       0xa9 temperature.o
+ .debug_abbrev  0x0000400a      0x147 testroutine.o
+ .debug_abbrev  0x00004151      0x12b timers.o
+ .debug_abbrev  0x0000427c      0x14a twi.o
+ .debug_abbrev  0x000043c6      0x1e3 usart.o
+ .debug_abbrev  0x000045a9       0xf7 wdt.o
+ .debug_abbrev  0x000046a0      0x10a xport.o
+ .debug_abbrev  0x000047aa       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_abbrev  0x000047be       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_abbrev  0x000047d2       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_abbrev  0x000047e6       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_abbrev  0x000047fa       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
-.debug_line     0x00000000     0x4621
+.debug_line     0x00000000     0x4685
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x187 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
  .debug_line    0x00000187      0x1a1 ad590.o
@@ -1566,24 +1568,24 @@ END GROUP
  .debug_line    0x00002152      0x3c1 pneu.o
  .debug_line    0x00002513      0x1f2 ports.o
  .debug_line    0x00002705      0x402 report.o
- .debug_line    0x00002b07      0x6bd roboclaw.o
- .debug_line    0x000031c4      0x1e9 rtc.o
- .debug_line    0x000033ad      0x10c set.o
- .debug_line    0x000034b9      0x109 specID.o
- .debug_line    0x000035c2       0xea temperature.o
- .debug_line    0x000036ac      0x158 testroutine.o
- .debug_line    0x00003804      0x157 timers.o
- .debug_line    0x0000395b      0x29e twi.o
- .debug_line    0x00003bf9      0x4a4 usart.o
- .debug_line    0x0000409d      0x148 wdt.o
- .debug_line    0x000041e5      0x180 xport.o
- .debug_line    0x00004365       0x5d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
- .debug_line    0x000043c2       0xa5 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
- .debug_line    0x00004467       0x80 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
- .debug_line    0x000044e7       0xc1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
- .debug_line    0x000045a8       0x79 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+ .debug_line    0x00002b07      0x721 roboclaw.o
+ .debug_line    0x00003228      0x1e9 rtc.o
+ .debug_line    0x00003411      0x10c set.o
+ .debug_line    0x0000351d      0x109 specID.o
+ .debug_line    0x00003626       0xea temperature.o
+ .debug_line    0x00003710      0x158 testroutine.o
+ .debug_line    0x00003868      0x157 timers.o
+ .debug_line    0x000039bf      0x29e twi.o
+ .debug_line    0x00003c5d      0x4a4 usart.o
+ .debug_line    0x00004101      0x148 wdt.o
+ .debug_line    0x00004249      0x180 xport.o
+ .debug_line    0x000043c9       0x5d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_line    0x00004426       0xa5 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_line    0x000044cb       0x80 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_line    0x0000454b       0xc1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_line    0x0000460c       0x79 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
-.debug_frame    0x00000000     0x1028
+.debug_frame    0x00000000     0x1054
  *(.debug_frame)
  .debug_frame   0x00000000       0x5c ad590.o
  .debug_frame   0x0000005c       0x60 ads1115.o
@@ -1606,19 +1608,19 @@ END GROUP
  .debug_frame   0x00000860      0x110 pneu.o
  .debug_frame   0x00000970       0x24 ports.o
  .debug_frame   0x00000994       0x88 report.o
- .debug_frame   0x00000a1c      0x1c8 roboclaw.o
- .debug_frame   0x00000be4       0x7c rtc.o
- .debug_frame   0x00000c60       0x30 set.o
- .debug_frame   0x00000c90       0x24 specID.o
- .debug_frame   0x00000cb4       0x34 temperature.o
- .debug_frame   0x00000ce8       0x40 testroutine.o
- .debug_frame   0x00000d28       0x58 timers.o
- .debug_frame   0x00000d80       0x74 twi.o
- .debug_frame   0x00000df4      0x194 usart.o
- .debug_frame   0x00000f88       0x7c wdt.o
- .debug_frame   0x00001004       0x24 xport.o
+ .debug_frame   0x00000a1c      0x1f4 roboclaw.o
+ .debug_frame   0x00000c10       0x7c rtc.o
+ .debug_frame   0x00000c8c       0x30 set.o
+ .debug_frame   0x00000cbc       0x24 specID.o
+ .debug_frame   0x00000ce0       0x34 temperature.o
+ .debug_frame   0x00000d14       0x40 testroutine.o
+ .debug_frame   0x00000d54       0x58 timers.o
+ .debug_frame   0x00000dac       0x74 twi.o
+ .debug_frame   0x00000e20      0x194 usart.o
+ .debug_frame   0x00000fb4       0x7c wdt.o
+ .debug_frame   0x00001030       0x24 xport.o
 
-.debug_str      0x00000000     0x2322
+.debug_str      0x00000000     0x233f
  *(.debug_str)
  .debug_str     0x00000000      0xf85 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
  .debug_str     0x00000f85      0x1da ad590.o
@@ -1663,30 +1665,30 @@ END GROUP
                                 0x2d2 (size before relaxing)
  .debug_str     0x000019a9       0xff report.o
                                 0x3dd (size before relaxing)
- .debug_str     0x00001aa8      0x13a roboclaw.o
-                                0x3d9 (size before relaxing)
- .debug_str     0x00001be2      0x337 rtc.o
+ .debug_str     0x00001aa8      0x157 roboclaw.o
+                                0x3f6 (size before relaxing)
+ .debug_str     0x00001bff      0x337 rtc.o
                                 0x5df (size before relaxing)
- .debug_str     0x00001f19        0xb set.o
+ .debug_str     0x00001f36        0xb set.o
                                 0x1cf (size before relaxing)
- .debug_str     0x00001f24        0xe specID.o
+ .debug_str     0x00001f41        0xe specID.o
                                 0x246 (size before relaxing)
- .debug_str     0x00001f32       0x13 temperature.o
+ .debug_str     0x00001f4f       0x13 temperature.o
                                 0x1c7 (size before relaxing)
- .debug_str     0x00001f45       0x13 testroutine.o
+ .debug_str     0x00001f62       0x13 testroutine.o
                                 0x214 (size before relaxing)
- .debug_str     0x00001f58       0x4c timers.o
+ .debug_str     0x00001f75       0x4c timers.o
                                 0x24d (size before relaxing)
- .debug_str     0x00001fa4      0x16d twi.o
+ .debug_str     0x00001fc1      0x16d twi.o
                                 0x381 (size before relaxing)
- .debug_str     0x00002111       0xdc usart.o
+ .debug_str     0x0000212e       0xdc usart.o
                                 0x3c6 (size before relaxing)
- .debug_str     0x000021ed      0x128 wdt.o
+ .debug_str     0x0000220a      0x128 wdt.o
                                 0x39f (size before relaxing)
- .debug_str     0x00002315        0xd xport.o
+ .debug_str     0x00002332        0xd xport.o
                                 0x28f (size before relaxing)
 
-.debug_loc      0x00000000     0x41bb
+.debug_loc      0x00000000     0x4308
  *(.debug_loc)
  .debug_loc     0x00000000      0x1a7 ad590.o
  .debug_loc     0x000001a7      0x319 ads1115.o
@@ -1705,16 +1707,16 @@ END GROUP
  .debug_loc     0x00002004      0x33a oled.o
  .debug_loc     0x0000233e      0x5be pneu.o
  .debug_loc     0x000028fc      0x43f report.o
- .debug_loc     0x00002d3b      0xa2c roboclaw.o
- .debug_loc     0x00003767      0x135 rtc.o
- .debug_loc     0x0000389c       0xac set.o
- .debug_loc     0x00003948       0x9b temperature.o
- .debug_loc     0x000039e3       0xa7 testroutine.o
- .debug_loc     0x00003a8a       0x71 timers.o
- .debug_loc     0x00003afb       0x89 twi.o
- .debug_loc     0x00003b84      0x526 usart.o
- .debug_loc     0x000040aa       0xcb wdt.o
- .debug_loc     0x00004175       0x46 xport.o
+ .debug_loc     0x00002d3b      0xb79 roboclaw.o
+ .debug_loc     0x000038b4      0x135 rtc.o
+ .debug_loc     0x000039e9       0xac set.o
+ .debug_loc     0x00003a95       0x9b temperature.o
+ .debug_loc     0x00003b30       0xa7 testroutine.o
+ .debug_loc     0x00003bd7       0x71 timers.o
+ .debug_loc     0x00003c48       0x89 twi.o
+ .debug_loc     0x00003cd1      0x526 usart.o
+ .debug_loc     0x000041f7       0xcb wdt.o
+ .debug_loc     0x000042c2       0x46 xport.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -1734,7 +1736,7 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x3d0
+.debug_ranges   0x00000000      0x3d8
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x10 ad590.o
  .debug_ranges  0x00000010       0x10 ads1115.o
@@ -1757,17 +1759,17 @@ END GROUP
  .debug_ranges  0x00000200       0x38 pneu.o
  .debug_ranges  0x00000238       0x10 ports.o
  .debug_ranges  0x00000248       0x10 report.o
- .debug_ranges  0x00000258       0x58 roboclaw.o
- .debug_ranges  0x000002b0       0x18 rtc.o
- .debug_ranges  0x000002c8       0x10 set.o
- .debug_ranges  0x000002d8       0x10 specID.o
- .debug_ranges  0x000002e8       0x10 temperature.o
- .debug_ranges  0x000002f8       0x10 testroutine.o
- .debug_ranges  0x00000308       0x20 timers.o
- .debug_ranges  0x00000328       0x38 twi.o
- .debug_ranges  0x00000360       0x48 usart.o
- .debug_ranges  0x000003a8       0x18 wdt.o
- .debug_ranges  0x000003c0       0x10 xport.o
+ .debug_ranges  0x00000258       0x60 roboclaw.o
+ .debug_ranges  0x000002b8       0x18 rtc.o
+ .debug_ranges  0x000002d0       0x10 set.o
+ .debug_ranges  0x000002e0       0x10 specID.o
+ .debug_ranges  0x000002f0       0x10 temperature.o
+ .debug_ranges  0x00000300       0x10 testroutine.o
+ .debug_ranges  0x00000310       0x20 timers.o
+ .debug_ranges  0x00000330       0x38 twi.o
+ .debug_ranges  0x00000368       0x48 usart.o
+ .debug_ranges  0x000003b0       0x18 wdt.o
+ .debug_ranges  0x000003c8       0x10 xport.o
 
 .debug_macro
  *(.debug_macro)
