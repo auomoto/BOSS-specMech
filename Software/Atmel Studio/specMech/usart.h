@@ -1,7 +1,7 @@
 #ifndef USARTH
 #define USARTH
 
-#define BUFSIZE 255
+#define BUFSIZE 254
 #define	USART_BAUD_RATE(BAUD_RATE)	((float)(F_CPU * 64 / (16 * (float)BAUD_RATE)) + 0.5)
 
 typedef struct {

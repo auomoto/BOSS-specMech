@@ -34,7 +34,7 @@ uint8_t report(char *ptr)
 uint8_t report(uint8_t cstack)
 {
 
-	char outbuf[BUFSIZE+10], version[11];
+	char outbuf[BUFSIZE], version[11];
 	char currenttime[20], lastsettime[20], boottime[20];
 	char shutter, left, right, air;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
