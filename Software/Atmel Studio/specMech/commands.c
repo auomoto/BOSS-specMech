@@ -24,7 +24,7 @@ void commands(void)
 void commands(void)
 {
 
-	char cmdline[BUFSIZE];			// BUFSIZE is the size of the ring buffer
+	char cmdline[BUFSIZE+1];		// BUFSIZE is the size of the ring buffer
 	static uint8_t cstack = 0;		// pcmd index
 
 	get_cmdline(cmdline);

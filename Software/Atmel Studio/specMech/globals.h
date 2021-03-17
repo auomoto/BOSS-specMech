@@ -2,11 +2,10 @@
 #define GLOBALSH
 
 #define F_CPU		3333333UL
-#define VERSION		"2021-03-14"
+#define VERSION		"2021-03-17"
 #define	YES			1
 #define	NO			0
 #define BADFLOAT	(-666.0)
-#define GREATERPROMPT	0	// Standard return prompt >
 
 #include <avr/io.h>
 #include <util/delay.h>

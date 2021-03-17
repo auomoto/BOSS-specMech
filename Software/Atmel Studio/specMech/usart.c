@@ -122,7 +122,7 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 			send1_buf.data[send1_buf.head] = (crc & 0xFF);
 			send1_buf.head = (send1_buf.head + 1) % BUFSIZE;
 			send1_buf.nbytes = nbytes + 2;
-			send1_buf.nxfrd = 0;
+//			send1_buf.nxfrd = 0;
 			USART1.CTRLA |= USART_DREIE_bm;		// Enable interrupts
 			break;
 
@@ -157,8 +157,9 @@ ISR(USART0_RXC_vect)
 
 	uint8_t c;
 
+	c = USART0.RXDATAL;
 	if (recv0_buf.length < BUFSIZE) {
-		c = USART0.RXDATAL;
+//		c = USART0.RXDATAL;
 		if ((char) c == '\r') {
 			recv0_buf.done = YES;
 			recv0_buf.data[recv0_buf.head] = '\0';
@@ -167,6 +168,12 @@ ISR(USART0_RXC_vect)
 		}
 		recv0_buf.length++;
 		recv0_buf.head = (recv0_buf.head + 1) % BUFSIZE;
+	} else {
+		recv0_buf.head = 0;
+		recv0_buf.tail = 0;
+		recv0_buf.data[0] = '\0';
+		recv0_buf.length = 0;
+		recv0_buf.done = NO;
 	}
 }
 
