@@ -24,7 +24,7 @@ void commands(void)
 void commands(void)
 {
 
-	char cmdline[BUFSIZE+1];		// BUFSIZE is the size of the ring buffer
+	char cmdline[BUFSIZE+1];			// BUFSIZE is the size of the ring buffer
 	static uint8_t cstack = 0;		// pcmd index
 
 	get_cmdline(cmdline);
@@ -69,10 +69,19 @@ void commands(void)
 			break;
 
 		case 'R':				// Reboot
-			send_prompt('>');	// Aidan request
-			_delay_ms(100);		// Avoids finishing the command loop before reboot
-			reboot();
-			return;
+			squelchErrors = YES;
+			if (motorsMoving()) {
+				squelchErrors = NO;
+				printError(ERR_MOTORMOVING, "Can't reboot, motor moving");
+				break;
+			} else {
+				saveFRAM_MOTOREncoders();
+				timerSAVEENCODER = 0;
+				send_prompt('>');	// Aidan request
+				_delay_ms(100);		// Avoids finishing the command loop before reboot
+				reboot();
+				return;
+			}
 
 		default:
 			printError(ERR_BADCOMMAND, "Not a command");

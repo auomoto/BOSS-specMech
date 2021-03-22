@@ -43,8 +43,6 @@ uint8_t read_FRAM(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nbytes)
 
 	uint8_t i, memhigh, memlow;
 
-	strcpy((char*) val, "SavedTime?");
-
 	memlow = memaddr & 0xFF;						// high byte
 	memhigh = (memaddr >> 8);						// low byte
 

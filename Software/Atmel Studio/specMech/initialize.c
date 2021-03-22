@@ -63,7 +63,7 @@ void initialize1(void)
 	init_OLED(0);
 	init_OLED(1);
 	init_EEPROM();	// Needs TWI
-	timeoutOLED = 30 * (512/32);	// 30 seconds for version display
+	timeoutOLED = 30 * (512/32);	// 30 seconds for version display before rebootackd
 	get_VERSION(versionstr);
 	writestr_OLED(1,"specMech Version", 1);
 	writestr_OLED(1, versionstr, 2);

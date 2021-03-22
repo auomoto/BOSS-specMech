@@ -158,7 +158,7 @@ ISR(USART0_RXC_vect)
 	uint8_t c;
 
 	c = USART0.RXDATAL;
-	if (recv0_buf.length < BUFSIZE) {
+	if (recv0_buf.length < (BUFSIZE-1)) {		// BUFSIZE-1 to make room for the terminating \0
 //		c = USART0.RXDATAL;
 		if ((char) c == '\r') {
 			recv0_buf.done = YES;

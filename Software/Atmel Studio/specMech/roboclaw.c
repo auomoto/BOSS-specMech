@@ -11,7 +11,7 @@ roboclaw.c
 #include "errors.h"
 #include "roboclaw.h"
 
-uint8_t timerSAVEENCODER;
+uint8_t timerSAVEENCODER, timeoutSAVEENCODER;
 
 /*------------------------------------------------------------------------------
 uint16_t crc16(uint8_t *packet, uint16_t nbytes)
@@ -47,7 +47,7 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t getFRAM_MOTOREncoder(uint8_t controller, int32_t *encoderValue)
+uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
 	Retrieves the encoder value stored in FRAM
 
 	Inputs:
@@ -299,15 +299,6 @@ uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
 
 }
 
-uint8_t get_MOTORSpeed(uint8_t controller, uint32_t *speed)
-{
-	if (get_MOTORInt32(controller, ROBOREADENCODERSPEED, speed) == ERROR) {
-		return(ERROR);
-	}
-	return(NOERROR);
-}
-
-
 /*------------------------------------------------------------------------------
 uint8_t init_MOTORS(void)
 	Reads the last-saved encoder value from FRAM and loads it into the three
@@ -324,13 +315,15 @@ uint8_t init_MOTORS(void)
 
 	static uint8_t firstTime[3] = {YES, YES, YES};
 	uint8_t controller, error = 0;
-	uint32_t encoderValue;
+	int32_t encoderValue;
 
 	timerSAVEENCODER = 0;
+	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
 
 	for (controller = 128; controller < 131; controller++) {
+//		encoderValue = -22 * ROBOCOUNTSPERMICRON;	// Proxy for now		
 		// get saved encoder value from FRAM
-		encoderValue = 22 * ROBOCOUNTSPERMICRON;	// Proxy for now
+		getFRAM_MOTOREncoder(controller, &encoderValue);
 		if (set_MOTOREncoder(controller, encoderValue) == ERROR) {
 			if (!firstTime[controller - 128]) {
 				printError(ERR_MTRSETENC, "init_MOTORS");
@@ -344,6 +337,22 @@ uint8_t init_MOTORS(void)
 	} else {
 		return(NOERROR);
 	}
+}
+
+uint8_t motorsMoving(void)
+{
+	uint8_t i;
+	int32_t encoderSpeed;
+
+	for (i = MOTORAADDR; i <= MOTORCADDR; i++) {
+		get_MOTOREncoder(i, ROBOREADENCODERSPEED, &encoderSpeed);
+		if (encoderSpeed) {
+			return(YES);
+		}
+	}
+
+	return(NO);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -474,8 +483,8 @@ uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
-	Saves the encoder value in FRAM.
+uint8_t putFRAM_MOTOREncoder(uint8_t controller)
+	Stores the encoder value in FRAM.
 
 	Inputs:
 		controller: The controller address (128, 129, or 130)
@@ -487,7 +496,7 @@ uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
 		ERROR on get_MOTOREncoder or write_FRAM failure
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
+uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 {
 
 	uint8_t tbuf[4];
@@ -514,6 +523,7 @@ uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
 	if (read_FRAM(FRAMTWIADDR, memaddr, tbuf, 4) == ERROR) {
 		return(ERROR);
 	}
+
 	oldencoderValue =  (uint32_t) tbuf[0] << 24;
 	oldencoderValue |= (uint32_t) tbuf[1] << 16;
 	oldencoderValue |= (uint32_t) tbuf[2] << 8;
@@ -531,8 +541,24 @@ uint8_t save2FRAM_MOTOREncoder(uint8_t controller)
 	tbuf[1] = (encoderValue >> 16) & 0xFF;
 	tbuf[2] = (encoderValue >> 8) & 0xFF;
 	tbuf[3] = encoderValue & 0xFF;
+
 	return(write_FRAM(FRAMTWIADDR, memaddr, tbuf, 4));
 
+}
+
+uint8_t saveFRAM_MOTOREncoders(void)
+{
+	uint8_t i, error = 0, retval;
+
+	for (i = MOTORAADDR; i <= MOTORCADDR; i++) {
+		retval = putFRAM_MOTOREncoder(i);
+		error += retval;
+	}
+	if (error) {
+		return(ERROR);
+	} else {
+		return(NOERROR);
+	}
 }
 
 /*------------------------------------------------------------------------------
@@ -555,7 +581,7 @@ uint8_t set_MOTOREncoder(uint8_t controller, uint32_t value)
 		double-check at startup to make sure the encoder values agree before
 		a move.
 ------------------------------------------------------------------------------*/
-uint8_t set_MOTOREncoder(uint8_t controller, uint32_t value)
+uint8_t set_MOTOREncoder(uint8_t controller, int32_t value)
 {
 
 	uint8_t tbuf[6];

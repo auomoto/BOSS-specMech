@@ -79,7 +79,7 @@ ISR(RTC_CNT_vect)
 {
 
 	RTC.INTFLAGS = RTC_OVF_bm;		// Clear interrupt flag
-
+/*
 	if (timerOLED) {
 		if (timerOLED > timeoutOLED) {	// Display timeout
 			clear_OLED(0);
@@ -89,6 +89,10 @@ ISR(RTC_CNT_vect)
 			timerOLED++;
 		}
 	}
+*/
+
+	timerOLED++;
+
 	toggle_LED;						// Defined in led.c
 
 	timerSAVEENCODER++;
