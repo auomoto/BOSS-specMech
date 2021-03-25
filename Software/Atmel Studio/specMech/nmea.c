@@ -5,7 +5,7 @@
 
 /*------------------------------------------------------------------------------
 void checksum_NMEA(char *str)
-	Append checksum to a string
+	Append checksum and \r\n to a string
 ------------------------------------------------------------------------------*/
 void checksum_NMEA(char *str)
 {

@@ -5,7 +5,7 @@
 #include "nmea.h"
 #include "errors.h"
 
-uint8_t squelchErrors;
+volatile uint8_t squelchErrors;
 
 /*------------------------------------------------------------------------------
 void printError(uint8_t errorNumber, char *errorString)

@@ -35,7 +35,7 @@ void commands(void)
 
 	if ((cmdline[0] == '\0') || (cmdline[0] == '!')) {		// <CR> or ! alone are not errors
 		firstpass = NO;
-		send_prompt('>');
+		send_GTprompt();
 		return;
 	}
 
@@ -77,7 +77,7 @@ void commands(void)
 			} else {
 				saveFRAM_MOTOREncoders();
 				timerSAVEENCODER = 0;
-				send_prompt('>');	// Aidan request
+				send_GTprompt();	// Aidan request
 				_delay_ms(100);		// Avoids finishing the command loop before reboot
 				reboot();
 				return;
@@ -89,7 +89,7 @@ void commands(void)
 	}
 
 	cstack = (cstack + 1) % CSTACKSIZE;
-	send_prompt('>');
+	send_GTprompt();
 
 }
 
@@ -289,12 +289,31 @@ uint8_t rebootACKd(char *cmdline)
 			reboot();
 			return(NO);
 		} else {
-			send_prompt('!');
+			send_EXprompt();
+//			send_prompt('!');
 			return(NO);
 		}
 	}
 
 	return(YES);
+
+}
+
+void send_EXprompt(void)
+{
+
+	const char str[] = "!";
+
+	send_USART(0, (uint8_t*) str, 1);
+
+}
+
+void send_GTprompt(void)
+{
+
+	const char str[] = ">";
+
+	send_USART(0, (uint8_t*) str, 1);
 
 }
 
@@ -315,3 +334,18 @@ void send_prompt(char prompt)
 	send_USART(0, (uint8_t*) prompt_str, 1);
 
 }
+
+/*------------------------------------------------------------------------------
+void send_sprompt(char *prompt)
+	Puts a command line prompt on the output line.
+
+	If specMech is rebooted, it will only prompt with a single exclamation
+	point (!) until it receives an acknowledgment in the form of a single !.
+------------------------------------------------------------------------------*/
+void send_sprompt(char *prompt)
+{
+
+	send_USART(0, (uint8_t*) prompt, strlen(prompt));
+
+}
+

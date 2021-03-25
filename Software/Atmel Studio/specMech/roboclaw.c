@@ -309,6 +309,8 @@ uint8_t init_MOTORS(void)
 	Returns
 		ERROR if set_MOTOREncoder fails
 		NOERROR otherwise
+
+NEED TO FIGURE OUT WHAT TO DO ABOUT ERRORS
 ------------------------------------------------------------------------------*/
 uint8_t init_MOTORS(void)
 {
@@ -519,7 +521,7 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 		default:
 			return(ERROR);
 	}
-
+/*
 	if (read_FRAM(FRAMTWIADDR, memaddr, tbuf, 4) == ERROR) {
 		return(ERROR);
 	}
@@ -528,15 +530,15 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 	oldencoderValue |= (uint32_t) tbuf[1] << 16;
 	oldencoderValue |= (uint32_t) tbuf[2] << 8;
 	oldencoderValue |= (uint32_t) tbuf[3];
-
+*/
 	if (get_MOTOREncoder(controller, ROBOREADENCODERCOUNT, &encoderValue) == ERROR) {
 		return(ERROR);
 	}
-
+/*
 	if (oldencoderValue == encoderValue) {
 		return(NOERROR);
 	}
-
+*/
 	tbuf[0] = (encoderValue >> 24) & 0xFF;
 	tbuf[1] = (encoderValue >> 16) & 0xFF;
 	tbuf[2] = (encoderValue >> 8) & 0xFF;

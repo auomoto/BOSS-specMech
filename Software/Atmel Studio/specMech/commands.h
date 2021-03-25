@@ -23,6 +23,9 @@ uint8_t isaletter(char);
 void parse_cmd(char*, uint8_t);
 void printLine(char*);
 uint8_t rebootACKd(char*);
+void send_EXprompt(void);
+void send_GTprompt(void);
 void send_prompt(char);
+void send_sprompt(char*);
 
 #endif

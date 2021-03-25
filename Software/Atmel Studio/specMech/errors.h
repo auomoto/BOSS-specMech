@@ -25,7 +25,7 @@
 #define ERR_SET			(601)	// Bad object to set
 #define ERR_SETTIME		(602)	// Invalid time format
 
-extern uint8_t squelchErrors;
+extern volatile uint8_t squelchErrors;
 
 void printError(uint16_t, char*);
 
