@@ -319,6 +319,8 @@ uint8_t init_MOTORS(void)
 	uint8_t controller, error = 0;
 	int32_t encoderValue;
 
+char str[25];
+
 	timerSAVEENCODER = 0;
 	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
 
@@ -326,6 +328,10 @@ uint8_t init_MOTORS(void)
 //		encoderValue = -22 * ROBOCOUNTSPERMICRON;	// Proxy for now		
 		// get saved encoder value from FRAM
 		getFRAM_MOTOREncoder(controller, &encoderValue);
+
+sprintf(str, "encval=%ld\r\n", encoderValue);
+send_USART(0, (uint8_t*) str, strlen(str));
+
 		if (set_MOTOREncoder(controller, encoderValue) == ERROR) {
 			if (!firstTime[controller - 128]) {
 				printError(ERR_MTRSETENC, "init_MOTORS");

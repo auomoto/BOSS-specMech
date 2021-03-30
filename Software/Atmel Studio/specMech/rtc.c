@@ -2,6 +2,7 @@
 #include "led.h"
 #include "oled.h"
 #include "roboclaw.h"
+#include "rtc.h"
 
 /*----------------------------------------------------------------------
 void init_RTC(uint16_t ticksRTC)
@@ -91,10 +92,8 @@ ISR(RTC_CNT_vect)
 	}
 */
 
-	timerOLED++;
-
-	toggle_LED;						// Defined in led.c
-
-	timerSAVEENCODER++;
+	timerOLED++;					// Turn off the OLED display
+	toggle_LED;						// Blink the light
+	timerSAVEENCODER++;				// Save the motor encoder values
 
 }

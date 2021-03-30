@@ -1,6 +1,6 @@
 #include "globals.h"
-#include "eeprom.h"
 #include "ds3231.h"
+#include "eeprom.h"
 
 /*------------------------------------------------------------------------------
 eeprom.c

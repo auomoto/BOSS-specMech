@@ -19,7 +19,7 @@ uint8_t firstpass;
 int main(void)
 {
 
-	firstpass = YES;		// Set to YES in commands.c
+	firstpass = YES;		// Set to NO in commands.c
 	squelchErrors = YES;
 	initialize0();
 	sei();

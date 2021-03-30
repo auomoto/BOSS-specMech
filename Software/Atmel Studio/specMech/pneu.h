@@ -14,6 +14,7 @@
 #define RIGHTCLOSE		(0xE6)	// AND with this pattern to close
 
 uint8_t close_PNEU(uint8_t);
+uint8_t init_PNEU(void);
 uint8_t open_PNEU(uint8_t);
 void read_PNEUSensors(char*, char*, char*, char*);
 uint8_t set_PNEUVALVES(uint8_t, uint8_t);

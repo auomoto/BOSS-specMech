@@ -5,4 +5,6 @@
 #define on_BEEPER		(PORTB.OUTSET = PIN2_bm)
 #define toggle_BEEPER	(PORTB.OUTTGL = PIN2_bm)
 
+void init_BEEPER(void);
+
 #endif

@@ -4,7 +4,7 @@ xport.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
-#include "initialize.h"
+#include "xport.h"
 
 void init_XPORT(void)
 {

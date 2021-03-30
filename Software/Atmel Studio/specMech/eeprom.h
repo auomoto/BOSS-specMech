@@ -10,6 +10,7 @@
 
 void get_BOOTTIME(char*);
 void get_VERSION(char*);
+void init_EEPROM(void);
 void update_BOOTTIME(void);
 void update_VERSION(void);
 

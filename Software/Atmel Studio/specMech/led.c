@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "led.h"
 
 void init_LED(void)
 {

@@ -1,10 +1,11 @@
 #include "globals.h"
+#include "ports.h"
 
 /*------------------------------------------------------------------------------
 void init_PORTS(void)
-	Sets all I/O ports on the ATMega4809 to be inputs with pullups enabled
+	Sets the I/O ports on the ATMega4809 to be inputs with pullups enabled
 	except ADC ports, which have their inputs disabled. This is just to make
-	sure nothing lurks in the background by accident.
+	sure we start out OK and nothing lurks in the background by accident.
 ------------------------------------------------------------------------------*/
 void init_PORTS(void)
 {

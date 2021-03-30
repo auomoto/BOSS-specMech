@@ -5,9 +5,9 @@ oled.c
 	This is a small 2-line 16-character blue OLED display with an I2C (TWI)
 	interface.
 
-	Two TWI (I2C) addresses are allowed: (0x3c<<1) and (0x3d<<1). Outside
-	this file (the writestr_OLED routine), these are referred to as displays
-	0 and 1 respectively. There are only two choices for this display.
+	Two TWI (I2C) addresses are allowed: (0x3c) and (0x3d). Outside this file
+	(the writestr_OLED routine), these are referred to as displays 0 and 1
+	respectively. There are only two address choices for this display.
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
@@ -92,7 +92,7 @@ void init_OLED(uint8_t displaynumber)
 	_delay_ms(100);				// Wait after display-on command
 
 	timerOLED = 0;
-	timeoutOLED = 5;
+	timeoutOLED = 16 * 5;		// Initial RTC ticks are 1/16 seconds
 
 }
 
@@ -123,7 +123,6 @@ void writestr_OLED(uint8_t displaynumber, char *str, uint8_t lineno)
 	
 	This routine positions the cursor at the beginning of a line (1 or 2) pads
 	the string with blanks, then writes the full 16 characters to the display.
-
 ------------------------------------------------------------------------------*/
 void writestr_OLED(uint8_t displaynumber, char *str, uint8_t lineno)
 {

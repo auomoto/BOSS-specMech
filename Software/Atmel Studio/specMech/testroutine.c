@@ -8,6 +8,10 @@
 void testroutine(void)
 {
 
+
+	init_MOTORS();
+
+/*
 	char buf[25];
 	uint8_t bufb[8];
 	int32_t value;
@@ -21,7 +25,7 @@ void testroutine(void)
 	value /= ROBOCOUNTSPERMICRON;
 	sprintf(buf, "value = %ld\r\n", value);
 	send_USART(0, (uint8_t*) buf, strlen(buf));
-
+*/
 /*
 	char buf[50];
 	uint8_t bufb[10];

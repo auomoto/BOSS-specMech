@@ -1,4 +1,4 @@
-initialize.d initialize.o: .././initialize.c .././globals.h \
+pushbutton.d pushbutton.o: .././pushbutton.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -20,11 +20,7 @@ initialize.d initialize.o: .././initialize.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././ports.h .././pushbutton.h .././led.h .././specID.h .././beeper.h \
- .././twi.h .././rtc.h .././usart.h .././mma8451.h .././pneu.h \
- .././eeprom.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
- .././oled.h .././roboclaw.h .././xport.h .././initialize.h
+ .././pushbutton.h
 
 .././globals.h:
 
@@ -70,34 +66,4 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
-.././ports.h:
-
 .././pushbutton.h:
-
-.././led.h:
-
-.././specID.h:
-
-.././beeper.h:
-
-.././twi.h:
-
-.././rtc.h:
-
-.././usart.h:
-
-.././mma8451.h:
-
-.././pneu.h:
-
-.././eeprom.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
-
-.././oled.h:
-
-.././roboclaw.h:
-
-.././xport.h:
-
-.././initialize.h:

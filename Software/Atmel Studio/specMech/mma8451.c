@@ -6,15 +6,14 @@ mma8451.c
 
 #include "globals.h"
 #include "errors.h"
-#include "mma8451.h"
 #include "twi.h"
+#include "mma8451.h"
 
 /*------------------------------------------------------------------------------
-uint8_t get_orientation(uint8_t addr, float *x, float *y, float *z)
+uint8_t get_orientation(float *x, float *y, float *z)
 	Put the accelerometer readout into x, y, and z after scaling to 980.6
 	cm/s/s gravity.
 ------------------------------------------------------------------------------*/
-//uint8_t get_orientation(uint8_t addr, float *x, float *y, float *z)
 uint8_t get_orientation(float *x, float *y, float *z)
 {
 
@@ -58,7 +57,6 @@ uint8_t init_MMA8451(void)
 	filter (2.0 Hz), and oversampling and resolution. This gives us good
 	consistency (better than 0.5 cm/s/s) at the cost of longer sampling times.
 ------------------------------------------------------------------------------*/
-
 uint8_t init_MMA8451(void)
 {
 

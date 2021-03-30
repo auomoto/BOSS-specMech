@@ -239,6 +239,15 @@
     <Compile Include="ports.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ports.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pushbutton.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pushbutton.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="report.c">
       <SubType>compile</SubType>
     </Compile>
@@ -306,6 +315,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="xport.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="xport.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

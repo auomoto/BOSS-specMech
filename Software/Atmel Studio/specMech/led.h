@@ -5,4 +5,6 @@
 #define on_LED		(PORTF.OUTCLR = PIN5_bm)
 #define toggle_LED	(PORTF.OUTTGL = PIN5_bm)
 
+void init_LED(void);
+
 #endif

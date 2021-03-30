@@ -16,9 +16,10 @@ typedef struct {
 } USARTBuf;
 
 extern USARTBuf
+	send0_buf, send1_buf, send3_buf,
+	recv0_buf, recv1_buf, recv3_buf;
 
-send0_buf, send1_buf, send3_buf,
-recv0_buf, recv1_buf, recv3_buf;
+void init_USART(void);
 void send_USART(uint8_t, uint8_t*, uint8_t);
 
-#endif /* USARTH */
+#endif
