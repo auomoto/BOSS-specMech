@@ -13364,14 +13364,13 @@ Digikey 609-2845-ND</description>
 <part name="GND49" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="C28" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C1210" package3d_urn="urn:adsk.eagle:package:4021267/2" value="10uF"/>
 <part name="GND50" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
-<part name="R7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/4" value="10K"/>
 </parts>
 <sheets>
 <sheet>
 <description>Curiosity Nano</description>
 <plain>
-<text x="154.94" y="76.2" size="2.54" layer="250">Spectrograph
-ID Select</text>
+<text x="149.86" y="76.2" size="2.54" layer="250">Spectrograph
+Number Select</text>
 </plain>
 <instances>
 <instance part="CNANO1" gate="G$1" x="104.14" y="114.3" smashed="yes">
@@ -13384,23 +13383,19 @@ ID Select</text>
 <attribute name="SHEET" x="259.08" y="1.27" size="2.54" layer="94"/>
 <attribute name="DRAWING_NAME" x="190.5" y="19.05" size="2.54" layer="94"/>
 </instance>
-<instance part="JP7" gate="A" x="149.86" y="78.74" smashed="yes">
-<attribute name="NAME" x="143.51" y="84.455" size="1.778" layer="95"/>
-<attribute name="VALUE" x="143.51" y="71.12" size="1.778" layer="96"/>
+<instance part="JP7" gate="A" x="144.78" y="78.74" smashed="yes">
+<attribute name="NAME" x="138.43" y="84.455" size="1.778" layer="95"/>
+<attribute name="VALUE" x="138.43" y="71.12" size="1.778" layer="96"/>
 </instance>
-<instance part="R6" gate="G$1" x="139.7" y="88.9" smashed="yes" rot="R90">
-<attribute name="NAME" x="138.2014" y="87.63" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="143.002" y="87.63" size="1.778" layer="96" rot="R90"/>
+<instance part="R6" gate="G$1" x="127" y="78.74" smashed="yes">
+<attribute name="NAME" x="123.19" y="80.2386" size="1.778" layer="95"/>
+<attribute name="VALUE" x="123.19" y="75.438" size="1.778" layer="96"/>
 </instance>
-<instance part="P+28" gate="1" x="139.7" y="99.06" smashed="yes">
-<attribute name="VALUE" x="137.16" y="100.33" size="1.27" layer="96"/>
+<instance part="P+28" gate="1" x="134.62" y="86.36" smashed="yes">
+<attribute name="VALUE" x="132.08" y="87.63" size="1.27" layer="96"/>
 </instance>
-<instance part="GND43" gate="1" x="139.7" y="58.42" smashed="yes">
-<attribute name="VALUE" x="137.16" y="55.88" size="1.778" layer="96"/>
-</instance>
-<instance part="R7" gate="G$1" x="139.7" y="68.58" smashed="yes" rot="R90">
-<attribute name="NAME" x="138.2014" y="67.31" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="143.002" y="64.77" size="1.778" layer="96" rot="R90"/>
+<instance part="GND43" gate="1" x="134.62" y="71.12" smashed="yes">
+<attribute name="VALUE" x="132.08" y="68.58" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -13452,9 +13447,10 @@ ID Select</text>
 <label x="121.92" y="144.78" size="1.016" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="R7" gate="G$1" pin="1"/>
 <pinref part="GND43" gate="1" pin="GND"/>
-<wire x1="139.7" y1="63.5" x2="139.7" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="134.62" y1="73.66" x2="134.62" y2="76.2" width="0.1524" layer="91"/>
+<pinref part="JP7" gate="A" pin="3"/>
+<wire x1="134.62" y1="76.2" x2="142.24" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="NANO-RX1" class="0">
@@ -13506,9 +13502,10 @@ ID Select</text>
 <label x="121.92" y="134.62" size="1.016" layer="95" xref="yes"/>
 </segment>
 <segment>
+<pinref part="JP7" gate="A" pin="1"/>
+<wire x1="142.24" y1="81.28" x2="134.62" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="P+28" gate="1" pin="+5V"/>
-<pinref part="R6" gate="G$1" pin="2"/>
-<wire x1="139.7" y1="96.52" x2="139.7" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="134.62" y1="81.28" x2="134.62" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="INT-PNEU" class="0">
@@ -13516,6 +13513,20 @@ ID Select</text>
 <pinref part="CNANO1" gate="G$1" pin="PD7"/>
 <wire x1="119.38" y1="132.08" x2="121.92" y2="132.08" width="0.1524" layer="91"/>
 <label x="121.92" y="132.08" size="1.016" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="N$6" class="0">
+<segment>
+<pinref part="CNANO1" gate="G$1" pin="PF2"/>
+<pinref part="R6" gate="G$1" pin="1"/>
+<wire x1="119.38" y1="78.74" x2="121.92" y2="78.74" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$7" class="0">
+<segment>
+<pinref part="R6" gate="G$1" pin="2"/>
+<pinref part="JP7" gate="A" pin="2"/>
+<wire x1="132.08" y1="78.74" x2="142.24" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="OLED/RST" class="0">
@@ -13544,29 +13555,6 @@ ID Select</text>
 <pinref part="CNANO1" gate="G$1" pin="PC3"/>
 <wire x1="88.9" y1="101.6" x2="86.36" y2="101.6" width="0.1524" layer="91"/>
 <label x="86.36" y="101.6" size="1.016" layer="95" rot="R180" xref="yes"/>
-</segment>
-</net>
-<net name="N$26" class="0">
-<segment>
-<pinref part="JP7" gate="A" pin="1"/>
-<wire x1="147.32" y1="81.28" x2="139.7" y2="81.28" width="0.1524" layer="91"/>
-<pinref part="R6" gate="G$1" pin="1"/>
-<wire x1="139.7" y1="83.82" x2="139.7" y2="81.28" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$6" class="0">
-<segment>
-<pinref part="JP7" gate="A" pin="2"/>
-<pinref part="CNANO1" gate="G$1" pin="PF2"/>
-<wire x1="147.32" y1="78.74" x2="119.38" y2="78.74" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$7" class="0">
-<segment>
-<pinref part="JP7" gate="A" pin="3"/>
-<wire x1="139.7" y1="76.2" x2="147.32" y2="76.2" width="0.1524" layer="91"/>
-<pinref part="R7" gate="G$1" pin="2"/>
-<wire x1="139.7" y1="76.2" x2="139.7" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
