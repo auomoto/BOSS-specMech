@@ -14203,7 +14203,7 @@ The Slot footprint only works if the mill layer is transmitted to the PCB fab ho
 <part name="C26" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/3" value="0.1uF"/>
 <part name="GND39" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="GND40" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
-<part name="BT1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="CR2032-BATT-BK-5058" device="" package3d_urn="urn:adsk.eagle:package:24461209/2"/>
+<part name="BT1" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="CR2032-BATT-BK-5058" device="" package3d_urn="urn:adsk.eagle:package:24461209/2" value="CR2032"/>
 <part name="U14" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="MB85RC512" device="FPT-FP-DUALWIDTH" package3d_urn="urn:adsk.eagle:package:24628491/2" value="MB85RC256"/>
 <part name="C27" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C0805" package3d_urn="urn:adsk.eagle:package:4021265/3" value="0.1uF"/>
 <part name="P+25" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
@@ -14251,7 +14251,7 @@ The Slot footprint only works if the mill layer is transmitted to the PCB fab ho
 <part name="GND48" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="P+29" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="+5V" device=""/>
 <part name="GND49" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
-<part name="C28" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C1210" package3d_urn="urn:adsk.eagle:package:4021267/2" value="10uF"/>
+<part name="C28" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="C-US" device="C1210" package3d_urn="urn:adsk.eagle:package:4021267/2" value="10uF 50V"/>
 <part name="GND50" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
 <part name="R7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/4" value="10K"/>
 <part name="PS2" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="OKI-78SR-5/1.5-W36-C" device="" package3d_urn="urn:adsk.eagle:package:24308288/2" value="OKI-78SR-12/1.0-W36H-C"/>
@@ -14274,6 +14274,7 @@ The Slot footprint only works if the mill layer is transmitted to the PCB fab ho
 <part name="R8" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/4" value="22K"/>
 <part name="R17" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="R-US_" device="R0805" package3d_urn="urn:adsk.eagle:package:4021199/4" value="4K7"/>
 <part name="GND54" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="GND" device=""/>
+<part name="TP7" library="AUmlib" library_urn="urn:adsk.eagle:library:9166017" deviceset="TP5000-TESTPOINT-ORG" device="" package3d_urn="urn:adsk.eagle:package:24643890/2"/>
 </parts>
 <sheets>
 <sheet>
@@ -14485,6 +14486,13 @@ ID Select</text>
 <label x="121.92" y="114.3" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
+<net name="T-ALERT" class="0">
+<segment>
+<pinref part="CNANO1" gate="G$1" pin="PC2"/>
+<wire x1="88.9" y1="104.14" x2="86.36" y2="104.14" width="0.1524" layer="91"/>
+<label x="86.36" y="104.14" size="1.016" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
 </nets>
 </sheet>
 <sheet>
@@ -14515,7 +14523,19 @@ Lantronix EtherNET port.</text>
 <wire x1="213.36" y1="160.02" x2="213.36" y2="101.6" width="0.254" layer="250"/>
 <wire x1="213.36" y1="101.6" x2="170.18" y2="101.6" width="0.254" layer="250"/>
 <wire x1="170.18" y1="101.6" x2="170.18" y2="160.02" width="0.254" layer="250"/>
-<text x="175.26" y="154.94" size="2.54" layer="250">Power for USB isolator</text>
+<text x="175.26" y="149.86" size="2.54" layer="250">Power for USB isolator
+(off board)</text>
+<wire x1="68.58" y1="99.06" x2="114.3" y2="99.06" width="0.254" layer="250"/>
+<wire x1="114.3" y1="99.06" x2="114.3" y2="53.34" width="0.254" layer="250"/>
+<wire x1="114.3" y1="53.34" x2="68.58" y2="53.34" width="0.254" layer="250"/>
+<wire x1="68.58" y1="53.34" x2="68.58" y2="99.06" width="0.254" layer="250"/>
+<text x="83.82" y="91.44" size="2.54" layer="250">12 VDC power
+for solenoid valves</text>
+<wire x1="116.84" y1="99.06" x2="167.64" y2="99.06" width="0.254" layer="250"/>
+<wire x1="167.64" y1="99.06" x2="167.64" y2="53.34" width="0.254" layer="250"/>
+<wire x1="167.64" y1="53.34" x2="116.84" y2="53.34" width="0.254" layer="250"/>
+<wire x1="116.84" y1="53.34" x2="116.84" y2="99.06" width="0.254" layer="250"/>
+<text x="127" y="93.98" size="2.54" layer="250">Alternate DC Power Input</text>
 </plain>
 <instances>
 <instance part="P+5" gate="1" x="104.14" y="132.08" smashed="yes">
@@ -14526,7 +14546,7 @@ Lantronix EtherNET port.</text>
 </instance>
 <instance part="J6" gate="G$1" x="152.4" y="124.46" smashed="yes" rot="MR180">
 <attribute name="NAME" x="147.32" y="137.16" size="1.778" layer="95" rot="MR180"/>
-<attribute name="VALUE" x="146.05" y="109.22" size="1.27" layer="96" rot="MR180"/>
+<attribute name="VALUE" x="140.97" y="109.22" size="1.27" layer="96" rot="MR180"/>
 </instance>
 <instance part="P+6" gate="1" x="127" y="139.7" smashed="yes">
 <attribute name="VALUE" x="128.27" y="142.24" size="1.27" layer="96" rot="R180"/>
@@ -14544,15 +14564,15 @@ Lantronix EtherNET port.</text>
 <attribute name="NAME" x="83.82" y="128.27" size="1.778" layer="95"/>
 <attribute name="VALUE" x="71.12" y="138.43" size="1.778" layer="96"/>
 </instance>
-<instance part="J2" gate="G$1" x="190.5" y="137.16" smashed="yes" rot="MR180">
-<attribute name="NAME" x="187.955640625" y="131.31233125" size="1.78105" layer="95" rot="MR180"/>
-<attribute name="VALUE" x="187.955409375" y="144.793759375" size="1.781209375" layer="96" rot="MR180"/>
+<instance part="J2" gate="G$1" x="190.5" y="132.08" smashed="yes" rot="MR180">
+<attribute name="NAME" x="187.955640625" y="126.23233125" size="1.78105" layer="95" rot="MR180"/>
+<attribute name="VALUE" x="187.955409375" y="139.713759375" size="1.781209375" layer="96" rot="MR180"/>
 </instance>
-<instance part="GND4" gate="1" x="180.34" y="129.54" smashed="yes">
-<attribute name="VALUE" x="177.8" y="127" size="1.27" layer="96"/>
+<instance part="GND4" gate="1" x="180.34" y="124.46" smashed="yes">
+<attribute name="VALUE" x="177.8" y="121.92" size="1.27" layer="96"/>
 </instance>
-<instance part="P+27" gate="1" x="180.34" y="144.78" smashed="yes">
-<attribute name="VALUE" x="181.61" y="147.32" size="1.27" layer="96" rot="R180"/>
+<instance part="P+27" gate="1" x="180.34" y="139.7" smashed="yes">
+<attribute name="VALUE" x="181.61" y="142.24" size="1.27" layer="96" rot="R180"/>
 </instance>
 <instance part="C28" gate="G$1" x="78.74" y="116.84" smashed="yes">
 <attribute name="NAME" x="74.676" y="117.475" size="1.778" layer="95"/>
@@ -14561,18 +14581,18 @@ Lantronix EtherNET port.</text>
 <instance part="GND50" gate="1" x="78.74" y="106.68" smashed="yes">
 <attribute name="VALUE" x="76.2" y="104.14" size="1.27" layer="96"/>
 </instance>
-<instance part="PS2" gate="G$1" x="91.44" y="63.5" smashed="yes">
-<attribute name="NAME" x="83.82" y="69.85" size="1.778" layer="95"/>
-<attribute name="VALUE" x="86.36" y="49.53" size="1.27" layer="96"/>
+<instance part="PS2" gate="G$1" x="93.98" y="73.66" smashed="yes">
+<attribute name="NAME" x="86.36" y="80.01" size="1.778" layer="95"/>
+<attribute name="VALUE" x="86.36" y="85.09" size="1.27" layer="96"/>
 </instance>
-<instance part="P+30" gate="1" x="78.74" y="71.12" smashed="yes">
-<attribute name="VALUE" x="76.2" y="73.66" size="1.27" layer="96"/>
+<instance part="P+30" gate="1" x="81.28" y="81.28" smashed="yes">
+<attribute name="VALUE" x="78.74" y="83.82" size="1.27" layer="96"/>
 </instance>
-<instance part="SUPPLY12" gate="G$1" x="104.14" y="68.58" smashed="yes">
-<attribute name="VALUE" x="104.14" y="72.39" size="1.27" layer="96" align="bottom-center"/>
+<instance part="SUPPLY12" gate="G$1" x="106.68" y="78.74" smashed="yes">
+<attribute name="VALUE" x="106.68" y="82.55" size="1.27" layer="96" align="bottom-center"/>
 </instance>
-<instance part="GND51" gate="1" x="104.14" y="58.42" smashed="yes">
-<attribute name="VALUE" x="101.6" y="55.88" size="1.27" layer="96"/>
+<instance part="GND51" gate="1" x="106.68" y="68.58" smashed="yes">
+<attribute name="VALUE" x="104.14" y="66.04" size="1.27" layer="96"/>
 </instance>
 <instance part="P+31" gate="1" x="134.62" y="139.7" smashed="yes">
 <attribute name="VALUE" x="132.08" y="142.24" size="1.27" layer="96"/>
@@ -14580,29 +14600,29 @@ Lantronix EtherNET port.</text>
 <instance part="P+32" gate="1" x="78.74" y="132.08" smashed="yes">
 <attribute name="VALUE" x="76.2" y="134.62" size="1.27" layer="96"/>
 </instance>
-<instance part="C29" gate="G$1" x="78.74" y="60.96" smashed="yes">
-<attribute name="NAME" x="74.676" y="61.595" size="1.778" layer="95"/>
-<attribute name="VALUE" x="67.056" y="56.769" size="1.778" layer="96"/>
+<instance part="C29" gate="G$1" x="81.28" y="71.12" smashed="yes">
+<attribute name="NAME" x="77.216" y="71.755" size="1.778" layer="95"/>
+<attribute name="VALUE" x="74.676" y="64.389" size="1.778" layer="96"/>
 </instance>
-<instance part="GND52" gate="1" x="78.74" y="50.8" smashed="yes">
-<attribute name="VALUE" x="76.2" y="48.26" size="1.27" layer="96"/>
+<instance part="GND52" gate="1" x="81.28" y="60.96" smashed="yes">
+<attribute name="VALUE" x="78.74" y="58.42" size="1.27" layer="96"/>
 </instance>
 <instance part="SUPPLY1" gate="G$1" x="142.24" y="137.16" smashed="yes">
 <attribute name="VALUE" x="142.24" y="140.97" size="1.27" layer="96" align="bottom-center"/>
 </instance>
-<instance part="J11" gate="G$1" x="137.16" y="73.66" smashed="yes">
-<attribute name="VALUE" x="127" y="68.58" size="1.778" layer="96" font="vector"/>
-<attribute name="NAME" x="127" y="73.66" size="1.778" layer="95" font="vector"/>
+<instance part="J11" gate="G$1" x="129.54" y="68.58" smashed="yes">
+<attribute name="VALUE" x="119.38" y="58.42" size="1.778" layer="96" font="vector"/>
+<attribute name="NAME" x="119.38" y="68.58" size="1.778" layer="95" font="vector"/>
 </instance>
-<instance part="P+35" gate="1" x="154.94" y="86.36" smashed="yes">
-<attribute name="VALUE" x="152.4" y="88.9" size="1.27" layer="96"/>
+<instance part="P+35" gate="1" x="147.32" y="86.36" smashed="yes">
+<attribute name="VALUE" x="144.78" y="88.9" size="1.27" layer="96"/>
 </instance>
-<instance part="GND53" gate="1" x="142.24" y="71.12" smashed="yes">
-<attribute name="VALUE" x="139.7" y="68.58" size="1.27" layer="96"/>
+<instance part="GND53" gate="1" x="134.62" y="66.04" smashed="yes">
+<attribute name="VALUE" x="132.08" y="63.5" size="1.27" layer="96"/>
 </instance>
-<instance part="D1" gate="G$1" x="147.32" y="81.28" smashed="yes">
-<attribute name="NAME" x="142.24" y="83.82" size="1.778" layer="95"/>
-<attribute name="VALUE" x="142.24" y="77.47" size="1.778" layer="96"/>
+<instance part="D1" gate="G$1" x="139.7" y="76.2" smashed="yes">
+<attribute name="NAME" x="134.62" y="78.74" size="1.778" layer="95"/>
+<attribute name="VALUE" x="134.62" y="72.39" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -14631,9 +14651,9 @@ Lantronix EtherNET port.</text>
 </segment>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
-<wire x1="180.34" y1="132.08" x2="180.34" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="127" x2="180.34" y2="129.54" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="1"/>
-<wire x1="180.34" y1="134.62" x2="185.42" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="129.54" x2="185.42" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C28" gate="G$1" pin="2"/>
@@ -14642,20 +14662,20 @@ Lantronix EtherNET port.</text>
 </segment>
 <segment>
 <pinref part="PS2" gate="G$1" pin="GND"/>
-<wire x1="101.6" y1="63.5" x2="104.14" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="73.66" x2="106.68" y2="73.66" width="0.1524" layer="91"/>
 <pinref part="GND51" gate="1" pin="GND"/>
-<wire x1="104.14" y1="63.5" x2="104.14" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="73.66" x2="106.68" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C29" gate="G$1" pin="2"/>
 <pinref part="GND52" gate="1" pin="GND"/>
-<wire x1="78.74" y1="55.88" x2="78.74" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="66.04" x2="81.28" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="J11" gate="G$1" pin="GND"/>
-<wire x1="139.7" y1="76.2" x2="142.24" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="71.12" x2="134.62" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="GND53" gate="1" pin="GND"/>
-<wire x1="142.24" y1="76.2" x2="142.24" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="134.62" y1="71.12" x2="134.62" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -14673,17 +14693,17 @@ Lantronix EtherNET port.</text>
 </segment>
 <segment>
 <pinref part="P+27" gate="1" pin="+5V"/>
-<wire x1="180.34" y1="139.7" x2="180.34" y2="142.24" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="134.62" x2="180.34" y2="137.16" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="2"/>
-<wire x1="180.34" y1="139.7" x2="185.42" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="134.62" x2="185.42" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+12V" class="0">
 <segment>
 <pinref part="PS2" gate="G$1" pin="VOUT"/>
-<wire x1="101.6" y1="66.04" x2="104.14" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="76.2" x2="106.68" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="SUPPLY12" gate="G$1" pin="+12V"/>
-<wire x1="104.14" y1="66.04" x2="104.14" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="76.2" x2="106.68" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="J6" gate="G$1" pin="8"/>
@@ -14695,12 +14715,12 @@ Lantronix EtherNET port.</text>
 <net name="+24V" class="0">
 <segment>
 <pinref part="P+30" gate="1" pin="+24V"/>
-<wire x1="78.74" y1="68.58" x2="78.74" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="78.74" x2="81.28" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="PS2" gate="G$1" pin="VIN"/>
-<wire x1="78.74" y1="66.04" x2="81.28" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="76.2" x2="83.82" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="C29" gate="G$1" pin="1"/>
-<wire x1="78.74" y1="63.5" x2="78.74" y2="66.04" width="0.1524" layer="91"/>
-<junction x="78.74" y="66.04"/>
+<wire x1="81.28" y1="73.66" x2="81.28" y2="76.2" width="0.1524" layer="91"/>
+<junction x="81.28" y="76.2"/>
 </segment>
 <segment>
 <wire x1="78.74" y1="129.54" x2="78.74" y2="124.46" width="0.1524" layer="91"/>
@@ -14719,16 +14739,16 @@ Lantronix EtherNET port.</text>
 </segment>
 <segment>
 <pinref part="D1" gate="G$1" pin="K"/>
-<wire x1="152.4" y1="81.28" x2="154.94" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="76.2" x2="147.32" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="P+35" gate="1" pin="+24V"/>
-<wire x1="154.94" y1="81.28" x2="154.94" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="76.2" x2="147.32" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$29" class="0">
 <segment>
 <pinref part="J11" gate="G$1" pin="PWR"/>
 <pinref part="D1" gate="G$1" pin="A"/>
-<wire x1="139.7" y1="81.28" x2="142.24" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="76.2" x2="134.62" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
@@ -14792,12 +14812,12 @@ Adafruit Breakout Board</text>
 <instance part="GND12" gate="1" x="144.78" y="160.02" smashed="yes">
 <attribute name="VALUE" x="142.24" y="157.48" size="1.778" layer="96"/>
 </instance>
-<instance part="R10" gate="G$1" x="99.06" y="175.26" smashed="yes" rot="R90">
-<attribute name="NAME" x="97.79" y="178.8414" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="97.79" y="173.482" size="1.778" layer="96" rot="R180"/>
+<instance part="R10" gate="G$1" x="104.14" y="175.26" smashed="yes" rot="R90">
+<attribute name="NAME" x="102.87" y="178.8414" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="102.87" y="173.482" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="P+8" gate="1" x="99.06" y="185.42" smashed="yes">
-<attribute name="VALUE" x="97.79" y="186.69" size="1.27" layer="96"/>
+<instance part="P+8" gate="1" x="104.14" y="185.42" smashed="yes">
+<attribute name="VALUE" x="102.87" y="186.69" size="1.27" layer="96"/>
 </instance>
 <instance part="FRAME4" gate="G$1" x="0" y="0" smashed="yes"/>
 <instance part="FRAME4" gate="G$2" x="172.72" y="0" smashed="yes">
@@ -14826,8 +14846,8 @@ Adafruit Breakout Board</text>
 <attribute name="VALUE" x="167.64" y="91.44" size="1.778" layer="96"/>
 </instance>
 <instance part="BT1" gate="G$1" x="170.18" y="101.6" smashed="yes" rot="R270">
-<attribute name="NAME" x="173.978640625" y="102.873790625" size="1.27" layer="95"/>
-<attribute name="VALUE" x="173.97816875" y="97.78211875" size="1.27" layer="96"/>
+<attribute name="NAME" x="163.818640625" y="102.873790625" size="1.27" layer="95"/>
+<attribute name="VALUE" x="173.97816875" y="102.86211875" size="1.27" layer="96"/>
 </instance>
 <instance part="U14" gate="A" x="228.6" y="172.72" smashed="yes">
 <attribute name="NAME" x="220.98" y="182.88" size="1.778" layer="95"/>
@@ -14851,7 +14871,7 @@ Adafruit Breakout Board</text>
 </instance>
 <instance part="U7" gate="A" x="55.88" y="101.6" smashed="yes">
 <attribute name="NAME" x="45.72" y="107.95" size="2.0828" layer="95" ratio="6" rot="SR0"/>
-<attribute name="VALUE" x="43.18" y="93.98" size="2.0828" layer="96" ratio="6" rot="SR0"/>
+<attribute name="VALUE" x="48.26" y="93.98" size="1.27" layer="96" ratio="6" rot="SR0"/>
 </instance>
 <instance part="C22" gate="G$1" x="33.02" y="99.06" smashed="yes">
 <attribute name="NAME" x="26.416" y="99.695" size="1.778" layer="95"/>
@@ -14894,7 +14914,7 @@ Adafruit Breakout Board</text>
 <segment>
 <pinref part="R10" gate="G$1" pin="2"/>
 <pinref part="P+8" gate="1" pin="+5V"/>
-<wire x1="99.06" y1="180.34" x2="99.06" y2="182.88" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="180.34" x2="104.14" y2="182.88" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+24" gate="1" pin="+5V"/>
@@ -15096,11 +15116,13 @@ Adafruit Breakout Board</text>
 </net>
 <net name="T-ALERT" class="0">
 <segment>
-<pinref part="R10" gate="G$1" pin="1"/>
-<wire x1="99.06" y1="170.18" x2="99.06" y2="167.64" width="0.1524" layer="91"/>
 <pinref part="U4" gate="A" pin="ALERT"/>
-<wire x1="99.06" y1="167.64" x2="121.92" y2="167.64" width="0.1524" layer="91"/>
-<label x="99.06" y="167.64" size="1.016" layer="95" rot="R180" xref="yes"/>
+<wire x1="101.6" y1="167.64" x2="104.14" y2="167.64" width="0.1524" layer="91"/>
+<label x="101.6" y="167.64" size="1.016" layer="95" rot="R180" xref="yes"/>
+<pinref part="R10" gate="G$1" pin="1"/>
+<wire x1="104.14" y1="167.64" x2="121.92" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="170.18" x2="104.14" y2="167.64" width="0.1524" layer="91"/>
+<junction x="104.14" y="167.64"/>
 </segment>
 </net>
 <net name="VBAT" class="0">
@@ -16489,6 +16511,15 @@ Pin 8 at 5.61, 0.83 in</text>
 <sheet>
 <description>Voltage Monitor</description>
 <plain>
+<text x="91.44" y="124.46" size="1.778" layer="250" ratio="9">24 VDC divided down
+to 4.22 VDC for the
+ATMega4809 ADC</text>
+<wire x1="68.58" y1="162.56" x2="119.38" y2="162.56" width="0.254" layer="250"/>
+<wire x1="119.38" y1="162.56" x2="119.38" y2="111.76" width="0.254" layer="250"/>
+<wire x1="119.38" y1="111.76" x2="68.58" y2="111.76" width="0.254" layer="250"/>
+<wire x1="68.58" y1="111.76" x2="68.58" y2="162.56" width="0.254" layer="250"/>
+<text x="93.98" y="152.4" size="2.54" layer="250" ratio="9">Input Power
+sense voltage</text>
 </plain>
 <instances>
 <instance part="FRAME9" gate="G$1" x="0" y="0" smashed="yes"/>
@@ -16787,8 +16818,8 @@ and from chassis ground to +3.3 V.
 Spikes from chassis ground are shared
 to maintain 3.3 V signaling.</text>
 <text x="190.5" y="167.64" size="1.778" layer="250">Change to 4-pin Molex 22112042 gold pin</text>
-<text x="53.34" y="144.78" size="1.778" layer="250">Use old RS-232
-cabling</text>
+<text x="53.34" y="134.62" size="1.778" layer="250">Use old cabling
+to PI controllers</text>
 <wire x1="12.7" y1="38.1" x2="76.2" y2="38.1" width="0.1524" layer="250"/>
 <wire x1="76.2" y1="38.1" x2="76.2" y2="15.24" width="0.1524" layer="250"/>
 <wire x1="76.2" y1="15.24" x2="12.7" y2="15.24" width="0.1524" layer="250"/>
@@ -16821,8 +16852,8 @@ cabling</text>
 <attribute name="VALUE" x="66.04" y="113.03" size="1.27" layer="96"/>
 </instance>
 <instance part="C23" gate="G$1" x="68.58" y="96.52" smashed="yes" rot="MR0">
-<attribute name="NAME" x="75.184" y="97.155" size="1.778" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="75.184" y="92.329" size="1.778" layer="96" rot="MR0"/>
+<attribute name="NAME" x="65.024" y="97.155" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="65.024" y="92.329" size="1.778" layer="96" rot="MR0"/>
 </instance>
 <instance part="GND29" gate="1" x="68.58" y="86.36" smashed="yes">
 <attribute name="VALUE" x="66.04" y="83.82" size="1.778" layer="96"/>
@@ -17458,13 +17489,17 @@ cabling</text>
 <attribute name="NAME" x="127" y="120.65" size="1.778" layer="95"/>
 <attribute name="VALUE" x="127" y="111.76" size="1.778" layer="96"/>
 </instance>
-<instance part="TP6" gate="G$1" x="129.54" y="99.06" smashed="yes">
+<instance part="TP6" gate="G$1" x="129.54" y="81.28" smashed="yes">
+<attribute name="NAME" x="127" y="85.09" size="1.778" layer="95"/>
+<attribute name="VALUE" x="127" y="76.2" size="1.778" layer="96"/>
+</instance>
+<instance part="TP5" gate="G$1" x="129.54" y="99.06" smashed="yes">
 <attribute name="NAME" x="127" y="102.87" size="1.778" layer="95"/>
 <attribute name="VALUE" x="127" y="93.98" size="1.778" layer="96"/>
 </instance>
-<instance part="TP5" gate="G$1" x="129.54" y="187.96" smashed="yes">
-<attribute name="NAME" x="127" y="191.77" size="1.778" layer="95"/>
-<attribute name="VALUE" x="127" y="182.88" size="1.778" layer="96"/>
+<instance part="TP7" gate="G$1" x="129.54" y="63.5" smashed="yes">
+<attribute name="NAME" x="127" y="67.31" size="1.778" layer="95"/>
+<attribute name="VALUE" x="127" y="58.42" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -17478,8 +17513,8 @@ cabling</text>
 </segment>
 <segment>
 <pinref part="TP5" gate="G$1" pin="1"/>
-<wire x1="124.46" y1="187.96" x2="121.92" y2="187.96" width="0.1524" layer="91"/>
-<label x="121.92" y="187.96" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="124.46" y1="99.06" x2="121.92" y2="99.06" width="0.1524" layer="91"/>
+<label x="121.92" y="99.06" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -17505,9 +17540,16 @@ cabling</text>
 </net>
 <net name="+24V" class="0">
 <segment>
-<wire x1="124.46" y1="99.06" x2="121.92" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="81.28" x2="121.92" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="TP6" gate="G$1" pin="1"/>
-<label x="121.92" y="99.06" size="1.778" layer="95" rot="R180" xref="yes"/>
+<label x="121.92" y="81.28" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="VSENSE" class="0">
+<segment>
+<pinref part="TP7" gate="G$1" pin="1"/>
+<wire x1="124.46" y1="63.5" x2="121.92" y2="63.5" width="0.1524" layer="91"/>
+<label x="121.92" y="63.5" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>
