@@ -43,12 +43,17 @@ uint8_t read_MCP23008(uint8_t addr, uint8_t reg)
 		return(0xFF);
 	}
 	write_TWI(reg);
-	start_TWI(addr, TWIREAD);
+	if (start_TWI(addr, TWIREAD) == ERROR) {
+		printError(ERR_MCP23008, "MCP23008 read error");
+		stop_TWI();
+		return(0xFF);
+	}
 	value = readlast_TWI();
 	stop_TWI();
 	return(value);
 
 }
+
 /*
 uint8_t read_MCP23008(uint8_t addr, uint8_t reg, uint8_t *val)
 {

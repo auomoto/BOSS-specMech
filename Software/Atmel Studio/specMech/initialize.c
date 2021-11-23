@@ -4,6 +4,8 @@
 #include "roboclaw.h"
 #include "initialize.h"
 
+#include "errors.h" //TESTING
+
 uint8_t rebootackd;
 
 void initialize(void)
@@ -16,14 +18,14 @@ void initialize(void)
 	timeoutOLED = 30 * (512/32);	// 30 seconds for version display
 
 	init_PORTS();
-	init_RTC(32);	// Fast, 1/16 sec, for blinking LED at startup
 	init_TWI();
+	init_RTC(32);	// Fast, 1/16 sec, for blinking LED at startup
 	init_MMA8451();	// Accelerometer; needs TWI
-	init_PNEU();	// Set up MCP23008; needs TWI
 	init_OLED();	// Needs TWI
-	init_EEPROM();	// Needs TWI to get boot time
+	init_EEPROM();	// Needs TWI to get boot time from clock
 	init_USART();
 	sei();
+
 	init_MOTORS();	// Needs USART & interrupts on
 	get_VERSION(versionstr);
 	writestr_OLED(0,"specMech Version", 1);

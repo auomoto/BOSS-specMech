@@ -42,6 +42,33 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 }
 
 /*------------------------------------------------------------------------------
+int16_t enc2microns(uint32_t encoderValue)
+	Converts a motor encoder value to microns. The encoder value is an unsigned
+		long integer (uint32) but the position in microns can be negative. The
+		encoder value is offset by ENC_ZEROPOINT to keep encoder values positive
+		and scaled by ENC_COUNTS_PER_MICRON.
+
+	Input:
+		encoderValue - a 32-bit unsigned integer.
+
+	Returns:
+		The equivalent motor position in microns.
+------------------------------------------------------------------------------*/
+int16_t enc2microns(uint32_t encoderValue)
+{
+
+	int32_t temp;
+
+	if (encoderValue >= 0x7FFFFFFF) {	// Check for overflow to negative values
+		printError(ERR_MTR_ENC_VAL, "enc2microns encoder value out of range");
+//		return(0xFFFF);
+	}
+	temp = (int32_t) encoderValue - ENC_ZEROPOINT;
+	return((int16_t) (temp / ENC_COUNTS_PER_MICRON));	// add 1/2 the remainder?
+
+}
+
+/*------------------------------------------------------------------------------
 uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
 	Retrieves the encoder value stored in FRAM
 
@@ -55,7 +82,7 @@ uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
 		ERROR on FRAM read error
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-uint8_t getFRAM_MOTOREncoder(uint8_t controller, int32_t *encoderValue)
+uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
 {
 
 	uint8_t tbuf[4];
@@ -80,7 +107,7 @@ uint8_t getFRAM_MOTOREncoder(uint8_t controller, int32_t *encoderValue)
 	}
 
 	if (read_FRAM(FRAMTWIADDR, framaddr, tbuf, 4) == ERROR) {
-		*encoderValue = 0xFFFFFFFF;
+		*encoderValue = 0x7FFFFFFF;
 		return(ERROR);
 	}
 
@@ -104,8 +131,8 @@ uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
 					ENCODERSPEED (command 18)
 
 	Output:
-		value: the encoder value or speed. It's declared as an unsigned
-			integer but sprintf interprets it correctly if it's negative.
+		value: the encoder value or speed. RoboClaw encoder values are unsigned
+			longs from 0 to 4,294,967,295.
 
 	Returns
 		ERROR on USART timeout or RoboClaw not-0xFF reply error
@@ -118,7 +145,7 @@ uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
 			Bit2: Counter overflow (1=overflow occurred, clear after reading)
 			Bits 3-7 are "reserved." Bit7 is 1.
 ------------------------------------------------------------------------------*/
-uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, int32_t *value)
+uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
 {
 
 	uint8_t i, tbuf[7];
@@ -130,11 +157,13 @@ uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, int32_t *value)
 
 	tbuf[0] = controller;			// Build command
 	tbuf[1] = command;				// ENCODDERCOUNT or ENCODERSPPEED
+
 	send_USART(1, tbuf, 2);			// Send the command
 
+	USART1_ticks = 0;
 	start_TCB0(1);
 	while (recv1_buf.done == NO) {	// Wait for the reply
-		if (ticks > 500) {			// Timeout
+		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
 			stop_TCB0();
 			printError(ERR_MTRREADENC, "get_MOTOREncoder timeout");
 			return(ERROR);
@@ -198,14 +227,15 @@ uint8_t get_MOTORFloat(uint8_t controller, uint8_t command, float *value)
 	tbuf[1] = command;
 	send_USART(1, tbuf, 2);				// Send command
 
+	USART1_ticks = 0;
 	start_TCB0(1);
 	for (;;) {
 		if (recv1_buf.done == YES) {	// Receive reply
 			break;
 		}
-		if (ticks > 50) {				// Timeout
+		if (USART1_ticks > 50) {				// Timeout
 			stop_TCB0();
-			printError(ERR_MTRREADENC, "ROBOFloat timeout");
+			printError(ERR_MTRREADENC, "get_MOTORFloat timeout");
 			return(ERROR);
 		}
 	}
@@ -230,7 +260,7 @@ uint8_t get_MOTORFloat(uint8_t controller, uint8_t command, float *value)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
+uint8_t get_MOTORCurrent(uint8_t controller, uint8_t command, uint32_t *value)
 	Returns a 32-bit integer from a RoboClaw controller. This could be the
 	motor current (ROBOREADCURRENT 49).
 
@@ -245,7 +275,7 @@ uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
 		ERROR: USART timeout or CRC error
 		NOERROR
 ------------------------------------------------------------------------------*/
-uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
+uint8_t get_MOTORCurrent(uint8_t controller, uint8_t command, uint32_t *value)
 {
 	uint8_t i, tbuf[6];
 	uint16_t crcReceived, crcExpected;
@@ -259,15 +289,16 @@ uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
 	tbuf[1] = command;
 	send_USART(1, tbuf, 2);				// Send command
 
+	USART1_ticks = 0;
 	start_TCB0(1);
 	for (;;) {
 		if (recv1_buf.done == YES) {	// Receive reply
 			stop_TCB0();
 			break;
 		}
-		if (ticks > 50) {				// Timeout
+		if (USART1_ticks > 50) {		// Timeout is usally after 3 ms (38400 baud)
 			stop_TCB0();
-			printError(ERR_MTRTIMEOUT, "get_MOTORInt32 timeout");
+			printError(ERR_MTRTIMEOUT, "get_MOTORCurrent timeout");
 			return(ERROR);
 		}
 	}
@@ -280,7 +311,7 @@ uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
 	crcExpected = crc16(tbuf, 6);
 
 	if (crcReceived != crcExpected) {
-		printError(ERR_MTRENCCRC, "get_MOTORInt32 CRC error");
+		printError(ERR_MTRENCCRC, "get_MOTORCurrent CRC error");
 		*value = 0xFFFFFFFF;
 		return(ERROR);
 	}
@@ -294,6 +325,71 @@ uint8_t get_MOTORInt32(uint8_t controller, uint8_t command, uint32_t *value)
 	return(NOERROR);
 
 }
+
+/*------------------------------------------------------------------------------
+uint8_t get_MOTORSpeed(uint8_t controller, uint32_t *speed, uint32_t *direction)
+	Gets the motor speed in encoder pulses/sec
+
+	Inputs:
+		controller: MOTOR_A, MOTOR_B, or MOTOR_C
+
+	Outputs:
+		speed: Unsigned speed in encoder pulses/sec
+		direction: 0 for forward, 1 for backward
+
+	Returns:
+		ERROR: USART timeout or CRC error
+		NOERROR
+------------------------------------------------------------------------------*/
+uint8_t get_MOTORSpeed(uint8_t controller, uint32_t* speedValue, uint8_t* direction)
+{
+
+	uint8_t i, tbuf[7];
+	uint16_t crcReceived, crcExpected;
+
+	recv1_buf.nbytes = 7;			// Set up receive buffer
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
+	tbuf[0] = controller;			// Build command
+	tbuf[1] = ENCODERSPEED;			// Command 18
+
+	send_USART(1, tbuf, 2);			// Send the command
+
+	USART1_ticks = 0;
+	start_TCB0(1);
+	while (recv1_buf.done == NO) {	// Wait for the reply
+		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
+			stop_TCB0();
+			printError(ERR_MTRREADENC, "get_MOTORSpeed timeout");
+			return(ERROR);
+		}
+	}
+	stop_TCB0();
+
+	crcReceived = (recv1_buf.data[5] << 8) | recv1_buf.data[6];
+
+	for (i = 2; i < 7; i++) {		// Compute expected crc value
+		tbuf[i] = recv1_buf.data[i-2];
+	}
+	crcExpected = crc16(tbuf, 7);
+
+	if (crcReceived != crcExpected) {
+		*speedValue = 0xFFFFFFFF;
+		printError(ERR_MTRENCCRC, "get_MOTORSpeed CRC error");
+		return(ERROR);
+	}
+
+	*speedValue =  (uint32_t) recv1_buf.data[0] << 24;
+	*speedValue |= (uint32_t) recv1_buf.data[1] << 16;
+	*speedValue |= (uint32_t) recv1_buf.data[2] << 8;
+	*speedValue |= (uint32_t) recv1_buf.data[3];
+	*direction = tbuf[4];
+
+	return(NOERROR);
+
+}
+
 
 /*------------------------------------------------------------------------------
 uint8_t init_MOTORS(void)
@@ -315,7 +411,7 @@ uint8_t init_MOTORS(void)
 {
 
 	uint8_t controller;
-	int32_t encoderValue;
+	uint32_t encoderValue;
 
 	_delay_ms(100);	// 50 seems to work
 	timerSAVEENCODER = 0;
@@ -328,10 +424,34 @@ uint8_t init_MOTORS(void)
 	return(NOERROR);
 }
 
+/*------------------------------------------------------------------------------
+uint32_t microns2enc(int16_t micronValue)
+	Converts a motor position in microns to encoder values. The encoder value
+		is a uint32 but the position in microns can be negative, so we offset
+		the true encoder value by ENC_ZEROPOINT to allow this.
+
+	Input:
+		micronValue - a 16-bit signed integer that the user sees when
+			interrogating the motor controller.
+
+	Returns:
+		The actual target encoder value that corresponds to the position in
+			microns.
+------------------------------------------------------------------------------*/
+uint32_t microns2enc(int16_t micronValue)
+{
+
+	int32_t temp;
+
+	temp = ((int32_t) micronValue * ENC_COUNTS_PER_MICRON) + ENC_ZEROPOINT;
+	return((uint32_t) temp);
+
+}
+
 uint8_t motorsMoving(void)
 {
 	uint8_t i;
-	int32_t encoderSpeed;
+	uint32_t encoderSpeed;
 
 	for (i = MOTOR_A; i <= MOTOR_C; i++) {
 		get_MOTOREncoder(i, ENCODERSPEED, &encoderSpeed);
@@ -359,7 +479,7 @@ uint8_t move_MOTOR(uint8_t cstack)
 {
 
 	uint8_t motor, controller, retval;
-	int32_t newPosition, currentPosition;
+	uint32_t newPosition, currentPosition;
 
 	motor = pcmd[cstack].cobject;
 	switch(motor) {
@@ -450,13 +570,14 @@ uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
 
 	send_USART(1, tbuf, 21);			// Send command
 
+	USART1_ticks = 0;
 	start_TCB0(1);						// Start 1 ms ticks timer
 	for (;;) {
 		if (recv1_buf.done == YES) {	// Reply received
 			stop_TCB0();
 			break;
 		}
-		if (ticks > 50) {				// 4 ms just barely works at 38400 baud
+		if (USART1_ticks > 50) {				// 4 ms just barely works at 38400 baud
 			stop_TCB0();
 			printError(ERR_MTRTIMEOUT, "move_MOTORAbsolute timeout");
 			return(ERROR);
@@ -491,7 +612,7 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 
 	uint8_t tbuf[4];
 	uint16_t memaddr;
-	int32_t encoderValue;
+	uint32_t encoderValue;
 
 	switch (controller) {
 		case MOTOR_A:
@@ -554,7 +675,7 @@ uint8_t set_MOTOREncoder(uint8_t controller, uint32_t value)
 		double-check at startup to make sure the encoder values agree before
 		a move.
 ------------------------------------------------------------------------------*/
-uint8_t set_MOTOREncoder(uint8_t controller, int32_t value)
+uint8_t set_MOTOREncoder(uint8_t controller, uint32_t value)
 {
 
 	uint8_t tbuf[8];
@@ -575,6 +696,7 @@ uint8_t set_MOTOREncoder(uint8_t controller, int32_t value)
 
 	send_USART(1, tbuf, 8);				// Send the command
 
+	USART1_ticks = 0;
 	start_TCB0(1);						// Start 1 ms ticks timer
 
 	for (;;) {
@@ -582,14 +704,16 @@ uint8_t set_MOTOREncoder(uint8_t controller, int32_t value)
 			stop_TCB0();
 			break;
 		}
-		if (ticks > 50) {				// 4 ms barely works at 38400 baud
+		if (USART1_ticks > 50) {				// 4 ms barely works at 38400 baud
 			stop_TCB0();
+			printError(ERR_MTRTIMEOUT, "set_MOTOREncoder timeout");
 			return(ERROR);
 		}
 
 	}
 
 	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
+		printError(ERR_MTRTIMEOUT, "set_MOTOREncoder bad ack");
 		return(ERROR);
 	}
 

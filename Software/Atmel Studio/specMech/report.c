@@ -2,7 +2,6 @@
 #include "wdt.h"
 #include "usart.h"
 #include "set.h"
-//#include "specID.h"
 #include "commands.h"
 #include "ds3231.h"
 #include "temperature.h"
@@ -49,12 +48,13 @@ uint8_t report(uint8_t cstack)
 	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
-	uint8_t retval, controller;
-	int32_t encoderValue, encoderSpeed, micronValue, micronSpeed;
+	uint8_t retval, controller, encoderDirection;
+	uint32_t encoderValue, encoderSpeed;
+	int32_t micronValue, micronSpeed;
 	uint32_t icurrents;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float voltage;							// voltage
-	uint16_t current;
+	uint16_t motorCurrent;
 	float x, y, z;							// accelerometer
 	float redvac, bluvac;					// red and blue vacuum
 
@@ -87,19 +87,29 @@ uint8_t report(uint8_t cstack)
 			if (retval == ERROR) {
 				encoderValue = 0x7FFFFFFF;
 			}
-			micronValue = encoderValue/ROBOCOUNTSPERMICRON;
+			micronValue = enc2microns(encoderValue);
+//			micronValue = encoderValue/ROBOCOUNTSPERMICRON;
+
+			if (get_MOTORSpeed(controller, &encoderSpeed, &encoderDirection) == ERROR) {
+				encoderSpeed = 0x7FFFFFFF;
+			}
+
+/* get rid if this after checking
 			retval = get_MOTOREncoder(controller, ENCODERSPEED, &encoderSpeed);
 			if (retval == ERROR) {
 				encoderSpeed = 0x7FFFFFFF;
 			}
-			micronSpeed = encoderSpeed/ROBOCOUNTSPERMICRON;
-			retval = get_MOTORInt32(controller, ROBOREADCURRENT, &icurrents);
+*/
+
+			micronSpeed = enc2microns(encoderSpeed);
+//			micronSpeed = encoderSpeed/ROBOCOUNTSPERMICRON;
+			retval = get_MOTORCurrent(controller, ROBOREADCURRENT, &icurrents);
 			if (retval == ERROR) {
-				icurrents = 0x7FFFFFFF;
+				icurrents = 0xFFFFFFFF;
 			}
-			current = (uint16_t) ((icurrents >> 16) * 10);	// convert to mA
+			motorCurrent = (uint16_t) ((icurrents >> 16) * 10);	// convert to mA
 			sprintf(outbuf, format_MTR, currenttime, pcmd[cstack].cobject,
-				micronValue, micronSpeed, current, pcmd[cstack].cid);
+				micronValue, micronSpeed, motorCurrent, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 

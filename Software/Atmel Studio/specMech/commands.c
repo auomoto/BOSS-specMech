@@ -28,7 +28,7 @@ void commands(void)
 
 	get_cmdline(cmdline);
 
-	if (!rebootACKd(cmdline)) {		// Reboot acknowledge failed
+	if (!rebootACKd(cmdline)) {		// Reboot not yet acknowledged
 		return;
 	}
 

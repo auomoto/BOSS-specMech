@@ -11,10 +11,9 @@ void init_TWI(void)
 		SDA is on PA2
 		SCL is on PA3
 
-	In the data sheet, ATmega4808-4809-Data-Sheet-DS40002173A.pdf, the TWI
-	interface information is in section 25, starting on page 326.
-
-	Initialization instructions are in section 25.3.1 (p327):
+	The TWI interface information is in section 25 (page 326) of the data sheet,
+	ATmega4808-4809-Data-Sheet-DS40002173A.pdf. Initialization instructions are
+	in section 25.3.1 (p327):
 
 	1.	Set SDASETUP and SDAHOLD in TWI.CTRLA. These are important only for
 		SMB operation so will use the startup defaults (do nothing).
@@ -48,22 +47,31 @@ void init_TWI(void)
 /*------------------------------------------------------------------------------
 uint8_t read_TWI(void)
 	Read one byte then send an ACK.
-	Use readlast_TWI() to read the last byte and send a NACK.
+	Use readlast_TWI() to read the last (or only) byte and send a NACK.
 ------------------------------------------------------------------------------*/
 uint8_t read_TWI(void)
 {
 
 	uint8_t data;
 
+	TWI_ticks = 0;
+	start_TCB0(1);								// 1 ms ticks
 	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait xfer to complete
-		asm("nop");								// Should set timer here
+		asm("nop");
+		if (TWI_ticks > 50) {					// Typically 0 ticks needed
+			printError(ERR_TWI, "read_TWI timeout");
+			stop_TCB0();
+			return(0xFF);
+		}
 	}
+	stop_TCB0();
 
-	TWI0.MCTRLB &= ~(1<<TWI_ACKACT_bp);			// Send ACK, next read
-	data = TWI0.MDATA;
+	TWI0.MCTRLB &= ~(1<<TWI_ACKACT_bp);			// Send ACK
+	data = TWI0.MDATA;							// Next read
 	TWI0.MCTRLB |= TWI_MCMD_RECVTRANS_gc;		// Send ACK after read
 
 	return(data);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -76,9 +84,17 @@ uint8_t readlast_TWI(void)
 
 	uint8_t data;
 
+	TWI_ticks = 0;
+	start_TCB0(1);								// 1 ms ticks
 	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait for xfer to complete
 		asm("nop");
+		if (TWI_ticks > 50) {						// Typically 0 ticks needed
+			printError(ERR_TWI, "readlast timeout");
+			stop_TCB0();
+			return(0xFF);
+		}
 	}
+	stop_TCB0();
 
 	TWI0.MCTRLB |= TWI_ACKACT_NACK_gc;
 	data = TWI0.MDATA;
@@ -121,15 +137,18 @@ uint8_t start_TWI(uint8_t addr, uint8_t rw)
 		TWI0.MADDR = (addr << 1);
 	}
 
-	start_TCB0(1);
+	TWI_ticks = 0;
+	start_TCB0(1);								// 1 ms ticks
 	while (!(TWI0.MSTATUS & (TWI_WIF_bm | TWI_RIF_bm))) {
-		if (ticks > 10) {
+		asm("nop");								// Wait for addr transmission
+		if (TWI_ticks > 50) {
+			printError(ERR_TWI, "TWI start timeout");
 			stop_TCB0();
 			return(ERROR);
 		}
-		asm("nop");								// Wait for addr transmission
 	}
 	stop_TCB0();
+
 	if ((TWI0.MSTATUS & TWI_BUSERR_bm)) {		// Bus error
 		printError(ERR_TWI, "TWI bus");
 		return(ERROR);
@@ -137,6 +156,7 @@ uint8_t start_TWI(uint8_t addr, uint8_t rw)
 		printError(ERR_TWI, "TWI arbitration");
 		return(ERROR);
 	} else if (TWI0.MSTATUS & TWI_RXACK_bm) {	// No device responded
+		printError(ERR_TWI, "TWI no device responded");
 		return(ERROR);
 	}
 
@@ -167,23 +187,34 @@ uint8_t write_TWI(uint8_t data)
 uint8_t write_TWI(uint8_t data)
 {
 
+	TWI_ticks = 0;
+	start_TCB0(1);							// 1 ms ticks
 	while (!(TWI0.MSTATUS & TWI_WIF_bm)) {	// Wait for previous writes
 		asm("nop");
-	}
-
-	TWI0.MDATA = data;
-
-	start_TCB0(1);			// Maybe only check on start_TWI?
-	while (!(TWI0.MSTATUS & TWI_WIF_bm)) {
-		asm("nop");
-		if (ticks > 50) {
+		if (TWI_ticks > 50) {
+			printError(ERR_TWI, "write_TWI error1");
 			stop_TCB0();
 			return(ERROR);
-			break;
 		}
 	}
 	stop_TCB0();
+
+	TWI0.MDATA = data;
+
+	TWI_ticks = 0;
+	start_TCB0(1);
+	while (!(TWI0.MSTATUS & TWI_WIF_bm)) {
+		asm("nop");
+		if (TWI_ticks > 50) {
+			printError(ERR_TWI, "write_TWI error2");
+			stop_TCB0();
+			return(ERROR);
+		}
+	}
+	stop_TCB0();
+
 	if (TWI0.MSTATUS & TWI_RXACK_bm) {		// If device did not ACK
+		printError(ERR_TWI, "ACK not received");
 		return(ERROR);
 	} else {
 		return(NOERROR);

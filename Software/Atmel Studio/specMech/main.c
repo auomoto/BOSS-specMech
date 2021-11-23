@@ -18,11 +18,13 @@ ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 
 uint8_t firstpass;
 
+void read_PNEUSensors(char*, char*, char*, char*);	//TESTING
+
 int main(void)
 {
 
 	firstpass = YES;		// Set to NO in commands.c
-	squelchErrors = YES;
+	squelchErrors = YES;	// Don't need this?
 	initialize();
 	squelchErrors = NO;
 
@@ -44,4 +46,5 @@ int main(void)
 			squelchErrors = NO;
 		}
 	}
+
 }
