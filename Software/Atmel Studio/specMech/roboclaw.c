@@ -59,10 +59,6 @@ int16_t enc2microns(uint32_t encoderValue)
 
 	int32_t temp;
 
-	if (encoderValue >= 0x7FFFFFFF) {	// Check for overflow to negative values
-		printError(ERR_MTR_ENC_VAL, "enc2microns encoder value out of range");
-//		return(0xFFFF);
-	}
 	temp = (int32_t) encoderValue - ENC_ZEROPOINT;
 	return((int16_t) (temp / ENC_COUNTS_PER_MICRON));	// add 1/2 the remainder?
 
@@ -443,7 +439,7 @@ uint32_t microns2enc(int16_t micronValue)
 
 	int32_t temp;
 
-	temp = ((int32_t) micronValue * ENC_COUNTS_PER_MICRON) + ENC_ZEROPOINT;
+	temp = ((int32_t) micronValue * ENC_COUNTS_PER_MICRON) + (uint32_t) ENC_ZEROPOINT;
 	return((uint32_t) temp);
 
 }
@@ -496,6 +492,7 @@ uint8_t move_MOTOR(uint8_t cstack)
 			controller = motor + 31;
 			retval = get_MOTOREncoder(controller, ENCODERCOUNT, &currentPosition);
 			if (retval == ERROR) {
+				printError(ERR_MTR_ENC_VAL, "move_MOTOR get encoder error");
 				return(ERROR);
 			}
 			break;
@@ -511,13 +508,19 @@ uint8_t move_MOTOR(uint8_t cstack)
 		return(ERROR);
 	}
 
-	newPosition = currentPosition + (atol(pcmd[cstack].cvalue) * ROBOCOUNTSPERMICRON);
+
+	newPosition = currentPosition + (atol(pcmd[cstack].cvalue) * ENC_COUNTS_PER_MICRON);
+//	newPosition = currentPosition + microns2enc((int16_t) atoi(pcmd[cstack].cvalue));
+//	newPosition = currentPosition + microns2enc(-1);
+char strbuf[80];
+sprintf(strbuf, "move_MOTOR current=%lu, new=%lu", currentPosition, newPosition);
+printLine(strbuf);
 	return(move_MOTORAbsolute(controller, newPosition));
 
 }
 
 /*------------------------------------------------------------------------------
-uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
+uint8_t move_MOTORAbsolute(uint8_t controller, uint32_t newPosition)
 	Move the motor on the selected controller to a new absolute position.
 
 	Inputs:
@@ -528,12 +531,16 @@ uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
 		ERROR on USART timeout or bad (not 0xFF) ack
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
+uint8_t move_MOTORAbsolute(uint8_t controller, uint32_t newPosition)
 {
 
 	uint8_t tbuf[21], buffer;
 	uint16_t crc;
 	uint32_t acceleration, deceleration, speed;
+
+char strbuf[80];
+sprintf(strbuf, "mABS: newpos=%lu", newPosition);
+printLine(strbuf);
 
 	acceleration = ACCELERATION;
 	deceleration = DECELERATION;
@@ -569,6 +576,8 @@ uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
 	tbuf[20] = crc & 0xFF;
 
 	send_USART(1, tbuf, 21);			// Send command
+
+printError(ERR_MTR_ENC_VAL, "sent moveabs command");
 
 	USART1_ticks = 0;
 	start_TCB0(1);						// Start 1 ms ticks timer
@@ -632,6 +641,7 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 	}
 
 	get_MOTOREncoder(controller, ENCODERCOUNT, &encoderValue);
+
 	tbuf[0] = (encoderValue >> 24) & 0xFF;
 	tbuf[1] = (encoderValue >> 16) & 0xFF;
 	tbuf[2] = (encoderValue >> 8) & 0xFF;

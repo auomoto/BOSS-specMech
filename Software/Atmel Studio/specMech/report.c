@@ -87,22 +87,29 @@ uint8_t report(uint8_t cstack)
 			if (retval == ERROR) {
 				encoderValue = 0x7FFFFFFF;
 			}
+//printError(ERR_MTR_ENC_VAL, "report.c point 1");
+//sprintf(outbuf, "encval=%lu", encoderValue);
+//printLine(outbuf);
 			micronValue = enc2microns(encoderValue);
-//			micronValue = encoderValue/ROBOCOUNTSPERMICRON;
 
 			if (get_MOTORSpeed(controller, &encoderSpeed, &encoderDirection) == ERROR) {
+				printError(ERR_MTRREADENC, "report bad speed");
 				encoderSpeed = 0x7FFFFFFF;
 			}
 
-/* get rid if this after checking
-			retval = get_MOTOREncoder(controller, ENCODERSPEED, &encoderSpeed);
-			if (retval == ERROR) {
-				encoderSpeed = 0x7FFFFFFF;
-			}
-*/
+//printError(ERR_MTR_ENC_VAL, "report.c point 2");
+//sprintf(outbuf, "speedval=%lu", encoderSpeed);
+//printLine(outbuf);
 
-			micronSpeed = enc2microns(encoderSpeed);
-//			micronSpeed = encoderSpeed/ROBOCOUNTSPERMICRON;
+			micronSpeed = encoderSpeed/ENC_COUNTS_PER_MICRON;
+			if (encoderDirection) {
+				micronSpeed = -micronSpeed;
+			}
+
+//printError(ERR_MTR_ENC_VAL, "report.c point 3");
+//sprintf(outbuf, "speed in microns=%ld", micronSpeed);
+//printLine(outbuf);
+
 			retval = get_MOTORCurrent(controller, ROBOREADCURRENT, &icurrents);
 			if (retval == ERROR) {
 				icurrents = 0xFFFFFFFF;

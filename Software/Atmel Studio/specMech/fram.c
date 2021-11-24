@@ -10,7 +10,14 @@ fram.c
 #include "twi.h"
 #include "fram.h"
 
-#include "commands.h" // only for testing
+/*------------------------------------------------------------------------------
+uint8_t get_SETTIME(char *lastsettime)
+	Retrieves the time that the date-time clock was most recently set.
+
+	Input: None
+	Output: The data from FRAM, presumably containing the time
+	Returns: ERROR or NOERROR
+------------------------------------------------------------------------------*/
 uint8_t get_SETTIME(char *lastsettime)
 {
 
@@ -92,50 +99,6 @@ uint8_t write_FRAM(uint8_t addr, uint16_t memaddr, uint8_t *val, uint8_t nbytes)
 {
 
 	uint8_t i, memhigh, memlow;
-
-	memlow = memaddr & 0xFF;
-	memhigh = (memaddr >> 8);
-
-	if (start_TWI(addr, TWIWRITE) == ERROR) {	// TWI START
-		return(ERROR);
-	}
-
-	if (write_TWI(memhigh) == ERROR) {			// FRAM address to write
-		return(ERROR);
-	}
-	if (write_TWI(memlow) == ERROR) {			// FRAM address to write
-		return(ERROR);
-	}
-
-	for (i = 0; i < nbytes; i++) {
-		if (write_TWI(*val++) == ERROR) {		// Write to FRAM
-			return(ERROR);
-		}
-	}
-
-	stop_TWI();
-
-	return(NOERROR);
-
-}
-
-uint8_t write_FRAMx(uint8_t addr, uint8_t item, uint8_t *val)
-{
-
-	uint8_t i, memhigh, memlow, nbytes;
-	uint16_t memaddr;
-
-	switch (item) {
-		case (SETTIMEFRAM):
-			memaddr = SETTIMEADDR;
-			nbytes = ISOTIMELEN;
-			break;
-
-		default:
-			return(ERROR);
-			break;
-
-	}
 
 	memlow = memaddr & 0xFF;
 	memhigh = (memaddr >> 8);

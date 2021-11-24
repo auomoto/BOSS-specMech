@@ -12,6 +12,5 @@
 uint8_t get_SETTIME(char *lastsettime);
 uint8_t read_FRAM(uint8_t, uint16_t, uint8_t *, uint8_t);
 uint8_t write_FRAM(uint8_t, uint16_t, uint8_t *, uint8_t);
-uint8_t write_FRAMx(uint8_t, uint8_t, uint8_t *);
 
 #endif
