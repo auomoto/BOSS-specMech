@@ -48,7 +48,7 @@ uint8_t report(uint8_t cstack)
 	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
-	uint8_t retval, controller, encoderDirection;
+	uint8_t retval, controller;
 	int32_t encoderValue, encoderSpeed;
 	int32_t micronValue, micronSpeed;
 	uint32_t icurrents;
@@ -83,31 +83,19 @@ uint8_t report(uint8_t cstack)
 		case 'c':
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 31;
-			retval = get_MOTOREncoder(controller, ENCODERCOUNT, &encoderValue);
-			if (retval == ERROR) {
-				encoderValue = 0x7FFFFFFF;
+
+//			retval = get_MOTOR_ENCODER(controller, &encoderValue);
+			if (get_MOTOR_ENCODER(controller, &encoderValue) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_ENCODER error");
+				return(ERROR);
 			}
-//printError(ERR_MTR_ENC_VAL, "report.c point 1");
-//sprintf(outbuf, "encval=%lu", encoderValue);
-//printLine(outbuf);
 			micronValue = encoderValue/ENC_COUNTS_PER_MICRON;
 
-			if (get_MOTORSpeed(controller, &encoderSpeed, &encoderDirection) == ERROR) {
+			if (get_MOTOR_SPEED(controller, &encoderSpeed) == ERROR) {
 				encoderSpeed = 0x7FFFFFFF;
 			}
 
-//printError(ERR_MTR_ENC_VAL, "report.c point 2");
-//sprintf(outbuf, "speedval=%lu", encoderSpeed);
-//printLine(outbuf);
-
 			micronSpeed = encoderSpeed/ENC_COUNTS_PER_MICRON;
-			if (encoderDirection) {
-				micronSpeed = -micronSpeed;
-			}
-
-//printError(ERR_MTR_ENC_VAL, "report.c point 3");
-//sprintf(outbuf, "speed in microns=%ld", micronSpeed);
-//printLine(outbuf);
 
 			retval = get_MOTORCurrent(controller, ROBOREADCURRENT, &icurrents);
 			if (retval == ERROR) {

@@ -82,7 +82,7 @@ uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
 //uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
-uint8_t getFRAM_MOTOREncoder(uint8_t controller, int32_t *encoderValue)
+uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 {
 
 	uint8_t tbuf[4];
@@ -211,7 +211,7 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	uint8_t data[5];	// 5 bytes includes status, which is ignored here
 
 	if (get_MOTOR(controller, ENCODERCOUNT, data, 5) == ERROR) {
-		printError(ERR_MTR, "Called from get_MOTOR_ENCODER");
+		printError(ERR_MTR, "get_MOTOR_ENCODER: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -223,6 +223,26 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	return(NOERROR);
 
 }
+
+uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
+{
+	
+	uint8_t data[5];
+
+	if (get_MOTOR(mtraddr, ENCODERSPEED, data, 5) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
+		return(ERROR);
+	}
+
+	*speed =  (uint32_t) data[0] << 24;
+	*speed |= (uint32_t) data[1] << 16;
+	*speed |= (uint32_t) data[2] << 8;
+	*speed |= (uint32_t) data[3];
+
+	return(NOERROR);
+
+}
+
 
 /*------------------------------------------------------------------------------
 uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
@@ -614,7 +634,7 @@ uint8_t init_MOTORS(void)
 	timerSAVEENCODER = 0;
 	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
 	for (controller = MOTOR_A; controller <= MOTOR_C; controller++) {
-		getFRAM_MOTOREncoder(controller, &encoderValue);
+		get_FRAM_MOTOR_ENCODER(controller, &encoderValue);
 		set_MOTOREncoder(controller, encoderValue);
 	}
 	return(NOERROR);
@@ -878,7 +898,8 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 			return(ERROR);
 	}
 
-	get_MOTOREncoder(controller, ENCODERCOUNT, &encoderValue);
+//	get_MOTOREncoder(controller, ENCODERCOUNT, &encoderValue);
+	get_MOTOR_ENCODER(controller, &encoderValue);
 
 	tbuf[0] = (encoderValue >> 24) & 0xFF;
 	tbuf[1] = (encoderValue >> 16) & 0xFF;
