@@ -121,6 +121,110 @@ uint8_t getFRAM_MOTOREncoder(uint8_t controller, int32_t *encoderValue)
 }
 
 /*------------------------------------------------------------------------------
+uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
+
+	Requests data from the motor controller "mtraddr" and presents the raw data.
+
+	Inputs:
+		mtraddr:	MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
+		command:	The motor controller packet serial command
+		nbytes:		Number of bytes expected from the motor controller
+					not including the two CRC bytes.
+
+	Output:
+		data:		Array to receive the data. Undefined if ERROR returned.
+
+	Returns
+		ERROR on USART timeout or CRC mismatch
+		NOERROR otherwise
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
+{
+
+	uint8_t i, tbuf[nbytes+2];
+	uint16_t crcReceived, crcExpected;
+
+	recv1_buf.nbytes = nbytes+2;	// Set up receive buffer (+2 for crc bytes)
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
+	tbuf[0] = mtraddr;				// Motor controller packet serial address
+	tbuf[1] = cmd;					// Motor controller command
+	send_USART(1, tbuf, 2);
+
+	USART1_ticks = 0;
+	start_TCB0(1);					// 1 ms tisk period for USART1_ticks
+	while (recv1_buf.done == NO) {	// Wait for the reply
+		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
+			stop_TCB0();
+			printError(ERR_MTRREADENC, "get_MOTOR: serial timeout");
+			return(ERROR);
+		}
+	}
+	stop_TCB0();
+
+	crcReceived = (recv1_buf.data[nbytes] << 8) | recv1_buf.data[nbytes+1];
+
+	for (i = 2; i < nbytes+2; i++) {		// Compute expected crc value
+		tbuf[i] = recv1_buf.data[i-2];
+	}
+	crcExpected = crc16(tbuf, nbytes+2);
+
+	if (crcReceived != crcExpected) {
+		printError(ERR_MTRENCCRC, "get_MOTOR: CRC mismatch");
+		return(ERROR);
+	}
+
+	for (i = 0; i < nbytes; i++) {
+		data[i] = recv1_buf.data[i];
+	}
+
+	return(NOERROR);	
+	
+}
+
+/*------------------------------------------------------------------------------
+uint8_t get_MOTOR_Encoder(uint8_t mtraddr, int32_t *value)
+
+	Gets the 32-bit encoder value from mtraddr.
+
+	Inputs:
+		mtraddr: MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
+
+	Output:
+		encoderValue: The encoder count
+
+	Returns
+		ERROR on USART timeout
+		NOERROR otherwise
+
+	Also available with this command but not output here:
+		status - from page 86 of version 5.7 of the manual:
+			Bit0: Counter underflow (1=underflow occurred, clear after reading)
+			Bit1: Direction (0=forward, 1-backwards)
+			Bit2: Counter overflow (1=overflow occurred, clear after reading)
+			Bits 3-7 are "reserved." Bit7 is 1.
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
+{
+
+	uint8_t data[5];	// 5 bytes includes status, which is ignored here
+
+	if (get_MOTOR(controller, ENCODERCOUNT, data, 5) == ERROR) {
+		printError(ERR_MTR, "Called from get_MOTOR_ENCODER");
+		return(ERROR);
+	}
+
+	*encoderValue =  (uint32_t) data[0] << 24;
+	*encoderValue |= (uint32_t) data[1] << 16;
+	*encoderValue |= (uint32_t) data[2] << 8;
+	*encoderValue |= (uint32_t) data[3];
+
+	return(NOERROR);
+
+}
+
+/*------------------------------------------------------------------------------
 uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
 
 	Gets the 32-bit encoder value and speed
@@ -569,7 +673,7 @@ uint8_t move_MOTOR(uint8_t cstack)
 		ERROR if an unknown motor designator (not A, B, C, or a, b, c) is read
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-uint8_t move_MOTOR(uint8_t cstack)
+uint8_t move_MOTOR_CMD(uint8_t cstack)
 {
 
 	uint8_t motor, controller, retval;
@@ -588,28 +692,72 @@ uint8_t move_MOTOR(uint8_t cstack)
 		case 'b':
 		case 'c':
 			controller = motor + 31;
-			retval = get_MOTOREncoder(controller, ENCODERCOUNT, &currentPosition);
+			retval = get_MOTOR_ENCODER(controller, &currentPosition);
 			if (retval == ERROR) {
-				printError(ERR_MTR_ENC_VAL, "move_MOTOR get encoder error");
+				printError(ERR_MTR_ENC_VAL, "move_MOTOR_CMD: get_MOTOR_ENCODER error");
 				return(ERROR);
 			}
 			break;
 
 		default:
-			printError(ERR_UNKNOWNMTR, "move_MOTOR unknown motor");
+			printError(ERR_MTR, "move_MOTOR_CMD: unknown motor");
 			return(ERROR);
 			break;	
 	}
 
 	if (pcmd[cstack].cvalue[0] == '\0') {	// Don't do anything on null distance
-		printError(ERR_MTRNULLMOVE, "move_MOTOR no position or increment");
-		return(ERROR);
+		return(NOERROR);
 	}
-
 
 	newPosition = currentPosition + (atol(pcmd[cstack].cvalue) * ENC_COUNTS_PER_MICRON);
 
-	return(move_MOTORAbsolute(controller, newPosition));
+//	return(move_MOTORAbsolute(controller, newPosition));
+
+	if (move_MOTOR(controller, newPosition) == ERROR) {
+		printError(ERR_MTR, "move_MOTOR_CMD: move_MOTOR call error");
+		return(ERROR);
+	}
+
+	return(ERROR);
+
+}
+
+uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
+{
+
+	uint8_t buffer, data[17], nbytes;
+	uint32_t acceleration, deceleration, speed;
+
+	nbytes = 17;
+	buffer = 0;						// Operation is buffered
+	acceleration = ACCELERATION;	// See roboclaw.h
+	deceleration = DECELERATION;
+	speed = SPEED;
+
+	data[0] = (acceleration >> 24) & 0XFF;
+	data[1] = (acceleration >> 16) & 0xFF;
+	data[2] = (acceleration >> 8) & 0xFF;
+	data[3] = (acceleration) & 0xFF;
+	data[4] = (speed >> 24) & 0xFF;
+	data[5] = (speed >> 16) & 0xFF;
+	data[6] = (speed >> 8) & 0xFF;
+	data[7] = (speed) & 0xFF;
+	data[8] = (deceleration >> 24) & 0xFF;
+	data[9] = (deceleration >> 16) & 0xFF;
+	data[10] = (deceleration >> 8) & 0xFF;
+	data[11] = (deceleration) & 0xFF;
+	data[12] = (newPosition >> 24) & 0xFF;
+	data[13] = (newPosition >> 16) & 0xFF;
+	data[14] = (newPosition >> 8) & 0xFF;
+	data[15] = (newPosition) & 0xFF;
+	data[16] = buffer;
+
+	if (put_MOTOR(mtraddr, DRIVETO, data, nbytes) == ERROR) {
+		printError(ERR_MTR, "move_MOTOR: put_MOTOR call error");
+		return(ERROR);
+	}
+
+	return(NOERROR);
 
 }
 
@@ -737,6 +885,93 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 	tbuf[2] = (encoderValue >> 8) & 0xFF;
 	tbuf[3] = encoderValue & 0xFF;
 	return(write_FRAM(FRAMTWIADDR, memaddr, tbuf, 4));
+
+}
+
+uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
+{
+	uint8_t i, tbuf[nbytes+4];
+	uint16_t crc;
+
+	recv1_buf.data[0] = 0x00;			// Set up receiving buffer
+	recv1_buf.nbytes = 1;
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
+	tbuf[0] = mtraddr;
+	tbuf[1] = cmd;
+	for (i = 0; i < nbytes; i++) {
+		tbuf[i+2] = data[i];
+	}
+	crc = crc16(tbuf, nbytes+2);
+	tbuf[nbytes+2] = (crc >> 8) & 0xFF;
+	tbuf[nbytes+3] = crc & 0xFF;
+
+	send_USART(1, tbuf, nbytes+4);		// Send the command
+
+	USART1_ticks = 0;
+	start_TCB0(1);						// Start 1 ms USART1_ticks timer
+	for (;;) {
+		if (recv1_buf.done == YES) {	// Reply received
+			stop_TCB0();
+			break;
+		}
+		if (USART1_ticks > 50) {
+			stop_TCB0();
+			printError(ERR_MTR, "put_MOTOR: serial timeout");
+			return(ERROR);
+		}
+	}
+	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
+		printError(ERR_MTR, "put_MOTOR: bad ACK");
+		return(ERROR);
+	}
+	return(NOERROR);
+}
+
+uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
+{
+	uint8_t tbuf[8];
+	uint16_t crc;
+
+	recv1_buf.data[0] = 0x00;			// Set up receiving buffer
+	recv1_buf.nbytes = 1;
+	recv1_buf.nxfrd = 0;
+	recv1_buf.done = NO;
+
+	tbuf[0] = mtraddr;
+	tbuf[1] = PUTENCODER;
+	tbuf[2] = (encoderValue >> 24) & 0xFF;
+	tbuf[3] = (encoderValue >> 16) & 0xFF;
+	tbuf[4] = (encoderValue >> 8) & 0xFF;
+	tbuf[5] = encoderValue & 0xFF;
+	crc = crc16(tbuf, 6);
+	tbuf[6] = (crc >> 8) & 0xFF;
+	tbuf[7] = crc & 0xFF;
+	
+	send_USART(1, tbuf, 8);				// Send the command
+
+	USART1_ticks = 0;
+	start_TCB0(1);						// Start 1 ms ticks timer
+
+	for (;;) {
+		if (recv1_buf.done == YES) {	// Reply received
+			stop_TCB0();
+			break;
+		}
+		if (USART1_ticks > 50) {				// 4 ms barely works at 38400 baud
+			stop_TCB0();
+			printError(ERR_MTR, "put_MOTOR_ENCODER: serial timeout");
+			return(ERROR);
+		}
+	}
+
+	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
+		printError(ERR_MTRTIMEOUT, "put_MOTOREncoder bad ack");
+		return(ERROR);
+	}
+
+	return(NOERROR);
 
 }
 

@@ -15,12 +15,15 @@
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
 #define ROBOREADFIRMWARE		21
+#define PUTENCODER				22
+#define SETENCODER				22
 #define ROBOSETENCODER			22
 #define READMAINVOLTAGE			24
 #define ROBOREADCURRENT			49
 #define READPID					63			// Position PID
 #define SETPID					61			// Position PID constants
 #define ROBODRIVETO				65
+#define DRIVETO					65			// Buffered drive command
 #define READTEMPERATURE			82
 #define ROBOMOVETO				119
 #define ROBOFAST				64
@@ -37,20 +40,25 @@ uint16_t crc16(uint8_t*, uint16_t);
 int16_t enc2microns(uint32_t);
 //uint8_t getFRAM_MOTOREncoder(uint8_t, uint32_t*);
 uint8_t getFRAM_MOTOREncoder(uint8_t, int32_t*);
+uint8_t get_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t get_MOTORCurrent(uint8_t, uint8_t, uint32_t*);
 //uint8_t get_MOTOREncoder(uint8_t, uint8_t, uint32_t*);
 uint8_t get_MOTOREncoder(uint8_t, uint8_t, int32_t*);
+uint8_t get_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTORFloat(uint8_t, uint8_t, float*);
 uint8_t get_MOTOR_PID(uint8_t, PID*);
 uint8_t get_MOTORSpeed(uint8_t, int32_t*, uint8_t*);
 uint8_t init_MOTORS(void);
 uint32_t microns2enc(int16_t);
 uint8_t motorsMoving(void);
-uint8_t move_MOTOR(uint8_t);
+uint8_t move_MOTOR(uint8_t, int32_t);
+uint8_t move_MOTOR_CMD(uint8_t);
 //uint8_t move_MOTORAbsolute(uint8_t, uint32_t);
 uint8_t move_MOTORAbsolute(uint8_t, int32_t);
 //uint8_t putFRAM_MOTOREncoder(uint8_t);
 uint8_t putFRAM_MOTOREncoder(uint8_t);
+uint8_t put_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
+uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
 uint8_t saveFRAM_MOTOREncoders(void);
 //uint8_t set_MOTOREncoder(uint8_t, uint32_t);
 uint8_t set_MOTOREncoder(uint8_t, int32_t);

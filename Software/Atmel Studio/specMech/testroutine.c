@@ -6,22 +6,52 @@
 #include "testroutine.h"
 
 #include "commands.h"
+#include "errors.h"
 
 void testroutine(void)
 {
+/*
+	char strbuf[80];
+	int32_t encoderValue;
+
+	if (get_MOTOR_ENCODER(128, &encoderValue) == ERROR) {
+		sprintf(strbuf, "testroutine error");
+		printLine(strbuf);
+		return;
+	}
+	sprintf(strbuf, "testroutine encoder value = %ld", encoderValue);
+	printLine(strbuf);
+*/
 
 	char strbuf[80];
-	PID pid;
+	int32_t encoderValue, newPosition;
 
+	put_MOTOR_ENCODER(128, 10000UL);
+	get_MOTOR_ENCODER(128, &encoderValue);
+	sprintf(strbuf, "encoderValue=%lu", encoderValue);
+	printLine(strbuf);
+
+	newPosition = encoderValue+101;
+	sprintf(strbuf, "newPosition=%lu", newPosition);
+	printLine(strbuf);
+
+	move_MOTORAbsolute(128, newPosition);
+
+	sprintf(strbuf, "done");
+	printLine(strbuf);
+	
+
+/*
+	char strbuf[80];
 	int32_t encoderValue, newPosition;
 
 	set_MOTOREncoder(128, 10000UL);
-	get_MOTOREncoder(128, ENCODERCOUNT, &encoderValue);
+	get_MOTOR_ENCODER(128, &encoderValue);
 
 	sprintf(strbuf, "encoderValue=%lu", encoderValue);
 	printLine(strbuf);
 
-	newPosition = encoderValue+10000;
+	newPosition = encoderValue+101;
 
 	sprintf(strbuf, "newPosition=%lu", newPosition);
 	printLine(strbuf);
@@ -30,7 +60,7 @@ void testroutine(void)
 
 	sprintf(strbuf, "done");
 	printLine(strbuf);
-
+*/
 /*
 	pid.p = pid.i = pid.d = 0.0;
 	pid.maxI = pid.deadZone = pid.minPos = pid.maxPos = 0;

@@ -52,7 +52,7 @@ void commands(void)
 			break;
 
 		case 'm':				// move
-			move_MOTOR(cstack);
+			move_MOTOR_CMD(cstack);
 			break;
 
 		case 'r':				// report

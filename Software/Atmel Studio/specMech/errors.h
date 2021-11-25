@@ -18,7 +18,7 @@
 #define ERR_MTRNULLMOVE	(307)	// No distance or target position specified
 #define ERR_MOTORMOVING	(308)	// Motor is moving (can't reboot)
 #define ERR_MTR_ENC_VAL	(309)	// Invalid motor encoder value
-
+#define ERR_MTR			(310)
 #define ERR_TWI			(401)	// start_TWI NACK
 #define ERR_MCP23008	(402)	// MCP23008 fail to respond to start condition
 
