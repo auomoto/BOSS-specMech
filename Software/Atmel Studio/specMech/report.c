@@ -49,7 +49,7 @@ uint8_t report(uint8_t cstack)
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
 	uint8_t retval, controller, encoderDirection;
-	uint32_t encoderValue, encoderSpeed;
+	int32_t encoderValue, encoderSpeed;
 	int32_t micronValue, micronSpeed;
 	uint32_t icurrents;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
@@ -90,10 +90,9 @@ uint8_t report(uint8_t cstack)
 //printError(ERR_MTR_ENC_VAL, "report.c point 1");
 //sprintf(outbuf, "encval=%lu", encoderValue);
 //printLine(outbuf);
-			micronValue = enc2microns(encoderValue);
+			micronValue = encoderValue/ENC_COUNTS_PER_MICRON;
 
 			if (get_MOTORSpeed(controller, &encoderSpeed, &encoderDirection) == ERROR) {
-				printError(ERR_MTRREADENC, "report bad speed");
 				encoderSpeed = 0x7FFFFFFF;
 			}
 

@@ -21,7 +21,7 @@ testroutine.d testroutine.o: .././testroutine.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  .././timers.h .././usart.h .././roboclaw.h .././fram.h \
- .././testroutine.h
+ .././testroutine.h .././commands.h
 
 .././globals.h:
 
@@ -76,3 +76,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././fram.h:
 
 .././testroutine.h:
+
+.././commands.h:
