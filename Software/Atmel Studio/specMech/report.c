@@ -65,11 +65,11 @@ uint8_t report(uint8_t cstack)
 		case 'C':
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 63;
-			retval = get_MOTORFloat(controller, READMAINVOLTAGE, &voltage);
+			retval = get_MOTOR_FLOAT(controller, READMAINVOLTAGE, &voltage);
 			if (retval == ERROR) {
 				voltage = -666.0;
 			}
-			retval = get_MOTORFloat(controller, READTEMPERATURE, &t0);
+			retval = get_MOTOR_FLOAT(controller, READTEMPERATURE, &t0);
 			if (retval == ERROR) {
 				t0 = -666.0;
 			}

@@ -72,16 +72,16 @@ void commands(void)
 			break;
 
 		case 'R':				// Reboot
-			squelchErrors = YES;
 			if (motorsMoving()) {
-				squelchErrors = NO;
-				printError(ERR_MOTORMOVING, "commands: Can't reboot, motor moving");
+				printError(ERR_MTR, "commands: Can't reboot, motor moving");
 				break;
 			} else {
-				saveFRAM_MOTOREncoders();
+				if (put_FRAM_ENCODERS() == ERROR) {
+					printError(ERR_FRAM, "commands: put_FRAM_ENCODERS error");
+				}
 				timerSAVEENCODER = 0;
 				send_GTprompt();	// Aidan request
-				_delay_ms(100);		// Avoids finishing the command loop before reboot
+				_delay_ms(100);
 				reboot();
 				return;
 			}

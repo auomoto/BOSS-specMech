@@ -41,7 +41,7 @@ int main(void)
 			squelchErrors = NO;
 		} if ((timerSAVEENCODER > timeoutSAVEENCODER) && rebootackd) {
 			squelchErrors = YES;
-			putFRAM_MOTOREncoder(128);
+			put_FRAM_ENCODERS();	// Maybe set a global error variable?
 			timerSAVEENCODER = 0;
 			squelchErrors = NO;
 		}

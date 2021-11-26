@@ -43,45 +43,19 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 }
 
 /*------------------------------------------------------------------------------
-int16_t enc2microns(uint32_t encoderValue)
-	Converts a motor encoder value to microns. The encoder value is an unsigned
-		long integer (uint32) but the position in microns can be negative. The
-		encoder value is offset by ENC_ZEROPOINT to keep encoder values positive
-		and scaled by ENC_COUNTS_PER_MICRON.
-
-	Input:
-		encoderValue - a 32-bit unsigned integer.
-
-	Returns:
-		The equivalent motor position in microns.
-------------------------------------------------------------------------------*/
-/*
-int16_t enc2microns(uint32_t encoderValue)
-{
-
-	int32_t temp;
-
-	temp = (int32_t) encoderValue - ENC_ZEROPOINT;
-	return((int16_t) (temp / ENC_COUNTS_PER_MICRON));	// add 1/2 the remainder?
-
-}
-*/
-
-/*------------------------------------------------------------------------------
-uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
-	Retrieves the encoder value stored in FRAM
+uint8_t getFRAM_MOTOR_ENCODER(uint8_t controller, uint32_t *encoderValue)
+	Retrieves the encoder value in FRAM
 
 	Inputs:
 		controller: The controller address: MOTOR_A, MOTOR_B, or MOTOR_C
 
 	Outputs:
-		encoderValue: The stored encoder value in FRAM
+		encoderValue: The stored encoder value
 
 	Returns:
 		ERROR on FRAM read error
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-//uint8_t getFRAM_MOTOREncoder(uint8_t controller, uint32_t *encoderValue)
 uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 {
 
@@ -91,15 +65,15 @@ uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 
 	switch (controller) {
 		case MOTOR_A:
-			framaddr = ENCAFRAMADDR;
+			framaddr = ENCA_FRAMADDR;
 			break;
 
 		case MOTOR_B:
-			framaddr = ENCBFRAMADDR;
+			framaddr = ENCB_FRAMADDR;
 			break;
 
 		case MOTOR_C:
-			framaddr = ENCCFRAMADDR;
+			framaddr = ENCC_FRAMADDR;
 			break;
 
 		default:
@@ -107,6 +81,7 @@ uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	}
 
 	if (read_FRAM(FRAMTWIADDR, framaddr, tbuf, 4) == ERROR) {
+		printError(ERR_FRAM, "get_FRAM_MOTOR_ENCODER: read_FRAM error");
 		*encoderValue = 0xFFFFFFFF;
 		return(ERROR);
 	}
@@ -116,6 +91,7 @@ uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	tempVal |= (uint32_t) tbuf[2] << 8;
 	tempVal |= (uint32_t) tbuf[3];
 	*encoderValue = tempVal;
+
 	return(NOERROR);
 
 }
@@ -123,12 +99,12 @@ uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 /*------------------------------------------------------------------------------
 uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 
-	Requests data from the motor controller "mtraddr" and presents the raw data.
+	Retrieves raw data from the motor controller "mtraddr"
 
 	Inputs:
 		mtraddr:	MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
 		command:	The motor controller packet serial command
-		nbytes:		Number of bytes expected from the motor controller
+		nbytes:		Number of bytes expected from the motor controller,
 					not including the two CRC bytes.
 
 	Output:
@@ -184,15 +160,15 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t get_MOTOR_Encoder(uint8_t mtraddr, int32_t *value)
+uint8_t get_MOTOR_ENCODER(uint8_t mtraddr, int32_t *value)
 
-	Gets the 32-bit encoder value from mtraddr.
+	Retrieves the 32-bit encoder value from the controller at mtraddr
 
 	Inputs:
 		mtraddr: MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
 
 	Output:
-		encoderValue: The encoder count
+		encoderValue: The encoder value
 
 	Returns
 		ERROR on USART timeout
@@ -223,28 +199,8 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	return(NOERROR);
 
 }
-
-uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
-{
-	
-	uint8_t data[5];
-
-	if (get_MOTOR(mtraddr, ENCODERSPEED, data, 5) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
-		return(ERROR);
-	}
-
-	*speed =  (uint32_t) data[0] << 24;
-	*speed |= (uint32_t) data[1] << 16;
-	*speed |= (uint32_t) data[2] << 8;
-	*speed |= (uint32_t) data[3];
-
-	return(NOERROR);
-
-}
-
 /*------------------------------------------------------------------------------
-uint8_t get_MOTORFloat(uint8_t controller, uint8_t command, float *value)
+uint8_t get_MOTOR_FLOAT(uint8_t controller, uint8_t command, float *value)
 	Retrieves a floating point value (voltage or temperature) from a RoboClaw
 	controller.
 
@@ -262,49 +218,60 @@ uint8_t get_MOTORFloat(uint8_t controller, uint8_t command, float *value)
 		ERROR: USART timeout or CRC check error
 		NOERROR
 ------------------------------------------------------------------------------*/
-uint8_t get_MOTORFloat(uint8_t controller, uint8_t command, float *value)
+uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 {
-	uint8_t tbuf[4];
-	uint16_t tempval, crcReceived, crcExpected;
 
-	recv1_buf.nbytes = 4;				// Set up receive buffer
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
+	uint8_t data[2];
 
-	tbuf[0] = controller;
-	tbuf[1] = command;
-	send_USART(1, tbuf, 2);				// Send command
-
-	USART1_ticks = 0;
-	start_TCB0(1);
-	for (;;) {
-		if (recv1_buf.done == YES) {	// Receive reply
-			break;
-		}
-		if (USART1_ticks > 50) {				// Timeout
-			stop_TCB0();
-			printError(ERR_MTRREADENC, "get_MOTORFloat timeout");
-			return(ERROR);
-		}
-	}
-	stop_TCB0();
-
-	tempval = (recv1_buf.data[0] << 8) | recv1_buf.data[1];
-	crcReceived = (recv1_buf.data[2] << 8) | recv1_buf.data[3];
-
-	tbuf[0] = controller;
-	tbuf[1] = command;
-	tbuf[2] = recv1_buf.data[0];
-	tbuf[3] = recv1_buf.data[1];
-	crcExpected = crc16(tbuf, 4);
-
-	if (crcExpected != crcReceived) {
-		printError(ERR_MTRENCCRC, "get_MOTORFloat CRC");
+	if (get_MOTOR(mtraddr, cmd, data, 2) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_FLOAT: get_MOTOR error");
+		*value = BADFLOAT;
 		return(ERROR);
-	} else {
-		*value = ((float) tempval / 10.0);
-		return(NOERROR);
 	}
+	*value = ((float) ((data[0] << 8) | data[1])) / 10.0;
+	return(NOERROR);
+}
+
+
+/*------------------------------------------------------------------------------
+uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
+
+	Retrieves the motor speed from the controller at mtraddr
+
+	Inputs:
+		mtraddr: MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
+
+	Output:
+		speed: The speed in encoder counts/sec. 2-s complement value.
+
+	Returns
+		ERROR on USART timeout
+		NOERROR otherwise
+
+	Also available with this command but not output here:
+		status - from page 86 of version 5.7 of the manual:
+			Bit0: Counter underflow (1=underflow occurred, clear after reading)
+			Bit1: Direction (0=forward, 1-backwards)
+			Bit2: Counter overflow (1=overflow occurred, clear after reading)
+			Bits 3-7 are "reserved." Bit7 is 1.
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
+{
+	
+	uint8_t data[5];
+
+	if (get_MOTOR(mtraddr, ENCODERSPEED, data, 5) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
+		return(ERROR);
+	}
+
+	*speed =  (uint32_t) data[0] << 24;
+	*speed |= (uint32_t) data[1] << 16;
+	*speed |= (uint32_t) data[2] << 8;
+	*speed |= (uint32_t) data[3];
+
+	return(NOERROR);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -780,12 +747,12 @@ uint8_t move_MOTORAbsolute(uint8_t controller, int32_t newPosition)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t putFRAM_MOTOREncoder(uint8_t controller)
+uint8_t put_FRAM_ENCODERS(void)
 
-	Stores the encoder value in FRAM.
+	Store the encoder values in FRAM.
 
 	Inputs:
-		controller: The controller address (128, 129, or 130)
+		None
 
 	Outputs:
 		None
@@ -794,39 +761,33 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 		ERROR on get_MOTOREncoder or write_FRAM failure
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-uint8_t putFRAM_MOTOREncoder(uint8_t controller)
+uint8_t put_FRAM_ENCODERS(void)
 {
 
-	uint8_t tbuf[4];
-	uint16_t memaddr;
-//	uint32_t encoderValue;
+	uint8_t i, tbuf[4], errorFlag, mtraddr[3] = {MOTOR_A, MOTOR_B, MOTOR_C};
+	uint16_t memaddr[3] = {ENCA_FRAMADDR, ENCB_FRAMADDR, ENCC_FRAMADDR};
 	int32_t encoderValue;
 
-	switch (controller) {
-		case MOTOR_A:
-			memaddr = ENCAFRAMADDR;
-			break;
-
-		case MOTOR_B:
-			memaddr = ENCBFRAMADDR;
-			break;
-
-		case MOTOR_C:
-			memaddr = ENCCFRAMADDR;
-			break;
-
-		default:
-			return(ERROR);
+	errorFlag = 0;
+	for (i = 0; i < 3; i++) {
+		if (get_MOTOR_ENCODER(mtraddr[i], &encoderValue) == ERROR) {
+			printError(ERR_MTR, "put_FRAM_ENCODERS: get_MOTOR_ENCODER error");
+			errorFlag = 1;
+		}
+		tbuf[0] = (encoderValue >> 24) & 0xFF;
+		tbuf[1] = (encoderValue >> 16) & 0xFF;
+		tbuf[2] = (encoderValue >> 8) & 0xFF;
+		tbuf[3] = encoderValue & 0xFF;
+		if (write_FRAM(FRAMTWIADDR, memaddr[i], tbuf, 4) == ERROR) {
+			printError(ERR_FRAM, "put_FRAM_ENCODERS: write_FRAM error");
+			errorFlag = 1;
+		}
 	}
-
-	get_MOTOR_ENCODER(controller, &encoderValue);
-
-	tbuf[0] = (encoderValue >> 24) & 0xFF;
-	tbuf[1] = (encoderValue >> 16) & 0xFF;
-	tbuf[2] = (encoderValue >> 8) & 0xFF;
-	tbuf[3] = encoderValue & 0xFF;
-	return(write_FRAM(FRAMTWIADDR, memaddr, tbuf, 4));
-
+	if (errorFlag) {
+		return(ERROR);
+	} else {
+		return(NOERROR);
+	}
 }
 
 uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
@@ -915,13 +876,13 @@ uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
 	return(NOERROR);
 
 }
-
+/*
 uint8_t saveFRAM_MOTOREncoders(void)
 {
 	uint8_t i, error = 0, retval;
 
 	for (i = MOTOR_A; i <= MOTOR_C; i++) {
-		retval = putFRAM_MOTOREncoder(i);
+		retval = put_FRAM_ENCODERS(i);
 		error += retval;
 	}
 	if (error) {
@@ -930,7 +891,7 @@ uint8_t saveFRAM_MOTOREncoders(void)
 		return(NOERROR);
 	}
 }
-
+*/
 /*------------------------------------------------------------------------------
 uint8_t set_MOTOREncoder(uint8_t controller, uint32_t value)
 	Loads an encoder value into a controller
