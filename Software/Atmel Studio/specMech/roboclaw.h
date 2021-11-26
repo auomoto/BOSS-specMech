@@ -41,8 +41,6 @@ int16_t enc2microns(uint32_t);
 uint8_t get_FRAM_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t get_MOTORCurrent(uint8_t, uint8_t, uint32_t*);
-//uint8_t get_MOTOREncoder(uint8_t, uint8_t, uint32_t*);
-uint8_t get_MOTOREncoder(uint8_t, uint8_t, int32_t*);
 uint8_t get_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTOR_SPEED(uint8_t, int32_t*);
 uint8_t get_MOTORFloat(uint8_t, uint8_t, float*);

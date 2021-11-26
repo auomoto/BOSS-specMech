@@ -243,88 +243,6 @@ uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
 
 }
 
-
-/*------------------------------------------------------------------------------
-uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
-
-	Gets the 32-bit encoder value and speed
-
-	Inputs:
-		controller: MOTOR_A, MOTOR_B, or MOTOR_C
-		command:	ENCODERCOUNT (command 16) or
-					ENCODERSPEED (command 18)
-
-	Output:
-		value: the encoder value or speed. RoboClaw encoder values are unsigned
-			longs from 0 to 4,294,967,295.
-
-	Returns
-		ERROR on USART timeout or RoboClaw not-0xFF reply error
-		NOERROR otherwise
-
-	Also available but not output here:
-		status - from page 86 of version 5.7 of the manual:
-			Bit0: Counter underflow (1=underflow occurred, clear after reading)
-			Bit1: Direction (0=forward, 1-backwards)
-			Bit2: Counter overflow (1=overflow occurred, clear after reading)
-			Bits 3-7 are "reserved." Bit7 is 1.
-------------------------------------------------------------------------------*/
-//uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, uint32_t *value)
-uint8_t get_MOTOREncoder(uint8_t controller, uint8_t command, int32_t *value)
-{
-
-	uint8_t i, tbuf[7];
-	uint16_t crcReceived, crcExpected;
-
-	recv1_buf.nbytes = 7;			// Set up receive buffer
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	tbuf[0] = controller;			// Build command
-	tbuf[1] = command;				// ENCODDERCOUNT or ENCODERSPPEED
-
-	send_USART(1, tbuf, 2);			// Send the command
-
-	USART1_ticks = 0;
-	start_TCB0(1);
-	while (recv1_buf.done == NO) {	// Wait for the reply
-		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
-			stop_TCB0();
-			printError(ERR_MTRREADENC, "get_MOTOREncoder timeout");
-			return(ERROR);
-		}
-	}
-
-char strbuf[80];
-sprintf(strbuf, "get_MOTOREncoder tics at 9600=%d", USART1_ticks);
-printLine(strbuf);
-	stop_TCB0();
-USART1_ticks = 0;
-
-	crcReceived = (recv1_buf.data[5] << 8) | recv1_buf.data[6];
-
-	for (i = 2; i < 7; i++) {		// Compute expected crc value
-		tbuf[i] = recv1_buf.data[i-2];
-	}
-	crcExpected = crc16(tbuf, 7);
-
-	if (crcReceived != crcExpected) {
-		*value = 0xFFFFFFFF;
-		printError(ERR_MTRENCCRC, "get_MOTOREncoder CRC");
-		return(ERROR);
-	}
-
-	*value =  (uint32_t) recv1_buf.data[0] << 24;
-	*value |= (uint32_t) recv1_buf.data[1] << 16;
-	*value |= (uint32_t) recv1_buf.data[2] << 8;
-	*value |= (uint32_t) recv1_buf.data[3];
-
-//	recv1_buf.data[4]; contains direction and overflow flags
-
-	return(NOERROR);
-
-}
-
 /*------------------------------------------------------------------------------
 uint8_t get_MOTORFloat(uint8_t controller, uint8_t command, float *value)
 	Retrieves a floating point value (voltage or temperature) from a RoboClaw
@@ -672,8 +590,11 @@ uint8_t motorsMoving(void)
 	int32_t encoderSpeed;
 
 	for (i = MOTOR_A; i <= MOTOR_C; i++) {
-		get_MOTOREncoder(i, ENCODERSPEED, &encoderSpeed);
-		if (encoderSpeed) {
+		if (get_MOTOR_SPEED(i, &encoderSpeed) == ERROR) {
+			printError(ERR_MTR, "motorsMoving: get_MOTOR_SPEED error");
+			continue;
+		}
+		if (encoderSpeed != 0) {
 			return(YES);
 		}
 	}
@@ -898,7 +819,6 @@ uint8_t putFRAM_MOTOREncoder(uint8_t controller)
 			return(ERROR);
 	}
 
-//	get_MOTOREncoder(controller, ENCODERCOUNT, &encoderValue);
 	get_MOTOR_ENCODER(controller, &encoderValue);
 
 	tbuf[0] = (encoderValue >> 24) & 0xFF;

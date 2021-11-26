@@ -75,7 +75,7 @@ void commands(void)
 			squelchErrors = YES;
 			if (motorsMoving()) {
 				squelchErrors = NO;
-				printError(ERR_MOTORMOVING, "Can't reboot, motor moving");
+				printError(ERR_MOTORMOVING, "commands: Can't reboot, motor moving");
 				break;
 			} else {
 				saveFRAM_MOTOREncoders();
