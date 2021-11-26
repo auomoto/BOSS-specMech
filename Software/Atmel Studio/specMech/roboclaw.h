@@ -29,7 +29,8 @@
 #define ROBOFAST				64
 #define ROBOSLOW				16
 
-extern uint8_t timerSAVEENCODER, timeoutSAVEENCODER;
+extern volatile uint8_t timerSAVEENCODER;
+extern uint8_t timeoutSAVEENCODER;
 
 typedef struct {
 	float p, i, d;

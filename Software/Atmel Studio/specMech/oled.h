@@ -16,6 +16,7 @@ void init_OLEDDISPLAY(uint8_t);
 void reset_OLED(void);
 void write_OLED(uint8_t, uint8_t, uint8_t);
 void writestr_OLED(uint8_t, char*, uint8_t);
-extern uint16_t timerOLED, timeoutOLED;	// Used to blank the display
+extern volatile uint16_t timerOLED;	// Used to turn off the display
+uint16_t timeoutOLED;
 
 #endif

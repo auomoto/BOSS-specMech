@@ -6,7 +6,8 @@
 #include "errors.h"
 #include "roboclaw.h"
 
-uint8_t timerSAVEENCODER, timeoutSAVEENCODER;
+volatile uint8_t timerSAVEENCODER;
+uint8_t timeoutSAVEENCODER;
 PID pid;
 
 /*------------------------------------------------------------------------------
@@ -342,95 +343,6 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 	return(NOERROR);
 
 }
-
-/*
-uint8_t get_MOTOR_PID(uint8_t controller, PID *pid)
-{
-
-	uint8_t tbuf[30];
-	uint16_t crcReceived, crcExpected;
-	int32_t p, i, d, maxI, deadZone, minPos, maxPos;
-
-	recv1_buf.nbytes = 30;				// Set up receive buffer
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	tbuf[0] = controller;
-	tbuf[1] = READPID;					// Command 63
-	send_USART(1, tbuf, 2);				// Send command
-
-	USART1_ticks = 0;
-	start_TCB0(1);
-	for (;;) {
-		if (recv1_buf.done == YES) {	// Receive reply
-			stop_TCB0();
-			break;
-		}
-		if (USART1_ticks > 50) {		// Timeout is usally after 3 ms (38400 baud)
-			stop_TCB0();
-			printError(ERR_MTRTIMEOUT, "get_MOTOR_PID timeout");
-			return(ERROR);
-		}
-	}
-
-	crcReceived = (recv1_buf.data[28] << 8) | recv1_buf.data[29];
-
-	for (i = 2; i < 30; i++) {			// Compute expected CRC
-		tbuf[i] = recv1_buf.data[i-2];
-	}
-	crcExpected = crc16(tbuf, 30);
-
-	if (crcReceived != crcExpected) {
-		printError(ERR_MTRENCCRC, "get_MOTOR_PID CRC error");
-		return(ERROR);
-	}
-
-	p =  (uint32_t) recv1_buf.data[0] << 24;
-	p |= (uint32_t) recv1_buf.data[1] << 16;
-	p |= (uint32_t) recv1_buf.data[2] << 8;
-	p |= (uint32_t) recv1_buf.data[3];
-	pid->p = (float) p / 1024.0;
-
-	i =  (uint32_t) recv1_buf.data[4] << 24;
-	i |= (uint32_t) recv1_buf.data[5] << 16;
-	i |= (uint32_t) recv1_buf.data[6] << 8;
-	i |= (uint32_t) recv1_buf.data[7];
-	pid->i = (float) i / 1024.0;
-
-	d =  (uint32_t) recv1_buf.data[8] << 24;
-	d |= (uint32_t) recv1_buf.data[9] << 16;
-	d |= (uint32_t) recv1_buf.data[10] << 8;
-	d |= (uint32_t) recv1_buf.data[11];
-	pid->d = (float) d / 1024.0;
-
-	maxI =  (uint32_t) recv1_buf.data[12] << 24;
-	maxI |= (uint32_t) recv1_buf.data[13] << 16;
-	maxI |= (uint32_t) recv1_buf.data[14] << 8;
-	maxI |= (uint32_t) recv1_buf.data[15];
-	pid->maxI = maxI;
-
-	deadZone =  (uint32_t) recv1_buf.data[16] << 24;
-	deadZone |= (uint32_t) recv1_buf.data[17] << 16;
-	deadZone |= (uint32_t) recv1_buf.data[18] << 8;
-	deadZone |= (uint32_t) recv1_buf.data[19];
-	pid->deadZone = deadZone;
-
-	minPos =  (uint32_t) recv1_buf.data[20] << 24;
-	minPos |= (uint32_t) recv1_buf.data[21] << 16;
-	minPos |= (uint32_t) recv1_buf.data[22] << 8;
-	minPos |= (uint32_t) recv1_buf.data[23];
-	pid->minPos = minPos;
-
-	maxPos =  (uint32_t) recv1_buf.data[24] << 24;
-	maxPos |= (uint32_t) recv1_buf.data[25] << 16;
-	maxPos |= (uint32_t) recv1_buf.data[26] << 8;
-	maxPos |= (uint32_t) recv1_buf.data[27];
-	pid->maxPos = maxPos;
-
-	return(NOERROR);
-}
-*/
-
 
 /*------------------------------------------------------------------------------
 uint8_t init_MOTORS(void)

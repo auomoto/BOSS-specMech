@@ -13,7 +13,7 @@ void start_TCB0(uint16_t msPeriod)
 ------------------------------------------------------------------------------*/
 void start_TCB0(uint16_t msPeriod)
 {
-ticks = 0;
+
 	// Check for overflows; msPeriod=19ms is max for 3.33MHz
 	TCB0.CCMP = msPeriod * (uint16_t) (F_CPU/1000UL);
 	TCB0.INTCTRL = TCB_CAPT_bm;				// Interrupt at TOP
@@ -36,8 +36,9 @@ ISR(TCB0_INT_vect)
 {
 
 	TCB0_INTFLAGS = TCB_CAPT_bm;	// Clear interrupt flag
-	ticks++;
-	TWI_ticks++;
+	USART0_ticks++;
 	USART1_ticks++;
+	USART3_ticks++;
+	TWI_ticks++;
 
 }

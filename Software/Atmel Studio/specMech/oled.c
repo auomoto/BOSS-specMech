@@ -14,7 +14,8 @@ oled.c
 #include "twi.h"
 #include "oled.h"
 
-uint16_t timerOLED, timeoutOLED;	// Used to turn off the display
+volatile uint16_t timerOLED;	// Used to turn off the display
+uint16_t timeoutOLED;
 
 /*------------------------------------------------------------------------------
 void clear_OLED(uint8_t displaynumber)

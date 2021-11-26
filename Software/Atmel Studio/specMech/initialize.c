@@ -4,8 +4,6 @@
 #include "roboclaw.h"
 #include "initialize.h"
 
-#include "errors.h" //TESTING
-
 uint8_t rebootackd;
 
 void initialize(void)
