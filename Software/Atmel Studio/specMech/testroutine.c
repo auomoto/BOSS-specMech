@@ -10,7 +10,7 @@
 
 void testroutine(void)
 {
-	
+/*
 	char strbuf[80];
 	uint8_t i;
 	uint16_t current;
@@ -20,7 +20,8 @@ void testroutine(void)
 		printLine(strbuf);
 		_delay_ms(100);	
 	}
-	
+*/
+
 /*
 	char strbuf[80];
 	int32_t encoderValue;
@@ -72,7 +73,10 @@ void testroutine(void)
 	sprintf(strbuf, "done");
 	printLine(strbuf);
 */
-/*
+
+	char strbuf[80];
+	PID pid;
+
 	pid.p = pid.i = pid.d = 0.0;
 	pid.maxI = pid.deadZone = pid.minPos = pid.maxPos = 0;
 
@@ -141,6 +145,6 @@ void testroutine(void)
 
 	sprintf(strbuf, " maxPos=%ld", pid.maxPos);
 	printLine(strbuf);
-*/
+
 	return;
 }

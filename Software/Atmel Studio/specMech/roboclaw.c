@@ -287,13 +287,69 @@ uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, uint16_t *current)
 	return(NOERROR);	
 }
 
+uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
+{
+	uint8_t data[28];
+	int32_t p, i, d, maxI, deadZone, minPos, maxPos;
+
+	if (get_MOTOR(mtraddr, READPID, data, 28) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
+		return(ERROR);
+	}
+
+	p =  (uint32_t) data[0] << 24;
+	p |= (uint32_t) data[1] << 16;
+	p |= (uint32_t) data[2] << 8;
+	p |= (uint32_t) data[3];
+	pid->p = (float) p / 1024.0;
+
+	i =  (uint32_t) data[4] << 24;
+	i |= (uint32_t) data[5] << 16;
+	i |= (uint32_t) data[6] << 8;
+	i |= (uint32_t) data[7];
+	pid->i = (float) i / 1024.0;
+
+	d =  (uint32_t) data[8] << 24;
+	d |= (uint32_t) data[9] << 16;
+	d |= (uint32_t) data[10] << 8;
+	d |= (uint32_t) data[11];
+	pid->d = (float) d / 1024.0;
+
+	maxI =  (uint32_t) data[12] << 24;
+	maxI |= (uint32_t) data[13] << 16;
+	maxI |= (uint32_t) data[14] << 8;
+	maxI |= (uint32_t) data[15];
+	pid->maxI = maxI;
+
+	deadZone =  (uint32_t) data[16] << 24;
+	deadZone |= (uint32_t) data[17] << 16;
+	deadZone |= (uint32_t) data[18] << 8;
+	deadZone |= (uint32_t) data[19];
+	pid->deadZone = deadZone;
+
+	minPos =  (uint32_t) data[20] << 24;
+	minPos |= (uint32_t) data[21] << 16;
+	minPos |= (uint32_t) data[22] << 8;
+	minPos |= (uint32_t) data[23];
+	pid->minPos = minPos;
+
+	maxPos =  (uint32_t) data[24] << 24;
+	maxPos |= (uint32_t) data[25] << 16;
+	maxPos |= (uint32_t) data[26] << 8;
+	maxPos |= (uint32_t) data[27];
+	pid->maxPos = maxPos;
+
+	return(NOERROR);
+
+}
+
+/*
 uint8_t get_MOTOR_PID(uint8_t controller, PID *pid)
 {
 
 	uint8_t tbuf[30];
 	uint16_t crcReceived, crcExpected;
 	int32_t p, i, d, maxI, deadZone, minPos, maxPos;
-
 
 	recv1_buf.nbytes = 30;				// Set up receive buffer
 	recv1_buf.nxfrd = 0;
@@ -373,6 +429,8 @@ uint8_t get_MOTOR_PID(uint8_t controller, PID *pid)
 
 	return(NOERROR);
 }
+*/
+
 
 /*------------------------------------------------------------------------------
 uint8_t init_MOTORS(void)
@@ -609,122 +667,62 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 
 uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
 {
-	uint8_t tbuf[8];
-	uint16_t crc;
 
-	recv1_buf.data[0] = 0x00;			// Set up receiving buffer
-	recv1_buf.nbytes = 1;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
-
-	tbuf[0] = mtraddr;
-	tbuf[1] = PUTENCODER;
-	tbuf[2] = (encoderValue >> 24) & 0xFF;
-	tbuf[3] = (encoderValue >> 16) & 0xFF;
-	tbuf[4] = (encoderValue >> 8) & 0xFF;
-	tbuf[5] = encoderValue & 0xFF;
-	crc = crc16(tbuf, 6);
-	tbuf[6] = (crc >> 8) & 0xFF;
-	tbuf[7] = crc & 0xFF;
+	uint8_t data[4];
 	
-	send_USART(1, tbuf, 8);				// Send the command
-
-	USART1_ticks = 0;
-	start_TCB0(1);						// Start 1 ms ticks timer
-
-	for (;;) {
-		if (recv1_buf.done == YES) {	// Reply received
-			stop_TCB0();
-			break;
-		}
-		if (USART1_ticks > 50) {				// 4 ms barely works at 38400 baud
-			stop_TCB0();
-			printError(ERR_MTR, "put_MOTOR_ENCODER: serial timeout");
-			return(ERROR);
-		}
-	}
-
-	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
-		printError(ERR_MTRTIMEOUT, "put_MOTOREncoder bad ack");
+	data[0] = (encoderValue >> 24) & 0xFF;
+	data[1] = (encoderValue >> 16) & 0xFF;
+	data[2] = (encoderValue >> 8) & 0xFF;
+	data[3] = encoderValue & 0xFF;
+	if (put_MOTOR(mtraddr, PUTENCODER, data, 4) == ERROR) {
+		printError(ERR_MTR, "put_MOTOR_ENCODER: put_MOTOR error");
 		return(ERROR);
 	}
-
 	return(NOERROR);
 
 }
 
-uint8_t put_MOTOR_PID(uint8_t controller, PID pid)
+uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 {
-
-	uint8_t tbuf[32];
-	uint16_t crc = 0;
+	uint8_t data[28];
 	int32_t p, i, d;
 
 	p = (int32_t) (pid.p * 1024.0);
 	i = (int32_t) (pid.i * 1024.0);
 	d = (int32_t) (pid.d * 1024.0);
 
-	recv1_buf.data[0] = 0x00;			// Set up receiving buffer
-	recv1_buf.nbytes = 1;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
+	data[0] = (d >> 24) & 0xFF;
+	data[1] = (d >> 16) & 0xFF;
+	data[2] = (d >> 8) & 0xFF;
+	data[3] = d & 0xFF;
+	data[4] = (p >> 24) & 0xFF;
+	data[5] = (p >> 16) & 0xFF;
+	data[6] = (p >> 8) & 0xFF;
+	data[7] = p & 0xFF;
+	data[8] = (i >> 24) & 0xFF;
+	data[9] = (i >> 16) & 0xFF;
+	data[10] = (i >> 8) & 0xFF;
+	data[11] = i & 0xFF;
+	data[12] = (pid.maxI >> 24) & 0xFF;
+	data[13] = (pid.maxI >> 16) & 0xFF;
+	data[14] = (pid.maxI >> 8) & 0xFF;
+	data[15] = pid.maxI & 0xFF;
+	data[16] = (pid.deadZone >> 24) & 0xFF;
+	data[17] = (pid.deadZone >> 16) & 0xFF;
+	data[18] = (pid.deadZone >> 8) & 0xFF;
+	data[19] = pid.deadZone & 0xFF;
+	data[20] = (pid.minPos >> 24) & 0xFF;
+	data[21] = (pid.minPos >> 16) & 0xFF;
+	data[22] = (pid.minPos >> 8) & 0xFF;
+	data[23] = pid.minPos & 0xFF;
+	data[24] = (pid.maxPos >> 24) & 0xFF;
+	data[25] = (pid.maxPos >> 16) & 0xFF;
+	data[26] = (pid.maxPos >> 8) & 0xFF;
+	data[27] = pid.maxPos & 0xFF;
 
-	tbuf[0] = controller;
-	tbuf[1] = SETPID;
-	tbuf[2] = (d >> 24) & 0xFF;
-	tbuf[3] = (d >> 16) & 0xFF;
-	tbuf[4] = (d >> 8) & 0xFF;
-	tbuf[5] = d & 0xFF;
-	tbuf[6] = (p >> 24) & 0xFF;
-	tbuf[7] = (p >> 16) & 0xFF;
-	tbuf[8] = (p >> 8) & 0xFF;
-	tbuf[9] = p & 0xFF;
-	tbuf[10] = (i >> 24) & 0xFF;
-	tbuf[11] = (i >> 16) & 0xFF;
-	tbuf[12] = (i >> 8) & 0xFF;
-	tbuf[13] = i & 0xFF;
-	tbuf[14] = (pid.maxI >> 24) & 0xFF;
-	tbuf[15] = (pid.maxI >> 16) & 0xFF;
-	tbuf[16] = (pid.maxI >> 8) & 0xFF;
-	tbuf[17] = pid.maxI & 0xFF;
-	tbuf[18] = (pid.deadZone >> 24) & 0xFF;
-	tbuf[19] = (pid.deadZone >> 16) & 0xFF;
-	tbuf[20] = (pid.deadZone >> 8) & 0xFF;
-	tbuf[21] = pid.deadZone & 0xFF;
-	tbuf[22] = (pid.minPos >> 24) & 0xFF;
-	tbuf[23] = (pid.minPos >> 16) & 0xFF;
-	tbuf[24] = (pid.minPos >> 8) & 0xFF;
-	tbuf[25] = pid.minPos & 0xFF;
-	tbuf[26] = (pid.maxPos >> 24) & 0xFF;
-	tbuf[27] = (pid.maxPos >> 16) & 0xFF;
-	tbuf[28] = (pid.maxPos >> 8) & 0xFF;
-	tbuf[29] = pid.maxPos & 0xFF;
-	crc = crc16(tbuf, 30);
-	tbuf[30] = (crc >> 8) & 0xFF;
-	tbuf[31] = crc & 0xFF;
-
-	send_USART(1, tbuf, 32);				// Send the command
-
-	USART1_ticks = 0;
-	start_TCB0(1);						// Start 1 ms ticks timer
-
-	for (;;) {
-		if (recv1_buf.done == YES) {	// Reply received
-			stop_TCB0();
-			break;
-		}
-		if (USART1_ticks > 50) {				// 4 ms barely works at 38400 baud
-			stop_TCB0();
-			printError(ERR_MTRTIMEOUT, "put_MOTOR_PID timeout");
-			return(ERROR);
-		}
-	}
-
-	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
-		printError(ERR_MTRTIMEOUT, "put_MOTOR_PID bad ack");
+	if (put_MOTOR(mtraddr, SETPID, data, 28) == ERROR) {
+		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error");
 		return(ERROR);
 	}
-
 	return(NOERROR);
-
 }
