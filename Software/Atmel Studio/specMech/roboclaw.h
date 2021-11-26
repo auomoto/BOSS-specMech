@@ -37,28 +37,20 @@ typedef struct {
 } PID;
 
 uint16_t crc16(uint8_t*, uint16_t);
-int16_t enc2microns(uint32_t);
 uint8_t get_FRAM_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
-uint8_t get_MOTORCurrent(uint8_t, uint8_t, uint32_t*);
+uint8_t get_MOTOR_CURRENT(uint8_t, uint16_t*);
 uint8_t get_MOTOR_ENCODER(uint8_t, int32_t*);
-uint8_t get_MOTOR_SPEED(uint8_t, int32_t*);
 uint8_t get_MOTOR_FLOAT(uint8_t, uint8_t, float*);
 uint8_t get_MOTOR_PID(uint8_t, PID*);
-uint8_t get_MOTORSpeed(uint8_t, int32_t*, uint8_t*);
+uint8_t get_MOTOR_SPEED(uint8_t, int32_t*);
 uint8_t init_MOTORS(void);
-uint32_t microns2enc(int16_t);
 uint8_t motorsMoving(void);
 uint8_t move_MOTOR(uint8_t, int32_t);
 uint8_t move_MOTOR_CMD(uint8_t);
-//uint8_t move_MOTORAbsolute(uint8_t, uint32_t);
-uint8_t move_MOTORAbsolute(uint8_t, int32_t);
 uint8_t put_FRAM_ENCODERS(void);
 uint8_t put_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
-//uint8_t saveFRAM_MOTOREncoders(void);
-//uint8_t set_MOTOREncoder(uint8_t, uint32_t);
-uint8_t set_MOTOREncoder(uint8_t, int32_t);
-uint8_t set_MOTOR_PID(uint8_t, PID);
+uint8_t put_MOTOR_PID(uint8_t, PID);
 
 #endif

@@ -10,6 +10,17 @@
 
 void testroutine(void)
 {
+	
+	char strbuf[80];
+	uint8_t i;
+	uint16_t current;
+	for (i = 0; i < 50; i++) {
+		get_MOTOR_CURRENT(128, &current);
+		sprintf(strbuf, "current = %dmA", current);
+		printLine(strbuf);
+		_delay_ms(100);	
+	}
+	
 /*
 	char strbuf[80];
 	int32_t encoderValue;
@@ -22,7 +33,7 @@ void testroutine(void)
 	sprintf(strbuf, "testroutine encoder value = %ld", encoderValue);
 	printLine(strbuf);
 */
-
+/*
 	char strbuf[80];
 	int32_t encoderValue, newPosition;
 
@@ -39,7 +50,7 @@ void testroutine(void)
 
 	sprintf(strbuf, "done");
 	printLine(strbuf);
-	
+*/
 
 /*
 	char strbuf[80];
@@ -100,7 +111,7 @@ void testroutine(void)
 	sprintf(strbuf, " setting pid");
 	printLine(strbuf);
 
-	set_MOTOR_PID(128, pid);
+	put_MOTOR_PID(128, pid);
 
 	pid.p = pid.i = pid.d = 0.0;
 	pid.maxI = pid.deadZone = pid.minPos = pid.maxPos = 0;

@@ -48,10 +48,9 @@ uint8_t report(uint8_t cstack)
 	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
-	uint8_t retval, controller;
+	uint8_t controller;
 	int32_t encoderValue, encoderSpeed;
 	int32_t micronValue, micronSpeed;
-	uint32_t icurrents;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float voltage;							// voltage
 	uint16_t motorCurrent;
@@ -65,13 +64,11 @@ uint8_t report(uint8_t cstack)
 		case 'C':
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 63;
-			retval = get_MOTOR_FLOAT(controller, READMAINVOLTAGE, &voltage);
-			if (retval == ERROR) {
-				voltage = -666.0;
+			if (get_MOTOR_FLOAT(controller, READMAINVOLTAGE, &voltage) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_FLOAT volts error");
 			}
-			retval = get_MOTOR_FLOAT(controller, READTEMPERATURE, &t0);
-			if (retval == ERROR) {
-				t0 = -666.0;
+			if (get_MOTOR_FLOAT(controller, READTEMPERATURE, &t0) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_FLOAT temperature error");
 			}
 			sprintf(outbuf, format_MTV, currenttime, (char) (controller-63),
 				voltage, t0, pcmd[cstack].cid);
@@ -84,7 +81,6 @@ uint8_t report(uint8_t cstack)
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 31;
 
-//			retval = get_MOTOR_ENCODER(controller, &encoderValue);
 			if (get_MOTOR_ENCODER(controller, &encoderValue) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_ENCODER error");
 				return(ERROR);
@@ -97,13 +93,12 @@ uint8_t report(uint8_t cstack)
 
 			micronSpeed = encoderSpeed/ENC_COUNTS_PER_MICRON;
 
-			retval = get_MOTORCurrent(controller, ROBOREADCURRENT, &icurrents);
-			if (retval == ERROR) {
-				icurrents = 0xFFFFFFFF;
+			if (get_MOTOR_CURRENT(controller, &motorCurrent) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_CURRENT error");
+				motorCurrent = 0xFFFF;
 			}
-			motorCurrent = (uint16_t) ((icurrents >> 16) * 10);	// convert to mA
 			sprintf(outbuf, format_MTR, currenttime, pcmd[cstack].cobject,
-				micronValue, micronSpeed, motorCurrent, pcmd[cstack].cid);
+			micronValue, micronSpeed, motorCurrent, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 
@@ -147,7 +142,6 @@ uint8_t report(uint8_t cstack)
 		case 't':					// Report current time on specMech clock
 			get_time(currenttime);
 			get_SETTIME(lastsettime);
-//			read_FRAM(FRAMTWIADDR, SETTIMEADDR, (uint8_t*) lastsettime, 20);
 			get_BOOTTIME(boottime);
 			sprintf(outbuf, format_TIM, currenttime, lastsettime,
 				boottime, pcmd[cstack].cid);
