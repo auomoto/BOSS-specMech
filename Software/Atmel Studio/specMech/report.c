@@ -38,7 +38,7 @@ uint8_t report(uint8_t cstack)
 	char shutter, left, right, air;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
 	const char format_MTR[] = "MTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
-	const char format_MTV[] = "MTV,%s,Motor %c,%3.1f,V,%3.1f,C,%.2f,p,%.3f,i,%.2f,d,%ld,maxI,%ld,minPos,%ld,maxPos,%s";
+	const char format_MTV[] = "MTV,%s,Motor %c,%3.1f,V,%ld,maxCur,%3.1f,C,%.2f,p,%.3f,i,%.2f,d,%ld,maxI,%ld,deadZone,%ld,minPos,%ld,maxPos,%s";
 	const char format_ORI[] = "ORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
 	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
@@ -51,6 +51,7 @@ uint8_t report(uint8_t cstack)
 	uint8_t controller;
 	int32_t encoderValue, encoderSpeed;
 	int32_t micronValue, micronSpeed;
+	int32_t maxCurrent;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity
 	float voltage;							// voltage
 	uint16_t motorCurrent;
@@ -77,8 +78,13 @@ uint8_t report(uint8_t cstack)
 				printError(ERR_MTR, "report: get_MOTOR_PID error");
 				return(ERROR);
 			}
+			if (get_MOTOR_MAXCURRENT(controller, &maxCurrent) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_MAXCURRENT error");
+				return(ERROR);
+			}
 			sprintf(outbuf, format_MTV, currenttime, (char) (controller-63),
-				voltage, t0, pid.p, pid.i, pid.d, pid.maxI, pid.minPos, pid.maxPos, pcmd[cstack].cid);
+				voltage, maxCurrent, t0, pid.p, pid.i, pid.d, pid.maxI, pid.deadZone,
+				pid.minPos, pid.maxPos, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 

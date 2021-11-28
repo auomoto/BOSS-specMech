@@ -130,15 +130,12 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	send_USART(1, tbuf, 2);
 
 	USART1_ticks = 0;
-//	start_TCB0(1);					// 1 ms tisk period for USART1_ticks
 	while (recv1_buf.done == NO) {	// Wait for the reply
 		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
-//			stop_TCB0();
 			printError(ERR_MTRREADENC, "get_MOTOR: serial timeout");
 			return(ERROR);
 		}
 	}
-//	stop_TCB0();
 
 	crcReceived = (recv1_buf.data[nbytes] << 8) | recv1_buf.data[nbytes+1];
 
@@ -158,6 +155,41 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 
 	return(NOERROR);	
 	
+}
+
+/*------------------------------------------------------------------------------
+uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, int32_t *current)
+
+	Retrieves motor current from mtraddr
+
+	Inputs:
+		mtraddr: MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
+
+	Output:
+		current: The current in mA
+
+	Returns
+		ERROR on USART timeout
+		NOERROR otherwise
+
+	Also available with this command but not output here:
+		status - from page 86 of version 5.7 of the manual:
+			Bit0: Counter underflow (1=underflow occurred, clear after reading)
+			Bit1: Direction (0=forward, 1-backwards)
+			Bit2: Counter overflow (1=overflow occurred, clear after reading)
+			Bits 3-7 are "reserved." Bit7 is 1.
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, uint16_t *current)
+{
+	uint8_t data[4];
+
+	if (get_MOTOR(mtraddr, READCURRENT, data, 4) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_CURRENT: get_MOTOR error");
+		*current = 0xFFFF;
+		return(ERROR);
+	}
+	*current = (((uint16_t) data[0] << 8) | (uint16_t) data[1]) * 10;
+	return(NOERROR);
 }
 
 /*------------------------------------------------------------------------------
@@ -200,6 +232,7 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	return(NOERROR);
 
 }
+
 /*------------------------------------------------------------------------------
 uint8_t get_MOTOR_FLOAT(uint8_t controller, uint8_t command, float *value)
 	Retrieves a floating point value (voltage or temperature) from a RoboClaw
@@ -233,61 +266,36 @@ uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 	return(NOERROR);
 }
 
+uint8_t get_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t *maxCurrent)
+{
+	uint8_t data[8];
+
+	if (get_MOTOR(mtraddr, GETMAXCURRENT, data, 8) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_MAXCURRENT: get_MOTOR error");
+		return(ERROR);
+	}
+
+	*maxCurrent =  (uint32_t) data[0] << 24;
+	*maxCurrent |= (uint32_t) data[1] << 16;
+	*maxCurrent |= (uint32_t) data[2] << 8;
+	*maxCurrent |= (uint32_t) data[3];
+	*maxCurrent *= 10;
+	return(NOERROR);
+}
 
 /*------------------------------------------------------------------------------
-uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
-
-	Retrieves the motor speed from the controller at mtraddr
+uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
+	Retrieves the PID, maxI, deadZone, minPos, and maxPos from mtraddr
 
 	Inputs:
-		mtraddr: MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
+		mtraddr: The motor controller address(MOTOR_A, MOTOR_B, or MOTOR_C)
 
-	Output:
-		speed: The speed in encoder counts/sec. 2-s complement value.
+	Outputs:
+		pid: The stored parameters in the controller
 
-	Returns
-		ERROR on USART timeout
-		NOERROR otherwise
-
-	Also available with this command but not output here:
-		status - from page 86 of version 5.7 of the manual:
-			Bit0: Counter underflow (1=underflow occurred, clear after reading)
-			Bit1: Direction (0=forward, 1-backwards)
-			Bit2: Counter overflow (1=overflow occurred, clear after reading)
-			Bits 3-7 are "reserved." Bit7 is 1.
+	Returns:
+		ERROR: If get_MOTOR routine fails
 ------------------------------------------------------------------------------*/
-uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
-{
-	
-	uint8_t data[5];
-
-	if (get_MOTOR(mtraddr, ENCODERSPEED, data, 5) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
-		return(ERROR);
-	}
-
-	*speed =  (uint32_t) data[0] << 24;
-	*speed |= (uint32_t) data[1] << 16;
-	*speed |= (uint32_t) data[2] << 8;
-	*speed |= (uint32_t) data[3];
-
-	return(NOERROR);
-
-}
-
-uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, uint16_t *current)
-{
-	uint8_t data[4];
-
-	if (get_MOTOR(mtraddr, ROBOREADCURRENT, data, 4) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_CURRENT: get_MOTOR error");
-		*current = 0xFFFF;
-		return(ERROR);
-	}
-	*current = (((uint16_t) data[0] << 8) | (uint16_t) data[1]) * 10;
-	return(NOERROR);	
-}
-
 uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 {
 	uint8_t data[28];
@@ -345,8 +353,48 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t init_MOTORS(void)
+uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
 
+	Retrieves the motor speed from the controller at mtraddr
+
+	Inputs:
+		mtraddr: MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
+
+	Output:
+		speed: The speed in encoder counts/sec. 2-s complement value.
+
+	Returns
+		ERROR on USART timeout
+		NOERROR otherwise
+
+	Also available with this command but not output here:
+		status - from page 86 of version 5.7 of the manual:
+			Bit0: Counter underflow (1=underflow occurred, clear after reading)
+			Bit1: Direction (0=forward, 1-backwards)
+			Bit2: Counter overflow (1=overflow occurred, clear after reading)
+			Bits 3-7 are "reserved." Bit7 is 1.
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
+{
+	
+	uint8_t data[5];
+
+	if (get_MOTOR(mtraddr, ENCODERSPEED, data, 5) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
+		return(ERROR);
+	}
+
+	*speed =  (uint32_t) data[0] << 24;
+	*speed |= (uint32_t) data[1] << 16;
+	*speed |= (uint32_t) data[2] << 8;
+	*speed |= (uint32_t) data[3];
+
+	return(NOERROR);
+
+}
+
+/*------------------------------------------------------------------------------
+uint8_t init_MOTORS(void)
 	Reads the last-saved encoder values from FRAM and loads them into the three
 	controllers. No error message is output on first call (reboot).
 
@@ -365,17 +413,34 @@ uint8_t init_MOTORS(void)
 
 	uint8_t controller;
 	int32_t encoderValue;
+	PID pid;
 
 	_delay_ms(100);	// 50 seems to work
+
+	pid.p = PID_P;
+	pid.i = PID_I;
+	pid.d = PID_D;
+	pid.maxI = PID_MAXI;
+	pid.deadZone = PID_DEADZONE;
+	pid.minPos = PID_MINPOS;
+	pid.maxPos = PID_MAXPOS;
+
 	timerSAVEENCODER = 0;
 	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
 	for (controller = MOTOR_A; controller <= MOTOR_C; controller++) {
 		get_FRAM_MOTOR_ENCODER(controller, &encoderValue);
 		put_MOTOR_ENCODER(controller, encoderValue);
+		put_MOTOR_MAXCURRENT(controller, MAXCURRENT);
+		put_MOTOR_PID(controller, pid);
 	}
 	return(NOERROR);
 }
 
+/*------------------------------------------------------------------------------
+uint8_t motorsMoving(void)
+	Returns YES if any motors are moving. Emits an error message if a
+	controller does not respond, but does not return "ERROR"
+------------------------------------------------------------------------------*/
 uint8_t motorsMoving(void)
 {
 	uint8_t i;
@@ -396,8 +461,8 @@ uint8_t motorsMoving(void)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t move_MOTOR(uint8_t cstack)
-	Move to a new relative or absolute position. Called by the m command.
+uint8_t move_MOTOR_CMD(uint8_t cstack)
+	Interprets the m command and calls for the move
 
 	Input:
 		cstack: command stack position
@@ -453,6 +518,17 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 
 }
 
+/*------------------------------------------------------------------------------
+uint8_t move_MOTOR(uint8_t cstack)
+	Move to a new relative or absolute position.
+
+	Input:
+		cstack: command stack position
+
+	Returns:
+		ERROR if an unknown motor designator (not A, B, C, or a, b, c) is read
+		NOERROR otherwise
+------------------------------------------------------------------------------*/
 uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
 {
 
@@ -536,6 +612,25 @@ uint8_t put_FRAM_ENCODERS(void)
 	}
 }
 
+/*------------------------------------------------------------------------------
+uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
+	Sends a command to a motor controller. This routine copies data to temporary
+	array and adds the two CRC bytes before sending the temporary array to the
+	controller.
+
+	Inputs:
+		mtraddr:	Motor controller serial address
+		cmd:		Motor controller command
+		data:		Array containing data to send.
+		nbytes:		Number of bytes to send (not including the 2 CRC bytes)
+
+	Outputs:
+		Nothing
+
+	Returns:
+		ERROR:		If a serial timeout or bad acknowledge is detected
+		NOERROR:	Otherwise
+------------------------------------------------------------------------------*/
 uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
 	uint8_t i, tbuf[nbytes+4];
@@ -558,14 +653,11 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	send_USART(1, tbuf, nbytes+4);		// Send the command
 
 	USART1_ticks = 0;
-//	start_TCB0(1);						// Start 1 ms USART1_ticks timer
 	for (;;) {
 		if (recv1_buf.done == YES) {	// Reply received
-//			stop_TCB0();
 			break;
 		}
 		if (USART1_ticks > 50) {
-//			stop_TCB0();
 			printError(ERR_MTR, "put_MOTOR: serial timeout");
 			return(ERROR);
 		}
@@ -577,6 +669,21 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	return(NOERROR);
 }
 
+/*------------------------------------------------------------------------------
+uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
+	Writes a new encoder value to the selected controller.
+
+	Inputs:
+		mtraddr:		Motor controller serial address
+		encoderValue:	The new encoder value
+
+	Outputs:
+		Nothing
+
+	Returns:
+		ERROR:		If put_MOTOR returns an error
+		NOERROR:	Otherwise
+------------------------------------------------------------------------------*/
 uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
 {
 
@@ -594,6 +701,58 @@ uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
 
 }
 
+/*------------------------------------------------------------------------------
+uint8_t put_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t maxCurrent)
+	Writes the maximum current value to the selected controller. This works even
+	though the Basic Micro GUI doesn't reflect the change. Reading the device on
+	the GUI also doesn't update the number. Writing the settings from the GUI
+	*will* write the values to the controller EPROM.
+
+	Inputs:
+		mtraddr:		Motor controller serial address
+		maxCurrent:		The maximum current value im mA
+
+	Outputs:
+		Nothing
+
+	Returns:
+		ERROR:			If put_MOTOR returns an error
+		NOERROR:		Otherwise
+------------------------------------------------------------------------------*/
+uint8_t put_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t maxCurrent)
+{
+	uint8_t data[8];
+
+	maxCurrent /= 10;			// convert to 10 mA units
+	data[0] = (maxCurrent >> 24) & 0xFF;
+	data[1] = (maxCurrent >> 16) & 0xFF;
+	data[2] = (maxCurrent >> 8) & 0xFF;
+	data[3] = maxCurrent & 0xFF;
+	data[4] = data[5] = data[6] = data[7] = 0;
+	if (put_MOTOR(mtraddr, PUTMAXCURRENT, data, 8) == ERROR) {
+		printError(ERR_MTR, "put_MOTOR_MAXCURRENT: put_MOTOR error");
+		return(ERROR);
+	}
+	return(NOERROR);
+}
+
+/*------------------------------------------------------------------------------
+uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
+	Writes new PID parameters to the selected controller. Besides P, I, and D,
+	the PID structure also contains the maximum integral windup (maxI), deadZone,
+	and the minimum and maximum allowable encoder values (minPos and maxPos).
+
+	Inputs:
+		mtraddr:	Motor controller serial address
+		PID:		The new PID values
+
+	Outputs:
+		Nothing
+
+	Returns:
+		ERROR:		If put_MOTOR returns an error
+		NOERROR:	Otherwise
+------------------------------------------------------------------------------*/
 uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 {
 	uint8_t data[28];

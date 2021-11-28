@@ -146,7 +146,7 @@ void testroutine(void)
 	sprintf(strbuf, " maxPos=%ld", pid.maxPos);
 	printLine(strbuf);
 */
-
+/*
 	char strbuf[80], istr[10], jstr[10], kstr[10], fstr[10];
 	int i, j, k, nitems;
 	float f;
@@ -158,6 +158,14 @@ void testroutine(void)
 	f = atof(fstr);
 	sprintf(strbuf, "nitems=%d i=%d j=%d k=%d f=%f", nitems, i, j, k, f);
 	printLine(strbuf);
+*/
 
+	char strbuf[80];
+	int32_t maxCurrent;
+	put_MOTOR_MAXCURRENT(MOTOR_A, 300);
+	get_MOTOR_MAXCURRENT(MOTOR_A, &maxCurrent);
+	sprintf(strbuf, "maxcurrent=%ld mA", maxCurrent);
+	printLine(strbuf);
+	
 	return;
 }
