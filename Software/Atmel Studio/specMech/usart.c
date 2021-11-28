@@ -102,15 +102,15 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 			}
 			USART0.CTRLA |= USART_DREIE_bm;		// Enable interrupts
 			USART0_ticks = 0;
-			start_TCB0(10);						// 10 ms ticks
+//			start_TCB0(10);						// 10 ms ticks
 			while (send0_buf.done == NO) {
 				if (USART0_ticks > 100) {				// 1 second enough?
-					stop_TCB0();
+//					stop_TCB0();
 					send0_buf.done = YES;
 					return;
 				}
 			}
-			stop_TCB0();
+//			stop_TCB0();
 			break;
 
 		case 1:			// Timeouts are handled in caller routines

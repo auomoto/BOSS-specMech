@@ -12,6 +12,69 @@ ds3231.c
 #include "errors.h"
 #include "ds3231.h"
 
+uint8_t check_isotime(char *isotime)
+{
+	char sbuf[10];
+	uint8_t i;
+	int year, month, day, hours, minutes, seconds;
+
+	for (i = 0; i < 4; i++) {
+		sbuf[i] = isotime[i];
+	}
+	sbuf[4] = '\0';
+	year = atoi(sbuf);
+	if ((year < 2021) || year > 2030) {
+		printError(ERR_ISO, "check_isotime: year out of range (2021-2030)");
+		return(ERROR);
+	}
+	for (i = 5; i < 7; i++) {
+		sbuf[i-5] = isotime[i];
+	}
+	sbuf[2] = '\0';
+	month = atoi(sbuf);
+	if ((month < 1) || (month > 12)) {
+		printError(ERR_ISO, "check_isotime: invalid month (not 1-12)");
+		return(ERROR);
+	}
+	for (i = 8; i < 10; i++) {
+		sbuf[i-8] = isotime[i];
+	}
+	sbuf[2] = '\0';
+	day = atoi(sbuf);
+	if ((day < 1) || (day > 31)) {
+		printError(ERR_ISO, "check_isotime: invalid day (not 1-31)");
+		return(ERROR);
+	}
+	for (i = 11; i < 13; i++) {
+		sbuf[i-11] = isotime[i];
+	}
+	sbuf[2] = '\0';
+	hours = atoi(sbuf);
+	if ((hours < 0) || (hours > 23)) {
+		printError(ERR_ISO, "check_isotime: invalid hour");
+		return(ERROR);
+	}
+	for (i = 14; i < 16; i++) {
+		sbuf[i-14] = isotime[i];
+	}
+	sbuf[2] = '\0';
+	minutes = atoi(sbuf);
+	if ((minutes < 0) || (minutes > 59)) {
+		printError(ERR_ISO, "check_isotime: invalid minutes");
+		return(ERROR);
+	}
+	for (i = 17; i < 19; i++) {
+		sbuf[i-17] = isotime[i];
+	}
+	sbuf[2] = '\0';
+	seconds = atoi(sbuf);
+	if ((seconds < 0) || (seconds > 59)) {
+		printError(ERR_ISO, "check_isotime: invalid seconds");
+		return(ERROR);
+	}
+	return(NOERROR);
+}
+
 /*------------------------------------------------------------------------------
 void convert_ds2iso(char *isotime, uint8_t *ds3231time)
 	Convert the ds3231 time registers to ISO format.
@@ -108,9 +171,13 @@ uint8_t put_time(char *isotime)
 
 	uint8_t ds3231time[7];
 
+	if (check_isotime(isotime) == ERROR) {
+		printError(ERR_ISO, "put_time: check_isotime error");
+		return(ERROR);
+	}
 	convert_iso2ds(ds3231time, isotime);
 	if (write_DS3231(DS3231ADDR, ds3231time) == ERROR) {
-		printError(ERR_PUTTIME, "put_time DS3231");
+		printError(ERR_PUTTIME, "put_time: write_DS3231 error");
 		return(ERROR);
 	}
 	return(NOERROR);

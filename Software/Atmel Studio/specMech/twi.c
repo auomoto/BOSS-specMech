@@ -55,16 +55,16 @@ uint8_t read_TWI(void)
 	uint8_t data;
 
 	TWI_ticks = 0;
-	start_TCB0(1);								// 1 ms ticks
+//	start_TCB0(1);								// 1 ms ticks
 	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait xfer to complete
 		asm("nop");
 		if (TWI_ticks > 50) {					// Typically 0 ticks needed
 			printError(ERR_TWI, "read_TWI timeout");
-			stop_TCB0();
+//			stop_TCB0();
 			return(0xFF);
 		}
 	}
-	stop_TCB0();
+//	stop_TCB0();
 
 	TWI0.MCTRLB &= ~(1<<TWI_ACKACT_bp);			// Send ACK
 	data = TWI0.MDATA;							// Next read
@@ -85,16 +85,16 @@ uint8_t readlast_TWI(void)
 	uint8_t data;
 
 	TWI_ticks = 0;
-	start_TCB0(1);								// 1 ms ticks
+//	start_TCB0(1);								// 1 ms ticks
 	while (!(TWI0.MSTATUS & TWI_RIF_bm)) {		// Wait for xfer to complete
 		asm("nop");
 		if (TWI_ticks > 50) {						// Typically 0 ticks needed
 			printError(ERR_TWI, "readlast timeout");
-			stop_TCB0();
+//			stop_TCB0();
 			return(0xFF);
 		}
 	}
-	stop_TCB0();
+//	stop_TCB0();
 
 	TWI0.MCTRLB |= TWI_ACKACT_NACK_gc;
 	data = TWI0.MDATA;
@@ -138,16 +138,16 @@ uint8_t start_TWI(uint8_t addr, uint8_t rw)
 	}
 
 	TWI_ticks = 0;
-	start_TCB0(1);								// 1 ms ticks
+//	start_TCB0(1);								// 1 ms ticks
 	while (!(TWI0.MSTATUS & (TWI_WIF_bm | TWI_RIF_bm))) {
 		asm("nop");								// Wait for addr transmission
 		if (TWI_ticks > 50) {
 			printError(ERR_TWI, "TWI start timeout");
-			stop_TCB0();
+//			stop_TCB0();
 			return(ERROR);
 		}
 	}
-	stop_TCB0();
+//	stop_TCB0();
 
 	if ((TWI0.MSTATUS & TWI_BUSERR_bm)) {		// Bus error
 		printError(ERR_TWI, "TWI bus");
@@ -188,30 +188,30 @@ uint8_t write_TWI(uint8_t data)
 {
 
 	TWI_ticks = 0;
-	start_TCB0(1);							// 1 ms ticks
+//	start_TCB0(1);							// 1 ms ticks
 	while (!(TWI0.MSTATUS & TWI_WIF_bm)) {	// Wait for previous writes
 		asm("nop");
 		if (TWI_ticks > 50) {
 			printError(ERR_TWI, "write_TWI error1");
-			stop_TCB0();
+//			stop_TCB0();
 			return(ERROR);
 		}
 	}
-	stop_TCB0();
+//	stop_TCB0();
 
 	TWI0.MDATA = data;
 
 	TWI_ticks = 0;
-	start_TCB0(1);
+//	start_TCB0(1);
 	while (!(TWI0.MSTATUS & TWI_WIF_bm)) {
 		asm("nop");
 		if (TWI_ticks > 50) {
 			printError(ERR_TWI, "write_TWI error2");
-			stop_TCB0();
+//			stop_TCB0();
 			return(ERROR);
 		}
 	}
-	stop_TCB0();
+//	stop_TCB0();
 
 	if (TWI0.MSTATUS & TWI_RXACK_bm) {		// If device did not ACK
 		printError(ERR_TWI, "ACK not received");

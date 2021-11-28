@@ -27,6 +27,7 @@
 #define ERR_PNUMECH		(501)	// Not a valid mechanism (s, l, r, or b)
 #define ERR_SET			(601)	// Bad object to set
 #define ERR_SETTIME		(602)	// Invalid time format
+#define ERR_ISO			(603)	// ISOTIME error
 
 extern volatile uint8_t squelchErrors;
 

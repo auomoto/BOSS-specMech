@@ -44,8 +44,6 @@ report.c
 
 roboclaw.c
 
-rtc.c
-
 set.c
 
 temperature.c

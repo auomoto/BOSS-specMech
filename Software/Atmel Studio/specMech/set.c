@@ -29,7 +29,10 @@ uint8_t set(uint8_t cstack)
 				printError(ERR_SETTIME, "set: bad time format");
 				return(ERROR);
 			}
-			put_time(pcmd[cstack].cvalue);
+			if (put_time(pcmd[cstack].cvalue) == ERROR) {
+				printError(ERR_ISO, "set time: put_time error");
+				return(ERROR);
+			}
 			write_FRAM(FRAMTWIADDR, SETTIMEADDR, (uint8_t*) pcmd[cstack].cvalue, 20);
 			break;
 

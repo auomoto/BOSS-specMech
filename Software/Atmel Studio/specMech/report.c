@@ -38,7 +38,7 @@ uint8_t report(uint8_t cstack)
 	char shutter, left, right, air;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
 	const char format_MTR[] = "MTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
-	const char format_MTV[] = "MTV,%s,%c,%3.1f,V,%3.1f,C,%s";
+	const char format_MTV[] = "MTV,%s,Motor %c,%3.1f,V,%3.1f,C,%.2f,p,%.3f,i,%.2f,d,%ld,maxI,%ld,minPos,%ld,maxPos,%s";
 	const char format_ORI[] = "ORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
 	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
@@ -56,6 +56,7 @@ uint8_t report(uint8_t cstack)
 	uint16_t motorCurrent;
 	float x, y, z;							// accelerometer
 	float redvac, bluvac;					// red and blue vacuum
+	PID pid;
 
 	switch(pcmd[cstack].cobject) {
 
@@ -66,12 +67,18 @@ uint8_t report(uint8_t cstack)
 			controller = pcmd[cstack].cobject + 63;
 			if (get_MOTOR_FLOAT(controller, READMAINVOLTAGE, &voltage) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_FLOAT volts error");
+				return(ERROR);
 			}
 			if (get_MOTOR_FLOAT(controller, READTEMPERATURE, &t0) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_FLOAT temperature error");
+				return(ERROR);
+			}
+			if (get_MOTOR_PID(controller, &pid) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_PID error");
+				return(ERROR);
 			}
 			sprintf(outbuf, format_MTV, currenttime, (char) (controller-63),
-				voltage, t0, pcmd[cstack].cid);
+				voltage, t0, pid.p, pid.i, pid.d, pid.maxI, pid.minPos, pid.maxPos, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 

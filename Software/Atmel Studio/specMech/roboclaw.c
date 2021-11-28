@@ -130,15 +130,15 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	send_USART(1, tbuf, 2);
 
 	USART1_ticks = 0;
-	start_TCB0(1);					// 1 ms tisk period for USART1_ticks
+//	start_TCB0(1);					// 1 ms tisk period for USART1_ticks
 	while (recv1_buf.done == NO) {	// Wait for the reply
 		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
-			stop_TCB0();
+//			stop_TCB0();
 			printError(ERR_MTRREADENC, "get_MOTOR: serial timeout");
 			return(ERROR);
 		}
 	}
-	stop_TCB0();
+//	stop_TCB0();
 
 	crcReceived = (recv1_buf.data[nbytes] << 8) | recv1_buf.data[nbytes+1];
 
@@ -558,14 +558,14 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	send_USART(1, tbuf, nbytes+4);		// Send the command
 
 	USART1_ticks = 0;
-	start_TCB0(1);						// Start 1 ms USART1_ticks timer
+//	start_TCB0(1);						// Start 1 ms USART1_ticks timer
 	for (;;) {
 		if (recv1_buf.done == YES) {	// Reply received
-			stop_TCB0();
+//			stop_TCB0();
 			break;
 		}
 		if (USART1_ticks > 50) {
-			stop_TCB0();
+//			stop_TCB0();
 			printError(ERR_MTR, "put_MOTOR: serial timeout");
 			return(ERROR);
 		}

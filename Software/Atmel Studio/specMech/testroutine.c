@@ -73,7 +73,7 @@ void testroutine(void)
 	sprintf(strbuf, "done");
 	printLine(strbuf);
 */
-
+/*
 	char strbuf[80];
 	PID pid;
 
@@ -144,6 +144,19 @@ void testroutine(void)
 	printLine(strbuf);
 
 	sprintf(strbuf, " maxPos=%ld", pid.maxPos);
+	printLine(strbuf);
+*/
+
+	char strbuf[80], istr[10], jstr[10], kstr[10], fstr[10];
+	int i, j, k, nitems;
+	float f;
+	strcpy(strbuf," 400.5 200 300 400");
+	nitems = sscanf(strbuf, "%s%s%s%s", fstr, istr, jstr, kstr);
+	i = atoi(istr);
+	j = atoi(jstr);
+	k = atoi(kstr);
+	f = atof(fstr);
+	sprintf(strbuf, "nitems=%d i=%d j=%d k=%d f=%f", nitems, i, j, k, f);
 	printLine(strbuf);
 
 	return;
