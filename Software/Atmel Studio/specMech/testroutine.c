@@ -4,7 +4,7 @@
 #include "roboclaw.h"
 #include "fram.h"
 #include "testroutine.h"
-
+#include "initialize.h"
 #include "commands.h"
 #include "errors.h"
 
@@ -183,9 +183,10 @@ void testroutine(void)
 	}
 	sprintf(strbuf, "S4 mode=0x%02x", mode);
 	printLine(strbuf);
-	_delay_ms(25);
+
 	while (put_MOTOR_S4MODE(128) == ERROR) {
 		printError(ERR_MTR, "testroutine: put_MOTOR_S4MODE error");
+		_delay_ms(12);
 //		return;
 	}
 	if (get_MOTOR_S4MODE(128, &mode) == ERROR) {
@@ -216,6 +217,7 @@ void testroutine(void)
 	}
 ---*/
 
+/*
 	char strbuf[80];
 	PID pid;
 
@@ -260,6 +262,11 @@ void testroutine(void)
 	}
 	sprintf(strbuf, " qpps=%ld confirmed written", pid.qpps);
 	printLine(strbuf);
+---*/
 
+	int32_t value;
+	get_MOTOR_MAXCURRENT(128, &value);
+	get_MOTOR_MAXCURRENT(129, &value);
+	get_MOTOR_MAXCURRENT(130, &value);
 	return;
 }

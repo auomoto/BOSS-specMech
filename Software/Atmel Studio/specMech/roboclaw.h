@@ -14,8 +14,8 @@
 #define PID_D					(533.0)		// Portescap
 #define PID_MAXI				(230)		// Portescap
 #define PID_DEADZONE			(6)
-#define PID_MINPOS				(-100000)	// Encoder counts (353 um)
-#define PID_MAXPOS				(900000)	// 3.18 mm (894,596 is 3.16 mm)
+#define PID_MINPOS				(-85000)	// Encoder counts (300 um)
+#define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
 #define PID_QPPS				(23000)		// Encoder speed at max motor speed
 #define S4MODE					(0x42)		// Home(User)/Limit(Fwd)
 //#define S4MODE					(0x72)		// Home(User)/Limit(Fwd)

@@ -60,6 +60,8 @@ uint8_t getFRAM_MOTOR_ENCODER(uint8_t controller, uint32_t *encoderValue)
 uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 {
 
+	const char fmt1[] ="get_FRAM_MOTOR_ENCODER: read_FRAM error for %c";
+	char strbuf[80];
 	uint8_t tbuf[4];
 	uint16_t framaddr;
 	int32_t tempVal;
@@ -82,7 +84,9 @@ uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	}
 
 	if (read_FRAM(FRAMTWIADDR, framaddr, tbuf, 4) == ERROR) {
-		printError(ERR_FRAM, "get_FRAM_MOTOR_ENCODER: read_FRAM error");
+		sprintf(strbuf, fmt1, (char) (controller-63));
+		printError(ERR_FRAM, strbuf);
+//		printError(ERR_FRAM, "get_FRAM_MOTOR_ENCODER: read_FRAM error");
 		*encoderValue = 0xFFFFFFFF;
 		return(ERROR);
 	}
@@ -118,6 +122,9 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
 
+	const char fmt1[] = "get_MOTOR: serial timeout on %c";
+	const char fmt2[] = "get_MOTOR: CRC mismatch on %c";
+	char strbuf[80];
 	uint8_t i, tbuf[nbytes+2];
 	uint16_t crcReceived, crcExpected;
 
@@ -132,7 +139,9 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	USART1_ticks = 0;
 	while (recv1_buf.done == NO) {	// Wait for the reply
 		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
-			printError(ERR_MTRREADENC, "get_MOTOR: serial timeout");
+			sprintf(strbuf, fmt1, (char) (mtraddr-63));
+			printError(ERR_MTRREADENC, strbuf);
+//			printError(ERR_MTRREADENC, "get_MOTOR: serial timeout");
 			return(ERROR);
 		}
 	}
@@ -145,7 +154,9 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	crcExpected = crc16(tbuf, nbytes+2);
 
 	if (crcReceived != crcExpected) {
-		printError(ERR_MTRENCCRC, "get_MOTOR: CRC mismatch");
+		sprintf(strbuf, fmt2, (char) (mtraddr-63));
+		printError(ERR_MTRENCCRC, strbuf);
+//		printError(ERR_MTRENCCRC, "get_MOTOR: CRC mismatch");
 		return(ERROR);
 	}
 
@@ -181,10 +192,15 @@ uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, int32_t *current)
 ------------------------------------------------------------------------------*/
 uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, uint16_t *current)
 {
+
+	const char fmt1[] = "get_MOTOR_CURRENT: get_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[4];
 
 	if (get_MOTOR(mtraddr, READCURRENT, data, 4) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_CURRENT: get_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_CURRENT: get_MOTOR error");
 		*current = 0xFFFF;
 		return(ERROR);
 	}
@@ -217,10 +233,14 @@ uint8_t get_MOTOR_ENCODER(uint8_t mtraddr, int32_t *value)
 uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 {
 
+	const char fmt1[] = "get_MOTOR_ENCODER: get_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[5];	// 5 bytes includes status, which is ignored here
 
 	if (get_MOTOR(controller, ENCODERCOUNT, data, 5) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_ENCODER: get_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (controller-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_ENCODER: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -255,10 +275,14 @@ uint8_t get_MOTOR_FLOAT(uint8_t controller, uint8_t command, float *value)
 uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 {
 
+	const char fmt1[] = "get_MOTOR_FLOAT: get_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[2];
 
 	if (get_MOTOR(mtraddr, cmd, data, 2) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_FLOAT: get_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_FLOAT: get_MOTOR error");
 		*value = BADFLOAT;
 		return(ERROR);
 	}
@@ -266,12 +290,32 @@ uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 	return(NOERROR);
 }
 
+
+/*------------------------------------------------------------------------------
+uint8_t get_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t *maxCurrent)
+	Retrieve the maximum current allowed by the controller.
+
+	Input:
+		mtraddr - the controller address
+
+	Output:
+		maxCurrent - the maximum current allowed in mA
+
+	Returns:
+		ERROR on get_MOTOR error
+		NOERROR otherwise
+------------------------------------------------------------------------------*/
 uint8_t get_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t *maxCurrent)
 {
+
+	const char fmt1[] = "get_MOTOR_MAXCURRENT: get_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[8];
 
 	if (get_MOTOR(mtraddr, GETMAXCURRENT, data, 8) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_MAXCURRENT: get_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_MAXCURRENT: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -279,7 +323,8 @@ uint8_t get_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t *maxCurrent)
 	*maxCurrent |= (uint32_t) data[1] << 16;
 	*maxCurrent |= (uint32_t) data[2] << 8;
 	*maxCurrent |= (uint32_t) data[3];
-	*maxCurrent *= 10;
+	*maxCurrent *= 10;	// Convert to mA
+
 	return(NOERROR);
 }
 
@@ -298,11 +343,16 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 ------------------------------------------------------------------------------*/
 uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 {
+
+	const char fmt1[] = "get_MOTOR_PID: get_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[28];
 	int32_t p, i, d, maxI, deadZone, minPos, maxPos, qpps;
 
 	if (get_MOTOR(mtraddr, READPID, data, 28) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -349,7 +399,9 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 	pid->maxPos = maxPos;
 
 	if (get_MOTOR(mtraddr, READQPPS, data, 16) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -385,10 +437,14 @@ uint8_t get_MOTOR_S4MODE(uint8_t mtraddr, uint8_t *mode)
 uint8_t get_MOTOR_S4MODE(uint8_t mtraddr, uint8_t *mode)
 {
 
+	const char fmt1[] = "get_MOTOR_S4: get_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[3];
 
 	if (get_MOTOR(mtraddr, GETS4MODE, data, 3) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_S4: get_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_S4: get_MOTOR error");
 		*mode = 0xFF; 
 		return(ERROR);
 	}
@@ -421,11 +477,15 @@ uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
 ------------------------------------------------------------------------------*/
 uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
 {
-	
+
+	const char fmt1[] = "get_MOTOR_SPEED: get_MOTOR call error on %c";
+	char strbuf[80];
 	uint8_t data[5];
 
 	if (get_MOTOR(mtraddr, ENCODERSPEED, data, 5) == ERROR) {
-		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
 		return(ERROR);
 	}
 
@@ -478,6 +538,7 @@ uint8_t init_MOTORS(void)
 		put_MOTOR_ENCODER(controller, encoderValue);
 		put_MOTOR_MAXCURRENT(controller, MAXCURRENT);
 		put_MOTOR_PID(controller, pid);
+		put_MOTOR_S4MODE(controller);
 	}
 	return(NOERROR);
 }
@@ -489,12 +550,17 @@ uint8_t motorsMoving(void)
 ------------------------------------------------------------------------------*/
 uint8_t motorsMoving(void)
 {
+
+	const char fmt1[] = "motorsMoving: get_MOTOR_SPEED error on %c";
+	char strbuf[80];
 	uint8_t i;
 	int32_t encoderSpeed;
 
 	for (i = MOTOR_A; i <= MOTOR_C; i++) {
 		if (get_MOTOR_SPEED(i, &encoderSpeed) == ERROR) {
-			printError(ERR_MTR, "motorsMoving: get_MOTOR_SPEED error");
+			sprintf(strbuf, fmt1, (char) (i-63));
+			printError(ERR_MTR, strbuf);
+//			printError(ERR_MTR, "motorsMoving: get_MOTOR_SPEED error");
 			continue;
 		}
 		if (encoderSpeed != 0) {
@@ -578,6 +644,8 @@ uint8_t move_MOTOR(uint8_t cstack)
 uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
 {
 
+	const char fmt1[] = "move_MOTOR: put_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t buffer, data[17], nbytes;
 	uint32_t acceleration, deceleration, speed;
 
@@ -606,7 +674,9 @@ uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
 	data[16] = buffer;
 
 	if (put_MOTOR(mtraddr, DRIVETO, data, nbytes) == ERROR) {
-		printError(ERR_MTR, "move_MOTOR: put_MOTOR call error");
+		printf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "move_MOTOR: put_MOTOR call error");
 		return(ERROR);
 	}
 
@@ -632,6 +702,9 @@ uint8_t put_FRAM_ENCODERS(void)
 uint8_t put_FRAM_ENCODERS(void)
 {
 
+	const char fmt1[] = "put_FRAM_ENCODERS: get_MOTOR_ENCODER error on %c";
+	const char fmt2[] = "put_FRAM_ENCODERS: write_FRAM error for %c";
+	char strbuf[80];
 	uint8_t i, tbuf[4], errorFlag, mtraddr[3] = {MOTOR_A, MOTOR_B, MOTOR_C};
 	uint16_t memaddr[3] = {ENCA_FRAMADDR, ENCB_FRAMADDR, ENCC_FRAMADDR};
 	int32_t encoderValue;
@@ -639,7 +712,9 @@ uint8_t put_FRAM_ENCODERS(void)
 	errorFlag = 0;
 	for (i = 0; i < 3; i++) {
 		if (get_MOTOR_ENCODER(mtraddr[i], &encoderValue) == ERROR) {
-			printError(ERR_MTR, "put_FRAM_ENCODERS: get_MOTOR_ENCODER error");
+			sprintf(strbuf, fmt1, (char) (mtraddr[i]-63));
+			printError(ERR_MTR, strbuf);
+//			printError(ERR_MTR, "put_FRAM_ENCODERS: get_MOTOR_ENCODER error");
 			errorFlag = 1;
 		}
 		tbuf[0] = (encoderValue >> 24) & 0xFF;
@@ -647,7 +722,9 @@ uint8_t put_FRAM_ENCODERS(void)
 		tbuf[2] = (encoderValue >> 8) & 0xFF;
 		tbuf[3] = encoderValue & 0xFF;
 		if (write_FRAM(FRAMTWIADDR, memaddr[i], tbuf, 4) == ERROR) {
-			printError(ERR_FRAM, "put_FRAM_ENCODERS: write_FRAM error");
+			sprintf(strbuf, fmt2, (char) (memaddr[i]-63));
+			printError(ERR_FRAM, strbuf);
+//			printError(ERR_FRAM, "put_FRAM_ENCODERS: write_FRAM error");
 			errorFlag = 1;
 		}
 	}
@@ -679,6 +756,10 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 ------------------------------------------------------------------------------*/
 uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
+
+	const char fmt1[] = "put_MOTOR: serial timeout on %c";
+	const char fmt2[] = "put_MOTOR: bad ACK on %c";
+	char strbuf[80];
 	uint8_t i, tbuf[nbytes+4];
 	uint16_t crc;
 
@@ -704,12 +785,14 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 			break;
 		}
 		if (USART1_ticks > 50) {
-			printError(ERR_MTR, "put_MOTOR: serial timeout");
+			sprintf(strbuf, fmt1, (char) (mtraddr-63));
+			printError(ERR_MTR, strbuf);
 			return(ERROR);
 		}
 	}
 	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
-		printError(ERR_MTR, "put_MOTOR: bad ACK");
+		sprintf(strbuf, fmt2, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
 		return(ERROR);
 	}
 	return(NOERROR);
@@ -733,14 +816,18 @@ uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
 uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
 {
 
+	const char fmt1[] = "put_MOTOR_ENCODER: put_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[4];
-	
+
 	data[0] = (encoderValue >> 24) & 0xFF;
 	data[1] = (encoderValue >> 16) & 0xFF;
 	data[2] = (encoderValue >> 8) & 0xFF;
 	data[3] = encoderValue & 0xFF;
 	if (put_MOTOR(mtraddr, PUTENCODER, data, 4) == ERROR) {
-		printError(ERR_MTR, "put_MOTOR_ENCODER: put_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "put_MOTOR_ENCODER: put_MOTOR error");
 		return(ERROR);
 	}
 	return(NOERROR);
@@ -767,6 +854,9 @@ uint8_t put_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t maxCurrent)
 ------------------------------------------------------------------------------*/
 uint8_t put_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t maxCurrent)
 {
+
+	const char fmt1[] = "put_MOTOR_MAXCURRENT: put_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[8];
 
 	maxCurrent /= 10;			// convert to 10 mA units
@@ -776,7 +866,9 @@ uint8_t put_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t maxCurrent)
 	data[3] = maxCurrent & 0xFF;
 	data[4] = data[5] = data[6] = data[7] = 0;
 	if (put_MOTOR(mtraddr, PUTMAXCURRENT, data, 8) == ERROR) {
-		printError(ERR_MTR, "put_MOTOR_MAXCURRENT: put_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "put_MOTOR_MAXCURRENT: put_MOTOR error");
 		return(ERROR);
 	}
 	return(NOERROR);
@@ -801,6 +893,10 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 ------------------------------------------------------------------------------*/
 uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 {
+
+	const char fmt1[] = "put_MOTOR_PID: put_MOTOR error pid on %c";
+	const char fmt2[] = "put_MOTOR_PID: put_MOTOR error qpps on %c";
+	char strbuf[80];
 	uint8_t data[28];
 	int32_t p, i, d;
 
@@ -838,7 +934,9 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 	data[27] = pid.maxPos & 0xFF;
 
 	if (put_MOTOR(mtraddr, SETPID, data, 28) == ERROR) {
-		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error pid");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error pid");
 		return(ERROR);
 	}
 
@@ -851,7 +949,9 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 	data[15] = pid.qpps & 0xFF;
 
 	if (put_MOTOR(mtraddr, SETQPPS, data, 16) == ERROR) {
-		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error qpps");
+		sprintf(strbuf, fmt2, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error qpps");
 		return(ERROR);
 	}
 
@@ -877,6 +977,8 @@ uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
 uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
 {
 
+	const char fmt1[] = "put_MOTOR_S4MODE: put_MOTOR error on %c";
+	char strbuf[80];
 	uint8_t data[3];
 
 	data[0] = 0x00;
@@ -884,7 +986,9 @@ uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
 	data[2] = 0x00;
 
 	if (put_MOTOR(mtraddr, SETS4MODE, data, 3) == ERROR) {
-		printError(ERR_MTR, "put_MOTOR_S4MODE: put_MOTOR error");
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+//		printError(ERR_MTR, "put_MOTOR_S4MODE: put_MOTOR error");
 		return(ERROR);
 	}
 

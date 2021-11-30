@@ -82,7 +82,7 @@ void commands(void)
 				timerSAVEENCODER = 0;
 				send_GTprompt();	// Aidan request
 				_delay_ms(100);
-				reboot();
+				reboot();			// in wdt.c
 				return;
 			}
 
