@@ -38,7 +38,7 @@ uint8_t report(uint8_t cstack)
 	char shutter, left, right, air;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
 	const char format_MTR[] = "MTR,%s,%c,%ld,microns,%ld,microns/sec,%d,mA,%s";
-	const char format_MTV[] = "MTV,%s,Motor %c,%3.1f,V,%ld,maxCur,%3.1f,C,%.2f,p,%.3f,i,%.2f,d,%ld,maxI,%ld,deadZone,%ld,minPos,%ld,maxPos,%s";
+	const char format_MTV[] = "MTV,%s,Motor %c,%3.1f,V,%ld,maxCur,%3.1f,C,%.2f,p,%.3f,i,%.2f,d,%ld,maxI,%ld,deadZone,%ld,minPos,%ld,maxPos,%ld,qpps,%s";
 	const char format_ORI[] = "ORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
 	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
@@ -84,7 +84,7 @@ uint8_t report(uint8_t cstack)
 			}
 			sprintf(outbuf, format_MTV, currenttime, (char) (controller-63),
 				voltage, maxCurrent, t0, pid.p, pid.i, pid.d, pid.maxI, pid.deadZone,
-				pid.minPos, pid.maxPos, pcmd[cstack].cid);
+				pid.minPos, pid.maxPos, pid.qpps, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 

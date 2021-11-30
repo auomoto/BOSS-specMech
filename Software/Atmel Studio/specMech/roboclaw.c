@@ -299,7 +299,7 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 {
 	uint8_t data[28];
-	int32_t p, i, d, maxI, deadZone, minPos, maxPos;
+	int32_t p, i, d, maxI, deadZone, minPos, maxPos, qpps;
 
 	if (get_MOTOR(mtraddr, READPID, data, 28) == ERROR) {
 		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
@@ -348,6 +348,51 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 	maxPos |= (uint32_t) data[27];
 	pid->maxPos = maxPos;
 
+	if (get_MOTOR(mtraddr, READQPPS, data, 16) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
+		return(ERROR);
+	}
+
+	qpps = (uint32_t) data[12] << 24;
+	qpps |= (uint32_t) data[13] << 16;
+	qpps |= (uint32_t) data[14] << 8;
+	qpps |= (uint32_t) data[15];
+	pid->qpps = qpps;
+
+	return(NOERROR);
+
+}
+
+/*------------------------------------------------------------------------------
+uint8_t get_MOTOR_S4MODE(uint8_t mtraddr, uint8_t *mode)
+	Retrieve the S4 input pin behavior. The S4 pin is connected to both the
+	forward and rearward limit switches. We want to see 0x72 mode, which means
+	the S4 pin treats one switch as the home position and the other as a limit.
+
+	Inputs:
+		mtraddr:	The controller serial address
+
+	Outputs:
+		*mode:		The retrieved mode for the S4 pin (should be 0x72)
+
+	Returns:
+		ERROR if the get_MOTOR routine fails
+		NOERROR otherwise
+
+	Note: One of the modes, Motor 1 Limit(Both) returns 0x02 when it should
+		return 0x32
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR_S4MODE(uint8_t mtraddr, uint8_t *mode)
+{
+
+	uint8_t data[3];
+
+	if (get_MOTOR(mtraddr, GETS4MODE, data, 3) == ERROR) {
+		printError(ERR_MTR, "get_MOTOR_S4: get_MOTOR error");
+		*mode = 0xFF; 
+		return(ERROR);
+	}
+	*mode = data[1];
 	return(NOERROR);
 
 }
@@ -424,6 +469,7 @@ uint8_t init_MOTORS(void)
 	pid.deadZone = PID_DEADZONE;
 	pid.minPos = PID_MINPOS;
 	pid.maxPos = PID_MAXPOS;
+	pid.qpps = PID_QPPS;
 
 	timerSAVEENCODER = 0;
 	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
@@ -792,8 +838,56 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 	data[27] = pid.maxPos & 0xFF;
 
 	if (put_MOTOR(mtraddr, SETPID, data, 28) == ERROR) {
-		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error");
+		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error pid");
 		return(ERROR);
 	}
+
+	data[0] = data[1] = data[2] = data[3] = 0;
+	data[4] = data[5] = data[6] = data[7] = 0;
+	data[8] = data[9] = data[10] = data[11] = 0;
+	data[12] = (pid.qpps >> 24) & 0xFF;
+	data[13] = (pid.qpps >> 16) & 0xFF;
+	data[14] = (pid.qpps >> 8) & 0xFF;
+	data[15] = pid.qpps & 0xFF;
+
+	if (put_MOTOR(mtraddr, SETQPPS, data, 16) == ERROR) {
+		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error qpps");
+		return(ERROR);
+	}
+
 	return(NOERROR);
+}
+
+/*------------------------------------------------------------------------------
+uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
+	Writes the S4 input pin behavior. The S4 pin is connected to both the
+	forward and rearward limit switches. We write 0x72, which means the S4 pin
+	treats one switch as the home position and the other as a limit.
+
+	Inputs:
+		mtraddr:	The controller serial address
+
+	Outputs:
+		None
+
+	Returns:
+		ERROR if the put_MOTOR routine fails
+		NOERROR otherwise
+------------------------------------------------------------------------------*/
+uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
+{
+
+	uint8_t data[3];
+
+	data[0] = 0x00;
+	data[1] = S4MODE;	// 0x72, Home(User)/Limit(Fwd)
+	data[2] = 0x00;
+
+	if (put_MOTOR(mtraddr, SETS4MODE, data, 3) == ERROR) {
+		printError(ERR_MTR, "put_MOTOR_S4MODE: put_MOTOR error");
+		return(ERROR);
+	}
+
+	return(NOERROR);
+
 }
