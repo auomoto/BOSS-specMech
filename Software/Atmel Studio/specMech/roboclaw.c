@@ -40,7 +40,9 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 			}
 		}
 	}
+
 	return (crc);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -86,7 +88,6 @@ uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	if (read_FRAM(FRAMTWIADDR, framaddr, tbuf, 4) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (controller-63));
 		printError(ERR_FRAM, strbuf);
-//		printError(ERR_FRAM, "get_FRAM_MOTOR_ENCODER: read_FRAM error");
 		*encoderValue = 0xFFFFFFFF;
 		return(ERROR);
 	}
@@ -134,14 +135,13 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 
 	tbuf[0] = mtraddr;				// Motor controller packet serial address
 	tbuf[1] = cmd;					// Motor controller command
-	send_USART(1, tbuf, 2);
 
+	send_USART(1, tbuf, 2);
 	USART1_ticks = 0;
 	while (recv1_buf.done == NO) {	// Wait for the reply
 		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
 			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTRREADENC, strbuf);
-//			printError(ERR_MTRREADENC, "get_MOTOR: serial timeout");
 			return(ERROR);
 		}
 	}
@@ -151,12 +151,12 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	for (i = 2; i < nbytes+2; i++) {		// Compute expected crc value
 		tbuf[i] = recv1_buf.data[i-2];
 	}
+
 	crcExpected = crc16(tbuf, nbytes+2);
 
 	if (crcReceived != crcExpected) {
 		sprintf(strbuf, fmt2, (char) (mtraddr-63));
 		printError(ERR_MTRENCCRC, strbuf);
-//		printError(ERR_MTRENCCRC, "get_MOTOR: CRC mismatch");
 		return(ERROR);
 	}
 
@@ -200,12 +200,14 @@ uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, uint16_t *current)
 	if (get_MOTOR(mtraddr, READCURRENT, data, 4) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_CURRENT: get_MOTOR error");
 		*current = 0xFFFF;
 		return(ERROR);
 	}
+
 	*current = (((uint16_t) data[0] << 8) | (uint16_t) data[1]) * 10;
+
 	return(NOERROR);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -240,7 +242,6 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	if (get_MOTOR(controller, ENCODERCOUNT, data, 5) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (controller-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_ENCODER: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -282,12 +283,14 @@ uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 	if (get_MOTOR(mtraddr, cmd, data, 2) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_FLOAT: get_MOTOR error");
 		*value = BADFLOAT;
 		return(ERROR);
 	}
+
 	*value = ((float) ((data[0] << 8) | data[1])) / 10.0;
+
 	return(NOERROR);
+
 }
 
 
@@ -315,7 +318,6 @@ uint8_t get_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t *maxCurrent)
 	if (get_MOTOR(mtraddr, GETMAXCURRENT, data, 8) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_MAXCURRENT: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -326,6 +328,7 @@ uint8_t get_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t *maxCurrent)
 	*maxCurrent *= 10;	// Convert to mA
 
 	return(NOERROR);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -352,7 +355,6 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 	if (get_MOTOR(mtraddr, READPID, data, 28) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -401,7 +403,6 @@ uint8_t get_MOTOR_PID(uint8_t mtraddr, PID *pid)
 	if (get_MOTOR(mtraddr, READQPPS, data, 16) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_PID: get_MOTOR error");
 		return(ERROR);
 	}
 
@@ -444,11 +445,12 @@ uint8_t get_MOTOR_S4MODE(uint8_t mtraddr, uint8_t *mode)
 	if (get_MOTOR(mtraddr, GETS4MODE, data, 3) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_S4: get_MOTOR error");
 		*mode = 0xFF; 
 		return(ERROR);
 	}
+
 	*mode = data[1];
+
 	return(NOERROR);
 
 }
@@ -485,7 +487,6 @@ uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
 	if (get_MOTOR(mtraddr, ENCODERSPEED, data, 5) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "get_MOTOR_SPEED: get_MOTOR call error");
 		return(ERROR);
 	}
 
@@ -533,6 +534,7 @@ uint8_t init_MOTORS(void)
 
 	timerSAVEENCODER = 0;
 	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
+
 	for (controller = MOTOR_A; controller <= MOTOR_C; controller++) {
 		get_FRAM_MOTOR_ENCODER(controller, &encoderValue);
 		put_MOTOR_ENCODER(controller, encoderValue);
@@ -540,7 +542,9 @@ uint8_t init_MOTORS(void)
 		put_MOTOR_PID(controller, pid);
 		put_MOTOR_S4MODE(controller);
 	}
+
 	return(NOERROR);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -560,7 +564,6 @@ uint8_t motorsMoving(void)
 		if (get_MOTOR_SPEED(i, &encoderSpeed) == ERROR) {
 			sprintf(strbuf, fmt1, (char) (i-63));
 			printError(ERR_MTR, strbuf);
-//			printError(ERR_MTR, "motorsMoving: get_MOTOR_SPEED error");
 			continue;
 		}
 		if (encoderSpeed != 0) {
@@ -569,6 +572,59 @@ uint8_t motorsMoving(void)
 	}
 
 	return(NO);
+
+}
+
+/*------------------------------------------------------------------------------
+uint8_t move_MOTOR(uint8_t cstack)
+	Move to a new relative or absolute position.
+
+	Input:
+		cstack: command stack position
+
+	Returns:
+		ERROR if an unknown motor designator (not A, B, C, or a, b, c) is read
+		NOERROR otherwise
+------------------------------------------------------------------------------*/
+uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
+{
+
+	const char fmt1[] = "move_MOTOR: put_MOTOR error on %c";
+	char strbuf[80];
+	uint8_t buffer, data[17], nbytes;
+	uint32_t acceleration, deceleration, speed;
+
+	nbytes = 17;
+	buffer = 0;						// Operation is buffered
+	acceleration = ACCELERATION;	// See roboclaw.h
+	deceleration = DECELERATION;
+	speed = SPEED;
+
+	data[0] = (acceleration >> 24) & 0XFF;
+	data[1] = (acceleration >> 16) & 0xFF;
+	data[2] = (acceleration >> 8) & 0xFF;
+	data[3] = (acceleration) & 0xFF;
+	data[4] = (speed >> 24) & 0xFF;
+	data[5] = (speed >> 16) & 0xFF;
+	data[6] = (speed >> 8) & 0xFF;
+	data[7] = (speed) & 0xFF;
+	data[8] = (deceleration >> 24) & 0xFF;
+	data[9] = (deceleration >> 16) & 0xFF;
+	data[10] = (deceleration >> 8) & 0xFF;
+	data[11] = (deceleration) & 0xFF;
+	data[12] = (newPosition >> 24) & 0xFF;
+	data[13] = (newPosition >> 16) & 0xFF;
+	data[14] = (newPosition >> 8) & 0xFF;
+	data[15] = (newPosition) & 0xFF;
+	data[16] = buffer;
+
+	if (put_MOTOR(mtraddr, DRIVETO, data, nbytes) == ERROR) {
+		sprintf(strbuf, fmt1, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+		return(ERROR);
+	}
+
+	return(NOERROR);
 
 }
 
@@ -622,65 +678,11 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 	newPosition = currentPosition + (atol(pcmd[cstack].cvalue) * ENC_COUNTS_PER_MICRON);
 
 	if (move_MOTOR(controller, newPosition) == ERROR) {
-		printError(ERR_MTR, "move_MOTOR_CMD: move_MOTOR call error");
+		printError(ERR_MTR, "move_MOTOR_CMD: move_MOTOR error");
 		return(ERROR);
 	}
 
 	return(ERROR);
-
-}
-
-/*------------------------------------------------------------------------------
-uint8_t move_MOTOR(uint8_t cstack)
-	Move to a new relative or absolute position.
-
-	Input:
-		cstack: command stack position
-
-	Returns:
-		ERROR if an unknown motor designator (not A, B, C, or a, b, c) is read
-		NOERROR otherwise
-------------------------------------------------------------------------------*/
-uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
-{
-
-	const char fmt1[] = "move_MOTOR: put_MOTOR error on %c";
-	char strbuf[80];
-	uint8_t buffer, data[17], nbytes;
-	uint32_t acceleration, deceleration, speed;
-
-	nbytes = 17;
-	buffer = 0;						// Operation is buffered
-	acceleration = ACCELERATION;	// See roboclaw.h
-	deceleration = DECELERATION;
-	speed = SPEED;
-
-	data[0] = (acceleration >> 24) & 0XFF;
-	data[1] = (acceleration >> 16) & 0xFF;
-	data[2] = (acceleration >> 8) & 0xFF;
-	data[3] = (acceleration) & 0xFF;
-	data[4] = (speed >> 24) & 0xFF;
-	data[5] = (speed >> 16) & 0xFF;
-	data[6] = (speed >> 8) & 0xFF;
-	data[7] = (speed) & 0xFF;
-	data[8] = (deceleration >> 24) & 0xFF;
-	data[9] = (deceleration >> 16) & 0xFF;
-	data[10] = (deceleration >> 8) & 0xFF;
-	data[11] = (deceleration) & 0xFF;
-	data[12] = (newPosition >> 24) & 0xFF;
-	data[13] = (newPosition >> 16) & 0xFF;
-	data[14] = (newPosition >> 8) & 0xFF;
-	data[15] = (newPosition) & 0xFF;
-	data[16] = buffer;
-
-	if (put_MOTOR(mtraddr, DRIVETO, data, nbytes) == ERROR) {
-		printf(strbuf, fmt1, (char) (mtraddr-63));
-		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "move_MOTOR: put_MOTOR call error");
-		return(ERROR);
-	}
-
-	return(NOERROR);
 
 }
 
@@ -710,11 +712,11 @@ uint8_t put_FRAM_ENCODERS(void)
 	int32_t encoderValue;
 
 	errorFlag = 0;
+
 	for (i = 0; i < 3; i++) {
 		if (get_MOTOR_ENCODER(mtraddr[i], &encoderValue) == ERROR) {
 			sprintf(strbuf, fmt1, (char) (mtraddr[i]-63));
 			printError(ERR_MTR, strbuf);
-//			printError(ERR_MTR, "put_FRAM_ENCODERS: get_MOTOR_ENCODER error");
 			errorFlag = 1;
 		}
 		tbuf[0] = (encoderValue >> 24) & 0xFF;
@@ -724,7 +726,6 @@ uint8_t put_FRAM_ENCODERS(void)
 		if (write_FRAM(FRAMTWIADDR, memaddr[i], tbuf, 4) == ERROR) {
 			sprintf(strbuf, fmt2, (char) (memaddr[i]-63));
 			printError(ERR_FRAM, strbuf);
-//			printError(ERR_FRAM, "put_FRAM_ENCODERS: write_FRAM error");
 			errorFlag = 1;
 		}
 	}
@@ -733,6 +734,7 @@ uint8_t put_FRAM_ENCODERS(void)
 	} else {
 		return(NOERROR);
 	}
+
 }
 
 /*------------------------------------------------------------------------------
@@ -778,7 +780,6 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	tbuf[nbytes+3] = crc & 0xFF;
 
 	send_USART(1, tbuf, nbytes+4);		// Send the command
-
 	USART1_ticks = 0;
 	for (;;) {
 		if (recv1_buf.done == YES) {	// Reply received
@@ -790,12 +791,15 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 			return(ERROR);
 		}
 	}
+
 	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
 		sprintf(strbuf, fmt2, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
 		return(ERROR);
 	}
+
 	return(NOERROR);
+
 }
 
 /*------------------------------------------------------------------------------
@@ -824,12 +828,13 @@ uint8_t put_MOTOR_ENCODER(uint8_t mtraddr, int32_t encoderValue)
 	data[1] = (encoderValue >> 16) & 0xFF;
 	data[2] = (encoderValue >> 8) & 0xFF;
 	data[3] = encoderValue & 0xFF;
+
 	if (put_MOTOR(mtraddr, PUTENCODER, data, 4) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "put_MOTOR_ENCODER: put_MOTOR error");
 		return(ERROR);
 	}
+
 	return(NOERROR);
 
 }
@@ -868,7 +873,6 @@ uint8_t put_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t maxCurrent)
 	if (put_MOTOR(mtraddr, PUTMAXCURRENT, data, 8) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "put_MOTOR_MAXCURRENT: put_MOTOR error");
 		return(ERROR);
 	}
 	return(NOERROR);
@@ -936,7 +940,6 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 	if (put_MOTOR(mtraddr, SETPID, data, 28) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error pid");
 		return(ERROR);
 	}
 
@@ -951,7 +954,6 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 	if (put_MOTOR(mtraddr, SETQPPS, data, 16) == ERROR) {
 		sprintf(strbuf, fmt2, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "put_MOTOR_PID: put_MOTOR error qpps");
 		return(ERROR);
 	}
 
@@ -988,7 +990,6 @@ uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
 	if (put_MOTOR(mtraddr, SETS4MODE, data, 3) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
-//		printError(ERR_MTR, "put_MOTOR_S4MODE: put_MOTOR error");
 		return(ERROR);
 	}
 
