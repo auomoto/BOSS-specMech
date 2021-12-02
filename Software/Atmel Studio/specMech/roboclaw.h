@@ -7,18 +7,30 @@
 #define ACCELERATION			7077		// Counts/sec
 #define DECELERATION			7077
 #define SPEED					7077		// cts/sec
-#define MAXCURRENT				(400)		// mA (Portescap)
+#define MAXCURRENT				(2000)		// mA (Portescap)
 //#define MAXCURRENT			(300)		// mA (316.17 mA is absolute max for PI)
-#define PID_P					(112.0)		// Portescap
-#define PID_I					(1.8)		// Portescap
-#define PID_D					(533.0)		// Portescap
-#define PID_MAXI				(230)		// Portescap
+
+#define VOLTS12
+
+#ifdef	VOLTS12
+#define PID_P					(72.0)		// Portescap
+#define PID_I					(1.0)		// Portescap
+#define PID_D					(310.0)		// Portescap
+#define PID_MAXI				(144)		// Portescap
+#endif
+
+#ifdef	VOLTS24
+#define PID_P					(77.0)		// Portescap
+#define PID_I					(1.1)		// Portescap
+#define PID_D					(330.0)		// Portescap
+#define PID_MAXI				(137)		// Portescap
+#endif
+
 #define PID_DEADZONE			(6)
 #define PID_MINPOS				(-85000)	// Encoder counts (300 um)
 #define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
-#define PID_QPPS				(23000)		// Encoder speed at max motor speed
+#define PID_QPPS				(14000)		// Encoder speed at max motor speed
 #define S4MODE					(0x42)		// Home(User)/Limit(Fwd)
-//#define S4MODE					(0x72)		// Home(User)/Limit(Fwd)
 #define SAVEENCODERFREQUENCY	11			// Save encoder period (sec)
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
@@ -62,6 +74,7 @@ uint8_t init_MOTORS(void);
 uint8_t motorsMoving(void);
 uint8_t move_MOTOR(uint8_t, int32_t);
 uint8_t move_MOTOR_CMD(uint8_t);
+uint8_t move_MOTOR_HOME(void);
 uint8_t put_FRAM_ENCODERS(void);
 uint8_t put_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);

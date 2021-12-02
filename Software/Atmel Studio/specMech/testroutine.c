@@ -263,10 +263,14 @@ void testroutine(void)
 	sprintf(strbuf, " qpps=%ld confirmed written", pid.qpps);
 	printLine(strbuf);
 ---*/
-
+/*
 	int32_t value;
 	get_MOTOR_MAXCURRENT(128, &value);
 	get_MOTOR_MAXCURRENT(129, &value);
 	get_MOTOR_MAXCURRENT(130, &value);
+---*/
+
+	move_MOTOR_HOME();
+
 	return;
 }

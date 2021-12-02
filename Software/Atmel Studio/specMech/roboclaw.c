@@ -219,7 +219,7 @@ uint8_t get_MOTOR_ENCODER(uint8_t mtraddr, int32_t *value)
 		mtraddr: MOTOR_A, MOTOR_B, or MOTOR_C (128, 129, or 130)
 
 	Output:
-		encoderValue: The encoder value
+		encoderValue: The raw encoder value
 
 	Returns
 		ERROR on USART timeout
@@ -557,21 +557,25 @@ uint8_t motorsMoving(void)
 
 	const char fmt1[] = "motorsMoving: get_MOTOR_SPEED error on %c";
 	char strbuf[80];
-	uint8_t i;
+	uint8_t i, nmoving;
 	int32_t encoderSpeed;
 
-	for (i = MOTOR_A; i <= MOTOR_C; i++) {
+	encoderSpeed = 0;
+	nmoving = 0;
+
+	for (i = MOTOR_A; i <= MOTOR_A; i++) {
+//	for (i = MOTOR_A; i <= MOTOR_C; i++) {
 		if (get_MOTOR_SPEED(i, &encoderSpeed) == ERROR) {
 			sprintf(strbuf, fmt1, (char) (i-63));
 			printError(ERR_MTR, strbuf);
 			continue;
 		}
 		if (encoderSpeed != 0) {
-			return(YES);
+			nmoving++;
 		}
 	}
 
-	return(NO);
+	return(nmoving);
 
 }
 
@@ -686,6 +690,55 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 
 }
 
+uint8_t move_MOTOR_HOME(void)
+{
+	const char fmt1[] = "moveMOTOR_HOME: get_MOTOR_ENCODER error on %c";
+	const char fmt2[] = "moveMOTOR_HOME: move_MOTOR error on %c";
+	char strbuf[80];
+	uint8_t i, mtraddr;
+	int32_t curPos[3], avgPos;
+
+	avgPos = 0;
+
+	for (i = 0; i < 1; i++) {
+//	for (i = 0; i < 4; i++) {
+		mtraddr = i+128;
+		if (get_MOTOR_ENCODER(mtraddr, &curPos[i]) == ERROR) {
+			sprintf(strbuf, fmt1, mtraddr-63);
+			printError(ERR_MTR, strbuf);
+			return(ERROR);
+		}
+		avgPos += curPos[i];
+	}
+	avgPos /= 3;
+
+sprintf(strbuf, " avgPos = %ld", avgPos/ENC_COUNTS_PER_MICRON);
+printLine(strbuf);
+
+	for (i = 0; i < 1; i++) {
+//	for (i = 0; i < 4; i++) {
+		mtraddr = i+128;
+		if (move_MOTOR(mtraddr, avgPos) == ERROR) {
+			sprintf(strbuf, fmt2, mtraddr-63);
+			printError(ERR_MTR, strbuf);
+			return(ERROR);
+		}
+	}
+
+i = 0;
+	_delay_ms(500);		// give the motor a chance to start up
+	while (motorsMoving()) {
+sprintf(strbuf, " moving %d", i);
+printLine(strbuf);
+		_delay_ms(1000);
+		i++;
+	}
+
+sprintf(strbuf, " stopped after %d", i);
+printLine(strbuf);
+
+	return(NOERROR);
+}
 /*------------------------------------------------------------------------------
 uint8_t put_FRAM_ENCODERS(void)
 

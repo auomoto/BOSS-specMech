@@ -8,8 +8,8 @@ float get_temperature(uint8_t sensor)
 	Return the temperature in degrees C.
 
 	Input
-		sensor - 0, 1, 2, or 3 depending on which AD590 sensor you want.
-			sensor=3 turns them all on and you get the average.
+		sensor - 0, 1, or 2 depending on which external AD590 sensor you want.
+		sensor - 3 reads the on-board MCP9808 chip.
 
 	Output
 		The temperature in C
@@ -32,12 +32,18 @@ float get_temperature(uint8_t sensor)
 		case 2:
 			read_AD590(sensor, &temperature);
 			break;
+
 		case 3:
 			read_MCP9808(&temperature);
 			break;
+
 		default:
-			temperature = -666.0;
+			temperature = BADFLOAT;
 			break;
+	}
+
+	if (temperature < -50.0) {
+		temperature = BADFLOAT;
 	}
 
 	return(temperature);
