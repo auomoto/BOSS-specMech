@@ -70,6 +70,10 @@ float get_humidity(uint8_t sensor)
 		humidity = (humidity / (1.0546 - 0.00216 * temperature));
 	}
 
+	if (humidity < 0.0) {
+		humidity = BADFLOAT;
+	}
+
 	return(humidity);
 
 }

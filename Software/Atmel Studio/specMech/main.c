@@ -40,7 +40,7 @@ int main(void)
 			timerOLED = 0;
 			squelchErrors = NO;
 		} if ((timerSAVEENCODER > timeoutSAVEENCODER) && rebootackd) {
-			squelchErrors = YES;
+//			squelchErrors = YES;
 			put_FRAM_ENCODERS();	// Maybe set a global error variable?
 			timerSAVEENCODER = 0;
 			squelchErrors = NO;

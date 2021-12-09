@@ -54,6 +54,7 @@ void init_USART(void)
 	recv1_buf.head = 0;
 	recv1_buf.tail = 0;
 	recv1_buf.data[0] = '\0';
+	recv1_buf.length = 0;				// Not used
 	recv1_buf.done = NO;
 
 	// USART3 PB0 is TxD, PB1 is RxD

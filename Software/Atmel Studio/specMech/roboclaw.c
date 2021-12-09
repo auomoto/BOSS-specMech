@@ -250,6 +250,9 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	*encoderValue |= (uint32_t) data[2] << 8;
 	*encoderValue |= (uint32_t) data[3];
 
+sprintf(strbuf, "encval=%ld", *encoderValue);
+printLine(strbuf);
+
 	return(NOERROR);
 
 }
@@ -521,7 +524,7 @@ uint8_t init_MOTORS(void)
 	int32_t encoderValue;
 	PID pid;
 
-	_delay_ms(100);	// 50 seems to work
+	_delay_ms(100);
 
 	pid.p = PID_P;
 	pid.i = PID_I;
@@ -580,14 +583,15 @@ uint8_t motorsMoving(void)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t move_MOTOR(uint8_t cstack)
-	Move to a new relative or absolute position.
+uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
+	Move to newPosition (encoder units).
 
 	Input:
-		cstack: command stack position
+		mtraddr:		MOTOR_A, MOTOR_B, or MOTOR_C
+		newPosition:	The target encoder value
 
 	Returns:
-		ERROR if an unknown motor designator (not A, B, C, or a, b, c) is read
+		ERROR if an unknown motor designator
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
 uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
@@ -621,6 +625,9 @@ uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
 	data[14] = (newPosition >> 8) & 0xFF;
 	data[15] = (newPosition) & 0xFF;
 	data[16] = buffer;
+
+sprintf(strbuf, "newpos=%ld", newPosition);
+printLine(strbuf);
 
 	if (put_MOTOR(mtraddr, DRIVETO, data, nbytes) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
@@ -692,6 +699,7 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 
 uint8_t move_MOTOR_HOME(void)
 {
+
 	const char fmt1[] = "moveMOTOR_HOME: get_MOTOR_ENCODER error on %c";
 	const char fmt2[] = "moveMOTOR_HOME: move_MOTOR error on %c";
 	char strbuf[80];
@@ -737,8 +745,45 @@ printLine(strbuf);
 sprintf(strbuf, " stopped after %d", i);
 printLine(strbuf);
 
+	for (i = 0; i < 1; i++) {
+//	for (i = 0; i < 4; i++) {
+		mtraddr = i+128;
+		if (get_MOTOR_ENCODER(mtraddr, &curPos[i]) == ERROR) {
+			sprintf(strbuf, fmt1, mtraddr-63);
+			printError(ERR_MTR, strbuf);
+			return(ERROR);
+		}
+	}
+
+	// TBD: Check that all motors are at the same position
+
+	// Move motors to 200 microns position
+	for (i = 0; i < 4; i++) {
+		mtraddr = i+128;
+		if (move_MOTOR(mtraddr, 200UL * ENC_COUNTS_PER_MICRON) == ERROR) {
+			sprintf(strbuf, fmt1, mtraddr-63);
+			printError(ERR_MTR, strbuf);
+// should stop all motors here
+			return(ERROR);
+		}
+	}
+
+i = 0;
+	_delay_ms(500);		// give the motor a chance to start up
+	while (motorsMoving()) {
+		sprintf(strbuf, " moving %d", i);
+		printLine(strbuf);
+		_delay_ms(1000);
+		i++;
+	}
+
+sprintf(strbuf, " stopped after %d", i);
+printLine(strbuf);
+
 	return(NOERROR);
 }
+
+
 /*------------------------------------------------------------------------------
 uint8_t put_FRAM_ENCODERS(void)
 
@@ -766,7 +811,8 @@ uint8_t put_FRAM_ENCODERS(void)
 
 	errorFlag = 0;
 
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < 1; i++) {
+//	for (i = 0; i < 3; i++) {
 		if (get_MOTOR_ENCODER(mtraddr[i], &encoderValue) == ERROR) {
 			sprintf(strbuf, fmt1, (char) (mtraddr[i]-63));
 			printError(ERR_MTR, strbuf);
@@ -813,7 +859,7 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
 
 	const char fmt1[] = "put_MOTOR: serial timeout on %c";
-	const char fmt2[] = "put_MOTOR: bad ACK on %c";
+	const char fmt2[] = "put_MOTOR: bad ACK on %c, ack=0x%02x";
 	char strbuf[80];
 	uint8_t i, tbuf[nbytes+4];
 	uint16_t crc;
@@ -846,7 +892,7 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	}
 
 	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
-		sprintf(strbuf, fmt2, (char) (mtraddr-63));
+		sprintf(strbuf, fmt2, (char) (mtraddr-63), recv1_buf.data[0]);
 		printError(ERR_MTR, strbuf);
 		return(ERROR);
 	}
