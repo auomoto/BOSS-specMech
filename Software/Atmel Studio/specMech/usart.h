@@ -15,21 +15,21 @@ typedef struct {
 	uint8_t	volatile done;	// Is the transfer complete ('\r' seen)?
 } USARTBuf;
 
-
-
+typedef struct {
+	uint8_t
+		data[BUFSIZE],
+		n2xfr, nxfrd;
+} USART1Buf;
 
 extern USARTBuf
-	send0_buf, send1_buf, send3_buf,
-	recv0_buf, recv1_buf, recv3_buf;
+	send0_buf, send3_buf,
+	recv0_buf, recv3_buf;
 
-
-
-
-
-
-
+extern USART1Buf
+	ser_send1, ser_recv1;
 
 void init_USART(void);
 void send_USART(uint8_t, uint8_t*, uint8_t);
+void send_USART1(uint8_t*, uint8_t);
 
 #endif

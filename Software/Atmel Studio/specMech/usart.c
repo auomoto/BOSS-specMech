@@ -4,6 +4,7 @@
 #include "usart.h"
 
 USARTBuf send0_buf, send1_buf, send3_buf, recv0_buf, recv1_buf, recv3_buf;
+USART1Buf ser_send1, ser_recv1;
 
 /*------------------------------------------------------------------------------
 void init_USART(void)
@@ -141,6 +142,24 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 
 }
 
+void send_USART1(uint8_t *data, uint8_t nbytes)
+{
+
+	uint8_t i;
+	uint16_t crc;
+
+	crc = crc16(data, nbytes);
+	ser_send1.nxfrd = 0;
+	ser_send1.n2xfr = nbytes+2;
+	for (i = 0; i < nbytes; i++) {
+		ser_send1.data[i] = *data++;
+	}
+	ser_send1.data[nbytes] = (crc >> 8);
+	ser_send1.data[nbytes+1] = (crc & 0xFF);
+	USART1.CTRLA |= USART_DREIE_bm;		// Enable interrupts
+
+}
+
 /*------------------------------------------------------------------------------
 ISR(USART0_RXC_vect)
 	A byte at USART0 has been received. This is the channel to the high level
@@ -211,6 +230,14 @@ ISR(USART1_RXC_vect)
 ISR(USART1_RXC_vect)
 {
 
+	ser_recv1.data[ser_recv1.nxfrd++] = USART1.RXDATAL;
+
+}
+
+/*---
+ISR(USART1_RXC_vect)
+{
+
 	uint8_t c;
 
 	c = USART1.RXDATAL;
@@ -224,6 +251,7 @@ ISR(USART1_RXC_vect)
 	}
 
 }
+---*/
 
 /*------------------------------------------------------------------------------
 ISR(USART1_DRE_vect)
@@ -240,13 +268,10 @@ ISR(USART1_DRE_vect)
 ISR(USART1_DRE_vect)
 {
 
-	USART1.CTRLA &= ~USART_DREIE_bm;	// Turn off interrupts
-	if (send1_buf.head - send1_buf.tail) {
-		USART1.TXDATAL = send1_buf.data[send1_buf.tail++];
-		send1_buf.tail %= BUFSIZE;
-		USART1.CTRLA |= USART_DREIE_bm;		// Turn on interrupts
-	} else {
-		send1_buf.done = YES;
+	USART1.CTRLA &= ~USART_DREIE_bm;		// Turn off interrupts
+	USART1.TXDATAL = ser_send1.data[send1_buf.nxfrd++];
+	if (ser_send1.nxfrd < ser_send1.n2xfr) {
+		USART1.CTRLA |= USART_DREIE_bm;		// Turn on interrupts	
 	}
 
 }

@@ -4,8 +4,8 @@
 #include "globals.h"
 
 #define ENC_COUNTS_PER_MICRON	283			// 283.1, actually
-#define ACCELERATION			7077		// Counts/sec
-#define DECELERATION			7077
+#define ACCELERATION			(SPEED)	// Counts/sec
+#define DECELERATION			(SPEED/2)
 #define SPEED					7077		// cts/sec
 #define MAXCURRENT				(2000)		// mA (Portescap)
 //#define MAXCURRENT			(300)		// mA (316.17 mA is absolute max for PI)
@@ -26,11 +26,12 @@
 #define PID_MAXI				(137)		// Portescap
 #endif
 
+#define STOP					(0)			// Motor stop
 #define PID_DEADZONE			(6)
 #define PID_MINPOS				(-85000)	// Encoder counts (300 um)
 #define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
 #define PID_QPPS				(14000)		// Encoder speed at max motor speed
-#define S4MODE					(0x42)		// Home(User)/Limit(Fwd)
+#define S4MODE					(0x72)		// Home(User)/Limit(Fwd)
 #define SAVEENCODERFREQUENCY	11			// Save encoder period (sec)
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
@@ -81,5 +82,6 @@ uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
 uint8_t put_MOTOR_MAXCURRENT(uint8_t, int32_t);
 uint8_t put_MOTOR_PID(uint8_t, PID);
 uint8_t put_MOTOR_S4MODE(uint8_t);
+uint8_t stop_MOTOR(uint8_t);
 
 #endif

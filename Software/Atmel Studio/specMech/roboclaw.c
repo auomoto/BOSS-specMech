@@ -120,39 +120,42 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 		ERROR on USART timeout or CRC mismatch
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
+
 uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
 
+	char strbuf[80];
+	uint8_t i, nbytesp2, tbuf[nbytes+2];
+	uint16_t crcReceived, crcExpected;
 	const char fmt1[] = "get_MOTOR: serial timeout on %c";
 	const char fmt2[] = "get_MOTOR: CRC mismatch on %c";
-	char strbuf[80];
-	uint8_t i, tbuf[nbytes+2];
-	uint16_t crcReceived, crcExpected;
 
-	recv1_buf.nbytes = nbytes+2;	// Set up receive buffer (+2 for crc bytes)
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
+	nbytesp2 = nbytes + 2;
+	ser_recv1.nxfrd = 0;
+	ser_recv1.n2xfr = nbytesp2;
 
 	tbuf[0] = mtraddr;				// Motor controller packet serial address
 	tbuf[1] = cmd;					// Motor controller command
 
-	send_USART(1, tbuf, 2);
+	send_USART1(tbuf, 2);
 	USART1_ticks = 0;
-	while (recv1_buf.done == NO) {	// Wait for the reply
-		if (USART1_ticks > 50) {	// Timeout about 4 ticks at 38400 baud
+	while (ser_recv1.nxfrd < ser_recv1.n2xfr) {	// Wait for complete data transfer
+		if (USART1_ticks > 50) {
 			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTRREADENC, strbuf);
 			return(ERROR);
 		}
 	}
 
-	crcReceived = (recv1_buf.data[nbytes] << 8) | recv1_buf.data[nbytes+1];
+sprintf(strbuf, " get_MOTOR USART1_ticks=%d", USART1_ticks);
+printLine(strbuf);
 
-	for (i = 2; i < nbytes+2; i++) {		// Compute expected crc value
-		tbuf[i] = recv1_buf.data[i-2];
+	crcReceived = (ser_recv1.data[nbytes] << 8) | ser_recv1.data[nbytes+1];
+
+	for (i = 2; i < nbytesp2; i++) {		// Compute expected crc value
+		tbuf[i] = ser_recv1.data[i-2];
 	}
-
-	crcExpected = crc16(tbuf, nbytes+2);
+	crcExpected = crc16(tbuf, nbytesp2);
 
 	if (crcReceived != crcExpected) {
 		sprintf(strbuf, fmt2, (char) (mtraddr-63));
@@ -161,11 +164,11 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	}
 
 	for (i = 0; i < nbytes; i++) {
-		data[i] = recv1_buf.data[i];
+		data[i] = ser_recv1.data[i];
 	}
 
 	return(NOERROR);	
-	
+
 }
 
 /*------------------------------------------------------------------------------
@@ -250,7 +253,7 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	*encoderValue |= (uint32_t) data[2] << 8;
 	*encoderValue |= (uint32_t) data[3];
 
-sprintf(strbuf, "encval=%ld", *encoderValue);
+sprintf(strbuf, " encval=%ld", *encoderValue);
 printLine(strbuf);
 
 	return(NOERROR);
@@ -295,7 +298,6 @@ uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 	return(NOERROR);
 
 }
-
 
 /*------------------------------------------------------------------------------
 uint8_t get_MOTOR_MAXCURRENT(uint8_t mtraddr, int32_t *maxCurrent)
@@ -658,6 +660,13 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 
 	motor = pcmd[cstack].cobject;
 	switch(motor) {
+		case 'x':
+		case 'X':
+			stop_MOTOR(128);
+//			stop_MOTOR(129);		// NEED TO AVOID BUFFER OVERWRITE?
+//			stop_MOTOR(130);
+			return(NOERROR);
+
 		case 'A':
 		case 'B':
 		case 'C':
@@ -757,29 +766,6 @@ printLine(strbuf);
 
 	// TBD: Check that all motors are at the same position
 
-	// Move motors to 200 microns position
-	for (i = 0; i < 4; i++) {
-		mtraddr = i+128;
-		if (move_MOTOR(mtraddr, 200UL * ENC_COUNTS_PER_MICRON) == ERROR) {
-			sprintf(strbuf, fmt1, mtraddr-63);
-			printError(ERR_MTR, strbuf);
-// should stop all motors here
-			return(ERROR);
-		}
-	}
-
-i = 0;
-	_delay_ms(500);		// give the motor a chance to start up
-	while (motorsMoving()) {
-		sprintf(strbuf, " moving %d", i);
-		printLine(strbuf);
-		_delay_ms(1000);
-		i++;
-	}
-
-sprintf(strbuf, " stopped after %d", i);
-printLine(strbuf);
-
 	return(NOERROR);
 }
 
@@ -864,10 +850,8 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	uint8_t i, tbuf[nbytes+4];
 	uint16_t crc;
 
-	recv1_buf.data[0] = 0x00;			// Set up receiving buffer
-	recv1_buf.nbytes = 1;
-	recv1_buf.nxfrd = 0;
-	recv1_buf.done = NO;
+	ser_recv1.nxfrd = 0;
+	ser_recv1.n2xfr = 1;				// Receive only the 0xFF ACK
 
 	tbuf[0] = mtraddr;
 	tbuf[1] = cmd;
@@ -878,27 +862,30 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	tbuf[nbytes+2] = (crc >> 8) & 0xFF;
 	tbuf[nbytes+3] = crc & 0xFF;
 
-	send_USART(1, tbuf, nbytes+4);		// Send the command
+	send_USART1(tbuf, nbytes+4);		// Send the command
+
 	USART1_ticks = 0;
-	for (;;) {
-		if (recv1_buf.done == YES) {	// Reply received
-			break;
-		}
+	while (ser_recv1.nxfrd < ser_recv1.n2xfr) {
 		if (USART1_ticks > 50) {
 			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTR, strbuf);
 			return(ERROR);
+		} else {
+			asm("nop");
 		}
 	}
 
-	if (recv1_buf.data[0] != 0xFF) {	// Bad ack
-		sprintf(strbuf, fmt2, (char) (mtraddr-63), recv1_buf.data[0]);
+sprintf(strbuf, " put_MOTOR USART1_ticks=%d", USART1_ticks);
+printLine(strbuf);
+
+	if (ser_recv1.data[0] != 0xFF) {	// Bad ack
+		sprintf(strbuf, fmt2, (char) (mtraddr-63), ser_recv1.data[0]);
 		printError(ERR_MTR, strbuf);
 		return(ERROR);
 	}
 
 	return(NOERROR);
-
+	
 }
 
 /*------------------------------------------------------------------------------
@@ -1092,6 +1079,23 @@ uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
 		return(ERROR);
 	}
 
+	return(NOERROR);
+
+}
+
+uint8_t stop_MOTOR(uint8_t mtraddr)
+{
+
+	char strbuf[80];
+	uint8_t tbuf[1];
+	const char fmt[] = "stop_MOTOR: put_MOTOR error on %c";
+
+	tbuf[0] = 0;
+	if (put_MOTOR(mtraddr, STOP, tbuf, 1) == ERROR) {
+		sprintf(strbuf, fmt, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+		return(ERROR);
+	}
 	return(NOERROR);
 
 }

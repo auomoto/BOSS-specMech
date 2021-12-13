@@ -270,7 +270,7 @@ void testroutine(void)
 	get_MOTOR_MAXCURRENT(130, &value);
 ---*/
 
-	move_MOTOR_HOME();
+	stop_MOTOR(128);
 
 	return;
 }

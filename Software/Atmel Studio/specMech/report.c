@@ -38,7 +38,9 @@ uint8_t report(uint8_t cstack)
 	char shutter, left, right, air;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
 	const char format_MTR[] = "MTR,%s,%c,%ld,um,%ld,um/s,%d,mA,%s";
-	const char format_MTV[] = "MTV,%s,Motor %c,%3.1f,V,%ld,mA,%3.1f,C,%.2f,p,%.3f,i,%.2f,d,%ld,maxI,%ld,dead,%ld,minP,%ld,maxP,%ld,qpps,%s";
+	const char format_MT0[] = "ETI,%s,Mtr %c,%3.1f,V,%3.1f,C,%ld,mA,0x%02x,S4,%s";
+	const char format_MT1[] = "PID,%s,Mtr %c,%.2f,P,%.3f,I,%.2f,D,%ld,maxInt,%s";
+	const char format_MT2[] = "DMM,%s,Mtr %c,%ld,dead,%ld,minP,%ld,maxP,%ld,qpps,%s";
 	const char format_ORI[] = "ORI,%s,%3.1f,%3.1f,%3.1f,%s";
 	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
 	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
@@ -48,7 +50,7 @@ uint8_t report(uint8_t cstack)
 	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
-	uint8_t controller;
+	uint8_t controller, s4mode;
 	int32_t encoderValue, encoderSpeed;
 	int32_t micronValue, micronSpeed;
 	int32_t maxCurrent;
@@ -66,25 +68,42 @@ uint8_t report(uint8_t cstack)
 		case 'C':
 			get_time(currenttime);
 			controller = pcmd[cstack].cobject + 63;
+
 			if (get_MOTOR_FLOAT(controller, READMAINVOLTAGE, &voltage) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_FLOAT volts error");
 				return(ERROR);
 			}
+
 			if (get_MOTOR_FLOAT(controller, READTEMPERATURE, &t0) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_FLOAT temperature error");
 				return(ERROR);
 			}
-			if (get_MOTOR_PID(controller, &pid) == ERROR) {
-				printError(ERR_MTR, "report: get_MOTOR_PID error");
-				return(ERROR);
-			}
+
 			if (get_MOTOR_MAXCURRENT(controller, &maxCurrent) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_MAXCURRENT error");
 				return(ERROR);
 			}
-			sprintf(outbuf, format_MTV, currenttime, (char) (controller-63),
-				voltage, maxCurrent, t0, pid.p, pid.i, pid.d, pid.maxI, pid.deadZone,
-				pid.minPos, pid.maxPos, pid.qpps, pcmd[cstack].cid);
+
+			if (get_MOTOR_S4MODE(controller, &s4mode) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_S4MODE error");
+				return(ERROR);
+			}
+
+			sprintf(outbuf, format_MT0, currenttime, (char) (controller-63),
+				voltage, t0, maxCurrent, s4mode, pcmd[cstack].cid);
+			printLine(outbuf);
+
+			if (get_MOTOR_PID(controller, &pid) == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_PID error");
+				return(ERROR);
+			}
+
+			sprintf(outbuf, format_MT1, currenttime, (char) (controller-63),
+			pid.p, pid.i, pid.d, pid.maxI, pcmd[cstack].cid);
+			printLine(outbuf);
+
+			sprintf(outbuf, format_MT2, currenttime, (char) (controller-63),
+				pid.deadZone, pid.minPos, pid.maxPos, pid.qpps, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 
