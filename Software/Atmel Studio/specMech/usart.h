@@ -16,9 +16,7 @@ typedef struct {
 } USARTBuf;
 
 typedef struct {
-	uint8_t
-		data[BUFSIZE],
-		n2xfr, nxfrd;
+	uint8_t data[BUFSIZE], n2xfr, nxfrd;
 } USART1Buf;
 
 extern USARTBuf

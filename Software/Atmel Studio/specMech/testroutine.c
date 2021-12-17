@@ -23,18 +23,19 @@ void testroutine(void)
 	}
 ---*/
 
-/*
+
 	char strbuf[80];
 	int32_t encoderValue;
 
 	if (get_MOTOR_ENCODER(128, &encoderValue) == ERROR) {
-		sprintf(strbuf, "testroutine error");
+		sprintf(strbuf, " testroutine error get_MOTOR_ENCODER");
 		printLine(strbuf);
 		return;
 	}
-	sprintf(strbuf, "testroutine encoder value = %ld", encoderValue);
+	sprintf(strbuf, " testroutine encoder=%ld", encoderValue);
 	printLine(strbuf);
----*/
+	return;
+
 
 /*
 	char strbuf[80];
@@ -270,7 +271,6 @@ void testroutine(void)
 	get_MOTOR_MAXCURRENT(130, &value);
 ---*/
 
-	stop_MOTOR(128);
+//	stop_MOTOR(128);
 
-	return;
 }

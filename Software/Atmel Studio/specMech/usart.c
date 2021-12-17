@@ -44,11 +44,13 @@ void init_USART(void)
 	PORTC.OUTSET = PIN0_bm;
 	PORTC.DIRSET = PIN0_bm;
 //	USART1.BAUD = (uint16_t) USART_BAUD_RATE(38400);
-//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
-	USART1.BAUD = (uint16_t) USART_BAUD_RATE(57600);
+	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
+//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(57600);
 	USART1.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
 	USART1.CTRLB |= USART_TXEN_bm;		// Enable USART transmitter
 	USART1.CTRLB |= USART_RXEN_bm;		// Enable USART receiver
+
+/*
 	send1_buf.head = 0;
 	send1_buf.tail = 0;
 	send1_buf.done = YES;
@@ -57,7 +59,7 @@ void init_USART(void)
 	recv1_buf.data[0] = '\0';
 	recv1_buf.length = 0;				// Not used
 	recv1_buf.done = NO;
-
+*/
 	// USART3 PB0 is TxD, PB1 is RxD
 	PORTB.OUTSET = PIN0_bm;
 	PORTB.DIRSET = PIN0_bm;
@@ -146,17 +148,76 @@ void send_USART1(uint8_t *data, uint8_t nbytes)
 {
 
 	uint8_t i;
-	uint16_t crc;
 
-	crc = crc16(data, nbytes);
+#ifdef DEBUG
+#include "commands.h"
+	char strbuf[80];
+	sprintf(strbuf, " sending nbytes=%d", nbytes);
+	printLine(strbuf);
+#endif
+
 	ser_send1.nxfrd = 0;
-	ser_send1.n2xfr = nbytes+2;
+	ser_send1.n2xfr = nbytes;
 	for (i = 0; i < nbytes; i++) {
 		ser_send1.data[i] = *data++;
+		sprintf(strbuf, " n=%d: %d (0x%02X)", i, ser_send1.data[i], ser_send1.data[i]);
+		printLine(strbuf);
 	}
-	ser_send1.data[nbytes] = (crc >> 8);
-	ser_send1.data[nbytes+1] = (crc & 0xFF);
-	USART1.CTRLA |= USART_DREIE_bm;		// Enable interrupts
+
+	USART1.CTRLA |= USART_DREIE_bm;		// Enable DRE interrupts
+
+}
+
+/*------------------------------------------------------------------------------
+ISR(USART1_RXC_vect)
+	A byte at USART1 has been received.
+------------------------------------------------------------------------------*/
+ISR(USART1_RXC_vect)
+{
+
+	ser_recv1.data[ser_recv1.nxfrd++] = USART1.RXDATAL;
+
+}
+
+/*---
+ISR(USART1_RXC_vect)
+{
+
+	uint8_t c;
+
+	c = USART1.RXDATAL;
+
+	if (recv1_buf.nxfrd < recv1_buf.nbytes) {
+		recv1_buf.data[recv1_buf.nxfrd++] = c;
+	}
+
+	if (recv1_buf.nxfrd >= recv1_buf.nbytes) {
+		recv1_buf.done = YES;
+	}
+
+}
+---*/
+
+/*------------------------------------------------------------------------------
+ISR(USART1_DRE_vect)
+	Transmit data register empty interrupt. When the transmit data register
+	(USART1.TXDATAL) is empty and the interrupt is enabled, you end up here.
+	
+	Here, we send out another byte of data and then compare the number of
+	bytes already transferred (nxfrd) with the number requested (nbytes).
+	If nxfrd == nbytes, then we set the send0_buf.done flag to YES and turn
+	off this interrupt.
+
+	Sending is started by calling send_USART(port).
+------------------------------------------------------------------------------*/
+ISR(USART1_DRE_vect)
+{
+
+	USART1.CTRLA &= ~USART_DREIE_bm;		// Turn off interrupts
+	USART1.TXDATAL = ser_send1.data[ser_send1.nxfrd++];
+	if (ser_send1.nxfrd < ser_send1.n2xfr) {
+		USART1.CTRLA |= USART_DREIE_bm;		// Turn on interrupts	
+	}
 
 }
 
@@ -219,59 +280,6 @@ ISR(USART0_DRE_vect)
 		USART0.CTRLA |= USART_DREIE_bm;		// Turn on interrupts
 	} else {
 		send0_buf.done = YES;
-	}
-
-}
-
-/*------------------------------------------------------------------------------
-ISR(USART1_RXC_vect)
-	A byte at USART1 has been received.
-------------------------------------------------------------------------------*/
-ISR(USART1_RXC_vect)
-{
-
-	ser_recv1.data[ser_recv1.nxfrd++] = USART1.RXDATAL;
-
-}
-
-/*---
-ISR(USART1_RXC_vect)
-{
-
-	uint8_t c;
-
-	c = USART1.RXDATAL;
-
-	if (recv1_buf.nxfrd < recv1_buf.nbytes) {
-		recv1_buf.data[recv1_buf.nxfrd++] = c;
-	}
-
-	if (recv1_buf.nxfrd >= recv1_buf.nbytes) {
-		recv1_buf.done = YES;
-	}
-
-}
----*/
-
-/*------------------------------------------------------------------------------
-ISR(USART1_DRE_vect)
-	Transmit data register empty interrupt. When the transmit data register
-	(USART1.TXDATAL) is empty and the interrupt is enabled, you end up here.
-	
-	Here, we send out another byte of data and then compare the number of
-	bytes already transferred (nxfrd) with the number requested (nbytes).
-	If nxfrd == nbytes, then we set the send0_buf.done flag to YES and turn
-	off this interrupt.
-
-	Sending is started by calling send_USART(port).
-------------------------------------------------------------------------------*/
-ISR(USART1_DRE_vect)
-{
-
-	USART1.CTRLA &= ~USART_DREIE_bm;		// Turn off interrupts
-	USART1.TXDATAL = ser_send1.data[send1_buf.nxfrd++];
-	if (ser_send1.nxfrd < ser_send1.n2xfr) {
-		USART1.CTRLA |= USART_DREIE_bm;		// Turn on interrupts	
 	}
 
 }

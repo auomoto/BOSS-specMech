@@ -3,7 +3,7 @@
 
 #include "globals.h"
 
-#define ENC_COUNTS_PER_MICRON	283			// 283.1, actually
+#define ENC_COUNTS_PER_MICRON	(283)			// 283.1, actually
 #define ACCELERATION			(SPEED)	// Counts/sec
 #define DECELERATION			(SPEED/2)
 #define SPEED					7077		// cts/sec
@@ -27,11 +27,11 @@
 #endif
 
 #define STOP					(0)			// Motor stop
-#define PID_DEADZONE			(6)
-#define PID_MINPOS				(-85000)	// Encoder counts (300 um)
-#define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
+#define PID_DEADZONE			(25)
+#define PID_MINPOS				(85000)		// Encoder counts (300 um)
+#define PID_MAXPOS				(-850000)	// 3 mm (894,596 is 3.16 mm)
 #define PID_QPPS				(14000)		// Encoder speed at max motor speed
-#define S4MODE					(0x72)		// Home(User)/Limit(Fwd)
+#define S4MODE					(0x32)		// Limit in both directions
 #define SAVEENCODERFREQUENCY	11			// Save encoder period (sec)
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
@@ -72,6 +72,7 @@ uint8_t get_MOTOR_PID(uint8_t, PID*);
 uint8_t get_MOTOR_S4MODE(uint8_t, uint8_t*);
 uint8_t get_MOTOR_SPEED(uint8_t, int32_t*);
 uint8_t init_MOTORS(void);
+uint8_t motorMoving(uint8_t);
 uint8_t motorsMoving(void);
 uint8_t move_MOTOR(uint8_t, int32_t);
 uint8_t move_MOTOR_CMD(uint8_t);

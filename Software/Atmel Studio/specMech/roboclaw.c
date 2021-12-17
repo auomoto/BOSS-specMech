@@ -13,8 +13,9 @@ PID pid;
 /*------------------------------------------------------------------------------
 uint16_t crc16(uint8_t *packet, uint16_t nbytes)
 
-	RoboClaw expects a CRC16 word at the end of command data packets. See
-	page 59 of the RoboClaw user manual Rev 5.7 (2015) for this routine.
+	RoboClaw sends a CRC16 word at the end of data packets and requires a CRC16
+	word at the end of commands that send data (not just a command). See page 59
+	of the RoboClaw user manual Rev 5.7 (2015) for this routine.
 
 	Inputs:
 		packet - array to compute
@@ -47,7 +48,8 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 
 /*------------------------------------------------------------------------------
 uint8_t getFRAM_MOTOR_ENCODER(uint8_t controller, uint32_t *encoderValue)
-	Retrieves the encoder value in FRAM
+
+	Retrieves the encoder value in FRAM.
 
 	Inputs:
 		controller: The controller address: MOTOR_A, MOTOR_B, or MOTOR_C
@@ -125,30 +127,43 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
 
 	char strbuf[80];
-	uint8_t i, nbytesp2, tbuf[nbytes+2];
-	uint16_t crcReceived, crcExpected;
+	uint8_t i, nbytesp2, tbuf[4];
+	uint16_t crc, crcReceived, crcExpected;
 	const char fmt1[] = "get_MOTOR: serial timeout on %c";
 	const char fmt2[] = "get_MOTOR: CRC mismatch on %c";
 
 	nbytesp2 = nbytes + 2;
-	ser_recv1.nxfrd = 0;
-	ser_recv1.n2xfr = nbytesp2;
+	ser_recv1.nxfrd = 0;			// Set up receive buffer
+	ser_recv1.n2xfr = nbytesp2;		// Data plus CRC
 
-	tbuf[0] = mtraddr;				// Motor controller packet serial address
+	tbuf[0] = mtraddr;				// Motor controller serial address
 	tbuf[1] = cmd;					// Motor controller command
+	crc = crc16(tbuf, 2);
+	tbuf[2] = (crc >> 8) & 0xFF;
+	tbuf[3] = crc & 0xFF;
+
+#ifdef DEBUG
+	sprintf(strbuf, " addr=%d cmd=%d crc=0x%04X n2xfr=%d", mtraddr, cmd, crc, nbytesp2);
+	printLine(strbuf);
+#endif
 
 	send_USART1(tbuf, 2);
+
+//_delay_ms(20); // This was needed for the Unix version
+
 	USART1_ticks = 0;
-	while (ser_recv1.nxfrd < ser_recv1.n2xfr) {	// Wait for complete data transfer
-		if (USART1_ticks > 50) {
+	while (ser_recv1.nxfrd < ser_recv1.n2xfr) {
+		if (USART1_ticks > 100) {							// Check the number thoroughly
 			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTRREADENC, strbuf);
 			return(ERROR);
 		}
 	}
 
-sprintf(strbuf, " get_MOTOR USART1_ticks=%d", USART1_ticks);
-printLine(strbuf);
+#ifdef DEBUG
+	sprintf(strbuf, " get_MOTOR USART1_ticks=%d nxfrd=%d", USART1_ticks, ser_recv1.nxfrd);
+	printLine(strbuf);
+#endif
 
 	crcReceived = (ser_recv1.data[nbytes] << 8) | ser_recv1.data[nbytes+1];
 
@@ -253,8 +268,10 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	*encoderValue |= (uint32_t) data[2] << 8;
 	*encoderValue |= (uint32_t) data[3];
 
-sprintf(strbuf, " encval=%ld", *encoderValue);
-printLine(strbuf);
+#ifdef DEBUG
+	sprintf(strbuf, " encval=%ld", *encoderValue);
+	printLine(strbuf);
+#endif
 
 	return(NOERROR);
 
@@ -543,14 +560,54 @@ uint8_t init_MOTORS(void)
 	for (controller = MOTOR_A; controller <= MOTOR_C; controller++) {
 		get_FRAM_MOTOR_ENCODER(controller, &encoderValue);
 		put_MOTOR_ENCODER(controller, encoderValue);
+
+/*
 		put_MOTOR_MAXCURRENT(controller, MAXCURRENT);
 		put_MOTOR_PID(controller, pid);
 		put_MOTOR_S4MODE(controller);
+*/
+
 	}
 
 	return(NOERROR);
 
 }
+
+/*------------------------------------------------------------------------------
+uint8_t motorsMoving(uint8_t mtraddr)
+
+	Checks the encoderspeed
+
+	Input:
+		mtraddr: The controller address
+
+	Output:
+		None
+
+	Returns:
+		YES if the motor is moving
+		NO if it isn't
+------------------------------------------------------------------------------*/
+uint8_t motorMoving(uint8_t mtraddr)
+{
+	const char fmt0[] = "motorMoving: get_MOTOR_SPEED error on %c";
+	char strbuf[80];
+	uint32_t encoderSpeed;
+
+	encoderSpeed = 0;
+	if (get_MOTOR_SPEED(mtraddr, &encoderSpeed) == ERROR) {
+		sprintf(strbuf, fmt0, (char) (mtraddr-63));
+		printError(ERR_MTR, strbuf);
+		return(ERROR);
+	}
+	if (encoderSpeed != 0) {
+		return(YES);
+	} else {
+		return(NO);
+	}
+
+}
+
 
 /*------------------------------------------------------------------------------
 uint8_t motorsMoving(void)
@@ -850,7 +907,7 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	uint8_t i, tbuf[nbytes+4];
 	uint16_t crc;
 
-	ser_recv1.nxfrd = 0;
+	ser_recv1.nxfrd = 0;				// Set up reply
 	ser_recv1.n2xfr = 1;				// Receive only the 0xFF ACK
 
 	tbuf[0] = mtraddr;
@@ -866,7 +923,7 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 
 	USART1_ticks = 0;
 	while (ser_recv1.nxfrd < ser_recv1.n2xfr) {
-		if (USART1_ticks > 50) {
+		if (USART1_ticks > 100) {
 			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTR, strbuf);
 			return(ERROR);
