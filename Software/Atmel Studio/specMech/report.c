@@ -51,7 +51,8 @@ uint8_t report(uint8_t cstack)
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
 	uint8_t controller, s4mode;
-	int32_t encoderValue, encoderSpeed;
+	int32_t encoderValue;
+	int32_t encoderSpeed;
 	int32_t micronValue, micronSpeed;
 	int32_t maxCurrent;
 	float t0, t1, t2, t3, h0, h1, h2;		// temperature and humidity

@@ -28,8 +28,8 @@
 
 #define STOP					(0)			// Motor stop
 #define PID_DEADZONE			(25)
-#define PID_MINPOS				(85000)		// Encoder counts (300 um)
-#define PID_MAXPOS				(-850000)	// 3 mm (894,596 is 3.16 mm)
+#define PID_MINPOS				(-850000)		// Encoder counts (300 um)
+#define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
 #define PID_QPPS				(14000)		// Encoder speed at max motor speed
 #define S4MODE					(0x32)		// Limit in both directions
 #define SAVEENCODERFREQUENCY	11			// Save encoder period (sec)

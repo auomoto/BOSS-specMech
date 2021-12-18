@@ -43,8 +43,8 @@ void init_USART(void)
 	// USART1 PC0 is TxD, PC1 is RxD
 	PORTC.OUTSET = PIN0_bm;
 	PORTC.DIRSET = PIN0_bm;
-//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(38400);
-	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
+	USART1.BAUD = (uint16_t) USART_BAUD_RATE(38400);
+//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
 //	USART1.BAUD = (uint16_t) USART_BAUD_RATE(57600);
 	USART1.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
 	USART1.CTRLB |= USART_TXEN_bm;		// Enable USART transmitter
@@ -149,7 +149,7 @@ void send_USART1(uint8_t *data, uint8_t nbytes)
 
 	uint8_t i;
 
-#ifdef DEBUG
+#ifdef VERBOSE
 #include "commands.h"
 	char strbuf[80];
 	sprintf(strbuf, " sending nbytes=%d", nbytes);
@@ -160,8 +160,10 @@ void send_USART1(uint8_t *data, uint8_t nbytes)
 	ser_send1.n2xfr = nbytes;
 	for (i = 0; i < nbytes; i++) {
 		ser_send1.data[i] = *data++;
+#ifdef VERBOSE
 		sprintf(strbuf, " n=%d: %d (0x%02X)", i, ser_send1.data[i], ser_send1.data[i]);
 		printLine(strbuf);
+#endif
 	}
 
 	USART1.CTRLA |= USART_DREIE_bm;		// Enable DRE interrupts

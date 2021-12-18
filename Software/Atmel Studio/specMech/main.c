@@ -12,7 +12,6 @@ specMech.c
 #include "oled.h"
 #include "commands.h"
 
-#include "fram.h"	// remove after testing
 
 ParsedCMD pcmd[CSTACKSIZE];	// Split the command line into its parts
 
@@ -41,7 +40,7 @@ int main(void)
 			squelchErrors = NO;
 		} if ((timerSAVEENCODER > timeoutSAVEENCODER) && rebootackd) {
 //			squelchErrors = YES;
-//			put_FRAM_ENCODERS();	// Maybe set a global error variable?
+			put_FRAM_ENCODERS();	// Maybe set a global error variable?
 			timerSAVEENCODER = 0;
 			squelchErrors = NO;
 		}

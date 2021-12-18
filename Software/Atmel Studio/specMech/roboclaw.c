@@ -142,8 +142,9 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 	tbuf[2] = (crc >> 8) & 0xFF;
 	tbuf[3] = crc & 0xFF;
 
-#ifdef DEBUG
-	sprintf(strbuf, " addr=%d cmd=%d crc=0x%04X n2xfr=%d", mtraddr, cmd, crc, nbytesp2);
+#ifdef VERBOSE
+	sprintf(strbuf, " addr=%d cmd=%d crc=0x%04X n2xfr=%d",
+		mtraddr, cmd, crc, nbytesp2);
 	printLine(strbuf);
 #endif
 
@@ -153,14 +154,14 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 
 	USART1_ticks = 0;
 	while (ser_recv1.nxfrd < ser_recv1.n2xfr) {
-		if (USART1_ticks > 100) {							// Check the number thoroughly
+		if (USART1_ticks > 100) {			// Check the number thoroughly
 			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTRREADENC, strbuf);
 			return(ERROR);
 		}
 	}
 
-#ifdef DEBUG
+#ifdef VERBOSE
 	sprintf(strbuf, " get_MOTOR USART1_ticks=%d nxfrd=%d", USART1_ticks, ser_recv1.nxfrd);
 	printLine(strbuf);
 #endif
@@ -268,7 +269,7 @@ uint8_t get_MOTOR_ENCODER(uint8_t controller, int32_t *encoderValue)
 	*encoderValue |= (uint32_t) data[2] << 8;
 	*encoderValue |= (uint32_t) data[3];
 
-#ifdef DEBUG
+#ifdef VERBOSE
 	sprintf(strbuf, " encval=%ld", *encoderValue);
 	printLine(strbuf);
 #endif
@@ -592,7 +593,7 @@ uint8_t motorMoving(uint8_t mtraddr)
 {
 	const char fmt0[] = "motorMoving: get_MOTOR_SPEED error on %c";
 	char strbuf[80];
-	uint32_t encoderSpeed;
+	int32_t encoderSpeed;
 
 	encoderSpeed = 0;
 	if (get_MOTOR_SPEED(mtraddr, &encoderSpeed) == ERROR) {
@@ -685,8 +686,10 @@ uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
 	data[15] = (newPosition) & 0xFF;
 	data[16] = buffer;
 
-sprintf(strbuf, "newpos=%ld", newPosition);
-printLine(strbuf);
+#ifdef VERBOSE
+	sprintf(strbuf, " move_MOTOR to newpos=%ld", newPosition);
+	printLine(strbuf);
+#endif
 
 	if (put_MOTOR(mtraddr, DRIVETO, data, nbytes) == ERROR) {
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
