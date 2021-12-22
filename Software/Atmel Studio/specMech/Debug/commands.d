@@ -21,8 +21,8 @@ commands.d commands.o: .././commands.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  .././initialize.h .././wdt.h .././ds3231.h .././usart.h .././set.h \
- .././nmea.h .././roboclaw.h .././oled.h .././pneu.h .././timers.h \
- .././report.h .././errors.h .././testroutine.h .././commands.h
+ .././nmea.h .././roboclaw.h .././timers.h .././commands.h .././fram.h \
+ .././errors.h .././oled.h .././pneu.h .././report.h .././testroutine.h
 
 .././globals.h:
 
@@ -82,16 +82,18 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././roboclaw.h:
 
+.././timers.h:
+
+.././commands.h:
+
+.././fram.h:
+
+.././errors.h:
+
 .././oled.h:
 
 .././pneu.h:
 
-.././timers.h:
-
 .././report.h:
 
-.././errors.h:
-
 .././testroutine.h:
-
-.././commands.h:

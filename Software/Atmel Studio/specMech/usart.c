@@ -43,23 +43,13 @@ void init_USART(void)
 	// USART1 PC0 is TxD, PC1 is RxD
 	PORTC.OUTSET = PIN0_bm;
 	PORTC.DIRSET = PIN0_bm;
-	USART1.BAUD = (uint16_t) USART_BAUD_RATE(38400);
-//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
+//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(38400);
+	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
 //	USART1.BAUD = (uint16_t) USART_BAUD_RATE(57600);
 	USART1.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
 	USART1.CTRLB |= USART_TXEN_bm;		// Enable USART transmitter
 	USART1.CTRLB |= USART_RXEN_bm;		// Enable USART receiver
 
-/*
-	send1_buf.head = 0;
-	send1_buf.tail = 0;
-	send1_buf.done = YES;
-	recv1_buf.head = 0;
-	recv1_buf.tail = 0;
-	recv1_buf.data[0] = '\0';
-	recv1_buf.length = 0;				// Not used
-	recv1_buf.done = NO;
-*/
 	// USART3 PB0 is TxD, PB1 is RxD
 	PORTB.OUTSET = PIN0_bm;
 	PORTB.DIRSET = PIN0_bm;

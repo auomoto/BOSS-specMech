@@ -20,7 +20,8 @@ timers.d timers.o: .././timers.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././timers.h .././oled.h .././roboclaw.h
+ .././timers.h .././oled.h .././roboclaw.h .././usart.h .././commands.h \
+ .././fram.h .././errors.h
 
 .././globals.h:
 
@@ -71,3 +72,11 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././oled.h:
 
 .././roboclaw.h:
+
+.././usart.h:
+
+.././commands.h:
+
+.././fram.h:
+
+.././errors.h:

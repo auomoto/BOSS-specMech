@@ -1,9 +1,4 @@
 #include "globals.h"
-#include "usart.h"
-#include "timers.h"
-#include "commands.h"
-#include "fram.h"
-#include "errors.h"
 #include "roboclaw.h"
 
 volatile uint8_t timerSAVEENCODER;
@@ -49,7 +44,7 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 /*------------------------------------------------------------------------------
 uint8_t getFRAM_MOTOR_ENCODER(uint8_t controller, uint32_t *encoderValue)
 
-	Retrieves the encoder value in FRAM.
+	Retrieves the encoder value stored in FRAM.
 
 	Inputs:
 		controller: The controller address: MOTOR_A, MOTOR_B, or MOTOR_C
@@ -122,7 +117,6 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 		ERROR on USART timeout or CRC mismatch
 		NOERROR otherwise
 ------------------------------------------------------------------------------*/
-
 uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
 
@@ -157,13 +151,20 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 		if (USART1_ticks > 100) {			// Check the number thoroughly
 			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTRREADENC, strbuf);
+#ifdef VERBOSE
+			break;
+#endif
 			return(ERROR);
 		}
 	}
 
 #ifdef VERBOSE
-	sprintf(strbuf, " get_MOTOR USART1_ticks=%d nxfrd=%d", USART1_ticks, ser_recv1.nxfrd);
+	sprintf(strbuf, " get_MOTOR: USART1_ticks=%d nxfrd=%d", USART1_ticks, ser_recv1.nxfrd);
 	printLine(strbuf);
+	for (i = 0; i < ser_recv1.nxfrd; i++) {
+		sprintf(strbuf, " n=%d %d (0x%02X)", i, ser_recv1.data[i], ser_recv1.data[i]);
+		printLine(strbuf);
+	}
 #endif
 
 	crcReceived = (ser_recv1.data[nbytes] << 8) | ser_recv1.data[nbytes+1];
@@ -542,10 +543,10 @@ uint8_t init_MOTORS(void)
 
 	uint8_t controller;
 	int32_t encoderValue;
-	PID pid;
+//	PID pid;
 
 	_delay_ms(100);
-
+/*
 	pid.p = PID_P;
 	pid.i = PID_I;
 	pid.d = PID_D;
@@ -554,14 +555,13 @@ uint8_t init_MOTORS(void)
 	pid.minPos = PID_MINPOS;
 	pid.maxPos = PID_MAXPOS;
 	pid.qpps = PID_QPPS;
-
+*/
 	timerSAVEENCODER = 0;
 	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
 
 	for (controller = MOTOR_A; controller <= MOTOR_C; controller++) {
 		get_FRAM_MOTOR_ENCODER(controller, &encoderValue);
 		put_MOTOR_ENCODER(controller, encoderValue);
-
 /*
 		put_MOTOR_MAXCURRENT(controller, MAXCURRENT);
 		put_MOTOR_PID(controller, pid);
@@ -575,7 +575,7 @@ uint8_t init_MOTORS(void)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t motorsMoving(uint8_t mtraddr)
+uint8_t motorMoving(uint8_t mtraddr)
 
 	Checks the encoderspeed
 
@@ -769,8 +769,9 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 uint8_t move_MOTOR_HOME(void)
 {
 
-	const char fmt1[] = "moveMOTOR_HOME: get_MOTOR_ENCODER error on %c";
-	const char fmt2[] = "moveMOTOR_HOME: move_MOTOR error on %c";
+	const char fmt0[] = "move_MOTOR_HOME: timeout";
+	const char fmt1[] = "move_MOTOR_HOME: get_MOTOR_ENCODER error on %c";
+	const char fmt2[] = "move_MOTOR_HOME: move_MOTOR error on %c";
 	char strbuf[80];
 	uint8_t i, mtraddr;
 	int32_t curPos[3], avgPos;
@@ -789,8 +790,10 @@ uint8_t move_MOTOR_HOME(void)
 	}
 	avgPos /= 3;
 
-sprintf(strbuf, " avgPos = %ld", avgPos/ENC_COUNTS_PER_MICRON);
-printLine(strbuf);
+#ifdef VERBOSE
+	sprintf(strbuf, " avgPos = %ld", avgPos/ENC_COUNTS_PER_MICRON);
+	printLine(strbuf);
+#endif
 
 	for (i = 0; i < 1; i++) {
 //	for (i = 0; i < 4; i++) {
@@ -802,17 +805,22 @@ printLine(strbuf);
 		}
 	}
 
-i = 0;
-	_delay_ms(500);		// give the motor a chance to start up
+	_delay_ms(250);		// give motors a chance to start up
+	i = 0;
 	while (motorsMoving()) {
-sprintf(strbuf, " moving %d", i);
-printLine(strbuf);
-		_delay_ms(1000);
+		if (i > 20) {				// get this number right
+			strcpy(strbuf, fmt0);
+			printError(ERR_MTR, strbuf);
+			return(ERROR);
+		}
 		i++;
+		_delay_ms(1000);
 	}
 
-sprintf(strbuf, " stopped after %d", i);
-printLine(strbuf);
+#ifdef VERBOSE
+	sprintf(strbuf, " stopped after %d", i);
+	printLine(strbuf);
+#endif
 
 	for (i = 0; i < 1; i++) {
 //	for (i = 0; i < 4; i++) {
@@ -829,7 +837,6 @@ printLine(strbuf);
 	return(NOERROR);
 }
 
-
 /*------------------------------------------------------------------------------
 uint8_t put_FRAM_ENCODERS(void)
 
@@ -844,6 +851,8 @@ uint8_t put_FRAM_ENCODERS(void)
 	Returns:
 		ERROR on get_MOTOREncoder or write_FRAM failure
 		NOERROR otherwise
+
+Shouldn't emit an error if doing this in the background; build an error table
 ------------------------------------------------------------------------------*/
 uint8_t put_FRAM_ENCODERS(void)
 {
@@ -935,8 +944,10 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 		}
 	}
 
-sprintf(strbuf, " put_MOTOR USART1_ticks=%d", USART1_ticks);
-printLine(strbuf);
+#ifdef VERBOSE
+	sprintf(strbuf, " put_MOTOR USART1_ticks=%d", USART1_ticks);
+	printLine(strbuf);
+#endif
 
 	if (ser_recv1.data[0] != 0xFF) {	// Bad ack
 		sprintf(strbuf, fmt2, (char) (mtraddr-63), ser_recv1.data[0]);
@@ -1143,6 +1154,19 @@ uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
 
 }
 
+/*------------------------------------------------------------------------------
+uint8_t stop_MOTOR(uint8_t mtraddr)
+	Immediately stop a motor by sending a command 0.
+
+	Inputs:
+		mtraddr - Motor controller address (MOTOR_A, MOTOR_B, MOTOR_C)
+
+	Outputs:
+		None
+
+	Returns:
+		ERROR if the put_MOTOR command fails
+------------------------------------------------------------------------------*/
 uint8_t stop_MOTOR(uint8_t mtraddr)
 {
 
@@ -1156,6 +1180,42 @@ uint8_t stop_MOTOR(uint8_t mtraddr)
 		printError(ERR_MTR, strbuf);
 		return(ERROR);
 	}
+
 	return(NOERROR);
 
+}
+
+/*------------------------------------------------------------------------------
+uint8_t stop_MOTORS(void)
+	Immediately stops all motors
+
+	Inputs:
+		None
+
+	Outputs:
+		None
+
+	Returns:
+		ERROR if the stop_MOTOR command fails
+------------------------------------------------------------------------------*/
+uint8_t stop_MOTORS(void)
+{
+
+	char strbuf[80];
+	uint8_t mtraddr, errflag;
+	const char fmt[] = "stop_MOTORS: stop_MOTOR error on %c";
+
+	errflag = 0;
+	for (mtraddr = MOTOR_A; mtraddr <= MOTOR_C; mtraddr++) {
+		if (stop_MOTOR(mtraddr) == ERROR) {
+			sprintf(strbuf, fmt, (char) (mtraddr-63));
+			printError(ERR_MTR, strbuf);
+			errflag++;
+		}
+	}
+	if (errflag) {
+		return(ERROR);
+	} else {
+		return(NOERROR);
+	}
 }

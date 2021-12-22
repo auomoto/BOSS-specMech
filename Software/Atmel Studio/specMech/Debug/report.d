@@ -21,11 +21,11 @@ report.d report.o: .././report.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  .././wdt.h .././usart.h .././set.h .././commands.h .././ds3231.h \
- .././temperature.h .././humidity.h .././roboclaw.h .././oled.h \
- .././mma8451.h .././pneu.h .././fram.h .././ionpump.h .././nmea.h \
- .././eeprom.h \
+ .././temperature.h .././humidity.h .././roboclaw.h .././timers.h \
+ .././fram.h .././errors.h .././oled.h .././mma8451.h .././pneu.h \
+ .././ionpump.h .././nmea.h .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
- .././errors.h .././report.h
+ .././report.h
 
 .././globals.h:
 
@@ -87,13 +87,17 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././roboclaw.h:
 
+.././timers.h:
+
+.././fram.h:
+
+.././errors.h:
+
 .././oled.h:
 
 .././mma8451.h:
 
 .././pneu.h:
-
-.././fram.h:
 
 .././ionpump.h:
 
@@ -102,7 +106,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././eeprom.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
-
-.././errors.h:
 
 .././report.h:

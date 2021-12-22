@@ -20,8 +20,8 @@ roboclaw.d roboclaw.o: .././roboclaw.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././usart.h .././timers.h .././commands.h .././fram.h .././errors.h \
- .././roboclaw.h
+ .././roboclaw.h .././usart.h .././timers.h .././commands.h .././fram.h \
+ .././errors.h
 
 .././globals.h:
 
@@ -67,6 +67,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
+.././roboclaw.h:
+
 .././usart.h:
 
 .././timers.h:
@@ -76,5 +78,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././fram.h:
 
 .././errors.h:
-
-.././roboclaw.h:

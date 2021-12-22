@@ -22,7 +22,8 @@ initialize.d initialize.o: .././initialize.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  .././oled.h .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
- .././roboclaw.h .././timers.h .././initialize.h
+ .././roboclaw.h .././usart.h .././timers.h .././commands.h .././fram.h \
+ .././errors.h .././initialize.h
 
 .././globals.h:
 
@@ -76,6 +77,14 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././roboclaw.h:
 
+.././usart.h:
+
 .././timers.h:
+
+.././commands.h:
+
+.././fram.h:
+
+.././errors.h:
 
 .././initialize.h:

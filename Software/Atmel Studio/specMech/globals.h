@@ -1,6 +1,8 @@
 #ifndef GLOBALSH
 #define GLOBALSH
 
+//#define VERBOSE
+
 #define F_CPU		3333333UL
 #define VERSION		"2021-12-12"
 #define	YES			1

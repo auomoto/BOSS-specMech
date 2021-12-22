@@ -1,13 +1,17 @@
 #ifndef ROBOCLAWH
 #define ROBOCLAWH
 
-#include "globals.h"
+#include "usart.h"
+#include "timers.h"
+#include "commands.h"
+#include "fram.h"
+#include "errors.h"
 
 #define ENC_COUNTS_PER_MICRON	(283)			// 283.1, actually
 #define ACCELERATION			(SPEED)	// Counts/sec
 #define DECELERATION			(SPEED/2)
-#define SPEED					7077		// cts/sec
-#define MAXCURRENT				(2000)		// mA (Portescap)
+#define SPEED					7077		// cts/sec 7077->25um/s
+#define MAXCURRENT				(400)		// mA (Portescap datasheet max is 380 mA)
 //#define MAXCURRENT			(300)		// mA (316.17 mA is absolute max for PI)
 
 #define VOLTS12
@@ -84,5 +88,6 @@ uint8_t put_MOTOR_MAXCURRENT(uint8_t, int32_t);
 uint8_t put_MOTOR_PID(uint8_t, PID);
 uint8_t put_MOTOR_S4MODE(uint8_t);
 uint8_t stop_MOTOR(uint8_t);
+uint8_t stop_MOTORS(void);
 
 #endif
