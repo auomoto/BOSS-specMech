@@ -8,6 +8,8 @@
 #define	YES			1
 #define	NO			0
 #define BADFLOAT	(-666.0)
+#define BADINT		(0xFFFF);
+#define BADLONG		(0xFFFFFFFF)
 
 // Port macros
 #define get_SPECID		(PORTF.IN & PIN2_bm ? 2 : 1)

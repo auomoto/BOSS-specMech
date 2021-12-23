@@ -11,6 +11,25 @@
 void testroutine(void)
 {
 
+	move_MOTOR_HOME();
+
+/*
+	set_MOTOR_PARAMS();
+*/
+/*
+	char strbuf[80];
+	if (motorsMoving()) {
+		sprintf(strbuf, "yes");
+		printLine(strbuf);
+	} else {
+		sprintf(strbuf, "no");
+		printLine(strbuf);
+	}
+
+	stop_MOTORS();
+	return;
+*/
+
 /*
 	char strbuf[80];
 	uint8_t i;
@@ -23,7 +42,7 @@ void testroutine(void)
 	}
 ---*/
 
-
+/*
 	char strbuf[80];
 	int32_t encoderValue;
 
@@ -35,7 +54,7 @@ void testroutine(void)
 	sprintf(strbuf, " testroutine encoder=%ld", encoderValue);
 	printLine(strbuf);
 	return;
-
+*/
 
 /*
 	char strbuf[80];

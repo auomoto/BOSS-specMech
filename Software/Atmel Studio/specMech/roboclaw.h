@@ -35,7 +35,7 @@
 #define PID_MINPOS				(-850000)		// Encoder counts (300 um)
 #define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
 #define PID_QPPS				(14000)		// Encoder speed at max motor speed
-#define S4MODE					(0x32)		// Limit in both directions
+#define S4MODE					(0x42)		// Home(user)/Limit(fwd)
 #define SAVEENCODERFREQUENCY	11			// Save encoder period (sec)
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
@@ -84,9 +84,10 @@ uint8_t move_MOTOR_HOME(void);
 uint8_t put_FRAM_ENCODERS(void);
 uint8_t put_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
-uint8_t put_MOTOR_MAXCURRENT(uint8_t, int32_t);
-uint8_t put_MOTOR_PID(uint8_t, PID);
-uint8_t put_MOTOR_S4MODE(uint8_t);
+//uint8_t put_MOTOR_MAXCURRENT(uint8_t, int32_t);
+//uint8_t put_MOTOR_PID(uint8_t, PID);
+//uint8_t put_MOTOR_S4MODE(uint8_t, uint8_t);
+//uint8_t set_MOTOR_PARAMS(void);
 uint8_t stop_MOTOR(uint8_t);
 uint8_t stop_MOTORS(void);
 
