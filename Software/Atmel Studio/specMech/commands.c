@@ -1,17 +1,4 @@
 #include "globals.h"
-#include "initialize.h"
-#include "wdt.h"
-#include "ds3231.h"
-#include "usart.h"
-#include "set.h"
-#include "nmea.h"
-#include "roboclaw.h"
-#include "oled.h"
-#include "pneu.h"
-#include "timers.h"
-#include "report.h"
-#include "errors.h"
-#include "testroutine.h"
 #include "commands.h"
 
 extern uint8_t firstpass;

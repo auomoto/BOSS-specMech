@@ -8,6 +8,7 @@
 #define ENCA_FRAMADDR	(20)	// Motor A encoder value (4 bytes)
 #define ENCB_FRAMADDR	(24)	// Motor B encoder value (4 bytes)
 #define ENCC_FRAMADDR	(28)	// Motor C encoder value (4 bytes)
+#define ENC_SAVETIME	(32)	// Encoder save time (20 bytes ISO time)
 
 uint8_t get_SETTIME(char *lastsettime);
 uint8_t read_FRAM(uint8_t, uint16_t, uint8_t *, uint8_t);

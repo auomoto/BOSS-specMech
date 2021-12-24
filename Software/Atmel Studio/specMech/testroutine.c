@@ -11,8 +11,30 @@
 void testroutine(void)
 {
 
-	move_MOTOR_HOME();
+	char strbuf[80], isotime[20];
+	if (get_FRAM_ENCSAVETIME(isotime) == NOERROR) {
+		printLine(isotime);
+	} else {
+		sprintf(strbuf, "get_FRAM_ENCSAVETIME error");
+		printLine(strbuf);
+	}
+	return;
 
+/*
+	move_MOTORS_PISTON(28300);
+	return;
+*/
+
+/*
+	char strbuf[80];
+	if (motorsMoving()) {
+		strcpy(strbuf, "YES");
+	} else {
+		strcpy(strbuf, "NO");
+	}
+	printLine(strbuf);
+	return;
+*/
 /*
 	set_MOTOR_PARAMS();
 */

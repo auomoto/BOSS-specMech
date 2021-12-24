@@ -20,12 +20,13 @@ report.d report.o: .././report.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././wdt.h .././usart.h .././set.h .././commands.h .././ds3231.h \
- .././temperature.h .././humidity.h .././roboclaw.h .././timers.h \
- .././fram.h .././errors.h .././oled.h .././mma8451.h .././pneu.h \
- .././ionpump.h .././nmea.h .././eeprom.h \
+ .././wdt.h .././usart.h .././set.h .././errors.h .././fram.h \
+ .././ds3231.h .././commands.h .././initialize.h .././oled.h \
+ .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
- .././report.h
+ .././roboclaw.h .././timers.h .././nmea.h .././pneu.h .././report.h \
+ .././testroutine.h .././temperature.h .././humidity.h .././mma8451.h \
+ .././ionpump.h
 
 .././globals.h:
 
@@ -77,34 +78,38 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././set.h:
 
-.././commands.h:
-
-.././ds3231.h:
-
-.././temperature.h:
-
-.././humidity.h:
-
-.././roboclaw.h:
-
-.././timers.h:
+.././errors.h:
 
 .././fram.h:
 
-.././errors.h:
+.././ds3231.h:
+
+.././commands.h:
+
+.././initialize.h:
 
 .././oled.h:
-
-.././mma8451.h:
-
-.././pneu.h:
-
-.././ionpump.h:
-
-.././nmea.h:
 
 .././eeprom.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
 
+.././roboclaw.h:
+
+.././timers.h:
+
+.././nmea.h:
+
+.././pneu.h:
+
 .././report.h:
+
+.././testroutine.h:
+
+.././temperature.h:
+
+.././humidity.h:
+
+.././mma8451.h:
+
+.././ionpump.h:

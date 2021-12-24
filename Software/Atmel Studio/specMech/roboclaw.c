@@ -41,6 +41,22 @@ uint16_t crc16(uint8_t *packet, uint16_t nBytes)
 
 }
 
+uint8_t get_FRAM_ENCSAVETIME(char *isotime)
+{
+
+	char strbuf[80];
+	const char fmt0[] = "get_FRAM_ENCSAVETIME: read_FRAM error";
+
+	if (read_FRAM(FRAMTWIADDR, ENC_SAVETIME, (uint8_t*) isotime, 20) == ERROR) {
+		sprintf(strbuf, fmt0);
+		printError(ERR_MTR, strbuf);
+		return(ERROR);
+	}
+	isotime[19] = '\0';
+	return(NOERROR);
+
+}
+
 /*------------------------------------------------------------------------------
 uint8_t get_FRAM_MOTOR_ENCODER(uint8_t controller, uint32_t *encoderValue)
 
@@ -543,16 +559,17 @@ ADD ERROR CHECKS?
 uint8_t init_MOTORS(void)
 {
 
-	uint8_t controller;
+	uint8_t i, mtraddr;
 	int32_t encoderValue;
 
 	_delay_ms(100);		// Wait to boot up
 	timerSAVEENCODER = 0;
 	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
 
-	for (controller = MOTOR_A; controller <= MOTOR_C; controller++) {
-		get_FRAM_MOTOR_ENCODER(controller, &encoderValue);
-		put_MOTOR_ENCODER(controller, encoderValue);
+	for (i = 0; i < NMOTORS; i++) {
+		mtraddr = i + MOTOR_A;
+		get_FRAM_MOTOR_ENCODER(mtraddr, &encoderValue);
+		put_MOTOR_ENCODER(mtraddr, encoderValue);
 
 	}
 
@@ -607,16 +624,16 @@ uint8_t motorsMoving(void)
 
 	const char fmt1[] = "motorsMoving: get_MOTOR_SPEED error on %c";
 	char strbuf[80];
-	uint8_t i, nmoving;
+	uint8_t i, mtraddr, nmoving;
 	int32_t encoderSpeed;
 
 	encoderSpeed = 0;
 	nmoving = 0;
 
-	for (i = MOTOR_A; i <= MOTOR_A; i++) {
-//	for (i = MOTOR_A; i <= MOTOR_C; i++) {
-		if (get_MOTOR_SPEED(i, &encoderSpeed) == ERROR) {
-			sprintf(strbuf, fmt1, (char) (i-63));
+	for (i = 0; i < NMOTORS; i++) {
+		mtraddr = i + MOTOR_A;
+		if (get_MOTOR_SPEED(mtraddr, &encoderSpeed) == ERROR) {
+			sprintf(strbuf, fmt1, (char) (mtraddr-63));
 			printError(ERR_MTR, strbuf);
 			continue;
 		}
@@ -707,11 +724,16 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 {
 
 	char strbuf[80];
-	uint8_t motor, controller, retval;
-	int32_t newPosition, currentPosition;
+	uint8_t i, motor, mtraddr, controller, retval;
+	int32_t newPosition, currentPosition, deltaPos;
 	const char fmt0[] = "move_MOTOR_CMD: get_MOTOR_ENCODER error";
 	const char fmt1[] = "move_MOTOR_CMD: unknown motor";
 	const char fmt2[] = "move_MOTOR_CMD: move_MOTOR error";
+	const char fmt3[] = "move_MOTOR_CMD: move_MOTORS_PISTON error";
+
+	if (pcmd[cstack].cvalue[0] == '\0') {	// Don't do anything on null distance
+		return(NOERROR);
+	}
 
 	motor = pcmd[cstack].cobject;
 	switch(motor) {
@@ -726,6 +748,18 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 			currentPosition = 0;
 			break;
 
+		case 'D':			// Move all motors to absolute position
+			newPosition = (atol(pcmd[cstack].cvalue) * ENC_COUNTS_PER_MICRON);
+			for (i = 0; i < NMOTORS; i++) {
+				mtraddr = i + MOTOR_A;
+				if (move_MOTOR(mtraddr, newPosition) == ERROR) {
+					sprintf(strbuf, fmt2);
+					printError(ERR_MTR, strbuf);
+					return(ERROR);
+				}
+			}
+			return(NOERROR);
+
 		case 'a':			// Move relative
 		case 'b':
 		case 'c':
@@ -738,17 +772,26 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 			}
 			break;
 
+		case 'd':
+			deltaPos = (atol(pcmd[cstack].cvalue) * ENC_COUNTS_PER_MICRON);
+			if (move_MOTORS_PISTON(deltaPos) == ERROR) {
+				sprintf(strbuf, fmt3);
+				printError(ERR_MTR, strbuf);
+				return(ERROR);
+			}
+			return(NOERROR);
+
 		default:
 			sprintf(strbuf, fmt1);
 			printError(ERR_MTR, strbuf);
 			return(ERROR);
 			break;	
 	}
-
+/*
 	if (pcmd[cstack].cvalue[0] == '\0') {	// Don't do anything on null distance
 		return(NOERROR);
 	}
-
+*/
 	newPosition = currentPosition + (atol(pcmd[cstack].cvalue) * ENC_COUNTS_PER_MICRON);
 
 	if (move_MOTOR(controller, newPosition) == ERROR) {
@@ -768,7 +811,6 @@ uint8_t move_MOTOR_HOME(void)
 	const char fmt1[] = "move_MOTOR_HOME: get_MOTOR_ENCODER error on %c";
 	const char fmt2[] = "move_MOTOR_HOME: move_MOTOR error on %c";
 	const char fmt3[] = "move_MOTOR_HOME: motors didn't align";
-	const char fmt4[] = "move_MOTOR_HOME: put_MOTOR_ENCODER error on %c";
 	char strbuf[80];
 	uint8_t i, mtraddr;
 	int32_t curPos[3], avgPos;
@@ -880,6 +922,36 @@ uint8_t move_MOTOR_HOME(void)
 
 }
 
+uint8_t move_MOTORS_PISTON(int32_t deltaValue)
+{
+
+	char strbuf[80];
+	uint8_t i, mtraddr;
+	int32_t curPos[3], newPos[3];
+	const char fmt0[] = "move_MOTORS_PISTON: get_MOTOR_ENCODER error on %c";
+	const char fmt1[] = "move_MOTORS_PISTON: move_MOTOR error on %c";
+
+	for (i = 0; i < NMOTORS; i++) {
+		mtraddr = i + MOTOR_A;
+		if (get_MOTOR_ENCODER(mtraddr, &curPos[i]) == ERROR) {
+			sprintf(strbuf, fmt0, mtraddr-63);
+			printError(ERR_MTR, strbuf);
+			return(ERROR);
+		}
+
+		newPos[i] = curPos[i] + deltaValue;
+
+		if (move_MOTOR(mtraddr, newPos[i]) == ERROR) {
+			sprintf(strbuf, fmt1, mtraddr-63);
+			printError(ERR_MTR, strbuf);
+			return(ERROR);
+		}
+	}
+
+	return(NOERROR);
+
+}
+
 /*------------------------------------------------------------------------------
 uint8_t put_FRAM_ENCODERS(void)
 
@@ -895,29 +967,21 @@ uint8_t put_FRAM_ENCODERS(void)
 		ERROR on get_MOTOREncoder or write_FRAM failure
 		NOERROR otherwise
 
-Shouldn't emit an error if doing this in the background; build an error table
+	Note:
+		This routine is called asynchronously and should't emit error
+		messages.
 ------------------------------------------------------------------------------*/
 uint8_t put_FRAM_ENCODERS(void)
 {
 
-	const char fmt1[] = "put_FRAM_ENCODERS: get_MOTOR_ENCODER error on %c";
-	const char fmt2[] = "put_FRAM_ENCODERS: write_FRAM error for %c";
-	const char fmt3[] = "put_FRAM_ENCODERS: encoder value read out of range for %c";
-	char strbuf[80];
-	uint8_t i, tbuf[4], mtraddr[3] = {MOTOR_A, MOTOR_B, MOTOR_C};
+	char isotime[20];
+	uint8_t i, tbuf[4], mtraddr;
 	uint16_t memaddr[3] = {ENCA_FRAMADDR, ENCB_FRAMADDR, ENCC_FRAMADDR};
 	int32_t encoderValue;
 
-	for (i = 0; i < 1; i++) {
-//	for (i = 0; i < 3; i++) {
-		if (get_MOTOR_ENCODER(mtraddr[i], &encoderValue) == ERROR) {
-			sprintf(strbuf, fmt1, (char) (mtraddr[i]-63));
-			printError(ERR_MTR, strbuf);
-			return(ERROR);
-		}
-		if ((encoderValue > PID_MAXPOS) || (encoderValue < PID_MINPOS)) {
-			sprintf(strbuf, fmt3, (char) (mtraddr[i]-63));
-			printError(ERR_MTR, strbuf);
+	for (i = 0; i < NMOTORS; i++) {
+		mtraddr = i + MOTOR_A;
+		if (get_MOTOR_ENCODER(mtraddr, &encoderValue) == ERROR) {
 			return(ERROR);
 		}
 		tbuf[0] = (encoderValue >> 24) & 0xFF;
@@ -925,11 +989,12 @@ uint8_t put_FRAM_ENCODERS(void)
 		tbuf[2] = (encoderValue >> 8) & 0xFF;
 		tbuf[3] = encoderValue & 0xFF;
 		if (write_FRAM(FRAMTWIADDR, memaddr[i], tbuf, 4) == ERROR) {
-			sprintf(strbuf, fmt2, (char) (memaddr[i]-63));
-			printError(ERR_FRAM, strbuf);
 			return(ERROR);
 		}
 	}
+
+	get_time(isotime);
+	write_FRAM(FRAMTWIADDR, ENC_SAVETIME, (uint8_t*) isotime, 20);
 
 	return(NOERROR);
 
@@ -1297,12 +1362,13 @@ uint8_t stop_MOTORS(void)
 {
 
 	char strbuf[80];
-	uint8_t tbuf[1], mtraddr, errflag;
+	uint8_t i, tbuf[1], mtraddr, errflag;
 	const char fmt[] = "stop_MOTORS: put_MOTOR error on %c";
 
-	tbuf[0] = 0;
+	tbuf[0] = STOP;
 	errflag = 0;
-	for (mtraddr = MOTOR_A; mtraddr <= MOTOR_C; mtraddr++) {
+	for (i = 0; i < NMOTORS; i++) {
+		mtraddr = i + MOTOR_A;
 		if (put_MOTOR(mtraddr, STOP, tbuf, 1) == ERROR) {
 			sprintf(strbuf, fmt, (char) (mtraddr-63));
 			printError(ERR_MTR, strbuf);

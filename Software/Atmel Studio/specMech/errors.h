@@ -30,7 +30,6 @@
 #define ERR_ISO			(603)	// ISOTIME error
 
 extern volatile uint8_t squelchErrors;
-
 void printError(uint16_t, char*);
 
 #endif

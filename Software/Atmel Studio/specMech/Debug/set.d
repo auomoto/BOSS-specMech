@@ -20,7 +20,11 @@ set.d set.o: .././set.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././errors.h .././fram.h .././ds3231.h .././commands.h .././set.h
+ .././set.h .././errors.h .././fram.h .././ds3231.h .././commands.h \
+ .././initialize.h .././oled.h .././eeprom.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
+ .././roboclaw.h .././usart.h .././timers.h .././wdt.h .././nmea.h \
+ .././pneu.h .././report.h .././testroutine.h
 
 .././globals.h:
 
@@ -66,6 +70,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
+.././set.h:
+
 .././errors.h:
 
 .././fram.h:
@@ -74,4 +80,26 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././commands.h:
 
-.././set.h:
+.././initialize.h:
+
+.././oled.h:
+
+.././eeprom.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
+
+.././roboclaw.h:
+
+.././usart.h:
+
+.././timers.h:
+
+.././wdt.h:
+
+.././nmea.h:
+
+.././pneu.h:
+
+.././report.h:
+
+.././testroutine.h:

@@ -170,7 +170,7 @@ void writestr_OLED(uint8_t displaynumber, char *str, uint8_t lineno)
 		write_OLED(twiaddr, OLEDDATA, strbuf[i]);
 	}
 
-	timerOLED = 1;
+	timerOLED = 0;
 
 }
 

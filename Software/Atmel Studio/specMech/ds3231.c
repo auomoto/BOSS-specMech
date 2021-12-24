@@ -14,9 +14,16 @@ ds3231.c
 
 uint8_t check_isotime(char *isotime)
 {
-	char sbuf[10];
+
+	char sbuf[10], strbuf[80];
 	uint8_t i;
 	int year, month, day, hours, minutes, seconds;
+	const char msg0[] = "check_isotime: bad year";
+	const char msg1[] = "check_isotime: bad month";
+	const char msg2[] = "check_isotime: bad day";
+	const char msg3[] = "check_isotime: bad hour";
+	const char msg4[] = "check_isotime: bad minutes";
+	const char msg5[] = "check_isotime: bad seconds";
 
 	for (i = 0; i < 4; i++) {
 		sbuf[i] = isotime[i];
@@ -24,7 +31,8 @@ uint8_t check_isotime(char *isotime)
 	sbuf[4] = '\0';
 	year = atoi(sbuf);
 	if ((year < 2021) || year > 2030) {
-		printError(ERR_ISO, "check_isotime: year out of range (2021-2030)");
+		sprintf(strbuf, msg0);
+		printError(ERR_ISO, strbuf);
 		return(ERROR);
 	}
 	for (i = 5; i < 7; i++) {
@@ -33,7 +41,8 @@ uint8_t check_isotime(char *isotime)
 	sbuf[2] = '\0';
 	month = atoi(sbuf);
 	if ((month < 1) || (month > 12)) {
-		printError(ERR_ISO, "check_isotime: invalid month (not 1-12)");
+		sprintf(strbuf, msg1);
+		printError(ERR_ISO, strbuf);
 		return(ERROR);
 	}
 	for (i = 8; i < 10; i++) {
@@ -42,7 +51,8 @@ uint8_t check_isotime(char *isotime)
 	sbuf[2] = '\0';
 	day = atoi(sbuf);
 	if ((day < 1) || (day > 31)) {
-		printError(ERR_ISO, "check_isotime: invalid day (not 1-31)");
+		sprintf(strbuf, msg2);
+		printError(ERR_ISO, strbuf);
 		return(ERROR);
 	}
 	for (i = 11; i < 13; i++) {
@@ -51,7 +61,8 @@ uint8_t check_isotime(char *isotime)
 	sbuf[2] = '\0';
 	hours = atoi(sbuf);
 	if ((hours < 0) || (hours > 23)) {
-		printError(ERR_ISO, "check_isotime: invalid hour");
+		sprintf(strbuf, msg3);
+		printError(ERR_ISO, strbuf);
 		return(ERROR);
 	}
 	for (i = 14; i < 16; i++) {
@@ -60,7 +71,8 @@ uint8_t check_isotime(char *isotime)
 	sbuf[2] = '\0';
 	minutes = atoi(sbuf);
 	if ((minutes < 0) || (minutes > 59)) {
-		printError(ERR_ISO, "check_isotime: invalid minutes");
+		sprintf(strbuf, msg4);
+		printError(ERR_ISO, strbuf);
 		return(ERROR);
 	}
 	for (i = 17; i < 19; i++) {
@@ -69,7 +81,8 @@ uint8_t check_isotime(char *isotime)
 	sbuf[2] = '\0';
 	seconds = atoi(sbuf);
 	if ((seconds < 0) || (seconds > 59)) {
-		printError(ERR_ISO, "check_isotime: invalid seconds");
+		sprintf(strbuf, msg5);
+		printError(ERR_ISO, strbuf);
 		return(ERROR);
 	}
 	return(NOERROR);

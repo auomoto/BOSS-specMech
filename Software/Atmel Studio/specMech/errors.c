@@ -16,7 +16,6 @@ void printError(uint16_t errorNumber, char *errorString)
 	char strbuf[BUFSIZE];
 	const char errorFormat[] = "ERR,%d,%s";
 
-squelchErrors=NO;
 	if (!squelchErrors) {
 		sprintf(strbuf, errorFormat, errorNumber, errorString);
 		printLine(strbuf);

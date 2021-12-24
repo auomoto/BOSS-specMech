@@ -1,6 +1,11 @@
 #ifndef INITIALIZEH
 #define INITIALIZEH
 
+#include "oled.h"
+#include "eeprom.h"
+#include "roboclaw.h"
+#include "timers.h"
+
 void init_BEEPER(void);
 void init_EEPROM(void);
 void init_LED(void);

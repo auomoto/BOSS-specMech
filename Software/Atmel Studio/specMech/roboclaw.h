@@ -5,38 +5,33 @@
 #include "timers.h"
 #include "commands.h"
 #include "fram.h"
+#include "ds3231.h"
 #include "errors.h"
 
-#define ENC_COUNTS_PER_MICRON	(283)			// 283.1, actually
-#define ACCELERATION			(SPEED)	// Counts/sec
-#define DECELERATION			(SPEED/2)
-#define SPEED					7077		// cts/sec 7077->25um/s
-#define MAXCURRENT				(400)		// mA (Portescap datasheet max is 380 mA)
-//#define MAXCURRENT			(300)		// mA (316.17 mA is absolute max for PI)
-
-#define VOLTS12
-
-#ifdef	VOLTS12
-#define PID_P					(72.0)		// Portescap
-#define PID_I					(1.0)		// Portescap
-#define PID_D					(310.0)		// Portescap
-#define PID_MAXI				(144)		// Portescap
-#endif
-
-#ifdef	VOLTS24
-#define PID_P					(77.0)		// Portescap
-#define PID_I					(1.1)		// Portescap
-#define PID_D					(330.0)		// Portescap
-#define PID_MAXI				(137)		// Portescap
-#endif
-
-#define STOP					(0)			// Motor stop
-#define PID_DEADZONE			(25)
-#define PID_MINPOS				(-850000)		// Encoder counts (300 um)
-#define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
-#define PID_QPPS				(14000)		// Encoder speed at max motor speed
-#define S4MODE					(0x42)		// Home(user)/Limit(fwd)
+#define NMOTORS					(1)			// Useful for testing
 #define SAVEENCODERFREQUENCY	11			// Save encoder period (sec)
+
+#define SPEED					(7077)		// cts/sec 7077->25um/s
+#define ACCELERATION			(SPEED)		// Counts/sec
+#define DECELERATION			(SPEED/2)
+#define MAXCURRENT				(400)		// mA (Portescap datasheet max is 380 mA)
+#define S4MODE					(0x42)		// Home(user)/Limit(fwd)
+
+#define MOTOR_A					128
+#define MOTOR_B					129
+#define MOTOR_C					130
+#define ENC_COUNTS_PER_MICRON	(283)		// 283.1, actually
+#define PID_P					(120.0)		// Portescap
+#define PID_I					(1.6)		// Portescap
+#define PID_D					(480.0)		// Portescap
+#define PID_MAXI				(234)		// Portescap
+#define PID_DEADZONE			(5)
+#define PID_MINPOS				(-850000)	// Encoder counts (3 mm)
+#define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
+#define PID_QPPS				(23000)		// Encoder cts/s at max motor speed
+
+// RoboClaw commands
+#define STOP					(0)			// Motor stop
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
 #define READFIRMWARE			21
@@ -51,9 +46,6 @@
 #define SETS4MODE				74
 #define GETS4MODE				75
 #define READTEMPERATURE			82
-#define MOTOR_A					128
-#define MOTOR_B					129
-#define MOTOR_C					130
 #define PUTMAXCURRENT			133
 #define GETMAXCURRENT			135
 
@@ -66,6 +58,7 @@ typedef struct {
 } PID;
 
 uint16_t crc16(uint8_t*, uint16_t);
+uint8_t get_FRAM_ENCSAVETIME(char*);
 uint8_t get_FRAM_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t get_MOTOR_CURRENT(uint8_t, uint16_t*);
@@ -81,6 +74,7 @@ uint8_t motorsMoving(void);
 uint8_t move_MOTOR(uint8_t, int32_t);
 uint8_t move_MOTOR_CMD(uint8_t);
 uint8_t move_MOTOR_HOME(void);
+uint8_t move_MOTORS_PISTON(int32_t);
 uint8_t put_FRAM_ENCODERS(void);
 uint8_t put_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
