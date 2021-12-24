@@ -10,7 +10,23 @@
 
 void testroutine(void)
 {
+	
+	char strbuf[80];
+	uint8_t i;
 
+//	write_MCP23008(HIGHCURRENT, IODIR, 0x00);
+	for (i = 0; i < 5; i++) {
+		if (write_MCP23008(HIGHCURRENT, OLAT, 0xFF) == ERROR) {
+			sprintf(strbuf, "test routine error");
+			printLine(strbuf);
+		}
+		_delay_ms(1000);
+		write_MCP23008(HIGHCURRENT, OLAT, 0x00);
+		_delay_ms(1000);
+	}
+	return;
+
+/*
 	char strbuf[80], isotime[20];
 	if (get_FRAM_ENCSAVETIME(isotime) == NOERROR) {
 		printLine(isotime);
@@ -19,6 +35,7 @@ void testroutine(void)
 		printLine(strbuf);
 	}
 	return;
+*/
 
 /*
 	move_MOTORS_PISTON(28300);

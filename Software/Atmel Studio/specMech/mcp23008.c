@@ -83,7 +83,7 @@ uint8_t write_MCP23008(uint8_t addr, uint8_t reg, uint8_t val)
 	Writes to an MCP23008 register.
 
 	Input:
-		addr - MCP23008 hardware address, left shifted to make room for R/W bit
+		addr - MCP23008 hardware address
 		reg - The register to select (see #defines above)
 		val - The value to put into that register
 

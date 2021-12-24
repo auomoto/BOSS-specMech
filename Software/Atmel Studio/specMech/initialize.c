@@ -14,6 +14,7 @@ void initialize(void)
 
 	init_PORTS();
 	init_TWI();
+	init_PNEU();
 	init_RTC(32);	// Fast, 1/16 sec, for blinking LED at startup
 	init_MMA8451();	// Accelerometer; needs TWI
 	init_OLED();	// Needs TWI

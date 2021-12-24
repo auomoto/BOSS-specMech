@@ -20,12 +20,12 @@ pneu.d pneu.o: .././pneu.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././errors.h .././commands.h .././initialize.h .././oled.h \
+ .././pneu.h .././errors.h .././commands.h .././initialize.h .././oled.h \
  .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././roboclaw.h .././usart.h .././timers.h .././fram.h .././ds3231.h \
- .././wdt.h .././set.h .././nmea.h .././pneu.h .././report.h \
- .././testroutine.h .././mcp23008.h
+ .././wdt.h .././set.h .././nmea.h .././report.h .././testroutine.h \
+ .././mcp23008.h
 
 .././globals.h:
 
@@ -71,6 +71,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
+.././pneu.h:
+
 .././errors.h:
 
 .././commands.h:
@@ -98,8 +100,6 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././set.h:
 
 .././nmea.h:
-
-.././pneu.h:
 
 .././report.h:
 

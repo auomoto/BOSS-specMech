@@ -4,10 +4,6 @@ pneu.c
 ------------------------------------------------------------------------------*/
 
 #include "globals.h"
-#include "errors.h"
-#include "commands.h"
-#include "mcp23008.h"
-#include "oled.h"
 #include "pneu.h"
 
 volatile uint8_t pneuState;
@@ -106,13 +102,16 @@ uint8_t init_PNEU(void)
 	if (write_MCP23008(PNEUSENSORS, GPPU, 0x7F) == ERROR) { // Pullups (not really needed)
 		return(ERROR);
 	}
+
 	PORTD.PIN7CTRL = PORT_PULLUPEN_bm | PORT_ISC_BOTHEDGES_gc;	// PNEUSENSORS
+
 	return(NOERROR);
 
 }
 
 /*------------------------------------------------------------------------------
 uint8_t open_PNEU(char mechanism)
+
 	Open the shutter or Hartmann doors
 
 	Pneumatic cylinders move the shutter and Hartmann doors. Each cylinder is
@@ -230,7 +229,7 @@ void read_PNEUSensors(char *shutter, char *left, char *right, char *air)
 }
 
 /*------------------------------------------------------------------------------
-set_PNEUVALVES.c
+set_PNEUVALVES
 	Set the Clippard valves.
 	Read the current valve state, AND that value with the new pattern, then
 	write the new valve state.

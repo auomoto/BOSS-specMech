@@ -1,6 +1,12 @@
 #ifndef PNEUH
 #define PNEUH
 
+#include "errors.h"
+#include "commands.h"
+#include "mcp23008.h"
+#include "oled.h"
+
+#define SPARE			(0x22)
 #define PNEUSENSORS		(0x21)	// TWI address for pneumatic cylinder sensors
 #define HIGHCURRENT		(0x24)	// High current driver for pneumatic valves
 #define SHUTTERBM		(0x22)	// OR existing value with this first, then
