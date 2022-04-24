@@ -8,8 +8,8 @@
 #include "ds3231.h"
 #include "errors.h"
 
-#define NMOTORS					(1)			// Useful for testing
-#define SAVEENCODERFREQUENCY	11			// Save encoder period (sec)
+#define NMOTORS					(3)
+#define SAVEENCODERPERIOD	11			// Save encoder period (sec)
 
 #define SPEED					(7077)		// cts/sec 7077->25um/s
 #define ACCELERATION			(SPEED)		// Counts/sec
@@ -46,6 +46,7 @@
 #define SETS4MODE				74
 #define GETS4MODE				75
 #define READTEMPERATURE			82
+#define ROBOSTATUS				90			// For limit switch state
 #define PUTMAXCURRENT			133
 #define GETMAXCURRENT			135
 
@@ -64,10 +65,12 @@ uint8_t get_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t get_MOTOR_CURRENT(uint8_t, uint16_t*);
 uint8_t get_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTOR_FLOAT(uint8_t, uint8_t, float*);
+//uint8_t get_MOTOR_LIMIT(uint8_t, uint8_t*);
 uint8_t get_MOTOR_MAXCURRENT(uint8_t, int32_t*);
 uint8_t get_MOTOR_PID(uint8_t, PID*);
 uint8_t get_MOTOR_S4MODE(uint8_t, uint8_t*);
 uint8_t get_MOTOR_SPEED(uint8_t, int32_t*);
+uint8_t get_MOTOR_STATUS(uint8_t, uint32_t*);
 uint8_t init_MOTORS(void);
 uint8_t motorMoving(uint8_t);
 uint8_t motorsMoving(void);
@@ -84,5 +87,6 @@ uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
 //uint8_t set_MOTOR_PARAMS(void);
 uint8_t stop_MOTOR(uint8_t);
 uint8_t stop_MOTORS(void);
+void zero_MOTOR_CMD(uint8_t);
 
 #endif

@@ -12,8 +12,18 @@ void testroutine(void)
 {
 	
 	char strbuf[80];
-	uint8_t i;
+	uint32_t robostatus;
 
+	if (get_MOTOR_STATUS(130, &robostatus) == NOERROR) {
+		sprintf(strbuf, "status = %08lx", robostatus);
+		printLine(strbuf);
+		return;
+	} else {
+		printLine("error");
+		return;
+	}
+
+/*
 //	write_MCP23008(HIGHCURRENT, IODIR, 0x00);
 	for (i = 0; i < 5; i++) {
 		if (write_MCP23008(HIGHCURRENT, OLAT, 0xFF) == ERROR) {
@@ -25,7 +35,7 @@ void testroutine(void)
 		_delay_ms(1000);
 	}
 	return;
-
+*/
 /*
 	char strbuf[80], isotime[20];
 	if (get_FRAM_ENCSAVETIME(isotime) == NOERROR) {

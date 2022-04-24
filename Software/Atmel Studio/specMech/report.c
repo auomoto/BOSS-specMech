@@ -138,13 +138,12 @@ uint8_t report(uint8_t cstack)
 			}
 
 			micronSpeed = encoderSpeed/ENC_COUNTS_PER_MICRON;
-
 			if (get_MOTOR_CURRENT(controller, &motorCurrent) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_CURRENT error");
 				motorCurrent = 0xFFFF;
 			}
 			sprintf(outbuf, format_MTR, currenttime, pcmd[cstack].cobject,
-			micronValue, micronSpeed, motorCurrent, pcmd[cstack].cid);
+				micronValue, micronSpeed, motorCurrent, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 

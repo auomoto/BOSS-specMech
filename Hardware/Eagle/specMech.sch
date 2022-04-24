@@ -3,10 +3,10 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -15936,6 +15936,13 @@ MLCC type with low ESR &amp; low ESL</text>
 <text x="177.8" y="116.84" size="1.27" layer="250">J5 on Z-World Board
 Pin 8 at 5.61, 0.83 in</text>
 <text x="160.02" y="139.7" size="1.778" layer="250">A3A is the AD590 connection</text>
+<text x="203.835" y="90.805" size="1.27" layer="97">WHT</text>
+<text x="203.835" y="95.885" size="1.27" layer="97">GRN</text>
+<text x="203.835" y="106.045" size="1.27" layer="97">YEL</text>
+<text x="203.835" y="100.965" size="1.27" layer="97">BLU</text>
+<text x="116.84" y="111.76" size="2.54" layer="250">Ion Pump</text>
+<text x="109.22" y="182.88" size="2.54" layer="250">Temperature &amp; Humidity</text>
+<text x="180.34" y="147.32" size="1.27" layer="97">Inboard Connector</text>
 </plain>
 <instances>
 <instance part="J4" gate="G$1" x="182.88" y="101.6" smashed="yes" rot="R180">

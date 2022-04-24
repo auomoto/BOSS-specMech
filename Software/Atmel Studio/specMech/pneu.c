@@ -274,7 +274,7 @@ uint8_t set_PNEUVALVES(uint8_t bitmap, uint8_t action)
 ISR(PORTD_PORT_vect)
 {
 
-	if (PORTD.INTFLAGS & PIN7_bm) {		// Curiosity Nano button
+	if (PORTD.INTFLAGS & PIN7_bm) {		// MCP23008 interrupt
 		PORTD.INTFLAGS = PIN7_bm;		// Clear the interrupt flag
 		pneuState = read_MCP23008(PNEUSENSORS, INTCAP);
 	}

@@ -73,6 +73,10 @@ void commands(void)
 				return;
 			}
 
+		case 'Z':				// Write zero to encoder
+			zero_MOTOR_CMD(cstack);
+			break;
+
 		default:
 			printError(ERR_BADCOMMAND, "Not a command");
 			break;			

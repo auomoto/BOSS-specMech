@@ -204,7 +204,7 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, int32_t *current)
+uint8_t get_MOTOR_CURRENT(uint8_t mtraddr, int16_t *current)
 
 	Retrieves motor current in mA from mtraddr
 
@@ -325,6 +325,39 @@ uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 	}
 
 	*value = ((float) ((data[0] << 8) | data[1])) / 10.0;
+
+	return(NOERROR);
+
+}
+
+/*------------------------------------------------------------------------------
+uint8_t get_MOTOR_LIMIT(uint8_t mtraddr, uint8_t *limitswitch)
+
+	Returns limit switch state.
+
+	Input:
+		mtraddr (128, 129, 130)
+
+	Output:
+		*limitswitch YES or NO
+
+	Returns:
+		ERROR if get_MOTOR_STATUS fails
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR_LIMIT(uint8_t mtraddr, uint8_t *limitswitch)
+{
+
+	char strbuf[80];
+	const char fmt0[] ="get_MOTOR_LIMIT: get_MOTOR_STATUS error on %c";
+	uint32_t robostatus;
+
+	if (get_MOTOR_STATUS(mtraddr, &robostatus) == ERROR) {
+		sprintf(strbuf, fmt0, mtraddr -63);
+		printError(ERR_MTR, strbuf);
+		return(ERROR);
+	}
+
+	*limitswitch = (robostatus & 0x400000) ? YES : NO;
 
 	return(NOERROR);
 
@@ -542,6 +575,45 @@ uint8_t get_MOTOR_SPEED(uint8_t mtraddr, int32_t *speed)
 }
 
 /*------------------------------------------------------------------------------
+uint8_t get_MOTOR_STATUS(uint8_t mtraddr, uint32_t *robostatus)
+
+	Reads the motor controller status. Command 90, see page 73 of the RoboClaw
+	User Manual, Revision 5.7. We use this to determine if a limit switch has
+	been triggered (the S4 pin is pulled low). The bitmask for S4 is 0x400000.
+
+	Input:
+		Motor address (128, 129, or 130).
+
+	Output:
+		The 32-bit word in robostatus.
+
+	Returns:
+		ERROR if the get_MOTOR command fails.
+
+------------------------------------------------------------------------------*/
+uint8_t get_MOTOR_STATUS(uint8_t mtraddr, uint32_t *robostatus)
+{
+	
+	char strbuf[80];
+	const char fmt0[] = "get_MOTOR_STATUS: get_MOTOR error %c";
+	uint8_t data[4];
+
+	if (get_MOTOR(mtraddr, ROBOSTATUS, data, 4) == ERROR) {
+		sprintf(strbuf, fmt0, (char) mtraddr-63);
+		printError(ERR_MTR, strbuf);
+		return(ERROR);
+	}
+
+	*robostatus =  (uint32_t) data[0] << 24;
+	*robostatus |= (uint32_t) data[1] << 16;
+	*robostatus |= (uint32_t) data[2] << 8;
+	*robostatus |= (uint32_t) data[3];
+
+	return(NOERROR);
+
+}
+
+/*------------------------------------------------------------------------------
 uint8_t init_MOTORS(void)
 	Reads the last-saved encoder values from FRAM and loads them into the three
 	controllers.
@@ -564,7 +636,7 @@ uint8_t init_MOTORS(void)
 
 	_delay_ms(100);		// Wait to boot up
 	timerSAVEENCODER = 0;
-	timeoutSAVEENCODER = SAVEENCODERFREQUENCY;
+	timeoutSAVEENCODER = SAVEENCODERPERIOD;
 
 	for (i = 0; i < NMOTORS; i++) {
 		mtraddr = i + MOTOR_A;
@@ -1382,4 +1454,45 @@ uint8_t stop_MOTORS(void)
 		return(NOERROR);
 	}
 
+}
+
+/*------------------------------------------------------------------------------
+void zero_MOTOR_CMD(uint8_t cstack)
+	Loads 0 into a motor encoder
+
+	Inputs:
+		Command line
+
+	Outputs:
+		None
+------------------------------------------------------------------------------*/
+void zero_MOTOR_CMD(uint8_t cstack)
+{
+
+	char strbuf[80];
+	const char fmt0[] = "zero_MOTOR_CMD: failed put_MOTOR_ENCODER on %c";
+	const char fmt1[] = "zero_MOTOR_CMD: not a motor name (%c)";
+	uint8_t motor, mtraddr, retval;
+
+	motor = pcmd[cstack].cobject;	// The char a, b, or c
+
+	switch (motor) {
+		case 'a':
+		case 'b':
+		case 'c':
+			mtraddr = motor + 31;
+			retval = put_MOTOR_ENCODER(mtraddr, 0L);
+			if (retval == ERROR) {
+				sprintf(strbuf, fmt0, motor);
+				printError(ERR_ZERMTR, strbuf);
+				return;
+			}
+			break;
+
+		default:
+			sprintf(strbuf, fmt1, motor);
+			printError(ERR_ZERMTR, strbuf);
+			break;
+		
+	}
 }

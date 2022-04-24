@@ -19,6 +19,7 @@
 #define ERR_MOTORMOVING	(308)	// Motor is moving (can't reboot)
 #define ERR_MTR_ENC_VAL	(309)	// Invalid motor encoder value
 #define ERR_MTR			(310)
+#define ERR_ZERMTR		(311)	// Error zeroing motor encoder
 #define ERR_TWI			(401)	// start_TWI NACK
 #define ERR_MCP23008	(402)	// MCP23008 fail to respond to start condition
 

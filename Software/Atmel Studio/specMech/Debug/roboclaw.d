@@ -20,8 +20,8 @@ roboclaw.d roboclaw.o: .././roboclaw.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././roboclaw.h .././usart.h .././timers.h .././commands.h \
- .././initialize.h .././oled.h .././eeprom.h \
+ .././roboclaw.h .././usart.h .././timers.h .././oled.h .././commands.h \
+ .././initialize.h .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././wdt.h .././ds3231.h .././set.h .././errors.h .././fram.h \
  .././nmea.h .././pneu.h .././mcp23008.h .././report.h .././testroutine.h
@@ -76,11 +76,11 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././timers.h:
 
+.././oled.h:
+
 .././commands.h:
 
 .././initialize.h:
-
-.././oled.h:
 
 .././eeprom.h:
 

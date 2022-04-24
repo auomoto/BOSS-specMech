@@ -29,6 +29,10 @@ int main(void)
 			recv0_buf.done = NO;
 			commands();
 		}
+if (testTicks > 2000) {
+	testTicks = 0;
+	PORTB.OUTTGL = PIN5_bm;
+}
 		if (timerOLED > timeoutOLED) {	// Display timeout
 			squelchErrors = YES;
 			clear_OLED(0);

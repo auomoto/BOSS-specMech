@@ -20,7 +20,7 @@ void initialize(void)
 	init_OLED();	// Needs TWI
 	init_EEPROM();	// Needs TWI to get boot time from clock
 	init_USART();
-	start_TCB0(1);	// 1 ms ticks for TWI & USART timeouts
+//	start_TCB0(1);	// 1 ms ticks for TWI & USART timeouts
 	sei();
 	init_MOTORS();	// Needs USART & interrupts on
 	get_VERSION(versionstr);

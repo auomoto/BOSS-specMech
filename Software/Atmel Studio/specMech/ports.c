@@ -16,4 +16,7 @@ void init_PORTS(void)
 	_delay_ms(10);				// Reset signal wait time
 	PORTC.OUTSET = PIN3_bm;		// Enable the XPort
 
+PORTB.DIRSET = PIN5_bm;	// test pin
+PORTB.OUTCLR = PIN5_bm;
+
 }
