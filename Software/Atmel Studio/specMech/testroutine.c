@@ -10,8 +10,19 @@
 
 void testroutine(void)
 {
-	
+
 	char strbuf[80];
+	uint8_t i;
+
+	for (i = 0; i < 3; i++) {
+		get_MOTOR_LIMITS();
+		sprintf(strbuf, "motor %d direction is %d", i, motorDir[i]);
+		printLine(strbuf);
+		sprintf(strbuf, "motor %d limit state is %d", i, motorLim[i]);
+		printLine(strbuf);
+	}
+
+/*
 	uint32_t robostatus;
 
 	if (get_MOTOR_STATUS(130, &robostatus) == NOERROR) {
@@ -22,7 +33,7 @@ void testroutine(void)
 		printLine("error");
 		return;
 	}
-
+*/
 /*
 //	write_MCP23008(HIGHCURRENT, IODIR, 0x00);
 	for (i = 0; i < 5; i++) {

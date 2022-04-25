@@ -2,7 +2,7 @@
 #include "roboclaw.h"
 
 volatile uint8_t timerSAVEENCODER;
-uint8_t timeoutSAVEENCODER;
+uint8_t timeoutSAVEENCODER, motorDir[3], motorLim[3];
 PID pid;
 
 /*------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ uint8_t get_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 {
 
 	char strbuf[80];
-	uint8_t i, nbytesp2, tbuf[4];
+	uint8_t i, nbytesp2, tbuf[nbytes+2];
 	uint16_t crc, crcReceived, crcExpected;
 	const char fmt0[] = "get_MOTOR: serial timeout on %c";
 	const char fmt1[] = "get_MOTOR: CRC mismatch on %c";
@@ -331,33 +331,42 @@ uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 }
 
 /*------------------------------------------------------------------------------
-uint8_t get_MOTOR_LIMIT(uint8_t mtraddr, uint8_t *limitswitch)
+uint8_t get_MOTOR_LIMITS(void)
 
-	Returns limit switch state.
+	Finds the limit switch stored state for every motor.
 
 	Input:
-		mtraddr (128, 129, 130)
+		None
 
 	Output:
-		*limitswitch YES or NO
+		motorLim[n] limit switch states YES, NO, or MTRLIMUNKNOWN
 
 	Returns:
-		ERROR if get_MOTOR_STATUS fails
+		ERROR on get_MOTOR_STATUS error (quietly)
+		NOERROR otherwise
+
+	Note: This does not read the limit switch directly. When the limit switch
+		is triggered the switch state is saved but the state is cleared
+		immediately after a motor motion in the opposite direction, even
+		though the switch itself might still be engaged.
 ------------------------------------------------------------------------------*/
-uint8_t get_MOTOR_LIMIT(uint8_t mtraddr, uint8_t *limitswitch)
+uint8_t get_MOTOR_LIMITS(void)
 {
 
-	char strbuf[80];
-	const char fmt0[] ="get_MOTOR_LIMIT: get_MOTOR_STATUS error on %c";
+	uint8_t i, mtraddr;
 	uint32_t robostatus;
 
-	if (get_MOTOR_STATUS(mtraddr, &robostatus) == ERROR) {
-		sprintf(strbuf, fmt0, mtraddr -63);
-		printError(ERR_MTR, strbuf);
-		return(ERROR);
+	for (i = 0; i < 3; i++) {
+		motorLim[i] = MTRLIMUNKNOWN;
+		mtraddr = i + MOTOR_A;
+		if (get_MOTOR_STATUS(mtraddr, &robostatus) != ERROR) {
+			if (robostatus & 0x400000) {
+				motorLim[i] = MTRLIMYES;
+			} else {
+				motorLim[i] = MTRLIMNO;
+			}
+		}
 	}
-
-	*limitswitch = (robostatus & 0x400000) ? YES : NO;
 
 	return(NOERROR);
 
@@ -639,10 +648,11 @@ uint8_t init_MOTORS(void)
 	timeoutSAVEENCODER = SAVEENCODERPERIOD;
 
 	for (i = 0; i < NMOTORS; i++) {
+		motorDir[i] = MTRDIRUNKNOWN;
+		motorLim[i] = MTRLIMUNKNOWN;
 		mtraddr = i + MOTOR_A;
 		get_FRAM_MOTOR_ENCODER(mtraddr, &encoderValue);
 		put_MOTOR_ENCODER(mtraddr, encoderValue);
-
 	}
 
 	return(NOERROR);
@@ -808,6 +818,7 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 	}
 
 	motor = pcmd[cstack].cobject;
+
 	switch(motor) {
 		case 'x':			// Immediate halt
 			stop_MOTORS();
@@ -864,12 +875,20 @@ uint8_t move_MOTOR_CMD(uint8_t cstack)
 		return(NOERROR);
 	}
 */
+
 	newPosition = currentPosition + (atol(pcmd[cstack].cvalue) * ENC_COUNTS_PER_MICRON);
 
 	if (move_MOTOR(controller, newPosition) == ERROR) {
 		sprintf(strbuf, fmt2);
 		printError(ERR_MTR, strbuf);
 		return(ERROR);
+	}
+
+	motorDir[controller - MOTOR_A] = MTRDIRUNKNOWN;
+	if (newPosition < currentPosition) {
+		motorDir[controller - MOTOR_A] = MTRDIRNEGATIVE;
+	} else if (newPosition > currentPosition) {
+		motorDir[controller - MOTOR_A] = MTRDIRPOSITIVE;
 	}
 
 	return(NOERROR);

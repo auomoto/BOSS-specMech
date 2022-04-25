@@ -35,11 +35,10 @@ uint8_t report(uint8_t cstack)
 
 	char outbuf[BUFSIZE], version[11];
 	char currenttime[20], lastsettime[20], boottime[20], encsavetime[20];
-	char shutter, left, right, air;
+	char shutter, left, right, air, mlimit, mdir;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
-	const char format_MTR[] = "MTR,%s,%c,%ld,um,%ld,um/s,%d,mA,%s";
+	const char format_MTR[] = "MTR,%s,%c,%ld,um,%ld,um/s,%d,mA,%c,dir,%c,lim,%s";
 	const char format_MT0[] = "ETI,%s,Mtr%c,%3.1f,V,%3.1f,C,%s,encSaveTime,%s";
-//	const char format_MT0[] = "ETI,%s,Mtr %c,%3.1f,V,%3.1f,C,%ld,mA,0x%02x,S4,%s";
 	const char format_MT1[] = "PID,%s,Mtr%c,%.2f,P,%.3f,I,%.2f,D,%ld,maxInt,%s";
 	const char format_MT2[] = "DMM,%s,Mtr%c,%ld,dead,%ld,minP,%ld,maxP,%ld,qpps,%s";
 	const char format_MT3[] = "MTC,%s,Mtr%c,%ld,mA,0x%02x,S4,%s";
@@ -142,8 +141,27 @@ uint8_t report(uint8_t cstack)
 				printError(ERR_MTR, "report: get_MOTOR_CURRENT error");
 				motorCurrent = 0xFFFF;
 			}
+
+			if (motorDir[controller - MOTOR_A] == MTRDIRPOSITIVE) {
+				mdir = 'F';
+				} else if (motorDir[controller - MOTOR_A] == MTRDIRNEGATIVE) {
+				mdir = 'R';
+				} else {
+				mdir = '?';
+			}
+
+			mlimit = '?';
+			if (get_MOTOR_LIMITS() == ERROR) {
+				printError(ERR_MTR, "report: get_MOTOR_LIMITS error");
+			} else {
+				if (motorLim[controller - MOTOR_A] == MTRLIMYES) {
+					mlimit = 'Y';
+				} else if (motorLim[controller - MOTOR_A] == MTRLIMNO) {
+					mlimit = '?';
+				}
+			}
 			sprintf(outbuf, format_MTR, currenttime, pcmd[cstack].cobject,
-				micronValue, micronSpeed, motorCurrent, pcmd[cstack].cid);
+				micronValue, micronSpeed, motorCurrent, mdir, mlimit, pcmd[cstack].cid);
 			printLine(outbuf);
 			break;
 

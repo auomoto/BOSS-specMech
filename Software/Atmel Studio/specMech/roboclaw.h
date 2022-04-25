@@ -32,6 +32,12 @@
 
 // RoboClaw commands
 #define STOP					(0)			// Motor stop
+#define MTRDIRPOSITIVE			(1)			// Motor moving in positive direction
+#define MTRDIRNEGATIVE			(0)			// Motor moving in negative direction
+#define MTRDIRUNKNOWN			(2)
+#define MTRLIMYES				(1)
+#define MTRLIMNO				(0)
+#define MTRLIMUNKNOWN			(2)
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
 #define READFIRMWARE			21
@@ -51,7 +57,7 @@
 #define GETMAXCURRENT			135
 
 extern volatile uint8_t timerSAVEENCODER;
-extern uint8_t timeoutSAVEENCODER;
+extern uint8_t timeoutSAVEENCODER, motorDir[3], motorLim[3];
 
 typedef struct {
 	float p, i, d;
@@ -65,7 +71,7 @@ uint8_t get_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t get_MOTOR_CURRENT(uint8_t, uint16_t*);
 uint8_t get_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTOR_FLOAT(uint8_t, uint8_t, float*);
-//uint8_t get_MOTOR_LIMIT(uint8_t, uint8_t*);
+uint8_t get_MOTOR_LIMITS(void);
 uint8_t get_MOTOR_MAXCURRENT(uint8_t, int32_t*);
 uint8_t get_MOTOR_PID(uint8_t, PID*);
 uint8_t get_MOTOR_S4MODE(uint8_t, uint8_t*);
