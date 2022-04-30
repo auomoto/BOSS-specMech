@@ -36,8 +36,7 @@
 #define MTRDIRNEGATIVE			(0)			// Motor moving in negative direction
 #define MTRDIRUNKNOWN			(2)
 #define MTRLIMYES				(1)
-#define MTRLIMNO				(0)
-#define MTRLIMUNKNOWN			(2)
+#define MTRLIMUNKNOWN			(0)
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
 #define READFIRMWARE			21
@@ -93,6 +92,7 @@ uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
 //uint8_t set_MOTOR_PARAMS(void);
 uint8_t stop_MOTOR(uint8_t);
 uint8_t stop_MOTORS(void);
+uint8_t unstick_MOTOR_LIMIT(uint8_t);
 void zero_MOTOR_CMD(uint8_t);
 
 #endif

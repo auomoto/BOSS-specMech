@@ -14,6 +14,11 @@ void testroutine(void)
 	char strbuf[80];
 	uint8_t i;
 
+	i = unstick_MOTOR_LIMIT('c');
+	sprintf(strbuf, "unstick_MOTOR_LIMIT returned %d", i);
+	printLine(strbuf);
+
+/*
 	for (i = 0; i < 3; i++) {
 		get_MOTOR_LIMITS();
 		sprintf(strbuf, "motor %d direction is %d", i, motorDir[i]);
@@ -21,7 +26,7 @@ void testroutine(void)
 		sprintf(strbuf, "motor %d limit state is %d", i, motorLim[i]);
 		printLine(strbuf);
 	}
-
+*/
 /*
 	uint32_t robostatus;
 

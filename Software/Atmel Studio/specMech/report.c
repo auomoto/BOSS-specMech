@@ -51,7 +51,7 @@ uint8_t report(uint8_t cstack)
 	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";
-	uint8_t controller, s4mode;
+	uint8_t i, controller, s4mode;
 	int32_t encoderValue;
 	int32_t encoderSpeed;
 	int32_t micronValue, micronSpeed;
@@ -130,6 +130,7 @@ uint8_t report(uint8_t cstack)
 				printError(ERR_MTR, "report: get_MOTOR_ENCODER error");
 				return(ERROR);
 			}
+
 			micronValue = encoderValue/ENC_COUNTS_PER_MICRON;
 
 			if (get_MOTOR_SPEED(controller, &encoderSpeed) == ERROR) {
@@ -137,17 +138,17 @@ uint8_t report(uint8_t cstack)
 			}
 
 			micronSpeed = encoderSpeed/ENC_COUNTS_PER_MICRON;
+
 			if (get_MOTOR_CURRENT(controller, &motorCurrent) == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_CURRENT error");
 				motorCurrent = 0xFFFF;
 			}
 
+			mdir = '?';
 			if (motorDir[controller - MOTOR_A] == MTRDIRPOSITIVE) {
 				mdir = 'F';
-				} else if (motorDir[controller - MOTOR_A] == MTRDIRNEGATIVE) {
+			} else if (motorDir[controller - MOTOR_A] == MTRDIRNEGATIVE) {
 				mdir = 'R';
-				} else {
-				mdir = '?';
 			}
 
 			mlimit = '?';
@@ -156,13 +157,57 @@ uint8_t report(uint8_t cstack)
 			} else {
 				if (motorLim[controller - MOTOR_A] == MTRLIMYES) {
 					mlimit = 'Y';
-				} else if (motorLim[controller - MOTOR_A] == MTRLIMNO) {
+				} else if (motorLim[controller - MOTOR_A] == MTRLIMUNKNOWN) {
 					mlimit = '?';
 				}
 			}
 			sprintf(outbuf, format_MTR, currenttime, pcmd[cstack].cobject,
 				micronValue, micronSpeed, motorCurrent, mdir, mlimit, pcmd[cstack].cid);
 			printLine(outbuf);
+			break;
+
+		case 'd':			// copy of the above code
+			for (i = 0; i < NMOTORS; i++) {
+				get_time(currenttime);
+				controller = i + MOTOR_A;
+
+				if (get_MOTOR_ENCODER(controller, &encoderValue) == ERROR) {
+					printError(ERR_MTR, "report: get_MOTOR_ENCODER error");
+					return(ERROR);
+				}
+
+				micronValue = encoderValue/ENC_COUNTS_PER_MICRON;
+
+				if (get_MOTOR_SPEED(controller, &encoderSpeed) == ERROR) {
+					encoderSpeed = 0x7FFFFFFF;
+				}
+
+				micronSpeed = encoderSpeed/ENC_COUNTS_PER_MICRON;
+
+				if (get_MOTOR_CURRENT(controller, &motorCurrent) == ERROR) {
+					printError(ERR_MTR, "report: get_MOTOR_CURRENT error");
+					motorCurrent = 0xFFFF;
+				}
+
+				mdir = '?';
+				if (motorDir[controller - MOTOR_A] == MTRDIRPOSITIVE) {
+						mdir = 'F';
+				} else if (motorDir[controller - MOTOR_A] == MTRDIRNEGATIVE) {
+						mdir = 'R';
+				}
+
+				mlimit = '?';
+				if (get_MOTOR_LIMITS() == ERROR) {
+						printError(ERR_MTR, "report: get_MOTOR_LIMITS error");
+				}
+				if (motorLim[controller - MOTOR_A] == MTRLIMYES) {
+						mlimit = 'Y';
+				}
+
+				sprintf(outbuf, format_MTR, currenttime, controller-31, micronValue,
+					micronSpeed, motorCurrent, mdir, mlimit, pcmd[cstack].cid);
+				printLine(outbuf);
+			}
 			break;
 
 		case 'e':					// Environment (temperature & humidity)

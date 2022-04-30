@@ -54,6 +54,10 @@ void commands(void)
 			testroutine();
 			break;
 
+		case 'u':
+			unstick_MOTOR_LIMIT(cstack);
+			break;
+
 		case 'I':	// test init_MOTORS
 			init_MOTORS();
 			break;
