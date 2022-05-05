@@ -9,13 +9,13 @@
 #include "errors.h"
 
 #define NMOTORS					(3)
-#define SAVEENCODERPERIOD	11			// Save encoder period (sec)
+#define SAVEENCODERPERIOD		4			// Save encoder period (sec)
 
 #define SPEED					(7077)		// cts/sec 7077->25um/s
-#define ACCELERATION			(SPEED)		// Counts/sec
-#define DECELERATION			(SPEED/2)
+#define ACCELERATION			(2*SPEED)	// Counts/sec
+#define DECELERATION			(2*SPEED)
 #define MAXCURRENT				(400)		// mA (Portescap datasheet max is 380 mA)
-#define S4MODE					(0x42)		// Home(user)/Limit(fwd)
+#define S4MODE					(0x42)		// CHANGE THIS
 
 #define MOTOR_A					128
 #define MOTOR_B					129
@@ -31,7 +31,6 @@
 #define PID_QPPS				(23000)		// Encoder cts/s at max motor speed
 
 // RoboClaw commands
-#define STOP					(0)			// Motor stop
 #define MTRDIRPOSITIVE			(1)			// Motor moving in positive direction
 #define MTRDIRNEGATIVE			(0)			// Motor moving in negative direction
 #define MTRDIRUNKNOWN			(2)
@@ -43,6 +42,7 @@
 #define PUTENCODER				22
 #define READMAINVOLTAGE			24
 #define SETQPPS					28			// speed
+#define STOP					(41)			// Motor stop
 #define READCURRENT				49
 #define READQPPS				55
 #define SETPID					61			// Position PID constants
@@ -70,6 +70,7 @@ uint8_t get_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t get_MOTOR_CURRENT(uint8_t, uint16_t*);
 uint8_t get_MOTOR_ENCODER(uint8_t, int32_t*);
 uint8_t get_MOTOR_FLOAT(uint8_t, uint8_t, float*);
+uint8_t get_MOTOR_LIMIT(uint8_t);
 uint8_t get_MOTOR_LIMITS(void);
 uint8_t get_MOTOR_MAXCURRENT(uint8_t, int32_t*);
 uint8_t get_MOTOR_PID(uint8_t, PID*);

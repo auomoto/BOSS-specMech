@@ -330,6 +330,27 @@ uint8_t get_MOTOR_FLOAT(uint8_t mtraddr, uint8_t cmd, float* value)
 
 }
 
+uint8_t get_MOTOR_LIMIT(uint8_t mtraddr)
+{
+
+	char strbuf[80];
+	const char fmt0[] = "get_MOTOR_LIMIT: get_MOTOR_STATUS error on %c";
+	uint32_t robostatus;
+
+	if (get_MOTOR_STATUS(mtraddr, &robostatus) == ERROR) {
+		sprintf(strbuf, fmt0, (char) (mtraddr - 31));
+		printError(ERR_MTR, strbuf);
+	}
+
+	if (robostatus & 0x400000) {
+		return(YES);
+	} else {
+		return(NO);
+	}
+
+}
+
+
 /*------------------------------------------------------------------------------
 uint8_t get_MOTOR_LIMITS(void)
 
@@ -747,14 +768,22 @@ uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
 
 	const char fmt1[] = "move_MOTOR: put_MOTOR error on %c";
 	char strbuf[80];
-	uint8_t buffer, data[17], nbytes;
+	uint8_t buffer, data[17], nbytes, mtrIndex;
 	uint32_t acceleration, deceleration, speed;
+	int32_t oldPosition;
 
 	nbytes = 17;
-	buffer = 0;						// Operation is buffered
+	buffer = 1;
 	acceleration = ACCELERATION;	// See roboclaw.h
 	deceleration = DECELERATION;
 	speed = SPEED;
+	mtrIndex = mtraddr - MOTOR_A;
+
+	get_MOTOR_ENCODER(mtraddr, &oldPosition);
+
+	if (newPosition == oldPosition) {
+		return(NOERROR);
+	}
 
 	data[0] = (acceleration >> 24) & 0XFF;
 	data[1] = (acceleration >> 16) & 0xFF;
@@ -779,7 +808,14 @@ uint8_t move_MOTOR(uint8_t mtraddr, int32_t newPosition)
 	printLine(strbuf);
 #endif
 
+	if (newPosition > oldPosition) {
+		motorDir[mtrIndex] = MTRDIRPOSITIVE;
+	} else if (newPosition < oldPosition) {
+		motorDir[mtrIndex] = MTRDIRNEGATIVE;
+	}
+
 	if (put_MOTOR(mtraddr, DRIVETO, data, nbytes) == ERROR) {
+		motorDir[mtrIndex] = MTRDIRUNKNOWN;
 		sprintf(strbuf, fmt1, (char) (mtraddr-63));
 		printError(ERR_MTR, strbuf);
 		return(ERROR);
@@ -1143,7 +1179,7 @@ uint8_t put_MOTOR(uint8_t mtraddr, uint8_t cmd, uint8_t* data, uint8_t nbytes)
 #endif
 
 	if (ser_recv1.data[0] != 0xFF) {	// Bad ack
-		sprintf(strbuf, fmt2, (char) (mtraddr-63), ser_recv1.data[0]);
+		sprintf(strbuf, fmt2, (char) (mtraddr-31), ser_recv1.data[0]);
 		printError(ERR_MTR, strbuf);
 		return(ERROR);
 	}
@@ -1446,15 +1482,18 @@ uint8_t stop_MOTORS(void)
 {
 
 	char strbuf[80];
-	uint8_t i, tbuf[1], mtraddr, errflag;
+	uint8_t i, data[9], mtraddr, errflag;
 	const char fmt[] = "stop_MOTORS: put_MOTOR error on %c";
 
-	tbuf[0] = STOP;
 	errflag = 0;
+	for (i = 0; i < 8; i++) {
+		data[i] = 0;
+	}
+	data[8] = 1;		// Buffer flag
 	for (i = 0; i < NMOTORS; i++) {
 		mtraddr = i + MOTOR_A;
-		if (put_MOTOR(mtraddr, STOP, tbuf, 1) == ERROR) {
-			sprintf(strbuf, fmt, (char) (mtraddr-63));
+		if (put_MOTOR(mtraddr, STOP, data, 9) == ERROR) {
+			sprintf(strbuf, fmt, (char) (mtraddr - 63));
 			printError(ERR_MTR, strbuf);
 			errflag++;
 		}
@@ -1468,8 +1507,104 @@ uint8_t stop_MOTORS(void)
 
 }
 
-
 uint8_t unstick_MOTOR_LIMIT(uint8_t cstack)
+{
+
+	char strbuf[80];
+	uint8_t i, mtraddr, mtrIndex, direction, stuck;
+	int32_t encodervalue, encoderspeed, newPosition;
+
+	mtraddr = pcmd[cstack].cobject + 31;	// 128, 129, or 130
+	mtrIndex = mtraddr - MOTOR_A;
+	direction = motorDir[mtrIndex];		// Save the most recent command direction
+
+sprintf(strbuf, "mtraddr = %d, mtrIndex = %d, direction = %d", mtraddr, mtrIndex, direction);
+printLine(strbuf);
+
+	if (get_MOTOR_LIMIT(mtraddr) == NO) {
+		sprintf(strbuf, "motor %c not stuck", mtraddr - 31);
+		printError(ERR_MTR, strbuf);
+		return(NOERROR);
+	}
+
+	stuck = YES;
+	get_MOTOR_ENCODER(mtraddr, &encodervalue);
+
+sprintf(strbuf, "current position = %ld", encodervalue);
+printLine(strbuf);
+
+	for (i = 0; i < 3; i++) {
+
+		// Try the opposite direction first
+		if (direction == MTRDIRNEGATIVE) {
+			newPosition = encodervalue + 2 * ENC_COUNTS_PER_MICRON;
+		} else {
+			newPosition = encodervalue - 2 * ENC_COUNTS_PER_MICRON;			
+		}
+
+sprintf(strbuf, "moving to %ld", newPosition);
+printLine(strbuf);
+
+		move_MOTOR(mtraddr, newPosition);
+		get_MOTOR_SPEED(mtraddr, &encoderspeed);
+		while (encoderspeed) {
+			get_MOTOR_SPEED(mtraddr, &encoderspeed);
+sprintf(strbuf, "encoderspeed = %ld", encoderspeed);
+printLine(strbuf);
+
+		}
+//		_delay_ms(3000);
+
+		if (get_MOTOR_LIMIT(mtraddr) == NO) {
+sprintf(strbuf, "unstuck at i=%d, opposite direction", i);
+printLine(strbuf);
+			stuck = NO;
+			break;
+		}
+
+		// Try the same direction
+		if (direction == MTRDIRNEGATIVE) {
+			newPosition = encodervalue - 2 * ENC_COUNTS_PER_MICRON;
+		} else {
+			newPosition = encodervalue + 2 * ENC_COUNTS_PER_MICRON;
+		}
+		move_MOTOR(mtraddr, newPosition);
+		get_MOTOR_SPEED(mtraddr, &encoderspeed);
+		while (encoderspeed) {
+			get_MOTOR_SPEED(mtraddr, &encoderspeed);
+sprintf(strbuf, "encoderspeed = %ld", encoderspeed);
+printLine(strbuf);
+		}
+//		_delay_ms(2000);
+
+		if (get_MOTOR_LIMIT(mtraddr) == NO) {
+sprintf(strbuf, "unstuck at i=%d, same direction", i);
+printLine(strbuf);
+			stuck = NO;
+			break;
+		}
+	}
+	if (stuck == YES) {		// Tried 3 times and failed
+sprintf(strbuf, "tried 3 times and failed");
+printLine(strbuf);
+		return(ERROR);
+	}
+
+	// Move 200 um away
+	get_MOTOR_ENCODER(mtraddr, &encodervalue);
+	if (direction == MTRDIRNEGATIVE) {
+		newPosition = encodervalue + 200L * ENC_COUNTS_PER_MICRON;
+	} else if (direction == MTRDIRPOSITIVE) {
+		newPosition = encodervalue - 200L * ENC_COUNTS_PER_MICRON;
+	} 
+sprintf(strbuf, "encodervalue = %ld, newPosition = %ld", encodervalue, newPosition);
+printLine(strbuf);
+	move_MOTOR(mtraddr, newPosition);
+	return(NOERROR);
+
+}
+
+uint8_t unstick_MOTOR_LIMITX(uint8_t cstack)
 {
 
 	char strbuf[80];
@@ -1477,66 +1612,85 @@ uint8_t unstick_MOTOR_LIMIT(uint8_t cstack)
 	int32_t encodervalue, newPosition;
 
 	mtraddr = pcmd[cstack].cobject + 31;	// 128, 129, or 130
-//mtraddr = 130;
 	mtrIndex = mtraddr - MOTOR_A;			// 0, 1, or 2
 	direction = motorDir[mtrIndex];
 
-sprintf(strbuf, "mtraddr=%d, mtrIndex=%d, direction=%d", mtraddr, mtrIndex, direction);
-printLine(strbuf);
+	sprintf(strbuf, "mtraddr=%d, mtrIndex=%d, direction=%d", mtraddr, mtrIndex, direction);
+	printLine(strbuf);
 
 	if (motorLim[mtrIndex] != MTRLIMYES) {
-sprintf(strbuf, "motor %d not stuck", mtrIndex);
-printLine(strbuf);
+		sprintf(strbuf, "motor %d not stuck", mtrIndex);
+		printLine(strbuf);
 		return(NOERROR);
 	}
 
 	get_MOTOR_ENCODER(mtraddr, &encodervalue);
+
 	for (i = 0; i < 3; i++) {
-		newPosition = encodervalue + ENC_COUNTS_PER_MICRON;
+		// Try going in the opposite direction first
+		if (direction == MTRDIRNEGATIVE) {
+			newPosition = encodervalue + 2 * ENC_COUNTS_PER_MICRON;
+		} else {
+			newPosition = encodervalue - 2 * ENC_COUNTS_PER_MICRON;
+		}
 
-sprintf(strbuf, "encodervalue=%ld, newPosition=%ld forward", encodervalue, newPosition);
-printLine(strbuf);
-
-		move_MOTOR(mtraddr, newPosition);
-		_delay_ms(2000);
-		newPosition = encodervalue - ENC_COUNTS_PER_MICRON;
-
-sprintf(strbuf, "encodervalue=%ld, newPosition=%ld backward", encodervalue, newPosition);
-printLine(strbuf);
+		sprintf(strbuf, "encodervalue=%ld, going to newPosition=%ld", encodervalue, newPosition);
+		printLine(strbuf);
 
 		move_MOTOR(mtraddr, newPosition);
 		_delay_ms(2000);
+
 		get_MOTOR_LIMITS();
+
 		if (motorLim[mtrIndex] != MTRLIMYES) {
-sprintf(strbuf, "ok after i=%d", i);
-printLine(strbuf);
-			if (direction == MTRDIRPOSITIVE) {
-				newPosition = encodervalue - (200L * ENC_COUNTS_PER_MICRON);
-				motorDir[mtrIndex] = MTRDIRNEGATIVE;
-sprintf(strbuf, "moving negative");
-printLine(strbuf);
-				} else {
-sprintf(strbuf, "moving positive");
-printLine(strbuf);
-				newPosition = encodervalue + (200L * ENC_COUNTS_PER_MICRON);
-				motorDir[mtrIndex] = MTRDIRPOSITIVE;
-			}
-			get_MOTOR_LIMITS();
-			if (motorLim[mtrIndex] == MTRLIMYES) {
-sprintf(strbuf, "stuck again, continuing");
-printLine(strbuf);
-				continue;
-			}
-sprintf(strbuf, "moving 200 to %ld", newPosition);
-printLine(strbuf);
-			move_MOTOR(mtraddr, newPosition);
-			return(NOERROR);
+			break;
+		}
+
+		// Try the same direction
+		if (direction == MTRDIRNEGATIVE) {
+			newPosition = encodervalue - 2 * ENC_COUNTS_PER_MICRON;
+		} else {
+			newPosition = encodervalue + 2 * ENC_COUNTS_PER_MICRON;
+		}
+
+		sprintf(strbuf, "encodervalue=%ld, newPosition=%ld", encodervalue, newPosition);
+		printLine(strbuf);
+
+		move_MOTOR(mtraddr, newPosition);
+		_delay_ms(2000);
+
+		get_MOTOR_LIMITS();
+
+		if (motorLim[mtrIndex] != MTRLIMYES) {
+			sprintf(strbuf, "ok after i=%d", i);
+			printLine(strbuf);
+			break;
 		}
 	}
-sprintf(strbuf, "i=%d error", i);
-printLine(strbuf);
-	return(ERROR);
 
+	get_MOTOR_LIMITS();
+
+	if (motorLim[mtrIndex] == MTRLIMYES) {		// Failed after 3 tries
+		return(ERROR);
+	}
+
+	// Go 200 in the opposite direction	
+	if (direction == MTRDIRPOSITIVE) {
+		newPosition = encodervalue - (200L * ENC_COUNTS_PER_MICRON);
+		motorDir[mtrIndex] = MTRDIRNEGATIVE;
+		sprintf(strbuf, "moving negative");
+		printLine(strbuf);
+	} else {
+		newPosition = encodervalue + (200L * ENC_COUNTS_PER_MICRON);
+		motorDir[mtrIndex] = MTRDIRPOSITIVE;
+		sprintf(strbuf, "moving positive");
+		printLine(strbuf);
+	}
+
+	sprintf(strbuf, "moving 200 to %ld", newPosition);
+	printLine(strbuf);
+	move_MOTOR(mtraddr, newPosition);
+	return(NOERROR);
 }
 
 /*------------------------------------------------------------------------------
