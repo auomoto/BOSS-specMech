@@ -382,7 +382,7 @@ uint8_t get_MOTOR_LIMITS(void)
 		mtraddr = i + MOTOR_A;
 		if (get_MOTOR_STATUS(mtraddr, &robostatus) != ERROR) {
 			if (robostatus & 0x400000) {
-				motorLim[i] = MTRLIMYES;
+				motorLim[i] = YES;
 			}
 		}
 	}
@@ -1283,7 +1283,7 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 		ERROR:		If put_MOTOR returns an error
 		NOERROR:	Otherwise
 ------------------------------------------------------------------------------*/
-/*
+
 uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 {
 
@@ -1348,7 +1348,7 @@ uint8_t put_MOTOR_PID(uint8_t mtraddr, PID pid)
 
 	return(NOERROR);
 }
-*/
+
 
 /*------------------------------------------------------------------------------
 uint8_t put_MOTOR_S4MODE(uint8_t mtraddr)
@@ -1618,7 +1618,7 @@ uint8_t unstick_MOTOR_LIMITX(uint8_t cstack)
 	sprintf(strbuf, "mtraddr=%d, mtrIndex=%d, direction=%d", mtraddr, mtrIndex, direction);
 	printLine(strbuf);
 
-	if (motorLim[mtrIndex] != MTRLIMYES) {
+	if (motorLim[mtrIndex] != YES) {
 		sprintf(strbuf, "motor %d not stuck", mtrIndex);
 		printLine(strbuf);
 		return(NOERROR);
@@ -1642,7 +1642,7 @@ uint8_t unstick_MOTOR_LIMITX(uint8_t cstack)
 
 		get_MOTOR_LIMITS();
 
-		if (motorLim[mtrIndex] != MTRLIMYES) {
+		if (motorLim[mtrIndex] != YES) {
 			break;
 		}
 
@@ -1661,7 +1661,7 @@ uint8_t unstick_MOTOR_LIMITX(uint8_t cstack)
 
 		get_MOTOR_LIMITS();
 
-		if (motorLim[mtrIndex] != MTRLIMYES) {
+		if (motorLim[mtrIndex] != YES) {
 			sprintf(strbuf, "ok after i=%d", i);
 			printLine(strbuf);
 			break;
@@ -1670,7 +1670,7 @@ uint8_t unstick_MOTOR_LIMITX(uint8_t cstack)
 
 	get_MOTOR_LIMITS();
 
-	if (motorLim[mtrIndex] == MTRLIMYES) {		// Failed after 3 tries
+	if (motorLim[mtrIndex] == YES) {		// Failed after 3 tries
 		return(ERROR);
 	}
 

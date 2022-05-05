@@ -21,20 +21,23 @@
 #define MOTOR_B					129
 #define MOTOR_C					130
 #define ENC_COUNTS_PER_MICRON	(283)		// 283.1, actually
-#define PID_P					(120.0)		// Portescap
-#define PID_I					(1.6)		// Portescap
-#define PID_D					(480.0)		// Portescap
-#define PID_MAXI				(234)		// Portescap
-#define PID_DEADZONE			(5)
-#define PID_MINPOS				(-850000)	// Encoder counts (3 mm)
-#define PID_MAXPOS				(850000)	// 3 mm (894,596 is 3.16 mm)
-#define PID_QPPS				(23000)		// Encoder cts/s at max motor speed
+//#define PID_P					(120.0)		// Portescap
+//#define PID_I					(1.6)		// Portescap
+//#define PID_D					(480.0)		// Portescap
+//#define PID_MAXI				(234)		// Portescap
+#define PID_P					(15.5)		// PI
+#define PID_I					(0)			// PI
+#define PID_D					(66.2)		// PI
+#define PID_MAXI				(0)			// PI
+#define PID_QPPS				(150000L)	// Encoder cts/s at max motor speed
+#define PID_DEADZONE			(15)
+#define PID_MINPOS				(84930L)	// 0.3 mm
+#define PID_MAXPOS				(792680L)	// 2.8 mm
 
 // RoboClaw commands
 #define MTRDIRPOSITIVE			(1)			// Motor moving in positive direction
 #define MTRDIRNEGATIVE			(0)			// Motor moving in negative direction
 #define MTRDIRUNKNOWN			(2)
-#define MTRLIMYES				(1)
 #define MTRLIMUNKNOWN			(0)
 #define ENCODERCOUNT			16
 #define ENCODERSPEED			18
@@ -42,7 +45,7 @@
 #define PUTENCODER				22
 #define READMAINVOLTAGE			24
 #define SETQPPS					28			// speed
-#define STOP					(41)			// Motor stop
+#define STOP					(41)		// Motor stop (doesn't work)
 #define READCURRENT				49
 #define READQPPS				55
 #define SETPID					61			// Position PID constants
@@ -88,7 +91,7 @@ uint8_t put_FRAM_ENCODERS(void);
 uint8_t put_MOTOR(uint8_t, uint8_t, uint8_t*, uint8_t);
 uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
 //uint8_t put_MOTOR_MAXCURRENT(uint8_t, int32_t);
-//uint8_t put_MOTOR_PID(uint8_t, PID);
+uint8_t put_MOTOR_PID(uint8_t, PID);
 //uint8_t put_MOTOR_S4MODE(uint8_t, uint8_t);
 //uint8_t set_MOTOR_PARAMS(void);
 uint8_t stop_MOTOR(uint8_t);

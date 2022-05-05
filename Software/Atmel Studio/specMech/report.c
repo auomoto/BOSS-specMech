@@ -155,7 +155,7 @@ uint8_t report(uint8_t cstack)
 			if (get_MOTOR_LIMITS() == ERROR) {
 				printError(ERR_MTR, "report: get_MOTOR_LIMITS error");
 			} else {
-				if (motorLim[controller - MOTOR_A] == MTRLIMYES) {
+				if (motorLim[controller - MOTOR_A] == YES) {
 					mlimit = 'Y';
 				} else if (motorLim[controller - MOTOR_A] == MTRLIMUNKNOWN) {
 					mlimit = '?';
@@ -200,7 +200,7 @@ uint8_t report(uint8_t cstack)
 				if (get_MOTOR_LIMITS() == ERROR) {
 						printError(ERR_MTR, "report: get_MOTOR_LIMITS error");
 				}
-				if (motorLim[controller - MOTOR_A] == MTRLIMYES) {
+				if (motorLim[controller - MOTOR_A] == YES) {
 						mlimit = 'Y';
 				}
 
