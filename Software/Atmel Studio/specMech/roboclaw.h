@@ -31,8 +31,10 @@
 #define PID_MAXI				(0)			// PI
 #define PID_QPPS				(150000L)	// Encoder cts/s at max motor speed
 #define PID_DEADZONE			(15)
-#define PID_MINPOS				(84930L)	// 0.3 mm
-#define PID_MAXPOS				(792680L)	// 2.8 mm
+#define PID_MINPOS				(80000L)	// 0.3 mm
+#define PID_MAXPOS				(800000L)	// 2.8 mm
+#define PID_MINPOSUNSAFE		(-500000L)	// -1.77 mm
+#define PID_MAXPOSUNSAFE		(1000000L)	// 3.53 mm
 
 // RoboClaw commands
 #define MTRDIRPOSITIVE			(1)			// Motor moving in positive direction
@@ -94,8 +96,8 @@ uint8_t put_MOTOR_ENCODER(uint8_t, int32_t);
 uint8_t put_MOTOR_PID(uint8_t, PID);
 //uint8_t put_MOTOR_S4MODE(uint8_t, uint8_t);
 //uint8_t set_MOTOR_PARAMS(void);
-uint8_t stop_MOTOR(uint8_t);
-uint8_t stop_MOTORS(void);
+//uint8_t stop_MOTOR(uint8_t);
+//uint8_t stop_MOTORS(void);
 uint8_t unstick_MOTOR_LIMIT(uint8_t);
 void zero_MOTOR_CMD(uint8_t);
 
