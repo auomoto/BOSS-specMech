@@ -38,19 +38,19 @@ uint8_t report(uint8_t cstack)
 	char shutter, left, right, air, mlimit, mdir;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
 	const char format_MTR[] = "MTR,%s,%c,%ld,um,%ld,um/s,%d,mA,%c,dir,%c,lim,%s";
-	const char format_MT0[] = "ETI,%s,Mtr%c,%3.1f,V,%3.1f,C,%s,encSaveTime,%s";
-	const char format_MT1[] = "PID,%s,Mtr%c,%.2f,P,%.3f,I,%.2f,D,%ld,maxInt,%s";
-	const char format_MT2[] = "DMM,%s,Mtr%c,%ld,dead,%ld,minP,%ld,maxP,%ld,qpps,%s";
-	const char format_MT3[] = "MTC,%s,Mtr%c,%ld,mA,0x%02x,S4,%s";
-	const char format_ORI[] = "ORI,%s,%3.1f,%3.1f,%3.1f,%s";
-	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";
-	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";
+	const char format_MT0[] = "MET,%s,%c,%3.1f,V,%3.1f,C,%s,encSaveTime,%s";	// Motor, Voltage, Save-time
+	const char format_MT1[] = "PID,%s,%c,%.2f,P,%.3f,I,%.2f,D,%ld,maxInt,%s";
+	const char format_MT2[] = "DMM,%s,%c,%ld,dead,%ld,minP,%ld,maxP,%ld,qpps,%s";	// Dead, min, max, qpps
+	const char format_MT3[] = "MIL,%s,%c,%ld,mA,0x%02x,S4,%s";	// Motor, current, limit function
+	const char format_ORI[] = "ORI,%s,%3.1f,%3.1f,%3.1f,%s";	// Orientation
+	const char dformat_ORI[] = "%2.0f %2.0f %2.0f";				// For display
+	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";	// Pneumatics
 	const char dformat_PN1[] = "Left:%c   Right:%c";
 	const char dformat_PN2[] = "Shutter:%c  Air:%c";
-	const char format_TIM[] = "TIM,%s,%s,set,%s,boot,%s";
-	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";
+	const char format_TIM[] = "TIM,%s,%s,set,%s,boot,%s";	// Time
+	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";	// Vacuum
 	const char dformat_VAC[] = "%2.2f  %2.2f";
-	const char format_VER[] = "VER,%s,%s,%s";
+	const char format_VER[] = "VER,%s,%s,%s";	// Version
 	uint8_t i, controller, s4mode;
 	int32_t encoderValue;
 	int32_t encoderSpeed;

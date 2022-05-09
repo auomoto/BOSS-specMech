@@ -21,6 +21,11 @@ int main(void)
 
 	firstpass = YES;		// Set to NO in commands.c
 	squelchErrors = YES;
+
+	CPU_CCP = CCP_IOREG_gc;
+	CLKCTRL.MCLKCTRLB = CLKCTRL_PDIV_2X_gc | CLKCTRL_PEN_bm;
+	CLKCTRL.MCLKCTRLB = CLKCTRL_LOCKEN_bm;
+
 	initialize();
 	squelchErrors = NO;
 
@@ -29,10 +34,7 @@ int main(void)
 			recv0_buf.done = NO;
 			commands();
 		}
-if (testTicks > 2000) {
-	testTicks = 0;
-	PORTB.OUTTGL = PIN5_bm;
-}
+
 		if (timerOLED > timeoutOLED) {	// Display timeout
 			squelchErrors = YES;
 			clear_OLED(0);

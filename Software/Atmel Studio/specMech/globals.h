@@ -3,8 +3,9 @@
 
 //#define VERBOSE
 
-#define F_CPU		3333333UL
-#define VERSION		"2022-04-27"
+//#define F_CPU		3333333UL
+#define F_CPU		10000000UL
+#define VERSION		"2022-05-09"
 #define	YES			1
 #define	NO			0
 #define BADFLOAT	(-666.0)
