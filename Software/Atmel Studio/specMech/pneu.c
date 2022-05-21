@@ -105,6 +105,14 @@ uint8_t init_PNEU(void)
 
 	PORTD.PIN7CTRL = PORT_PULLUPEN_bm | PORT_ISC_BOTHEDGES_gc;	// PNEUSENSORS
 
+	// Avoid clanking at startup
+	write_MCP23008(HIGHCURRENT, OLAT, 0xEE);	// Open all pneumatic valves
+	_delay_ms(1000);								// Wait to fill
+	set_PNEUVALVES(LEFTBM, LEFTCLOSE);			// Close everything
+	set_PNEUVALVES(RIGHTBM, RIGHTCLOSE);
+	set_PNEUVALVES(SHUTTERBM, SHUTTERCLOSE);
+	read_MCP23008(PNEUSENSORS, GPIO);
+
 	return(NOERROR);
 
 }

@@ -26,5 +26,6 @@ void initialize(void)
 	get_VERSION(versionstr);
 	writestr_OLED(0,"specMech Version", 1);
 	writestr_OLED(0, versionstr, 2);
+	beeper(".... ..");
 
 }

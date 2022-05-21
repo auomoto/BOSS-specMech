@@ -1,6 +1,10 @@
 #ifndef HUMIDITYH
 #define HUMIDITYH
 
-float get_humidity(uint8_t);
+#include "errors.h"
+#include "ads1115.h"
+#include "temperature.h"
+
+float get_humidity(uint8_t, float);
 
 #endif

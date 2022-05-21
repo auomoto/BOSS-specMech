@@ -1,7 +1,4 @@
 #include "globals.h"
-#include "errors.h"
-#include "ads1115.h"
-#include "temperature.h"
 #include "humidity.h"
 
 /*------------------------------------------------------------------------------
@@ -33,25 +30,22 @@ float get_humidity(uint8_t sensor)
 	Honeywell HiH-4031 humidity sensors. Voltage output is roughly 0.75 V to
 	4.0 V, 0% to 100% RH at 0 C. There is a temperature correction required.
 ------------------------------------------------------------------------------*/
-float get_humidity(uint8_t sensor)
+float get_humidity(uint8_t sensor, float temperature)
 {
 
 	uint8_t adcpin;
-	float voltage, humidity, temperature;
+	float voltage, humidity;
 
 	switch (sensor) {
 		case 0:
-			temperature = get_temperature(0);
 			adcpin = AIN0;		// production
 			break;
 
 		case 1:
-			temperature = get_temperature(1);
 			adcpin = AIN1;
 			break;
 
 		case 2:
-			temperature = get_temperature(2);
 			adcpin = AIN2;
 			break;
 
@@ -77,3 +71,50 @@ float get_humidity(uint8_t sensor)
 	return(humidity);
 
 }
+
+/*
+float get_humidityOLD(uint8_t sensor)
+{
+
+	uint8_t adcpin;
+	float voltage, humidity, temperature;
+
+	switch (sensor) {
+		case 0:
+		temperature = get_temperature(0);
+		adcpin = AIN0;		// production
+		break;
+
+		case 1:
+		temperature = get_temperature(1);
+		adcpin = AIN1;
+		break;
+
+		case 2:
+		temperature = get_temperature(2);
+		adcpin = AIN2;
+		break;
+
+		default:
+		// flag an error
+		adcpin = AIN1;			// to avoid uninitialized note
+		temperature = 20.0;		// to avoid uninitialized note
+		break;
+	}
+
+	if (read_ADS1115(ADC_RH, PGA6144, adcpin, DR128, &voltage) == ERROR) {
+		humidity = BADFLOAT;
+	}
+	else {
+		humidity = ((voltage / 5.0) - 0.16) / 0.0062;
+		humidity = (humidity / (1.0546 - 0.00216 * temperature));
+	}
+
+	if (humidity < 0.0) {
+		humidity = BADFLOAT;
+	}
+
+	return(humidity);
+
+}
+*/

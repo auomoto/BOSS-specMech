@@ -58,12 +58,13 @@ float read_ionpump(uint8_t pumpid) {
 	if (read_ADS1115(ADC_IP, PGA4096, pins, DR128, &voltage) == ERROR) {
 		return(BADFLOAT);
 	}
+/*
 	if (voltage < 0.4) {						// Useful range for the Modion pump
 		return(BADFLOAT);							// after ISO224 op-amp is 0.5 to 2.0 V
 	} else if (voltage > 2.0) {
 		return(BADFLOAT);
 	}
-
+*/
 	vacuum = ISO224SLOPE * voltage + ISO224INTER;
 	return(vacuum);
 

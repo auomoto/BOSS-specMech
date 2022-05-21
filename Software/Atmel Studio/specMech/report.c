@@ -212,11 +212,11 @@ uint8_t report(uint8_t cstack)
 
 		case 'e':					// Environment (temperature & humidity)
 			t0 = get_temperature(0);
-			h0 = get_humidity(0);
+			h0 = get_humidity(0, t0);
 			t1 = get_temperature(1);
-			h1 = get_humidity(1);
+			h1 = get_humidity(1, t1);
 			t2 = get_temperature(2);
-			h2 = get_humidity(2);
+			h2 = get_humidity(2, t2);
 			t3 = get_temperature(3);
 			get_time(currenttime);
 			sprintf(outbuf, format_ENV, currenttime, t0, h0, t1, h1, t2, h2, t3, pcmd[cstack].cid);

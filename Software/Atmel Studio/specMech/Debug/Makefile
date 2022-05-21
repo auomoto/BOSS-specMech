@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../ad590.c \
 ../ads1115.c \
+../beeper.c \
 ../commands.c \
 ../ds3231.c \
 ../eeprom.c \
@@ -55,7 +56,7 @@ C_SRCS +=  \
 ../oled.c \
 ../pneu.c \
 ../ports.c \
-../pushbutton.c \
+../fan.c \
 ../report.c \
 ../roboclaw.c \
 ../set.c \
@@ -76,6 +77,7 @@ ASM_SRCS +=
 OBJS +=  \
 ad590.o \
 ads1115.o \
+beeper.o \
 commands.o \
 ds3231.o \
 eeprom.o \
@@ -92,7 +94,7 @@ nmea.o \
 oled.o \
 pneu.o \
 ports.o \
-pushbutton.o \
+fan.o \
 report.o \
 roboclaw.o \
 set.o \
@@ -106,6 +108,7 @@ wdt.o
 OBJS_AS_ARGS +=  \
 ad590.o \
 ads1115.o \
+beeper.o \
 commands.o \
 ds3231.o \
 eeprom.o \
@@ -122,7 +125,7 @@ nmea.o \
 oled.o \
 pneu.o \
 ports.o \
-pushbutton.o \
+fan.o \
 report.o \
 roboclaw.o \
 set.o \
@@ -136,6 +139,7 @@ wdt.o
 C_DEPS +=  \
 ad590.d \
 ads1115.d \
+beeper.d \
 commands.d \
 ds3231.d \
 eeprom.d \
@@ -152,7 +156,7 @@ nmea.d \
 oled.d \
 pneu.d \
 ports.d \
-pushbutton.d \
+fan.d \
 report.d \
 roboclaw.d \
 set.d \
@@ -166,6 +170,7 @@ wdt.d
 C_DEPS_AS_ARGS +=  \
 ad590.d \
 ads1115.d \
+beeper.d \
 commands.d \
 ds3231.d \
 eeprom.d \
@@ -182,7 +187,7 @@ nmea.d \
 oled.d \
 pneu.d \
 ports.d \
-pushbutton.d \
+fan.d \
 report.d \
 roboclaw.d \
 set.d \
@@ -215,6 +220,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./ads1115.o: .././ads1115.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./beeper.o: .././beeper.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -333,7 +345,7 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
-./pushbutton.o: .././pushbutton.c
+./fan.o: .././fan.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

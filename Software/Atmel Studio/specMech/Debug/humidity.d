@@ -20,7 +20,7 @@ humidity.d humidity.o: .././humidity.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././errors.h .././ads1115.h .././temperature.h .././humidity.h
+ .././humidity.h .././errors.h .././ads1115.h .././temperature.h
 
 .././globals.h:
 
@@ -66,10 +66,10 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
+.././humidity.h:
+
 .././errors.h:
 
 .././ads1115.h:
 
 .././temperature.h:
-
-.././humidity.h:

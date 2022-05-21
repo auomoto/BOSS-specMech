@@ -5,9 +5,11 @@
 
 //#define F_CPU		3333333UL
 #define F_CPU		10000000UL
-#define VERSION		"2022-05-09"
+#define VERSION		"2022-05-18"
 #define	YES			1
 #define	NO			0
+#define ON			1
+#define OFF			0
 #define BADFLOAT	(-666.0)
 #define BADINT		(0xFFFF);
 #define BADLONG		(0xFFFFFFFF)

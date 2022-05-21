@@ -8,6 +8,7 @@ void init_PORTS(void)
 {
 
 	PORTB.DIRSET = PIN2_bm;		// Beeper
+	PORTB.DIRSET = PIN3_bm;		// Fan
 	PORTF.DIRCLR = PIN2_bm;		// specID jumper
 	PORTF.DIRSET = PIN5_bm;		// On-board LED
 	PORTF.PIN6CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc;	// Pushbutton

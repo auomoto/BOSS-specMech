@@ -42,34 +42,40 @@ uint8_t read_AD590(uint8_t sensor, float *temperature)
 	offset = 0.0;
 	switch (sensor) {		// Select the sensor(s) to turn on
 		case 0:
-			pins = 0x01;	// t0
-			offset = 7.6;
+			pins = 0x04;	// t0 - Blue Camera
+			offset = 0.0;
 			break;
+
 		case 1:
-			pins = 0x04;	// t1
-			offset = 0.0;
+			pins = 0x10;	// t1 - Red Camera
+			offset = 4.2;	// Using old board, to be replaced
 			break;
+
 		case 2:
-			pins = 0x10;	// t2
+			pins = 0x40;	// t2 - Collimator
 			offset = 0.0;
 			break;
+
 		default:
 			pins = 0x00;
 			break;
 	}
 
 	// Turn on the selected AD590 sensor
-	write_MCP23008(AD590DRIVER, GPPU, 0x00);	// Disable pullups on input pins
 	write_MCP23008(AD590DRIVER, IODIR, ~pins);	// Pins are inputs if the bit is high
-	write_MCP23008(AD590DRIVER, OLAT, pins);	// Set high the selected pins
-	_delay_us(20);	// AD590 turn-on time
+	write_MCP23008(AD590DRIVER, OLAT, pins);	// Set high the selected pin
+	_delay_ms(20);								// Found by trial and error
 
 	// Use 0.512 volts range and 128 samples per second
 	if (read_ADS1115(ADC_TE, PGA0512, AIN3, DR128, &voltage) == ERROR) {
 		*temperature = BADFLOAT;
 		return(ERROR);
 	}
-	*temperature = (AD590RESISTOR * voltage) - 273.15 + offset;	// Temperature & offset calibration
+
+	// Turn off all AD590 sensors
+	write_MCP23008(AD590DRIVER, OLAT, 0x00);	// Set all pins low
+	*temperature = (AD590RESISTOR * voltage) - 273.15 + offset;
+
 	return(NOERROR);
 
 }

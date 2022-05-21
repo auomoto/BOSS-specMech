@@ -15936,8 +15936,13 @@ MLCC type with low ESR &amp; low ESL</text>
 <text x="177.8" y="116.84" size="1.27" layer="250">J5 on Z-World Board
 Pin 8 at 5.61, 0.83 in</text>
 <text x="160.02" y="139.7" size="1.778" layer="250">A3A is the AD590 connection</text>
-<text x="180.34" y="76.2" size="1.27" layer="250">Gold pin header
-Ion Pump Signals</text>
+<text x="203.835" y="90.805" size="1.27" layer="97">WHT</text>
+<text x="203.835" y="95.885" size="1.27" layer="97">GRN</text>
+<text x="203.835" y="106.045" size="1.27" layer="97">YEL</text>
+<text x="203.835" y="100.965" size="1.27" layer="97">BLU</text>
+<text x="116.84" y="111.76" size="2.54" layer="250">Ion Pump</text>
+<text x="109.22" y="182.88" size="2.54" layer="250">Temperature &amp; Humidity</text>
+<text x="180.34" y="147.32" size="1.27" layer="97">Inboard Connector</text>
 </plain>
 <instances>
 <instance part="J4" gate="G$1" x="182.88" y="101.6" smashed="yes" rot="R180">
@@ -16705,21 +16710,21 @@ Pin 8 at 5.61, 1.73 in</text>
 <wire x1="172.72" y1="109.22" x2="154.94" y2="109.22" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="BLUE_V+" class="0">
+<net name="N$61" class="0">
 <segment>
 <pinref part="U11" gate="A" pin="GP2"/>
 <pinref part="J3" gate="G$1" pin="3"/>
 <wire x1="154.94" y1="114.3" x2="172.72" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="RED_V+" class="0">
+<net name="N$71" class="0">
 <segment>
 <pinref part="J3" gate="G$1" pin="5"/>
 <pinref part="U11" gate="A" pin="GP4"/>
 <wire x1="172.72" y1="119.38" x2="154.94" y2="119.38" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="COLL_V+" class="0">
+<net name="N$72" class="0">
 <segment>
 <pinref part="U11" gate="A" pin="GP6"/>
 <pinref part="J3" gate="G$1" pin="7"/>

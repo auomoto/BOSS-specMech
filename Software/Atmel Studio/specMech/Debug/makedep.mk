@@ -6,6 +6,8 @@ ad590.c
 
 ads1115.c
 
+beeper.c
+
 commands.c
 
 ds3231.c
@@ -38,7 +40,7 @@ pneu.c
 
 ports.c
 
-pushbutton.c
+fan.c
 
 report.c
 

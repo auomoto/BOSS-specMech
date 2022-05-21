@@ -7,6 +7,7 @@
 #include "initialize.h"
 #include "commands.h"
 #include "errors.h"
+#include "beeper.h"
 
 void testroutine(void)
 {
@@ -14,10 +15,30 @@ void testroutine(void)
 	char strbuf[80];
 	uint8_t i;
 
+	beeper(".... ..");
+	beeper("  --- -.-");
+
+/*
+	if (PORTB.IN & PIN3_bm) {
+		fan(OFF);
+	} else {
+		fan(ON);
+	}
+*/
+/*
+	float temperature;
+
+	for (i = 0; i < 3; i++) {
+		read_AD590(i, &temperature);
+		sprintf(strbuf, "sensor=%d, temp=%f", i, temperature);
+		printLine(strbuf);
+	}
+*/
+/*
 	i = unstick_MOTOR_LIMIT('c');
 	sprintf(strbuf, "unstick_MOTOR_LIMIT returned %d", i);
 	printLine(strbuf);
-
+*/
 /*
 	for (i = 0; i < 3; i++) {
 		get_MOTOR_LIMITS();
