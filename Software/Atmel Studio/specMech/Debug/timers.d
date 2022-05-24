@@ -23,8 +23,9 @@ timers.d timers.o: .././timers.c .././globals.h \
  .././timers.h .././oled.h .././roboclaw.h .././usart.h .././commands.h \
  .././initialize.h .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
- .././wdt.h .././ds3231.h .././set.h .././errors.h .././fram.h \
- .././nmea.h .././pneu.h .././mcp23008.h .././report.h .././testroutine.h
+ .././beeper.h .././wdt.h .././ds3231.h .././set.h .././errors.h \
+ .././fram.h .././nmea.h .././pneu.h .././mcp23008.h .././report.h \
+ .././testroutine.h
 
 .././globals.h:
 
@@ -85,6 +86,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././eeprom.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
+
+.././beeper.h:
 
 .././wdt.h:
 

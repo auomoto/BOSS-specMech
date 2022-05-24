@@ -24,8 +24,8 @@ pneu.d pneu.o: .././pneu.c .././globals.h \
  .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././roboclaw.h .././usart.h .././timers.h .././fram.h .././ds3231.h \
- .././wdt.h .././set.h .././nmea.h .././report.h .././testroutine.h \
- .././mcp23008.h
+ .././beeper.h .././wdt.h .././set.h .././nmea.h .././report.h \
+ .././testroutine.h .././mcp23008.h
 
 .././globals.h:
 
@@ -94,6 +94,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././fram.h:
 
 .././ds3231.h:
+
+.././beeper.h:
 
 .././wdt.h:
 

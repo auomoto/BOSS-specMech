@@ -5,8 +5,9 @@
 #include "eeprom.h"
 #include "roboclaw.h"
 #include "timers.h"
+#include "beeper.h"
 
-void init_BEEPER(void);
+//void init_BEEPER(void);
 void init_EEPROM(void);
 void init_LED(void);
 uint8_t init_MMA8451(void);

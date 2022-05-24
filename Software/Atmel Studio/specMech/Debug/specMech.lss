@@ -17,19 +17,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   6 .debug_aranges 000006a0  00000000  00000000  00007e48  2**3
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   0000c997  00000000  00000000  000084e8  2**0
+  7 .debug_info   0000c984  00000000  00000000  000084e8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 0000470d  00000000  00000000  00014e7f  2**0
+  8 .debug_abbrev 000046f5  00000000  00000000  00014e6c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   000052c1  00000000  00000000  0001958c  2**0
+  9 .debug_line   000052cd  00000000  00000000  00019561  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00001498  00000000  00000000  0001e850  2**2
+ 10 .debug_frame  00001498  00000000  00000000  0001e830  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    000027f3  00000000  00000000  0001fce8  2**0
+ 11 .debug_str    000027f3  00000000  00000000  0001fcc8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00005fb5  00000000  00000000  000224db  2**0
+ 12 .debug_loc    00005fb5  00000000  00000000  000224bb  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000440  00000000  00000000  00028490  2**0
+ 13 .debug_ranges 00000440  00000000  00000000  00028470  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -795,8 +795,9 @@ void beeper(char *message)
      58e:	80 32       	cpi	r24, 0x20	; 32
      590:	21 f5       	brne	.+72     	; 0x5da <beeper+0x6e>
      592:	1a c0       	rjmp	.+52     	; 0x5c8 <beeper+0x5c>
+
 			case '.':
-				PORTB.OUTSET = PIN2_bm;
+				on_BEEPER;
      594:	84 e0       	ldi	r24, 0x04	; 4
      596:	80 93 25 04 	sts	0x0425, r24	; 0x800425 <__TEXT_REGION_LENGTH__+0x7f4425>
 	#else
@@ -815,10 +816,12 @@ void beeper(char *message)
      5a8:	00 c0       	rjmp	.+0      	; 0x5aa <beeper+0x3e>
      5aa:	00 00       	nop
      5ac:	16 c0       	rjmp	.+44     	; 0x5da <beeper+0x6e>
+//				PORTB.OUTSET = PIN2_bm;
 				_delay_ms(75);
 				break;
+
 			case '-':
-				PORTB.OUTSET = PIN2_bm;
+				on_BEEPER;
      5ae:	84 e0       	ldi	r24, 0x04	; 4
      5b0:	80 93 25 04 	sts	0x0425, r24	; 0x800425 <__TEXT_REGION_LENGTH__+0x7f4425>
      5b4:	4f ec       	ldi	r20, 0xCF	; 207
@@ -840,12 +843,12 @@ void beeper(char *message)
      5d4:	e1 f7       	brne	.-8      	; 0x5ce <beeper+0x62>
      5d6:	00 c0       	rjmp	.+0      	; 0x5d8 <beeper+0x6c>
      5d8:	00 00       	nop
-				_delay_ms(225);
-				break;
+
 			default:
 				break;
 		}
-		PORTB.OUTCLR = PIN2_bm;
+
+		off_BEEPER;
      5da:	84 e0       	ldi	r24, 0x04	; 4
      5dc:	80 93 26 04 	sts	0x0426, r24	; 0x800426 <__TEXT_REGION_LENGTH__+0x7f4426>
      5e0:	4f ee       	ldi	r20, 0xEF	; 239
@@ -874,11 +877,11 @@ void beeper(char *message)
 	for (i = 0; i < len; i++) {
      5f6:	9a 17       	cp	r25, r26
      5f8:	10 f2       	brcs	.-124    	; 0x57e <beeper+0x12>
-		_delay_ms(150);
+		off_BEEPER;
+//		PORTB.OUTCLR = PIN2_bm;
+		_delay_ms(75);
+
 	}
-	PORTB_OUTCLR = PIN2_bm;
-	_delay_ms(50);
-*/
      5fa:	08 95       	ret
 
 000005fc <get_cmdline>:
