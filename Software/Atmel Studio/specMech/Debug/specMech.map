@@ -1523,7 +1523,7 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0xc997
+.debug_info     0x00000000     0xc984
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x248a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
  .debug_info    0x0000248a      0x218 ad590.o
@@ -1535,32 +1535,32 @@ END GROUP
  .debug_info    0x00004229      0x1d4 errors.o
  .debug_info    0x000043fd      0x363 fram.o
  .debug_info    0x00004760      0x11e humidity.o
- .debug_info    0x0000487e      0x2e0 initialize.o
- .debug_info    0x00004b5e      0x10f ionpump.o
- .debug_info    0x00004c6d      0x4b1 main.o
- .debug_info    0x0000511e      0x2ab mcp23008.o
- .debug_info    0x000053c9      0x191 mcp9808.o
- .debug_info    0x0000555a      0x429 mma8451.o
- .debug_info    0x00005983      0x15c nmea.o
- .debug_info    0x00005adf      0x9e9 oled.o
- .debug_info    0x000064c8      0x9ef pneu.o
- .debug_info    0x00006eb7      0x2d6 ports.o
- .debug_info    0x0000718d     0x1109 report.o
- .debug_info    0x00008296     0x234b roboclaw.o
- .debug_info    0x0000a5e1      0x5bd set.o
- .debug_info    0x0000ab9e      0x106 temperature.o
- .debug_info    0x0000aca4      0x17e testroutine.o
- .debug_info    0x0000ae22      0x91d timers.o
- .debug_info    0x0000b73f      0x4f0 twi.o
- .debug_info    0x0000bc2f      0x6d3 usart.o
- .debug_info    0x0000c302      0x376 wdt.o
- .debug_info    0x0000c678       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
- .debug_info    0x0000c718       0xa1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
- .debug_info    0x0000c7b9       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
- .debug_info    0x0000c859       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
- .debug_info    0x0000c8f8       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+ .debug_info    0x0000487e      0x2cd initialize.o
+ .debug_info    0x00004b4b      0x10f ionpump.o
+ .debug_info    0x00004c5a      0x4b1 main.o
+ .debug_info    0x0000510b      0x2ab mcp23008.o
+ .debug_info    0x000053b6      0x191 mcp9808.o
+ .debug_info    0x00005547      0x429 mma8451.o
+ .debug_info    0x00005970      0x15c nmea.o
+ .debug_info    0x00005acc      0x9e9 oled.o
+ .debug_info    0x000064b5      0x9ef pneu.o
+ .debug_info    0x00006ea4      0x2d6 ports.o
+ .debug_info    0x0000717a     0x1109 report.o
+ .debug_info    0x00008283     0x234b roboclaw.o
+ .debug_info    0x0000a5ce      0x5bd set.o
+ .debug_info    0x0000ab8b      0x106 temperature.o
+ .debug_info    0x0000ac91      0x17e testroutine.o
+ .debug_info    0x0000ae0f      0x91d timers.o
+ .debug_info    0x0000b72c      0x4f0 twi.o
+ .debug_info    0x0000bc1c      0x6d3 usart.o
+ .debug_info    0x0000c2ef      0x376 wdt.o
+ .debug_info    0x0000c665       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_info    0x0000c705       0xa1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_info    0x0000c7a6       0xa0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_info    0x0000c846       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_info    0x0000c8e5       0x9f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
-.debug_abbrev   0x00000000     0x470d
+.debug_abbrev   0x00000000     0x46f5
  *(.debug_abbrev)
  .debug_abbrev  0x00000000     0x2296 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
  .debug_abbrev  0x00002296      0x129 ad590.o
@@ -1572,32 +1572,32 @@ END GROUP
  .debug_abbrev  0x00002b0e       0xf1 errors.o
  .debug_abbrev  0x00002bff      0x115 fram.o
  .debug_abbrev  0x00002d14       0xab humidity.o
- .debug_abbrev  0x00002dbf       0xf6 initialize.o
- .debug_abbrev  0x00002eb5       0xab ionpump.o
- .debug_abbrev  0x00002f60      0x146 main.o
- .debug_abbrev  0x000030a6       0xb8 mcp23008.o
- .debug_abbrev  0x0000315e       0xb2 mcp9808.o
- .debug_abbrev  0x00003210      0x127 mma8451.o
- .debug_abbrev  0x00003337      0x104 nmea.o
- .debug_abbrev  0x0000343b      0x1f6 oled.o
- .debug_abbrev  0x00003631      0x266 pneu.o
- .debug_abbrev  0x00003897      0x124 ports.o
- .debug_abbrev  0x000039bb      0x16d report.o
- .debug_abbrev  0x00003b28      0x305 roboclaw.o
- .debug_abbrev  0x00003e2d      0x15e set.o
- .debug_abbrev  0x00003f8b       0xa9 temperature.o
- .debug_abbrev  0x00004034       0xcd testroutine.o
- .debug_abbrev  0x00004101      0x174 timers.o
- .debug_abbrev  0x00004275      0x14c twi.o
- .debug_abbrev  0x000043c1      0x1f4 usart.o
- .debug_abbrev  0x000045b5       0xf4 wdt.o
- .debug_abbrev  0x000046a9       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
- .debug_abbrev  0x000046bd       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
- .debug_abbrev  0x000046d1       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
- .debug_abbrev  0x000046e5       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
- .debug_abbrev  0x000046f9       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+ .debug_abbrev  0x00002dbf       0xde initialize.o
+ .debug_abbrev  0x00002e9d       0xab ionpump.o
+ .debug_abbrev  0x00002f48      0x146 main.o
+ .debug_abbrev  0x0000308e       0xb8 mcp23008.o
+ .debug_abbrev  0x00003146       0xb2 mcp9808.o
+ .debug_abbrev  0x000031f8      0x127 mma8451.o
+ .debug_abbrev  0x0000331f      0x104 nmea.o
+ .debug_abbrev  0x00003423      0x1f6 oled.o
+ .debug_abbrev  0x00003619      0x266 pneu.o
+ .debug_abbrev  0x0000387f      0x124 ports.o
+ .debug_abbrev  0x000039a3      0x16d report.o
+ .debug_abbrev  0x00003b10      0x305 roboclaw.o
+ .debug_abbrev  0x00003e15      0x15e set.o
+ .debug_abbrev  0x00003f73       0xa9 temperature.o
+ .debug_abbrev  0x0000401c       0xcd testroutine.o
+ .debug_abbrev  0x000040e9      0x174 timers.o
+ .debug_abbrev  0x0000425d      0x14c twi.o
+ .debug_abbrev  0x000043a9      0x1f4 usart.o
+ .debug_abbrev  0x0000459d       0xf4 wdt.o
+ .debug_abbrev  0x00004691       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_abbrev  0x000046a5       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_abbrev  0x000046b9       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_abbrev  0x000046cd       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_abbrev  0x000046e1       0x14 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
-.debug_line     0x00000000     0x52c1
+.debug_line     0x00000000     0x52cd
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x187 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3/crtatmega4809.o
  .debug_line    0x00000187      0x1a1 ad590.o
@@ -1609,30 +1609,30 @@ END GROUP
  .debug_line    0x000012ee       0xea errors.o
  .debug_line    0x000013d8      0x199 fram.o
  .debug_line    0x00001571      0x106 humidity.o
- .debug_line    0x00001677      0x14b initialize.o
- .debug_line    0x000017c2       0xe7 ionpump.o
- .debug_line    0x000018a9      0x1de main.o
- .debug_line    0x00001a87      0x161 mcp23008.o
- .debug_line    0x00001be8      0x107 mcp9808.o
- .debug_line    0x00001cef      0x233 mma8451.o
- .debug_line    0x00001f22       0xfc nmea.o
- .debug_line    0x0000201e      0x38e oled.o
- .debug_line    0x000023ac      0x45d pneu.o
- .debug_line    0x00002809      0x19c ports.o
- .debug_line    0x000029a5      0x58d report.o
- .debug_line    0x00002f32     0x1159 roboclaw.o
- .debug_line    0x0000408b      0x253 set.o
- .debug_line    0x000042de       0xf6 temperature.o
- .debug_line    0x000043d4       0xd0 testroutine.o
- .debug_line    0x000044a4      0x278 timers.o
- .debug_line    0x0000471c      0x2f0 twi.o
- .debug_line    0x00004a0c      0x4b7 usart.o
- .debug_line    0x00004ec3      0x142 wdt.o
- .debug_line    0x00005005       0x5d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
- .debug_line    0x00005062       0xa5 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
- .debug_line    0x00005107       0x80 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
- .debug_line    0x00005187       0xc1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
- .debug_line    0x00005248       0x79 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
+ .debug_line    0x00001677      0x157 initialize.o
+ .debug_line    0x000017ce       0xe7 ionpump.o
+ .debug_line    0x000018b5      0x1de main.o
+ .debug_line    0x00001a93      0x161 mcp23008.o
+ .debug_line    0x00001bf4      0x107 mcp9808.o
+ .debug_line    0x00001cfb      0x233 mma8451.o
+ .debug_line    0x00001f2e       0xfc nmea.o
+ .debug_line    0x0000202a      0x38e oled.o
+ .debug_line    0x000023b8      0x45d pneu.o
+ .debug_line    0x00002815      0x19c ports.o
+ .debug_line    0x000029b1      0x58d report.o
+ .debug_line    0x00002f3e     0x1159 roboclaw.o
+ .debug_line    0x00004097      0x253 set.o
+ .debug_line    0x000042ea       0xf6 temperature.o
+ .debug_line    0x000043e0       0xd0 testroutine.o
+ .debug_line    0x000044b0      0x278 timers.o
+ .debug_line    0x00004728      0x2f0 twi.o
+ .debug_line    0x00004a18      0x4b7 usart.o
+ .debug_line    0x00004ecf      0x142 wdt.o
+ .debug_line    0x00005011       0x5d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_block.o)
+ .debug_line    0x0000506e       0xa5 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_block.o)
+ .debug_line    0x00005113       0x80 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eeupd_byte.o)
+ .debug_line    0x00005193       0xc1 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eewr_byte.o)
+ .debug_line    0x00005254       0x79 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega4809/avrxmega3\libatmega4809.a(eerd_byte.o)
 
 .debug_frame    0x00000000     0x1498
  *(.debug_frame)
