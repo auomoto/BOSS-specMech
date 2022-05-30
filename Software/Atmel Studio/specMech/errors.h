@@ -30,6 +30,8 @@
 #define ERR_SETTIME		(602)	// Invalid time format
 #define ERR_ISO			(603)	// ISOTIME error
 
+#define ERR_LN2			(701)	// Liquid nitrogen controller
+
 extern volatile uint8_t squelchErrors;
 void printError(uint16_t, char*);
 

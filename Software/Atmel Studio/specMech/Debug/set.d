@@ -24,7 +24,9 @@ set.d set.o: .././set.c .././globals.h \
  .././initialize.h .././oled.h .././eeprom.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././roboclaw.h .././usart.h .././timers.h .././beeper.h .././wdt.h \
- .././nmea.h .././pneu.h .././mcp23008.h .././report.h .././testroutine.h
+ .././nmea.h .././pneu.h .././mcp23008.h .././report.h .././temperature.h \
+ .././humidity.h .././ads1115.h .././ln2.h .././mma8451.h .././ionpump.h \
+ .././testroutine.h
 
 .././globals.h:
 
@@ -105,5 +107,17 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././mcp23008.h:
 
 .././report.h:
+
+.././temperature.h:
+
+.././humidity.h:
+
+.././ads1115.h:
+
+.././ln2.h:
+
+.././mma8451.h:
+
+.././ionpump.h:
 
 .././testroutine.h:

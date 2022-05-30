@@ -25,7 +25,8 @@ pneu.d pneu.o: .././pneu.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././roboclaw.h .././usart.h .././timers.h .././fram.h .././ds3231.h \
  .././beeper.h .././wdt.h .././set.h .././nmea.h .././report.h \
- .././testroutine.h .././mcp23008.h
+ .././temperature.h .././humidity.h .././ads1115.h .././ln2.h \
+ .././mma8451.h .././ionpump.h .././testroutine.h .././mcp23008.h
 
 .././globals.h:
 
@@ -104,6 +105,18 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././nmea.h:
 
 .././report.h:
+
+.././temperature.h:
+
+.././humidity.h:
+
+.././ads1115.h:
+
+.././ln2.h:
+
+.././mma8451.h:
+
+.././ionpump.h:
 
 .././testroutine.h:
 

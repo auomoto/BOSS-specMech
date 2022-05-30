@@ -13,10 +13,17 @@ void testroutine(void)
 {
 
 	char strbuf[80];
-	uint8_t i;
+//	uint8_t i;
 
+	strcpy(strbuf, "TESTING\r");
+	send_USART(3, (uint8_t*) strbuf, strlen(strbuf));
+
+
+
+/*
 	beeper(".... ..");
 	beeper("  --- -.-");
+*/
 
 /*
 	if (PORTB.IN & PIN3_bm) {

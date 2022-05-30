@@ -24,7 +24,9 @@ main.d main.o: .././main.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  .././roboclaw.h .././usart.h .././timers.h .././commands.h .././wdt.h \
  .././ds3231.h .././set.h .././fram.h .././nmea.h .././pneu.h \
- .././mcp23008.h .././report.h .././testroutine.h .././beeper.h
+ .././mcp23008.h .././report.h .././temperature.h .././humidity.h \
+ .././ads1115.h .././ln2.h .././mma8451.h .././ionpump.h \
+ .././testroutine.h .././beeper.h
 
 .././globals.h:
 
@@ -103,6 +105,18 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././mcp23008.h:
 
 .././report.h:
+
+.././temperature.h:
+
+.././humidity.h:
+
+.././ads1115.h:
+
+.././ln2.h:
+
+.././mma8451.h:
+
+.././ionpump.h:
 
 .././testroutine.h:
 
