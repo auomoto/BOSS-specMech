@@ -21,6 +21,7 @@ uint8_t report(uint8_t cstack)
 	char currenttime[20], lastsettime[20], boottime[20], encsavetime[20];
 	char shutter, left, right, air, mlimit, mdir;
 	const char format_ENV[] = "ENV,%s,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%1.0f,%%,%3.1f,C,%s";
+	const char format_LN2[] = "LN2,%s,%s";
 	const char format_MTR[] = "MTR,%s,%c,%ld,um,%ld,um/s,%d,mA,%c,dir,%c,lim,%s";
 	const char format_MT0[] = "MET,%s,%c,%3.1f,V,%3.1f,C,%s,encSaveTime,%s";	// Motor, Voltage, Save-time
 	const char format_MT1[] = "PID,%s,%c,%.2f,P,%.3f,I,%.2f,D,%ld,maxInt,%s";
@@ -213,7 +214,9 @@ uint8_t report(uint8_t cstack)
 
 		case 'n':					// LN2 controller status
 			if (get_ln2(ln2status) != ERROR) {
-				printLine((char*) ln2status);
+				get_time(currenttime);
+				sprintf(outbuf, format_LN2, currenttime, ln2status);
+				printLine(outbuf);
 			}
 			break;
 

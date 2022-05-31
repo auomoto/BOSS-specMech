@@ -4,7 +4,7 @@
 uint8_t get_ln2(uint8_t *ln2status)
 {
 
-	char strbuf[80];
+	char strbuf[BUFSIZE];
 	const char fmt0[] = "LN2 response timeout";
 
 	recv3_buf.nxfrd = 0;
