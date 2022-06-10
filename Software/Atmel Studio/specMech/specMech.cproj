@@ -231,12 +231,6 @@
     <Compile Include="ionpump.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ln2.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="ln2.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>

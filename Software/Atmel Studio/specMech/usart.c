@@ -3,9 +3,8 @@
 #include "roboclaw.h"	// CRC16
 #include "usart.h"
 
-USARTBuf send0_buf, send1_buf, recv0_buf, recv1_buf;
+USARTBuf send0_buf, send1_buf, send3_buf, recv0_buf, recv1_buf, recv3_buf;
 USART1Buf ser_send1, ser_recv1;
-USART3Buf send3_buf, recv3_buf;
 
 /*------------------------------------------------------------------------------
 void init_USART(void)
@@ -27,6 +26,7 @@ void init_USART(void)
 	// USART0 PA0 is TxD, PA1 is RxD, Default pin position
 	PORTA.OUTSET = PIN0_bm;
 	PORTA.DIRSET = PIN0_bm;
+//	USART0.BAUD = (uint16_t) USART_BAUD_RATE(9600);
 	USART0.BAUD = (uint16_t) USART_BAUD_RATE(115200);
 	USART0.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
 	USART0.CTRLB |= USART_TXEN_bm;		// Enable USART transmitter
@@ -43,6 +43,9 @@ void init_USART(void)
 	// USART1 PC0 is TxD, PC1 is RxD
 	PORTC.OUTSET = PIN0_bm;
 	PORTC.DIRSET = PIN0_bm;
+//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(9600);
+//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(38400);
+//	USART1.BAUD = (uint16_t) USART_BAUD_RATE(57600);
 	USART1.BAUD = (uint16_t) USART_BAUD_RATE(115200);
 	USART1.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
 	USART1.CTRLB |= USART_TXEN_bm;		// Enable USART transmitter
@@ -52,9 +55,8 @@ void init_USART(void)
 	PORTB.OUTSET = PIN0_bm;
 	PORTB.DIRSET = PIN0_bm;
 	USART3.BAUD = (uint16_t) USART_BAUD_RATE(9600);
-	USART3.CTRLA |= USART_RXCIE_bm;		// Enable receive complete interrupt
-	USART3.CTRLB |= USART_TXEN_bm;		// Enable USART transmitter
-	USART3.CTRLB |= USART_RXEN_bm;		// Enable USART receiver
+	USART3.CTRLB |= USART_TXEN_bm;
+	USART3.CTRLB |= USART_RXEN_bm;
 	send3_buf.done = YES;
 	recv3_buf.done = NO;
 
@@ -88,7 +90,7 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 	uint16_t crc;
 
 	switch (port) {
-		case 0:		// Ethernet port
+		case 0:
 			send0_buf.done = NO;
 			for (i = 0; i < nbytes; i++) {
 				send0_buf.data[send0_buf.head] = *data++;
@@ -97,14 +99,14 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 			USART0.CTRLA |= USART_DREIE_bm;		// Enable interrupts
 			USART0_ticks = 0;
 			while (send0_buf.done == NO) {
-				if (USART0_ticks > 100) {				// 0.1 second enough?
+				if (USART0_ticks > 100) {				// 1 second enough?
 					send0_buf.done = YES;
 					return;
 				}
 			}
 			break;
 
-		case 1:		// Collimator motor controllers
+		case 1:
 			crc = crc16(data, nbytes);
 			for (i = 0; i < nbytes; i++) {
 				send1_buf.data[send1_buf.head] = *data++;
@@ -119,21 +121,12 @@ void send_USART(uint8_t port, uint8_t *data, uint8_t nbytes)
 			USART1.CTRLA |= USART_DREIE_bm;		// Enable interrupts
 			break;
 
-		case 3:		// LN2 controller
-			send3_buf.nbytes = nbytes;
-			send3_buf.nxfrd = 0;
-			send3_buf.done = NO;
+		case 3:
 			for (i = 0; i < nbytes; i++) {
-				send3_buf.data[i] = *data++;
+				send3_buf.data[send3_buf.head] = *data++;
+				send3_buf.head = (send3_buf.head + 1) % BUFSIZE;
 			}
-			USART3_ticks = 0;
 			USART3.CTRLA |= USART_DREIE_bm;		// Enable interrupts
-			while (send3_buf.done == NO) {
-				if (USART3_ticks > 500) {		// 1 second enough?
-					send3_buf.done = YES;
-					return;
-				}
-			}
 			break;
 
 		default:
@@ -302,15 +295,15 @@ ISR(USART3_RXC_vect)
 	uint8_t c;
 
 	c = USART3.RXDATAL;
-
-	recv3_buf.data[recv3_buf.nxfrd] = c;
-
-	if (((char) c) == '\r') {
-		recv3_buf.data[recv3_buf.nxfrd] = '\0';
+	if (((char) c == '\r') || (recv3_buf.nxfrd >= (BUFSIZE-1))) {
 		recv3_buf.done = YES;
+		recv3_buf.data[recv3_buf.nxfrd] = 0;	// String terminator
+		recv3_buf.nbytes = recv3_buf.nxfrd;
+		recv3_buf.nxfrd = 0;
+		return;
+	} else {
+		recv3_buf.data[recv3_buf.nxfrd++] = c;
 	}
-
-	recv3_buf.nxfrd++;
 
 }
 
@@ -329,11 +322,9 @@ ISR(USART3_DRE_vect)
 ISR(USART3_DRE_vect)
 {
 
-	USART3.CTRLA &= ~USART_DREIE_bm;		// Turn off interrupts
 	USART3.TXDATAL = send3_buf.data[send3_buf.nxfrd++];
-	if (send3_buf.nxfrd < send3_buf.nbytes) {
-		USART3.CTRLA |= USART_DREIE_bm;			// Turn on interrupts
-	} else {
+	if (send3_buf.nxfrd >= send3_buf.nbytes) {
+		USART3.CTRLA &= ~USART_DREIE_bm;	// Turn off interrupts
 		send3_buf.done = YES;
 	}
 

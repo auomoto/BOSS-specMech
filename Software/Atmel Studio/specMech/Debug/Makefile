@@ -48,7 +48,6 @@ C_SRCS +=  \
 ../humidity.c \
 ../initialize.c \
 ../ionpump.c \
-../ln2.c \
 ../main.c \
 ../mcp23008.c \
 ../mcp9808.c \
@@ -87,7 +86,6 @@ fram.o \
 humidity.o \
 initialize.o \
 ionpump.o \
-ln2.o \
 main.o \
 mcp23008.o \
 mcp9808.o \
@@ -119,7 +117,6 @@ fram.o \
 humidity.o \
 initialize.o \
 ionpump.o \
-ln2.o \
 main.o \
 mcp23008.o \
 mcp9808.o \
@@ -151,7 +148,6 @@ fram.d \
 humidity.d \
 initialize.d \
 ionpump.d \
-ln2.d \
 main.d \
 mcp23008.d \
 mcp9808.d \
@@ -183,7 +179,6 @@ fram.d \
 humidity.d \
 initialize.d \
 ionpump.d \
-ln2.d \
 main.d \
 mcp23008.d \
 mcp9808.d \
@@ -288,13 +283,6 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./ionpump.o: .././ionpump.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-./ln2.o: .././ln2.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega4809 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega4809" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
