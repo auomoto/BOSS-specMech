@@ -31,6 +31,9 @@ float get_temperature(uint8_t sensor)
 		case 1:
 		case 2:
 			read_AD590(sensor, &temperature);
+			if (sensor == 1) {
+				temperature -= 3.5;			// Red camera offset
+			}
 			break;
 
 		case 3:

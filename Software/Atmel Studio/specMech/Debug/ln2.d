@@ -1,4 +1,4 @@
-pushbutton.d pushbutton.o: .././pushbutton.c .././globals.h \
+ln2.d ln2.o: .././ln2.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -20,7 +20,13 @@ pushbutton.d pushbutton.o: .././pushbutton.c .././globals.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- .././pushbutton.h
+ .././ln2.h .././errors.h .././usart.h .././timers.h .././oled.h \
+ .././roboclaw.h .././commands.h .././initialize.h .././eeprom.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
+ .././psvoltage.h .././beeper.h .././wdt.h .././ds3231.h .././set.h \
+ .././fram.h .././fan.h .././nmea.h .././pneu.h .././mcp23008.h \
+ .././report.h .././temperature.h .././humidity.h .././ads1115.h \
+ .././mma8451.h .././ionpump.h .././testroutine.h
 
 .././globals.h:
 
@@ -66,4 +72,56 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
-.././pushbutton.h:
+.././ln2.h:
+
+.././errors.h:
+
+.././usart.h:
+
+.././timers.h:
+
+.././oled.h:
+
+.././roboclaw.h:
+
+.././commands.h:
+
+.././initialize.h:
+
+.././eeprom.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
+
+.././psvoltage.h:
+
+.././beeper.h:
+
+.././wdt.h:
+
+.././ds3231.h:
+
+.././set.h:
+
+.././fram.h:
+
+.././fan.h:
+
+.././nmea.h:
+
+.././pneu.h:
+
+.././mcp23008.h:
+
+.././report.h:
+
+.././temperature.h:
+
+.././humidity.h:
+
+.././ads1115.h:
+
+.././mma8451.h:
+
+.././ionpump.h:
+
+.././testroutine.h:

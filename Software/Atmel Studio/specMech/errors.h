@@ -7,7 +7,7 @@
 #define ERR_PUTTIME		(102)	// DS3231 day-time clock not responding
 
 #define ERR_BADCOMMAND	(201)	// Command not recognized
-#define ERR_BADOBJECT	(202)	// Object not recognized
+#define ERR_BADOBJECT	(302)	// Object not recognized
 
 #define ERR_UNKNOWNMTR	(301)	// Motor not a, b, c, A, B, or C
 #define ERR_MOVEREL		(302)	// Relative move, collimator motor
@@ -29,6 +29,10 @@
 #define ERR_SET			(601)	// Bad object to set
 #define ERR_SETTIME		(602)	// Invalid time format
 #define ERR_ISO			(603)	// ISOTIME error
+
+#define ERR_FAN			(700)	// Fan command error (not + or -)
+
+#define ERR_LN2			(800)	// LN2 communications error
 
 extern volatile uint8_t squelchErrors;
 void printError(uint16_t, char*);

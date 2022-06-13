@@ -5,6 +5,7 @@
 #include "eeprom.h"
 #include "roboclaw.h"
 #include "timers.h"
+#include "psvoltage.h"
 #include "beeper.h"
 
 //void init_BEEPER(void);

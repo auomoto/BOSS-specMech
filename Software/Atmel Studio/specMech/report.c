@@ -1,20 +1,4 @@
 #include "globals.h"
-#include "wdt.h"
-#include "usart.h"
-#include "set.h"
-#include "commands.h"
-#include "ds3231.h"
-#include "temperature.h"
-#include "humidity.h"
-#include "roboclaw.h"
-#include "oled.h"
-#include "mma8451.h"
-#include "pneu.h"
-#include "fram.h"
-#include "ionpump.h"
-#include "nmea.h"
-#include "eeprom.h"
-#include "errors.h"
 #include "report.h"
 
 /*------------------------------------------------------------------------------
@@ -48,11 +32,12 @@ uint8_t report(uint8_t cstack)
 	const char format_PNU[] = "PNU,%s,%c,shutter,%c,left,%c,right,%c,air,%s";	// Pneumatics
 	const char dformat_PN1[] = "Left:%c   Right:%c";
 	const char dformat_PN2[] = "Shutter:%c  Air:%c";
+	const char format_SPM[] = "SPM,%s,%d,fan,%5.2f,volts";
 	const char format_TIM[] = "TIM,%s,%s,set,%s,boot,%s";	// Time
 	const char format_VAC[] = "VAC,%s,%5.2f,redvac,%5.2f,bluevac,%s";	// Vacuum
 	const char dformat_VAC[] = "%2.2f  %2.2f";
 	const char format_VER[] = "VER,%s,%s,%s";	// Version
-	uint8_t i, controller, s4mode;
+	uint8_t i, controller, fanstate, s4mode, ln2status[80];
 	int32_t encoderValue;
 	int32_t encoderSpeed;
 	int32_t micronValue, micronSpeed;
@@ -227,7 +212,6 @@ uint8_t report(uint8_t cstack)
 			writestr_OLED(1, outbuf, 2);
 			break;
 
-<<<<<<< HEAD
 		case 'n':					// LN2 controller status
 			if (get_ln2(ln2status) != ERROR) {
 				get_time(currenttime);
@@ -236,8 +220,6 @@ uint8_t report(uint8_t cstack)
 			}
 			break;
 
-=======
->>>>>>> parent of d0a02b3 (Debugging LN2 section)
 		case 'o':					// Orientation
 			get_orientation(&x, &y, &z);
 			get_time(currenttime);
@@ -257,6 +239,14 @@ uint8_t report(uint8_t cstack)
 			writestr_OLED(1, outbuf, 1);
 			sprintf(outbuf, dformat_PN2, shutter, air);
 			writestr_OLED(1, outbuf, 2);
+			break;
+
+		case 's':					// specMech voltage and fan state
+			get_time(currenttime);
+			fanstate = (PORTB.IN & PIN3_bm) ? 1 : 0;
+			voltage = read_PSVOLTAGE();
+			sprintf(outbuf, format_SPM, currenttime, fanstate, voltage);
+			printLine(outbuf);
 			break;
 
 		case 't':					// Report current time on specMech clock

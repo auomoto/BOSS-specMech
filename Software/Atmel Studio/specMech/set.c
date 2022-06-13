@@ -25,7 +25,7 @@ uint8_t set(uint8_t cstack)
 	const char fmt2[] = "set: put_time error";
 	const char fmt3[] = "set: write_FRAM error";
 	const char fmt4[] = "set: what?";
-//	const char fmt5[] = "set: encoder value out of range %ld";
+	const char fmt5[] = "set: sf+ or sf-?";
 	const char fmt6[] = "set: get_MOTOR_PID error on %c";
 	const char fmt7[] = "set: put_MOTOR_PID error on %c";
 
@@ -52,6 +52,18 @@ uint8_t set(uint8_t cstack)
 			}
 			break;
 */
+
+		case 'f':		// Fan
+			if (pcmd[cstack].cvalue[0] == '+') {
+				fan(ON);
+			} else if (pcmd[cstack].cvalue[0] == '-') {
+				fan(OFF);
+			} else {
+				sprintf(strbuf, fmt5);
+				printError(ERR_FAN, strbuf);
+				return(ERROR);
+			}
+			break;
 
 		case 't':		// Time
 			if (strlen(pcmd[cstack].cvalue) != 19) {

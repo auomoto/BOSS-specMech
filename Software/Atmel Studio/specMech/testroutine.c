@@ -7,6 +7,7 @@
 #include "initialize.h"
 #include "commands.h"
 #include "errors.h"
+#include "fan.h"
 #include "beeper.h"
 
 void testroutine(void)
@@ -14,17 +15,18 @@ void testroutine(void)
 
 	char strbuf[80];
 	uint8_t i;
+/*
 
 	beeper(".... ..");
 	beeper("  --- -.-");
+*/
 
-/*
 	if (PORTB.IN & PIN3_bm) {
 		fan(OFF);
 	} else {
 		fan(ON);
 	}
-*/
+
 /*
 	float temperature;
 

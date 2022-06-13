@@ -19,6 +19,7 @@ void initialize(void)
 	init_MMA8451();	// Accelerometer; needs TWI
 	init_OLED();	// Needs TWI
 	init_EEPROM();	// Needs TWI to get boot time from clock
+	init_PSVOLTS_ADC();
 	init_USART();
 //	start_TCB0(1);	// 1 ms ticks for TWI & USART timeouts
 	sei();

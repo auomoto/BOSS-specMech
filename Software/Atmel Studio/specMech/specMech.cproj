@@ -231,6 +231,12 @@
     <Compile Include="ionpump.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ln2.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ln2.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -280,6 +286,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="fan.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="psvoltage.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="psvoltage.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="report.c">

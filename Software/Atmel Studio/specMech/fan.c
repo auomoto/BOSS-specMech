@@ -15,3 +15,21 @@ void fan(uint8_t onoff)
 	}
 
 }
+
+void fanstate(uint8_t cstack)
+{
+
+	switch (pcmd[cstack].cobject) {
+		case '+':
+			fan(ON);
+			break;
+
+		case '-':
+			fan(OFF);
+			break;
+
+		default:
+			break;
+	}
+
+}

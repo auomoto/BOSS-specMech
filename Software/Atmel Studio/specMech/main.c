@@ -20,8 +20,9 @@ int main(void)
 {
 
 	firstpass = YES;		// Set to NO in commands.c
-	squelchErrors = YES;
+	squelchErrors = YES;	// Forbids messages during startup
 
+	// Change clock speed to 10 MHz
 	CPU_CCP = CCP_IOREG_gc;
 	CLKCTRL.MCLKCTRLB = CLKCTRL_PDIV_2X_gc | CLKCTRL_PEN_bm;
 	CLKCTRL.MCLKCTRLB = CLKCTRL_LOCKEN_bm;
@@ -30,18 +31,23 @@ int main(void)
 	squelchErrors = NO;
 
 	for (;;) {
+		// Check for incoming command
 		if (recv0_buf.done) {
 			recv0_buf.done = NO;
 			commands();
 		}
 
-		if (timerOLED > timeoutOLED) {	// Display timeout
+		// Display timeout
+		if (timerOLED > timeoutOLED) {
 			squelchErrors = YES;
 			clear_OLED(0);
 			clear_OLED(1);
 			timerOLED = 0;
 			squelchErrors = NO;
-		} if ((timerSAVEENCODER > timeoutSAVEENCODER) && rebootackd) {
+		}
+
+		// Save motor encoder values to FRAM
+		if ((timerSAVEENCODER > timeoutSAVEENCODER) && rebootackd) {
 			squelchErrors = YES;
 			put_FRAM_ENCODERS();	// Maybe set a global error variable?
 			timerSAVEENCODER = 0;

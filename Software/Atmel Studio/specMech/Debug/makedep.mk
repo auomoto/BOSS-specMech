@@ -24,6 +24,8 @@ initialize.c
 
 ionpump.c
 
+ln2.c
+
 main.c
 
 mcp23008.c
@@ -41,6 +43,8 @@ pneu.c
 ports.c
 
 fan.c
+
+psvoltage.c
 
 report.c
 
