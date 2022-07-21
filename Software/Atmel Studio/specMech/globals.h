@@ -5,7 +5,7 @@
 
 //#define F_CPU		3333333UL
 #define F_CPU		10000000UL
-#define VERSION		"2022-06-11"
+#define VERSION		"2022-06-20"
 #define	YES			1
 #define	NO			0
 #define ON			1
